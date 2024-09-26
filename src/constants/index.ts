@@ -15,3 +15,5 @@ export const SITE_LLM_SUPPORTED = {
   ORAI: "orai",
   ORAIDEX: "oraidex",
 }
+
+export const DISTILLED_AI_URL = "https://distilled.ai/"

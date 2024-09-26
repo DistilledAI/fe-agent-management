@@ -3,16 +3,15 @@ import { lazy } from "react"
 import { RouteObject, useRoutes } from "react-router-dom"
 import { RequireAuth } from "./RequireAuth"
 
-const Chatbot = lazy(() => import("pages/Chatbot"))
+const ChatPage = lazy(() => import("pages/ChatPage"))
 
 const RoutesConfig = (props: any) => {
   const routers: RouteObject[] = [
-    // { path: "/", element: <Home /> },
     {
-      path: PATHS_NAME.LLM,
+      path: PATHS_NAME.HOME,
       element: (
         <RequireAuth isAuthenticated={props.isAuthenticated}>
-          <Chatbot />
+          <ChatPage />
         </RequireAuth>
       ),
     },

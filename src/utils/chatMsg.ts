@@ -1,4 +1,4 @@
-import { ChatMsgData, ChatRoles } from "pages/Chatbot/hooks/useChatMsg"
+import { ChatMsgData, ChatRoles } from "@pages/ChatBotOld/hooks/useChatMsg"
 import { v4 as uuidv4 } from "uuid"
 
 export const createChatMsg = (message: string): ChatMsgData => {
