@@ -1,7 +1,7 @@
 import mixpanel from "mixpanel-browser"
-import { Suspense, useEffect } from "react"
-import { BrowserRouter as Router } from "react-router-dom"
-import RoutesConfig from "./routes"
+import { useEffect } from "react"
+import { RouterProvider } from "react-router-dom"
+import router from "./routes/router"
 
 const mixpanelToken = import.meta.env.VITE_APP_MIXPANEL_TOKEN
 const envMode = import.meta.env.VITE_APP_ENV_MODE
@@ -21,13 +21,7 @@ function App() {
     }
   }, [])
 
-  return (
-    <Router>
-      <Suspense>
-        <RoutesConfig isAuthenticated={true} />
-      </Suspense>
-    </Router>
-  )
+  return <RouterProvider router={router} />
 }
 
 export default App

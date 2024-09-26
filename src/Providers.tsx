@@ -19,7 +19,7 @@ const Providers = ({ children }: { children: JSX.Element }) => {
         ></script>
       )} */}
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+        <PersistGate persistor={persistor}>
           <NextUIProvider>
             <NextThemesProvider attribute="class" defaultTheme="dark">
               {children}
