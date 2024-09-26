@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "oraichain-dapp"
+  },
+  "targets": {
+    "oraichain-dapp": {
+      "hosting": {
+        "widget-layer": [
+          "widget-layer"
+        ],
+        "widget-layer-staging": [
+          "widget-layer-staging"
+        ]
+      }
+    }
+  }
+}
