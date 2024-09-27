@@ -1,10 +1,10 @@
-import { combineReducers } from "@reduxjs/toolkit"
-// import chatBoxReducer from "./chatbot/ChatBoxSlice"
-// import chatMsgReducer from "./chatbot/ChatMsgSlice"
+import { combineReducers, Reducer } from "@reduxjs/toolkit"
+import agentReducer, { AgentState } from "./chatbot/AgentSlice"
 
-const rootReducer = combineReducers({
-  // chatMsg: chatMsgReducer,
-  // chatBox: chatBoxReducer,
+const rootReducer: Reducer<{
+  agents: AgentState
+}> = combineReducers({
+  agents: agentReducer,
 })
 
 export default rootReducer

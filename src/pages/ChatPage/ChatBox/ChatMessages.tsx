@@ -1,6 +1,6 @@
-import DistilledAIIcon from "@components/Icons/DistilledAIIcon";
-import { useMemo } from "react";
-import { Virtuoso } from "react-virtuoso";
+import DistilledAIIcon from "@components/Icons/DistilledAIIcon"
+import { useMemo } from "react"
+import { Virtuoso } from "react-virtuoso"
 
 const ChatMessages = () => {
   const messages = useMemo(() => {
@@ -17,12 +17,12 @@ const ChatMessages = () => {
           role: "user",
           message: "I want to find a gift for girl friend",
         },
-      };
-    });
-  }, []);
+      }
+    })
+  }, [])
 
   return (
-    <div className="flex-1 rounded-[22px] border border-white bg-mercury-30 py-6">
+    <div className="h-full flex-1 rounded-[22px] border border-white bg-mercury-30 py-6">
       <Virtuoso
         data={messages}
         itemContent={(index, message) => (
@@ -44,7 +44,7 @@ const ChatMessages = () => {
         )}
       />
     </div>
-  );
-};
+  )
+}
 
-export default ChatMessages;
+export default ChatMessages

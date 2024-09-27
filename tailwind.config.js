@@ -45,6 +45,9 @@ export default {
           900: "#545454",
           950: "#363636",
         },
+        yellow: {
+          10: "#FC0",
+        },
       },
       boxShadow: {
         1: "0px 0px 20px 0px rgba(0, 0, 0, 0.01)",

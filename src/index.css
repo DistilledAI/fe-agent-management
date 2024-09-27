@@ -26,4 +26,28 @@
   .text-base-b {
     @apply text-base font-bold;
   }
+
+  .text-base-14 {
+    @apply text-14 text-mercury-900;
+  }
+
+  .text-base-14-m {
+    @apply text-base font-medium;
+  }
+
+  .text-base-14-sb {
+    @apply text-base font-semibold;
+  }
+
+  .text-base-14-b {
+    @apply text-base font-bold;
+  }
+
+  .flex-items-center {
+    @apply flex items-center;
+  }
+
+  .hover-light-effect {
+    @apply cursor-pointer transition-all duration-300 ease-out hover:bg-mercury-100 hover:text-mercury-900;
+  }
 }
