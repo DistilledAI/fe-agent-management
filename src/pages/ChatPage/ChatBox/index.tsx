@@ -1,6 +1,6 @@
 import ChatInput from "./ChatInput"
-import ChatMessages from "./ChatMessages"
 import LeftBar from "./LeftBar"
+import MyEchoContent from "./RightContent/MyEchoContent"
 
 const ChatBox = () => {
   return (
@@ -11,7 +11,8 @@ const ChatBox = () => {
             <LeftBar />
           </div>
           <div className="col-span-2 h-full w-full">
-            <ChatMessages />
+            {/* <ChatMessages /> */}
+            <MyEchoContent />
           </div>
         </div>
         <div className="space-y-4">
