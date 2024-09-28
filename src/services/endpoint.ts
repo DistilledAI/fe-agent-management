@@ -3,6 +3,7 @@ const withBaseURL = (path: string) =>
 
 const endpoint = {
   LOGIN: withBaseURL("/user/login"),
+  GET_USER: withBaseURL("/user/detail"),
 }
 
 export default endpoint

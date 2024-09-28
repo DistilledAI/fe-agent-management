@@ -11,7 +11,7 @@ import { config } from "@configs/wagmi"
 
 const queryClient = new QueryClient()
 
-const Providers = ({ children }: { children: JSX.Element }) => {
+const Providers = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   return (
     <HelmetProvider>
       <Provider store={store}>

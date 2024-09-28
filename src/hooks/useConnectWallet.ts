@@ -2,25 +2,29 @@ import { useState } from "react"
 import { IDataSignatureAuth, signatureAuth } from "services/auth"
 import { ethers } from "ethers"
 import { toast } from "react-toastify"
-import cachedLocalStorage, { storageKey } from "@utils/storage"
+import { useDispatch } from "react-redux"
+import { loginSuccess } from "@reducers/user/UserSlice"
 
 const useConnectWallet = () => {
   const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch()
 
   const login = async (input: IDataSignatureAuth) => {
     const res = await signatureAuth(input)
-    if (res.data) {
-      cachedLocalStorage.setWithExpiry(
-        storageKey.ACCESS_TOKEN,
-        res.data.accessToken,
-        Date.now() + 24 * 60 * 60 * 1000,
+    if (res.data.accessToken && res.data.user) {
+      dispatch(
+        loginSuccess({
+          user: res.data.user,
+          accessToken: res.data.accessToken,
+          expire: Date.now() + 24 * 60 * 60 * 1000,
+        }),
       )
     }
   }
 
   const connectWallet = async () => {
-    if (!window.ethereum) {
-      toast.info("Please install MetaMask to continue.")
+    if (!window.ethereum || !window.ethereum.isMetaMask) {
+      toast.warning("Please install MetaMask to continue!")
       return
     }
     try {
