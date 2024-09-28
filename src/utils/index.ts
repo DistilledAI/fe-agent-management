@@ -23,3 +23,11 @@ export const getVisitorId = async () => {
   const result = await fp.get()
   return result.visitorId
 }
+
+export const centerTextEllipsis = (
+  text: string,
+  size?: number,
+  key?: string,
+) => {
+  return `${text?.slice(0, size || 5)}${key || "..."}${text?.slice(-(size || 5))}`
+}
