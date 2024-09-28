@@ -1,3 +1,4 @@
+import "@rainbow-me/rainbowkit/styles.css"
 import Providers from "Providers.tsx"
 import React from "react"
 import ReactDOM from "react-dom/client"

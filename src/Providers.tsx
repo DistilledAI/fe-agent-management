@@ -4,27 +4,29 @@ import { ThemeProvider as NextThemesProvider } from "next-themes"
 import { HelmetProvider } from "react-helmet-async"
 import { Provider } from "react-redux"
 import { PersistGate } from "redux-persist/integration/react"
-// import "./gtag/clarity"
-// import "./gtag/config"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { WagmiProvider } from "wagmi"
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit"
+import { config } from "@configs/wagmi"
 
-// const envMode = import.meta.env.VITE_APP_ENV_MODE
+const queryClient = new QueryClient()
 
 const Providers = ({ children }: { children: JSX.Element }) => {
   return (
     <HelmetProvider>
-      {/* {envMode === "production" && (
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-Y4VWWET4LE"
-        ></script>
-      )} */}
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <NextUIProvider>
-            <NextThemesProvider attribute="class" defaultTheme="dark">
-              {children}
-            </NextThemesProvider>
-          </NextUIProvider>
+          <WagmiProvider config={config}>
+            <QueryClientProvider client={queryClient}>
+              <RainbowKitProvider locale="en-US">
+                <NextUIProvider>
+                  <NextThemesProvider attribute="class" defaultTheme="dark">
+                    {children}
+                  </NextThemesProvider>
+                </NextUIProvider>
+              </RainbowKitProvider>
+            </QueryClientProvider>
+          </WagmiProvider>
         </PersistGate>
       </Provider>
     </HelmetProvider>
