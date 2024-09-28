@@ -9,13 +9,18 @@ type Props = {
 
 const DistilledAILogo = ({ logoClassName }: Props) => {
   return (
-    <Link to={DISTILLED_AI_URL}>
-      <img
-        src={distilledAiLogo}
-        className={twMerge("max-md:h-6 max-md:w-32 md:h-[30px]", logoClassName)}
-        alt="distilled AI logo"
-      />
-    </Link>
+    <div className="max-w-[200px]">
+      <Link to={DISTILLED_AI_URL}>
+        <img
+          src={distilledAiLogo}
+          className={twMerge(
+            "max-md:h-6 max-md:w-32 md:h-[30px]",
+            logoClassName,
+          )}
+          alt="distilled AI logo"
+        />
+      </Link>
+    </div>
   )
 }
 
