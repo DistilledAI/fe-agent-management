@@ -1,7 +1,6 @@
 import { logoutIcon, userIcon } from "@assets/svg"
 import { WalletIcon } from "@components/Icons/Wallet"
-import useAuthState from "@hooks/useAuthState"
-import useConnectWallet from "@hooks/useConnectWallet"
+import { RootState } from "@configs/store"
 import useFetchMe from "@hooks/useFetchMe"
 import {
   Button,
@@ -12,11 +11,14 @@ import {
 } from "@nextui-org/react"
 import { logout } from "@reducers/user/UserSlice"
 import { centerTextEllipsis } from "@utils/index"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
-const UserAuth = () => {
-  const { loading, connectWallet } = useConnectWallet()
-  const { user } = useAuthState()
+interface UserAuthProps {
+  connectWallet: any
+  loading: boolean
+}
+const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
+  const user = useSelector((state: RootState) => state.user.user)
   const dispatch = useDispatch()
 
   useFetchMe()
