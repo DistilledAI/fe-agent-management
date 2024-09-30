@@ -1,5 +1,6 @@
-const withBaseURL = (path: string) =>
-  `${import.meta.env.VITE_BASE_API_URL}${path}`
+import { envConfig } from "@configs/env"
+
+const withBaseURL = (path: string) => `${envConfig.baseApiUrl}${path}`
 
 const endpoint = {
   LOGIN: withBaseURL("/user/login"),

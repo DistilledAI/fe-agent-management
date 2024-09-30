@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import cachedLocalStorage, { storageKey } from "@utils/storage"
 
-interface IUser {
+export interface IUser {
   id: number
   createdAt: string
   publicAddress: string
