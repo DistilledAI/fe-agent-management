@@ -52,6 +52,17 @@ export default {
         yellow: {
           10: "#FC0",
         },
+        code: {
+          agent: {
+            1: "#DC6D1E",
+            2: "#4A38E9",
+            3: "#7EB204",
+          },
+        },
+      },
+      backgroundImage: {
+        "lgd-code-agent-1":
+          "linear-gradient(53deg, #DC6D1E -2.17%, #F17C1C 134.29%)",
       },
       boxShadow: {
         1: "0px 0px 20px 0px rgba(0, 0, 0, 0.01)",

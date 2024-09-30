@@ -20,7 +20,7 @@ const Providers = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
             <QueryClientProvider client={queryClient}>
               <RainbowKitProvider locale="en-US">
                 <NextUIProvider>
-                  <NextThemesProvider attribute="class" defaultTheme="dark">
+                  <NextThemesProvider attribute="class" defaultTheme="light">
                     {children}
                   </NextThemesProvider>
                 </NextUIProvider>

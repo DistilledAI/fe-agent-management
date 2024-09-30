@@ -1,49 +1,50 @@
-import DistilledAIIcon from "@components/Icons/DistilledAIIcon"
-import { useMemo } from "react"
-import { Virtuoso } from "react-virtuoso"
+import ChatWindow from "@components/ChatWindow"
+import ReceiverMessage from "@components/ReceiverMessage"
+import SenderMessage from "@components/SenderMessage"
 
 const ChatMessages = () => {
-  const messages = useMemo(() => {
-    return Array.from({ length: 100 }, (_, index) => {
-      return {
-        bot: {
-          id: index,
-          role: "bot",
-          message:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere deleniti ex vero, voluptas sunt, omnis voluptate inventore eum eos earum tempora quaerat culpa, nemo maxime odit. Sapiente saepe dolore aliquam.",
-        },
-        user: {
-          id: index + 1,
-          role: "user",
-          message: "I want to find a gift for girl friend",
-        },
-      }
-    })
-  }, [])
+  const messages = [
+    {
+      role: "user",
+      content: "Hi, I’m Huynh from Oraichain",
+    },
+    {
+      role: "assistant",
+      content:
+        "\nHello! It's great to connect with you. I'm excited to share with you the innovative products we're developing, such as Distilled AI, Modestus AI, Cupiee, and KawaiiQ. We're currently seeking offers from VCs or the community to help us take our products to the next level. I'm happy to answer any questions you may have about our products or our company.\n\n",
+    },
+  ]
+
+  const renderMessage = (
+    _: number,
+    message: { role: string; content: string },
+  ) => {
+    return (
+      <>
+        {message.role === "assistant" ? (
+          <ReceiverMessage
+            avatar={{
+              src: "https://assets.coingecko.com/coins/images/39453/standard/fwog.png?1722318442",
+            }}
+            content={message.content}
+          />
+        ) : null}
+        {message.role === "user" ? (
+          <SenderMessage
+            content={message.content}
+            baseClassName="bg-lgd-code-agent-1"
+          />
+        ) : null}
+      </>
+    )
+  }
 
   return (
-    <div className="h-full flex-1 rounded-[22px] border border-white bg-mercury-30 py-6">
-      <Virtuoso
-        data={messages}
-        itemContent={(index, message) => (
-          <article className="px-6" key={index}>
-            {message.bot.role === "bot" ? (
-              <div className="mb-4 flex items-center gap-4">
-                <DistilledAIIcon />{" "}
-                <p className="text-base-m flex-1">{message.bot.message}</p>
-              </div>
-            ) : null}
-            {message.user.role === "user" ? (
-              <div className="mb-4 ml-auto flex min-h-11 w-fit items-center rounded-full bg-mercury-950 px-4">
-                <p className="text-base-m text-mercury-30">
-                  {message.user.message}
-                </p>
-              </div>
-            ) : null}
-          </article>
-        )}
-      />
-    </div>
+    <ChatWindow
+      className="border-code-agent-1"
+      messages={messages}
+      itemContent={renderMessage}
+    />
   )
 }
 

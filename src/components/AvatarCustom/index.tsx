@@ -1,16 +1,19 @@
 import { Avatar, Badge } from "@nextui-org/react"
 import { ReactNode } from "react"
+import { twMerge } from "tailwind-merge"
 
-interface AvatarCustomProps {
-  badgeIcon: ReactNode
-  src: string
-  badgeColor: string
+export interface AvatarCustomProps {
+  badgeIcon?: string | ReactNode
+  src?: string
+  badgeClassName?: string
+  badgeBaseClassName?: string
 }
 
 const AvatarCustom: React.FC<AvatarCustomProps> = ({
   badgeIcon,
   src,
-  badgeColor,
+  badgeClassName,
+  badgeBaseClassName,
 }) => {
   if (badgeIcon) {
     return (
@@ -19,17 +22,20 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
         placement="bottom-right"
         variant="solid"
         isOneChar
-        size="lg"
         classNames={{
-          badge: badgeColor,
+          base: twMerge("h-fit", badgeBaseClassName),
+          badge: twMerge(
+            "min-w-[18px] min-h-[18px] w-[18px] h-[18px] right-[15%] bottom-[15%]",
+            badgeClassName,
+          ),
         }}
         showOutline={false}
       >
-        <Avatar isBordered src={src} />
+        <Avatar src={src} className="border border-mercury-400" />
       </Badge>
     )
   }
 
-  return <Avatar isBordered src={src} />
+  return <Avatar src={src} className="border border-mercury-400" />
 }
 export default AvatarCustom
