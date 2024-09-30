@@ -18,7 +18,7 @@ const ChatWindow = ({
   className,
   msgBoxClassName,
 }: ChatWindowProps) => {
-  const virtuosoRef = useRef<VirtuosoHandle>(null) // Ref for Virtuoso
+  const virtuosoRef = useRef<VirtuosoHandle>(null)
 
   useEffect(() => {
     if (virtuosoRef.current) {
@@ -32,7 +32,7 @@ const ChatWindow = ({
   return (
     <div
       className={twMerge(
-        "h-full flex-1 rounded-[22px] border border-white bg-mercury-30 py-6",
+        "h-full flex-1 rounded-[22px] border-[2px] border-white bg-mercury-30 py-6",
         className,
       )}
     >
