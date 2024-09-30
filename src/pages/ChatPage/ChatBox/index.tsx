@@ -1,6 +1,7 @@
 import ChatInput from "./ChatInput"
+import ChatMessages from "./ChatMessages"
 import LeftBar from "./LeftBar"
-import MyEchoContent from "./RightContent/MyEchoContent"
+// import MyEchoContent from "./RightContent/MyEchoContent"
 import UserAuth from "./UserAuth"
 
 const ChatBox = () => {
@@ -18,8 +19,8 @@ const ChatBox = () => {
             <LeftBar />
           </div>
           <div className="col-span-2 h-full w-full">
-            {/* <ChatMessages /> */}
-            <MyEchoContent />
+            <ChatMessages />
+            {/* <MyEchoContent /> */}
           </div>
         </div>
         <div className="space-y-4">

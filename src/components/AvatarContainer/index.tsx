@@ -5,20 +5,20 @@ interface AvatarContainerProps {
   badgeIcon: ReactNode
   avatarUrl: string
   userName: string
-  badgeColor: string
+  badgeClassName: string
 }
 const AvatarContainer: React.FC<AvatarContainerProps> = ({
   badgeIcon,
   avatarUrl,
   userName,
-  badgeColor,
+  badgeClassName,
 }) => {
   return (
     <div className="flex-items-center gap-3">
       <AvatarCustom
         badgeIcon={badgeIcon}
         src={avatarUrl}
-        badgeColor={badgeColor}
+        badgeClassName={badgeClassName}
       />
       <span className="text-base-m text-mercury-950">{userName}</span>
     </div>

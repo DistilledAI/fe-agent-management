@@ -17,18 +17,18 @@ const PrivateAI: React.FC = () => {
 
       <div className="hover-light-effect mb-1 gap-2 rounded-full px-2 py-2">
         <AvatarContainer
-          badgeIcon={<FilledBrainAIIcon />}
+          badgeIcon={<FilledBrainAIIcon size={14} />}
           avatarUrl="https://i.pravatar.cc/150?u=a04258a2462d826712d"
           userName="Thuong Do"
-          badgeColor="bg-yellow-10"
+          badgeClassName="bg-yellow-10"
         />
       </div>
       <div className="hover-light-effect mb-1 gap-2 rounded-full px-2 py-2">
         <AvatarContainer
-          badgeIcon={<FilledUserIcon size={18} />}
+          badgeIcon={<FilledUserIcon size={14} />}
           avatarUrl="/src/assets/images/thuongdo.png"
           userName="Do Do"
-          badgeColor="bg-[#0FE9A4]"
+          badgeClassName="bg-[#0FE9A4]"
         />
       </div>
     </div>

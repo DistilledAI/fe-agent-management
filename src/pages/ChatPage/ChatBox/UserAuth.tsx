@@ -50,7 +50,7 @@ const UserAuth = () => {
     </Popover>
   ) : (
     <Button
-      className="h-[44px] rounded-full bg-mercury-950"
+      className="h-[44px] rounded-full bg-mercury-950 text-white"
       isLoading={loading}
       onClick={connectWallet}
     >
