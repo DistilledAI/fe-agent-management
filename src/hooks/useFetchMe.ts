@@ -1,13 +1,13 @@
-import { RootState } from "@configs/store"
 import { updateUser } from "@reducers/user/UserSlice"
 import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { getUser } from "services/user"
+import useAuthState from "./useAuthState"
 
 const useFetchMe = () => {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
-  const isLogin = useSelector((state: RootState) => state.user.isLogin)
+  const { isLogin } = useAuthState()
 
   const fetchData = async () => {
     try {
