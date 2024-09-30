@@ -14,13 +14,13 @@ const MyEcho: React.FC = () => {
 
   return (
     <div
-      className="flex-items-center hover-light-effect group relative gap-2 rounded-full px-2 py-4 aria-selected:bg-mercury-100"
+      className="flex-items-center hover-light-effect group relative gap-2 rounded-full border border-transparent px-2 py-4 hover:border-mercury-300 aria-selected:bg-mercury-100"
       onClick={() => handleChooseMyEcho()}
       aria-selected={!!isActive}
     >
       <FilledBrainAIIcon />
       <span className="text-base font-normal group-aria-selected:font-bold">
-        My Echo Agent
+        My Private Agent
       </span>
       {isActive && (
         <div className="absolute -left-6 top-1/2 h-[40px] w-[5px] -translate-y-1/2 rounded-br-full rounded-tr-full bg-mercury-950" />
