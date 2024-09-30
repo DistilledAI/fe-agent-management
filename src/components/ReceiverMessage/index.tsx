@@ -15,7 +15,7 @@ const ReceiverMessage = ({
   return (
     <div className="mb-4 flex gap-4">
       <AvatarCustom {...avatar} />
-      <p className={twMerge("text-base-m flex-1", contentClassName)}>
+      <p className={twMerge("text-base-md flex-1", contentClassName)}>
         {content}
       </p>
     </div>

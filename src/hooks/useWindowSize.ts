@@ -1,46 +1,39 @@
-import { useLayoutEffect, useState, useRef } from "react"
+import { useState, useEffect } from "react";
 
-export interface WindowSize {
-  width: number
-  height: number
-}
+const useWindowSize = () => {
+  const [windowSize, setWindowSize] = useState({
+    screenWidth: window.innerWidth,
+    screenHeight: window.innerHeight,
+  });
+  const { screenWidth, screenHeight } = windowSize
 
-// Hook
-const useWindowSize = (): WindowSize => {
-  const windowSizeRef = useRef<WindowSize>({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  })
 
-  const [windowSize, setWindowSize] = useState<WindowSize>(
-    windowSizeRef.current,
-  )
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        screenWidth: window.innerWidth,
+        screenHeight: window.innerHeight,
+      });
+    };
 
-  useLayoutEffect(() => {
-    // Handler to call on window resize
-    function handleResize() {
-      const newWidth = window.innerWidth
-      const newHeight = window.innerHeight
+    window.addEventListener("resize", handleResize);
 
-      // Check if window size has actually changed
-      if (
-        newWidth !== windowSizeRef.current.width ||
-        newHeight !== windowSizeRef.current.height
-      ) {
-        windowSizeRef.current.width = newWidth
-        windowSizeRef.current.height = newHeight
-        setWindowSize({ ...windowSizeRef.current })
-      }
-    }
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
-    // Add event listener
-    window.addEventListener("resize", handleResize)
+  const isDesktop = screenWidth > 1023
+  const isTablet = screenWidth > 679 && screenWidth < 1024
+  const isMobile = screenWidth < 425
 
-    // Remove event listener on cleanup
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+  return {
+    screenWidth,
+    screenHeight,
+    isDesktop,
+    isTablet,
+    isMobile
+  };
+};
 
-  return windowSize
-}
-
-export default useWindowSize
+export default useWindowSize;

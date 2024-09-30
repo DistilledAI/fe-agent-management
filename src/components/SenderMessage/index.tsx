@@ -18,7 +18,7 @@ const SenderMessage = ({
         baseClassName,
       )}
     >
-      <p className={twMerge("text-base-m text-mercury-30", contentClassName)}>
+      <p className={twMerge("text-base-md text-mercury-30", contentClassName)}>
         {content}
       </p>
     </div>
