@@ -52,6 +52,6 @@
   }
 
   .btn-primary {
-    @apply !h-11 w-full !rounded-full border !border-white !bg-mercury-30 !text-base !text-mercury-900;
+    @apply !h-11 !rounded-full border !border-white !bg-mercury-30 !text-16 !text-mercury-900;
   }
 }
