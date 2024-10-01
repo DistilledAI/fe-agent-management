@@ -17,6 +17,7 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
   const [query, setQuery] = useState<string>("")
   const [data, setData] = useState<any[]>([])
   const [loading, setLoading] = useState<boolean>(true)
+  console.log("🚀 ~ loading:", loading)
   const { user } = useAuthState()
 
   const onBackToBoxMessage = () => {
@@ -80,7 +81,6 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
             input:
               "text-18 !text-mercury-950 caret-[#363636] focus-visible:ring-opacity-0",
           }}
-          autoFocus
           onChange={handleOnChangeValue}
           value={query}
         />
@@ -94,7 +94,7 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
         >
           <AvatarContainer
             badgeIcon={<FilledUserIcon size={14} />}
-            avatarUrl="/src/assets/images/thuongdo.png"
+            avatarUrl={""}
             userName={chat?.username}
             badgeClassName="bg-[#0FE9A4]"
           />
