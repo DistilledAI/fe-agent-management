@@ -15,7 +15,7 @@
     @apply text-16 text-mercury-900;
   }
 
-  .text-base-m {
+  .text-base-md {
     @apply text-base font-medium;
   }
 
@@ -31,16 +31,16 @@
     @apply text-14 text-mercury-900;
   }
 
-  .text-base-14-m {
-    @apply text-base font-medium;
+  .text-base-14-md {
+    @apply text-base-14 font-medium;
   }
 
   .text-base-14-sb {
-    @apply text-base font-semibold;
+    @apply text-base-14 font-semibold;
   }
 
   .text-base-14-b {
-    @apply text-base font-bold;
+    @apply text-base-14 font-bold;
   }
 
   .flex-items-center {
@@ -49,5 +49,9 @@
 
   .hover-light-effect {
     @apply cursor-pointer transition-all duration-300 ease-out hover:bg-mercury-100 hover:text-mercury-900;
+  }
+
+  .btn-primary {
+    @apply !h-11 w-full !rounded-full border !border-white !bg-mercury-30 !text-base !text-mercury-900;
   }
 }

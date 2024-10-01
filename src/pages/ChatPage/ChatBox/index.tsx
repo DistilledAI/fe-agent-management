@@ -1,16 +1,19 @@
-import { useParams } from "react-router-dom"
+import useConnectWallet from "@hooks/useConnectWallet"
 import ChatInput from "./ChatInput"
-import ChatMessages from "./ChatMessages"
 import LeftBar from "./LeftBar"
-import MyEchoContent from "./RightContent/MyEchoContent"
+import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
 import UserAuth from "./UserAuth"
-import useAuthState from "@hooks/useAuthState"
-import useFetchMessages from "./useFetchMessages"
+import DistilledAIIcon from "@components/Icons/DistilledAIIcon"
 import { getToUserId } from "./helpers"
 import { IMessageBox } from "./ChatMessages/helpers"
+import useFetchMessages from "./useFetchMessages"
+import useAuthState from "@hooks/useAuthState"
+import { useParams } from "react-router-dom"
 import useMessageSocket from "./useMessageSocket"
+import ChatMessages from "./ChatMessages"
 
 const ChatBox = () => {
+  const { loading, connectWallet } = useConnectWallet()
   const { chatId } = useParams()
   const { isLogin, user } = useAuthState()
   const { data, messages, setMessages } = useFetchMessages()
@@ -18,24 +21,21 @@ const ChatBox = () => {
 
   return (
     <div className="flex h-full items-center justify-center pb-10 pt-[18px]">
-      <div className="flex h-full w-full max-w-[1100px] flex-col gap-y-6 rounded-[32px] border border-mercury-100 bg-mercury-70 p-6">
+      <div className="flex h-full w-full max-w-[1100px] flex-col gap-y-4 rounded-[32px] border border-mercury-100 bg-mercury-70 p-4">
         <div className="flex items-center justify-between">
-          <h3 className="m-0 p-0 text-24 font-semibold text-black-999">
-            Inbox
-          </h3>
-          <UserAuth />
+          <DistilledAIIcon
+            baseClassName="w-fit h-fit rounded-none border-none flex-none"
+            iconClassName="w-[38px] h-5"
+          />
+          <UserAuth connectWallet={connectWallet} loading={loading} />
         </div>
-        <div className="grid h-full w-full grid-cols-3 gap-4">
-          <div className="col-span-1 h-full w-full">
-            <LeftBar />
-          </div>
-          <div className="col-span-2 h-full w-full">
-            {chatId && isLogin ? (
-              <ChatMessages data={messages} />
-            ) : (
-              <MyEchoContent />
-            )}
-          </div>
+        <div className="grid h-full w-full grid-cols-[280px_1fr] gap-4">
+          <LeftBar />
+          {isLogin && chatId ? (
+            <ChatMessages data={messages} />
+          ) : (
+            <MyPrivateAgentContent connectWalletLoading={loading} />
+          )}
         </div>
         <div className="space-y-4">
           <ChatInput

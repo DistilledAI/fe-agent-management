@@ -20,7 +20,7 @@ const AvatarContainer: React.FC<AvatarContainerProps> = ({
         src={avatarUrl}
         badgeClassName={badgeClassName}
       />
-      <span className="text-base-m text-mercury-950">{userName}</span>
+      <span className="text-base-md text-mercury-950">{userName}</span>
     </div>
   )
 }
