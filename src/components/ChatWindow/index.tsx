@@ -38,7 +38,7 @@ const ChatWindow = ({
   return (
     <ScrollToBottom
       className={twMerge(
-        "flex-1, h-full rounded-[22px] border-[2px] border-white bg-mercury-30",
+        "flex-1, h-full rounded-[22px] border-[2px] border-white bg-mercury-30 p-3",
         className,
       )}
     >
@@ -49,7 +49,11 @@ const ChatWindow = ({
         initialTopMostItemIndex={messages.length - 1}
         itemContent={(index, message) => (
           <article
-            className={twMerge("px-6 pb-6", msgBoxClassName)}
+            className={twMerge(
+              "px-3 pb-3",
+              messages.length - 1 === index && "pb-3",
+              msgBoxClassName,
+            )}
             key={index}
           >
             {itemContent(index, message)}
