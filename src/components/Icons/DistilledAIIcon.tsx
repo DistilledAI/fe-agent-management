@@ -1,12 +1,27 @@
-import { distilledAIIcon } from "@assets/svg";
-import { Image } from "@nextui-org/react";
+import { distilledAIIcon } from "@assets/svg"
+import { Image } from "@nextui-org/react"
+import { twMerge } from "tailwind-merge"
 
-const DistilledAIIcon = () => {
+interface IProps {
+  baseClassName?: string
+  iconClassName?: string
+}
+
+const DistilledAIIcon = ({ baseClassName, iconClassName }: IProps) => {
   return (
-    <div className="border-mercury-400 flex h-8 w-8 items-center justify-center rounded-full border">
-      <Image src={distilledAIIcon} alt="distilled AI icon" />
+    <div
+      className={twMerge(
+        "flex h-8 w-8 items-center justify-center rounded-full border border-mercury-400",
+        baseClassName,
+      )}
+    >
+      <Image
+        src={distilledAIIcon}
+        alt="distilled AI icon"
+        className={iconClassName}
+      />
     </div>
-  );
-};
+  )
+}
 
-export default DistilledAIIcon;
+export default DistilledAIIcon

@@ -31,16 +31,16 @@
     @apply text-14 text-mercury-900;
   }
 
-  .text-base-14-m {
-    @apply text-base font-medium;
+  .text-base-14-md {
+    @apply text-base-14 font-medium;
   }
 
   .text-base-14-sb {
-    @apply text-base font-semibold;
+    @apply text-base-14 font-semibold;
   }
 
   .text-base-14-b {
-    @apply text-base font-bold;
+    @apply text-base-14 font-bold;
   }
 
   .flex-items-center {

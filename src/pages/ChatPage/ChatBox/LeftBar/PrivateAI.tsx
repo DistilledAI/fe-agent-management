@@ -8,7 +8,7 @@ const PrivateAI: React.FC = () => {
     <div>
       <div className="my-4 h-[1px] w-full bg-mercury-100" />
       <div className="flex-items-center mb-4 justify-between px-2">
-        <span className="text-base-14">Private AI Agents</span>
+        <span className="text-base-14">Messages</span>
         <div className="flex-items-center gap-4">
           <FilledUsersPlusIcon />
           <FilledSearchIcon />
