@@ -3,7 +3,13 @@ import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
 import { IMessageBox, RoleChat } from "./helpers"
 
-const ChatMessages = ({ data }: { data: IMessageBox[] }) => {
+const ChatMessages = ({
+  data,
+  loading,
+}: {
+  data: IMessageBox[]
+  loading?: boolean
+}) => {
   const renderMessage = (_: number, message: IMessageBox) => {
     return (
       <>
@@ -30,6 +36,7 @@ const ChatMessages = ({ data }: { data: IMessageBox[] }) => {
       className="border-code-agent-1"
       messages={data}
       itemContent={renderMessage}
+      loading={loading}
     />
   )
 }

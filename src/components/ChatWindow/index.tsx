@@ -3,12 +3,14 @@ import { twMerge } from "tailwind-merge"
 import { useEffect, useRef } from "react"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import ScrollToBottom, { useScrollToBottom } from "react-scroll-to-bottom"
+import DotLoading from "@components/DotLoading"
 
 interface ChatWindowProps {
   messages: Array<IMessageBox>
   itemContent: (index: number, message: IMessageBox) => JSX.Element
   className?: string
   msgBoxClassName?: string
+  loading?: boolean
 }
 
 const ChatWindow = ({
@@ -16,6 +18,7 @@ const ChatWindow = ({
   itemContent,
   className,
   msgBoxClassName,
+  loading,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const scrollToBottom = useScrollToBottom()
@@ -42,24 +45,30 @@ const ChatWindow = ({
         className,
       )}
     >
-      <Virtuoso
-        style={{ height: "100%" }}
-        ref={virtuosoRef}
-        data={messages}
-        initialTopMostItemIndex={messages.length - 1}
-        itemContent={(index, message) => (
-          <article
-            className={twMerge(
-              "px-3 pb-3",
-              messages.length - 1 === index && "pb-3",
-              msgBoxClassName,
-            )}
-            key={index}
-          >
-            {itemContent(index, message)}
-          </article>
-        )}
-      />
+      {loading ? (
+        <div className="flex h-full items-center justify-center">
+          <DotLoading />
+        </div>
+      ) : (
+        <Virtuoso
+          style={{ height: "100%" }}
+          ref={virtuosoRef}
+          data={messages}
+          initialTopMostItemIndex={messages.length - 1}
+          itemContent={(index, message) => (
+            <article
+              className={twMerge(
+                "px-3 pb-3",
+                messages.length - 1 === index && "pb-3",
+                msgBoxClassName,
+              )}
+              key={index}
+            >
+              {itemContent(index, message)}
+            </article>
+          )}
+        />
+      )}
     </ScrollToBottom>
   )
 }

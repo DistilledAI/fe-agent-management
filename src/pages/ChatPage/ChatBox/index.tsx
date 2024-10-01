@@ -16,7 +16,12 @@ const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
   const { chatId } = useParams()
   const { isLogin, user } = useAuthState()
-  const { data, messages, setMessages } = useFetchMessages()
+  const {
+    data,
+    messages,
+    setMessages,
+    loading: loadingChat,
+  } = useFetchMessages()
   useMessageSocket(setMessages)
 
   return (
@@ -32,7 +37,7 @@ const ChatBox = () => {
         <div className="grid h-full w-full grid-cols-[280px_1fr] gap-4">
           <LeftBar />
           {isLogin && chatId ? (
-            <ChatMessages data={messages} />
+            <ChatMessages data={messages} loading={loadingChat} />
           ) : (
             <MyPrivateAgentContent connectWalletLoading={loading} />
           )}
