@@ -101,7 +101,7 @@ const MyEchoContent: React.FC<{ connectWalletLoading: boolean }> = ({
           <div
             className={twMerge(
               "absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out",
-              isHovered && "-translate-x-[280px] -translate-y-1/3",
+              isHovered && "-translate-x-[280px] -translate-y-1/4",
             )}
           >
             <HugeButton
@@ -113,7 +113,7 @@ const MyEchoContent: React.FC<{ connectWalletLoading: boolean }> = ({
           <div
             className={twMerge(
               "absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out",
-              isHovered && "-translate-y-1/3 translate-x-[120px]",
+              isHovered && "-translate-y-1/4 translate-x-[120px]",
             )}
             onClick={(e) => {
               setOpenPopup(true)
