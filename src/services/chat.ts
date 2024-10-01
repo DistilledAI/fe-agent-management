@@ -37,3 +37,11 @@ export const getChatHistoryById = async (id: number) => {
     url: endpoint.GET_HISTORY_CHAT(id),
   })
 }
+
+export const getUserById = async (keyword: string) => {
+  return fetchApiAuth({
+    method: "post",
+    url: endpoint.SEARCH_USER,
+    data: { key: keyword },
+  })
+}

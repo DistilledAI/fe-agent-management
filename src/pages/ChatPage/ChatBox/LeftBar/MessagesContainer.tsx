@@ -1,10 +1,10 @@
 import AvatarContainer from "@components/AvatarContainer"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { FilledUserIcon, FilledUsersPlusIcon } from "@components/Icons/UserIcon"
+import useAuthState from "@hooks/useAuthState"
 import { useNavigate, useParams } from "react-router-dom"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroup from "./useFetchGroup"
-import useAuthState from "@hooks/useAuthState"
 
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
@@ -20,7 +20,10 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
         <span className="text-base-14">Messages</span>
         <div className="flex-items-center gap-4">
           <FilledUsersPlusIcon />
-          <div onClick={() => onChangeDisplayMode(DISPLAY_MODES.SEARCH)}>
+          <div
+            onClick={() => onChangeDisplayMode(DISPLAY_MODES.SEARCH)}
+            className="cursor-pointer"
+          >
             <FilledSearchIcon />
           </div>
         </div>
