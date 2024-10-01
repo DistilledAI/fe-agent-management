@@ -18,7 +18,10 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
         <span className="text-base-14">Messages</span>
         <div className="flex-items-center gap-4">
           <FilledUsersPlusIcon />
-          <div onClick={() => onChangeDisplayMode(DISPLAY_MODES.SEARCH)}>
+          <div
+            onClick={() => onChangeDisplayMode(DISPLAY_MODES.SEARCH)}
+            className="cursor-pointer"
+          >
             <FilledSearchIcon />
           </div>
         </div>

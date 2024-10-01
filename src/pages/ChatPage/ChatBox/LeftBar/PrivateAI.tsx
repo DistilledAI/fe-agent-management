@@ -19,7 +19,7 @@ export interface ContentDisplayMode {
 }
 
 const PrivateAI: React.FC = () => {
-  const [displayMode, setDisplayMode] = useState<string>(DISPLAY_MODES.MESSAGES)
+  const [displayMode, setDisplayMode] = useState<string>(DISPLAY_MODES.SEARCH)
 
   const onChangeDisplayMode = (modeValue: string) => {
     setDisplayMode(modeValue)
