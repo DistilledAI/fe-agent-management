@@ -2,10 +2,9 @@ import AvatarContainer from "@components/AvatarContainer"
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
-import useAuthState from "@hooks/useAuthState"
 import { Input } from "@nextui-org/react"
 import { debounce } from "lodash"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getUserById, postChatSendToUser } from "services/chat"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
@@ -14,11 +13,14 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
 }) => {
   const navigate = useNavigate()
+  const inputRef = useRef<any>(null)
   const [query, setQuery] = useState<string>("")
   const [data, setData] = useState<any[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
-  console.log("🚀 ~ loading:", loading)
-  const { user } = useAuthState()
+  const [_, setLoading] = useState<boolean>(true)
+
+  useEffect(() => {
+    inputRef?.current?.focus()
+  }, [])
 
   const onBackToBoxMessage = () => {
     onChangeDisplayMode(DISPLAY_MODES.MESSAGES)
@@ -50,17 +52,18 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
     [setQuery],
   )
 
-  const handleSelectPerson = async () => {
+  const handleSelectPerson = async (toUserId: number) => {
     try {
       const messages = "Hello"
-      const toUserId = user?.id ?? 0
       const response = await postChatSendToUser({ messages, toUserId })
       if (response) {
         const groupId = response?.data?.groupId
         onBackToBoxMessage()
         navigate(`/chat/${groupId}`)
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log("error", error)
+    }
   }
 
   return (
@@ -83,23 +86,27 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
           }}
           onChange={handleOnChangeValue}
           value={query}
+          ref={inputRef}
         />
       </div>
 
-      {data.map((chat) => (
-        <div
-          key={chat.id}
-          onClick={() => handleSelectPerson()}
-          className="hover-light-effect relative mb-1 gap-2 rounded-full px-2 py-2"
-        >
-          <AvatarContainer
-            badgeIcon={<FilledUserIcon size={14} />}
-            avatarUrl={""}
-            userName={chat?.username}
-            badgeClassName="bg-[#0FE9A4]"
-          />
-        </div>
-      ))}
+      {data.map((chat) => {
+        const toUserId = chat?.id || 0
+        return (
+          <div
+            key={chat.id}
+            onClick={() => handleSelectPerson(toUserId)}
+            className="hover-light-effect relative mb-1 gap-2 rounded-full px-2 py-2"
+          >
+            <AvatarContainer
+              badgeIcon={<FilledUserIcon size={14} />}
+              avatarUrl={""}
+              userName={chat?.username}
+              badgeClassName="bg-[#0FE9A4]"
+            />
+          </div>
+        )
+      })}
     </>
   )
 }
