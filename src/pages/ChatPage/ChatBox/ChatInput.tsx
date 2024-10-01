@@ -21,7 +21,6 @@ const ChatInput = ({
     await postChatSendToUser({ messages, toUserId })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleKeyDown = (e: any) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault()
@@ -35,7 +34,6 @@ const ChatInput = ({
         <PaperClipFilledIcon />
       </Button>
       <Textarea
-        type="text"
         placeholder="Type your message"
         classNames={{
           inputWrapper:
