@@ -38,17 +38,20 @@ const ChatWindow = ({
   return (
     <ScrollToBottom
       className={twMerge(
-        "h-full flex-1 rounded-[22px] border-[2px] border-white bg-mercury-30 py-6",
+        "flex-1, h-full rounded-[22px] border-[2px] border-white bg-mercury-30",
         className,
       )}
     >
       <Virtuoso
+        style={{ height: "100%" }}
         ref={virtuosoRef}
         data={messages}
-        totalCount={messages.length}
         initialTopMostItemIndex={messages.length - 1}
         itemContent={(index, message) => (
-          <article className={twMerge("px-6", msgBoxClassName)} key={index}>
+          <article
+            className={twMerge("px-6 pb-6", msgBoxClassName)}
+            key={index}
+          >
             {itemContent(index, message)}
           </article>
         )}

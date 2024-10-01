@@ -13,7 +13,7 @@ const ReceiverMessage = ({
   contentClassName,
 }: ReceiverMsgProps) => {
   return (
-    <div className="mb-4 flex gap-4">
+    <div className="flex gap-4">
       <AvatarCustom {...avatar} />
       <p className={twMerge("text-base-md flex-1", contentClassName)}>
         {content}
