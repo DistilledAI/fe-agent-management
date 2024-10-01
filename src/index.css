@@ -50,4 +50,8 @@
   .hover-light-effect {
     @apply cursor-pointer transition-all duration-300 ease-out hover:bg-mercury-100 hover:text-mercury-900;
   }
+
+  .btn-primary {
+    @apply !h-11 w-full !rounded-full border !border-white !bg-mercury-30 !text-base !text-mercury-900;
+  }
 }
