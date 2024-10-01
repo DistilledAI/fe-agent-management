@@ -9,6 +9,7 @@ export interface IUser {
   status: number
   typeLogin: string
   username: string
+  avatar?: string
 }
 
 interface LoginSuccessPayload {

@@ -3,7 +3,7 @@ import { ReactNode } from "react"
 
 interface AvatarContainerProps {
   badgeIcon: ReactNode
-  avatarUrl: string
+  avatarUrl?: string
   userName: string
   badgeClassName: string
 }

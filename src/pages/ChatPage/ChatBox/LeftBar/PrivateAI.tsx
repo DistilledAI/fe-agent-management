@@ -23,13 +23,14 @@ const PrivateAI: React.FC = () => {
       {data.map((chat) => (
         <div
           key={chat.id}
+          aria-checked={Number(chatId) === chat.groupId}
           onClick={() => navigate(`/chat/${chat.groupId}`)}
-          className="hover-light-effect relative mb-1 gap-2 rounded-full px-2 py-2"
+          className="hover-light-effect relative mb-1 gap-2 rounded-full px-2 py-2 aria-checked:bg-mercury-100"
         >
           <AvatarContainer
             badgeIcon={<FilledUserIcon size={14} />}
-            avatarUrl="/src/assets/images/thuongdo.png"
             userName={`Agent #${chat.groupId}`}
+            avatarUrl={chat.group.image}
             badgeClassName="bg-[#0FE9A4]"
           />
           {Number(chatId) === chat.groupId && (

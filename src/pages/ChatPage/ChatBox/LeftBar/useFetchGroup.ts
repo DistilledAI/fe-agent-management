@@ -5,7 +5,7 @@ import { getGroupList } from "services/chat"
 export interface IGroup {
   id: number
   name: string
-  image: string | null
+  image?: string
   userAId: number
   userBId: number
   createBy: number

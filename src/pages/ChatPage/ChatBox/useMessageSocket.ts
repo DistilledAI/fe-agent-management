@@ -18,16 +18,17 @@ const useMessageSocket = (
   const { socket } = useSocket()
   const { user } = useAuthState()
 
-  const listenEventMsg = () => {
-    if (!socket || !user) return
-    const event = `chat-userId-${user.id}`
-    socket.on(event, (e) => {
-      setData(JSON.stringify(e))
-    })
-  }
-
   useEffect(() => {
-    if (user && socket) listenEventMsg()
+    if (user && socket) {
+      const event = `chat-userId-${user.id}`
+      socket.on(event, (e) => {
+        setData(JSON.stringify(e))
+      })
+
+      return () => {
+        socket.off(event)
+      }
+    }
   }, [user, socket])
 
   useEffect(() => {

@@ -3,13 +3,7 @@
 import { envConfig } from "@configs/env"
 import useAuthState from "@hooks/useAuthState"
 import cachedLocalStorage, { storageKey } from "@utils/storage"
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react"
+import React, { createContext, useContext, useEffect, useRef } from "react"
 import type { Socket } from "socket.io-client"
 import { io } from "socket.io-client"
 
@@ -19,23 +13,21 @@ type SocketProviderProps = {
 
 export interface SocketState {
   socket: Socket | undefined
-  setSocket: React.Dispatch<React.SetStateAction<Socket | undefined>>
 }
 
 export const initialState: SocketState = {
   socket: undefined,
-  setSocket: () => {},
 }
 
 const SocketProviderContext = createContext(initialState)
 
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
-  const [socket, setSocket] = useState<Socket>()
   const { isLogin } = useAuthState()
+  const socketRef = useRef<Socket>()
 
   useEffect(() => {
-    if (isLogin && !socket?.connected) {
-      const socket = io(envConfig.socketUrl, {
+    if (isLogin) {
+      socketRef.current = io(envConfig.socketUrl, {
         path: "/socket.io",
         transports: ["websocket"],
         rejectUnauthorized: false,
@@ -44,29 +36,18 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
           authorization: `Bearer ${cachedLocalStorage.getWithExpiry(storageKey.ACCESS_TOKEN)}`,
         },
       })
-      socket.connect()
-      socket.on("connect", () => {
-        setSocket(socket)
-      })
+      socketRef.current.connect()
+      socketRef.current.on("connect", () => console.log("Socket connected"))
+      socketRef.current.on("error", (error) => console.error(error))
 
-      socket.on("error", (error) => {
-        console.error(error)
-      })
-    } else if (socket?.connected) {
-      socket.disconnect()
-      setSocket(undefined)
+      return () => {
+        if (socketRef.current) socketRef.current.disconnect()
+      }
     }
   }, [isLogin])
 
-  const contextValue: SocketState = useMemo(() => {
-    return {
-      socket,
-      setSocket,
-    }
-  }, [socket, setSocket])
-
   return (
-    <SocketProviderContext.Provider value={contextValue}>
+    <SocketProviderContext.Provider value={{ socket: socketRef.current }}>
       {children}
     </SocketProviderContext.Provider>
   )

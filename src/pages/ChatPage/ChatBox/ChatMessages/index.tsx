@@ -15,9 +15,7 @@ const ChatMessages = ({
       <>
         {message.role === RoleChat.CUSTOMER ? (
           <ReceiverMessage
-            avatar={{
-              src: "https://assets.coingecko.com/coins/images/39453/standard/fwog.png?1722318442",
-            }}
+            avatar={{ src: message.avatar }}
             content={message.content}
           />
         ) : null}

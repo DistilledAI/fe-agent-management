@@ -8,6 +8,7 @@ export enum RoleChat {
 export interface IMessageBox {
   role: RoleChat
   content: string
+  avatar?: string
 }
 
 const isOwner = (currentUserId: number, userId: number) =>
@@ -24,6 +25,7 @@ export const convertDataFetchToMessage = (
     .map((mess) => ({
       role: getRole(isOwner(currentUserId, mess.userId)),
       content: mess.messages,
+      avatar: mess.user.avatar,
     }))
     .reverse()
 }
