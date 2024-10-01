@@ -26,7 +26,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   return user ? (
     <Popover placement="bottom">
       <PopoverTrigger>
-        <Button className="btn-primary !h-12 w-fit">
+        <Button className="btn-primary h-11 w-fit">
           <div className="h-8 w-8 rounded-full border-1 border-mercury-400">
             <Image
               className="h-full w-full object-cover"
