@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react"
 import { twMerge } from "tailwind-merge"
 
-const DotLoading: React.FC = () => {
+interface DotLoadingProps {
+  dotColor?: string
+}
+
+const DotLoading: React.FC<DotLoadingProps> = ({ dotColor }) => {
   const [loading, setLoading] = useState<boolean>(false)
 
   const handleAnimation = () => {
@@ -15,7 +19,12 @@ const DotLoading: React.FC = () => {
   return (
     <div className="flex-items-center relative w-8">
       <div className="absolute left-1/2 -translate-x-1/2">
-        <div className="h-3 w-3 rounded-full bg-mercury-600" />
+        <div
+          className={twMerge(
+            "h-3 w-3 rounded-full",
+            dotColor ? `bg-[${dotColor}]` : "bg-mercury-600",
+          )}
+        />
       </div>
 
       <div
@@ -24,7 +33,12 @@ const DotLoading: React.FC = () => {
           loading ? "left-6" : "left-0",
         )}
       >
-        <div className="h-[6px] w-[6px] rounded-full bg-mercury-600" />
+        <div
+          className={twMerge(
+            "h-[6px] w-[6px] rounded-full",
+            dotColor ? `bg-[${dotColor}]` : "bg-mercury-600",
+          )}
+        />
       </div>
     </div>
   )

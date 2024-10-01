@@ -1,42 +1,36 @@
-import AvatarContainer from "@components/AvatarContainer"
-import { FilledSearchIcon } from "@components/Icons/SearchIcon"
-import { FilledUserIcon, FilledUsersPlusIcon } from "@components/Icons/UserIcon"
-import useFetchGroup from "./useFetchGroup"
-import { useNavigate, useParams } from "react-router-dom"
+import { defineElement } from "@utils/index"
+import { useState } from "react"
+import MessagesContainer from "./MessagesContainer"
+import SearchContainer from "./SearchContainer"
+
+export const DISPLAY_MODES = {
+  MESSAGES: "MESSAGES",
+  SEARCH: "SEARCH",
+  ADD_PERSON: "ADD_PERSON",
+}
+
+const MAP_CONTENT_BY_DISPLAY_MODE = {
+  [DISPLAY_MODES.MESSAGES]: <MessagesContainer />,
+  [DISPLAY_MODES.SEARCH]: <SearchContainer />,
+}
+
+export interface ContentDisplayMode {
+  onChangeDisplayMode?: any
+}
 
 const PrivateAI: React.FC = () => {
-  const { data } = useFetchGroup()
-  const navigate = useNavigate()
-  const { chatId } = useParams()
+  const [displayMode, setDisplayMode] = useState<string>(DISPLAY_MODES.MESSAGES)
+
+  const onChangeDisplayMode = (modeValue: string) => {
+    setDisplayMode(modeValue)
+  }
 
   return (
     <div>
       <div className="my-4 h-[1px] w-full bg-mercury-100" />
-      <div className="flex-items-center mb-4 justify-between px-2">
-        <span className="text-base-14">Messages</span>
-        <div className="flex-items-center gap-4">
-          <FilledUsersPlusIcon />
-          <FilledSearchIcon />
-        </div>
-      </div>
-
-      {data.map((chat) => (
-        <div
-          key={chat.id}
-          onClick={() => navigate(`/chat/${chat.groupId}`)}
-          className="hover-light-effect relative mb-1 gap-2 rounded-full px-2 py-2"
-        >
-          <AvatarContainer
-            badgeIcon={<FilledUserIcon size={14} />}
-            avatarUrl="/src/assets/images/thuongdo.png"
-            userName={`Agent #${chat.groupId}`}
-            badgeClassName="bg-[#0FE9A4]"
-          />
-          {Number(chatId) === chat.groupId && (
-            <div className="absolute -left-4 top-1/2 h-[40px] w-[5px] -translate-y-1/2 rounded-br-full rounded-tr-full bg-[#DC6D1E]" />
-          )}
-        </div>
-      ))}
+      {defineElement(MAP_CONTENT_BY_DISPLAY_MODE[displayMode], {
+        onChangeDisplayMode,
+      })}
     </div>
   )
 }

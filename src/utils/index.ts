@@ -1,7 +1,7 @@
 import FingerprintJS from "@fingerprintjs/fingerprintjs"
 import { cloneElement, createElement } from "react"
 
-export function defineElement(element, props = {}) {
+export function defineElement(element: any, props = {}) {
   if (element) {
     return typeof element === "function"
       ? createElement(element, props)
