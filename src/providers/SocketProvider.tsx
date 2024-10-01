@@ -1,5 +1,3 @@
-"use client"
-
 import { envConfig } from "@configs/env"
 import useAuthState from "@hooks/useAuthState"
 import cachedLocalStorage, { storageKey } from "@utils/storage"

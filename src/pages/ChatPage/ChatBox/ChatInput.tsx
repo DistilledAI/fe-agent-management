@@ -4,20 +4,24 @@ import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
 import { Button, Textarea } from "@nextui-org/react"
 import { useState } from "react"
 import { postChatSendToUser } from "services/chat"
-import { IMessageBox, RoleChat } from "./ChatMessages/helpers"
+import { RoleChat } from "./ChatMessages/helpers"
+import { useChatMessage } from "providers/MessageProvider"
+import { getToUserId } from "./helpers"
+import useAuthState from "@hooks/useAuthState"
 
-const ChatInput = ({
-  toUserId,
-  callback,
-}: {
-  toUserId: number
-  callback: (data: IMessageBox) => void
-}) => {
+const ChatInput = () => {
+  const { user } = useAuthState()
+  const { setMessages: setMessageContext, dataFetch } = useChatMessage()
+  const toUserId = getToUserId(dataFetch?.[0], user?.id ?? 0)
   const [messages, setMessages] = useState("")
+
   const onSubmit = async () => {
     if (!messages) return
     setMessages("")
-    callback({ content: messages, role: RoleChat.OWNER })
+    setMessageContext((prev) => [
+      ...prev,
+      { content: messages, role: RoleChat.OWNER },
+    ])
     await postChatSendToUser({ messages, toUserId })
   }
 

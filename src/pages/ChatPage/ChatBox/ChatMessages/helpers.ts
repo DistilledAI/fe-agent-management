@@ -1,4 +1,4 @@
-import { IMessage } from "../useFetchMessages"
+import { IMessage } from "./useFetchMessages"
 
 export enum RoleChat {
   OWNER = "owner",

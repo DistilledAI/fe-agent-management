@@ -1,13 +1,15 @@
 import { useSocket } from "providers/SocketProvider"
-import { IMessageBox, RoleChat } from "./ChatMessages/helpers"
+import { IMessageBox, RoleChat } from "./helpers"
 import React, { useEffect, useState } from "react"
 import useAuthState from "@hooks/useAuthState"
 import { useParams } from "react-router-dom"
+import { IUser } from "@reducers/user/UserSlice"
 
 interface IDataListen {
   event: string
   group: number
   messages: string
+  user: IUser
 }
 
 const useMessageSocket = (
@@ -37,7 +39,11 @@ const useMessageSocket = (
       if (dt.group === Number(chatId))
         setMessages((prev) => [
           ...prev,
-          { role: RoleChat.CUSTOMER, content: dt.messages },
+          {
+            role: RoleChat.CUSTOMER,
+            content: dt.messages,
+            avatar: dt.user.avatar,
+          },
         ])
     }
     setData("")

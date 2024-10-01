@@ -32,7 +32,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
         >
           <AvatarContainer
             badgeIcon={<FilledUserIcon size={14} />}
-            avatarUrl="/src/assets/images/thuongdo.png"
+            avatarUrl={chat.group.image}
             userName={`Agent #${chat.groupId}`}
             badgeClassName="bg-[#0FE9A4]"
           />

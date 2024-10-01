@@ -4,25 +4,14 @@ import LeftBar from "./LeftBar"
 import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
 import UserAuth from "./UserAuth"
 import DistilledAIIcon from "@components/Icons/DistilledAIIcon"
-import { getToUserId } from "./helpers"
-import { IMessageBox } from "./ChatMessages/helpers"
-import useFetchMessages from "./useFetchMessages"
 import useAuthState from "@hooks/useAuthState"
 import { useParams } from "react-router-dom"
-import useMessageSocket from "./useMessageSocket"
 import ChatMessages from "./ChatMessages"
 
 const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
   const { chatId } = useParams()
-  const { isLogin, user } = useAuthState()
-  const {
-    data,
-    messages,
-    setMessages,
-    loading: loadingChat,
-  } = useFetchMessages()
-  useMessageSocket(setMessages)
+  const { isLogin } = useAuthState()
 
   return (
     <div className="flex h-full items-center justify-center pb-10 pt-[18px]">
@@ -37,18 +26,13 @@ const ChatBox = () => {
         <div className="grid h-full w-full grid-cols-[280px_1fr] gap-4">
           <LeftBar />
           {isLogin && chatId ? (
-            <ChatMessages data={messages} loading={loadingChat} />
+            <ChatMessages />
           ) : (
             <MyPrivateAgentContent connectWalletLoading={loading} />
           )}
         </div>
         <div className="space-y-4">
-          <ChatInput
-            callback={(data: IMessageBox) =>
-              setMessages((prev) => [...prev, data])
-            }
-            toUserId={getToUserId(data?.[0], user?.id ?? 0)}
-          />
+          <ChatInput />
         </div>
       </div>
     </div>

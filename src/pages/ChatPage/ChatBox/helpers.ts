@@ -1,4 +1,4 @@
-import { IMessage } from "./useFetchMessages"
+import { IMessage } from "./ChatMessages/useFetchMessages"
 
 export const getToUserId = (data: IMessage, currentUserId: number) => {
   if (!data || !data?.group) return 0

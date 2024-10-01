@@ -49,6 +49,10 @@ const ChatWindow = ({
         <div className="flex h-full items-center justify-center">
           <DotLoading />
         </div>
+      ) : messages.length === 0 ? (
+        <div className="flex h-full items-center justify-center">
+          NO MESSAGE
+        </div>
       ) : (
         <Virtuoso
           style={{ height: "100%" }}

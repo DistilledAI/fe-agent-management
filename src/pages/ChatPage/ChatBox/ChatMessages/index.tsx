@@ -2,14 +2,15 @@ import ChatWindow from "@components/ChatWindow"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
 import { IMessageBox, RoleChat } from "./helpers"
+import { useChatMessage } from "providers/MessageProvider"
+import useFetchMessages from "./useFetchMessages"
+import useMessageSocket from "./useMessageSocket"
 
-const ChatMessages = ({
-  data,
-  loading,
-}: {
-  data: IMessageBox[]
-  loading?: boolean
-}) => {
+const ChatMessages = () => {
+  const { messages, setMessages } = useChatMessage()
+  const { loading } = useFetchMessages()
+  useMessageSocket(setMessages)
+
   const renderMessage = (_: number, message: IMessageBox) => {
     return (
       <>
@@ -32,7 +33,7 @@ const ChatMessages = ({
   return (
     <ChatWindow
       className="border-code-agent-1"
-      messages={data}
+      messages={messages}
       itemContent={renderMessage}
       loading={loading}
     />

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { getChatHistoryById } from "services/chat"
-import { IGroup } from "./LeftBar/useFetchGroup"
+import { IGroup } from "../LeftBar/useFetchGroup"
 import { IUser } from "@reducers/user/UserSlice"
-import { convertDataFetchToMessage, IMessageBox } from "./ChatMessages/helpers"
+import { convertDataFetchToMessage } from "./helpers"
 import useAuthState from "@hooks/useAuthState"
+import { useChatMessage } from "providers/MessageProvider"
 
 export interface IMessage {
   id: number
@@ -19,8 +20,7 @@ export interface IMessage {
 
 const useFetchMessages = () => {
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<IMessage[]>([])
-  const [messages, setMessages] = useState<IMessageBox[]>([])
+  const { setDataFetch, setMessages } = useChatMessage()
   const { user } = useAuthState()
   const { chatId } = useParams()
 
@@ -30,7 +30,7 @@ const useFetchMessages = () => {
       setLoading(true)
       const res = await getChatHistoryById(Number(chatId))
       if (res.data.items) {
-        setData(res.data.items)
+        setDataFetch(res.data.items)
         setMessages(
           convertDataFetchToMessage(res.data.items, user?.id ? user.id : 0),
         )
@@ -43,12 +43,12 @@ const useFetchMessages = () => {
   }
 
   useEffect(() => {
-    setData([])
+    setDataFetch([])
     setMessages([])
     if (user?.id) fetchData()
   }, [chatId, user?.id])
 
-  return { loading, data, messages, setMessages }
+  return { loading }
 }
 
 export default useFetchMessages
