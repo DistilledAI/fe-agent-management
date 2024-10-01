@@ -2,13 +2,16 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { useAppSelector } from "@hooks/useAppRedux"
 import { AGENT_TYPE, updateAgentType } from "@reducers/chatbot/AgentSlice"
 import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 
 const MyEcho: React.FC = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const agentType = useAppSelector((state) => state.agents.agentType)
   const isActive = agentType === AGENT_TYPE.MY_ECHO
 
   const handleChooseMyEcho = () => {
+    navigate("/")
     dispatch(updateAgentType(AGENT_TYPE.MY_ECHO))
   }
 

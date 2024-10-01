@@ -56,7 +56,7 @@ const MyEchoContent: React.FC<{ connectWalletLoading: boolean }> = ({
         {renderCreateAccountAction()}
         <HugeButton
           icon={<FilledBrainAIIcon />}
-          label="Create your Echo Agent"
+          label="Start your Private Agent"
           isDisable
         />
       </MainContainer>
