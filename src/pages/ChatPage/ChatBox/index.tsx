@@ -1,10 +1,21 @@
+import { useParams } from "react-router-dom"
 import ChatInput from "./ChatInput"
 import ChatMessages from "./ChatMessages"
 import LeftBar from "./LeftBar"
-// import MyEchoContent from "./RightContent/MyEchoContent"
+import MyEchoContent from "./RightContent/MyEchoContent"
 import UserAuth from "./UserAuth"
+import useAuthState from "@hooks/useAuthState"
+import useFetchMessages from "./useFetchMessages"
+import { getToUserId } from "./helpers"
+import { IMessageBox } from "./ChatMessages/helpers"
+import useMessageSocket from "./useMessageSocket"
 
 const ChatBox = () => {
+  const { chatId } = useParams()
+  const { isLogin, user } = useAuthState()
+  const { data, messages, setMessages } = useFetchMessages()
+  useMessageSocket(setMessages)
+
   return (
     <div className="flex h-full items-center justify-center pb-10 pt-[18px]">
       <div className="flex h-full w-full max-w-[1100px] flex-col gap-y-6 rounded-[32px] border border-mercury-100 bg-mercury-70 p-6">
@@ -19,12 +30,20 @@ const ChatBox = () => {
             <LeftBar />
           </div>
           <div className="col-span-2 h-full w-full">
-            <ChatMessages />
-            {/* <MyEchoContent /> */}
+            {chatId && isLogin ? (
+              <ChatMessages data={messages} />
+            ) : (
+              <MyEchoContent />
+            )}
           </div>
         </div>
         <div className="space-y-4">
-          <ChatInput />
+          <ChatInput
+            callback={(data: IMessageBox) =>
+              setMessages((prev) => [...prev, data])
+            }
+            toUserId={getToUserId(data?.[0], user?.id ?? 0)}
+          />
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { WagmiProvider } from "wagmi"
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit"
 import { config } from "@configs/wagmi"
+import { SocketProvider } from "providers/SocketProvider"
 
 const queryClient = new QueryClient()
 
@@ -18,13 +19,15 @@ const Providers = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
         <PersistGate persistor={persistor}>
           <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
-              <RainbowKitProvider locale="en-US">
-                <NextUIProvider>
-                  <NextThemesProvider attribute="class" defaultTheme="light">
-                    {children}
-                  </NextThemesProvider>
-                </NextUIProvider>
-              </RainbowKitProvider>
+              <SocketProvider>
+                <RainbowKitProvider locale="en-US">
+                  <NextUIProvider>
+                    <NextThemesProvider attribute="class" defaultTheme="light">
+                      {children}
+                    </NextThemesProvider>
+                  </NextUIProvider>
+                </RainbowKitProvider>
+              </SocketProvider>
             </QueryClientProvider>
           </WagmiProvider>
         </PersistGate>

@@ -1,7 +1,7 @@
 export const PATHS_NAME = {
   HOME: "/",
   LLM: "/chatbot",
-  DEFI_LENS: "/defi-lens",
+  CHAT_DETAIL: "/chat/:chatId",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {

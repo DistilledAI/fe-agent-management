@@ -1,13 +1,11 @@
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
 import { useEffect, useRef } from "react"
+import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 
 interface ChatWindowProps {
-  messages: Array<{ role: string; content: string }>
-  itemContent: (
-    index: number,
-    message: { role: string; content: string },
-  ) => JSX.Element
+  messages: Array<IMessageBox>
+  itemContent: (index: number, message: IMessageBox) => JSX.Element
   className?: string
   msgBoxClassName?: string
 }
@@ -39,6 +37,7 @@ const ChatWindow = ({
       <Virtuoso
         ref={virtuosoRef}
         data={messages}
+        initialTopMostItemIndex={messages.length - 1}
         itemContent={(index, message) => {
           return (
             <article className={twMerge("px-6", msgBoxClassName)} key={index}>
