@@ -1,4 +1,4 @@
-import { updateUser } from "@reducers/user/UserSlice"
+import { logout, updateUser } from "@reducers/user/UserSlice"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { getUser } from "services/user"
@@ -16,8 +16,12 @@ const useFetchMe = () => {
       if (res.data) {
         dispatch(updateUser({ user: res.data }))
       }
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       console.error(error)
+      if (error.response.data.message === "Unauthorized") {
+        dispatch(logout())
+      }
     } finally {
       setLoading(false)
     }
