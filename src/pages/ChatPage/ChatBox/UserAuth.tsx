@@ -26,7 +26,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   return user ? (
     <Popover placement="bottom">
       <PopoverTrigger>
-        <div className="flex cursor-pointer items-center gap-2 rounded-full border-1 border-white bg-mercury-30 px-2 py-[5px]">
+        <Button className="btn-primary !h-12 w-fit">
           <div className="h-8 w-8 rounded-full border-1 border-mercury-400">
             <Image
               className="h-full w-full object-cover"
@@ -34,10 +34,10 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
               src={userIcon}
             />
           </div>
-          <span className="text-mercury-900">
+          <span className="text-base">
             {centerTextEllipsis(user.publicAddress, 6)}
           </span>
-        </div>
+        </Button>
       </PopoverTrigger>
       <PopoverContent className="min-w-[170px] rounded-md bg-mercury-30">
         <div className="w-full px-1 py-2">
