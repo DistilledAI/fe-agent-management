@@ -66,6 +66,8 @@ export default {
       backgroundImage: {
         "lgd-code-agent-1":
           "linear-gradient(53deg, #DC6D1E -2.17%, #F17C1C 134.29%)",
+        "fading-white":
+          "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #FFF 100%)",
       },
       boxShadow: {
         1: "0px 0px 20px 0px rgba(0, 0, 0, 0.01)",
