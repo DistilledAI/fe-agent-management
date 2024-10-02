@@ -12,6 +12,8 @@ const endpoint = {
   CHAT_SEND_TO_USER: withBaseURL("/chat/send-to-user"),
   CREATE_GROUP_CHAT: withBaseURL("/chat/create-group"),
   GET_HISTORY_CHAT: (id: number) => withBaseURL(`/chat/group/${id}/message`),
+  CHECK_CONVERSATION_CHAT: (userToId: number) =>
+    withBaseURL(`/chat/check-conversation/${userToId}`),
 }
 
 export default endpoint
