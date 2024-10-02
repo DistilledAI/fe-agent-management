@@ -1,8 +1,7 @@
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
-import { useEffect, useRef } from "react"
+import { useRef, useState } from "react"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
-import ScrollToBottom, { useScrollToBottom } from "react-scroll-to-bottom"
 import DotLoading from "@components/DotLoading"
 
 interface ChatWindowProps {
@@ -11,6 +10,10 @@ interface ChatWindowProps {
   className?: string
   msgBoxClassName?: string
   loading?: boolean
+  onLoadPrevMessages: (params: {
+    offset: number
+    limit?: number
+  }) => Promise<number> // return index message on loaded or undefined when no more messages
 }
 
 const ChatWindow = ({
@@ -19,46 +22,87 @@ const ChatWindow = ({
   className,
   msgBoxClassName,
   loading,
+  onLoadPrevMessages,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
-  const scrollToBottom = useScrollToBottom()
+  const [offset, setOffset] = useState(1)
+  const [hasMoreMessages, setHasMoreMessages] = useState(true)
+  const [isAtBottom, setIsAtBottom] = useState(true)
+  const [isLoadMore, setIsLoadMore] = useState(false)
 
-  useEffect(() => {
-    if (virtuosoRef.current) {
-      setTimeout(() => {
-        if (virtuosoRef.current) {
-          virtuosoRef.current.scrollToIndex({
-            index: messages.length - 1,
-            behavior: "smooth",
+  const handleScroll = async (e: React.UIEvent<HTMLDivElement>) => {
+    const scrollTop = e.currentTarget.scrollTop
+
+    if (scrollTop === 0 && !loading && hasMoreMessages) {
+      setIsLoadMore(true)
+      setIsAtBottom(false)
+
+      const prevMessageIndex = await onLoadPrevMessages({
+        offset,
+        limit: 10,
+      })
+
+      setIsLoadMore(false)
+
+      if (!prevMessageIndex) {
+        setHasMoreMessages(false)
+      } else {
+        setOffset((prev) => prev + 1)
+
+        if (prevMessageIndex !== undefined) {
+          virtuosoRef.current?.scrollToIndex({
+            index: prevMessageIndex,
+            behavior: "auto",
           })
         }
-      }, 100)
+      }
     }
+  }
 
-    scrollToBottom()
-  }, [messages, scrollToBottom])
+  const renderDotLoading = (className?: string) => {
+    return (
+      <div
+        className={twMerge(
+          "flex h-full items-center justify-center",
+          className,
+        )}
+      >
+        <DotLoading />
+      </div>
+    )
+  }
 
   return (
-    <ScrollToBottom
+    <div
       className={twMerge(
-        "flex-1, h-full rounded-[22px] border-[2px] border-white bg-mercury-30 p-3",
+        "h-full flex-1 scroll-smooth rounded-[22px] border-[2px] border-white bg-mercury-30 p-3",
         className,
       )}
     >
-      {loading ? (
-        <div className="flex h-full items-center justify-center">
-          <DotLoading />
-        </div>
-      ) : messages.length === 0 ? (
+      {loading && renderDotLoading()}
+      {!loading && !messages.length && (
         <div className="flex h-full items-center justify-center">
           NO MESSAGE
         </div>
-      ) : (
+      )}
+      {messages.length && (
         <Virtuoso
           style={{ height: "100%" }}
           ref={virtuosoRef}
           data={messages}
           initialTopMostItemIndex={messages.length - 1}
+          onScroll={handleScroll}
+          components={{
+            Header: () => (isLoadMore ? renderDotLoading("my-4") : <></>),
+          }}
+          followOutput={() => {
+            if (isAtBottom) {
+              return "smooth"
+            }
+            return false
+          }}
+          atBottomStateChange={(atBottom) => setIsAtBottom(atBottom)}
+          atBottomThreshold={300}
           itemContent={(index, message) => (
             <article
               className={twMerge(
@@ -73,7 +117,7 @@ const ChatWindow = ({
           )}
         />
       )}
-    </ScrollToBottom>
+    </div>
   )
 }
 
