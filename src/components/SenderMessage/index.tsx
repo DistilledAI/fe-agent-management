@@ -14,7 +14,7 @@ const SenderMessage = ({
   return (
     <div
       className={twMerge(
-        "ml-auto flex w-fit min-w-14 max-w-[90%] items-center justify-center rounded-[22px] bg-mercury-950 px-4 py-3",
+        "ml-auto flex w-fit min-w-14 max-w-[90%] items-center justify-center rounded-[22px] bg-mercury-950 px-4 py-2",
         baseClassName,
       )}
     >

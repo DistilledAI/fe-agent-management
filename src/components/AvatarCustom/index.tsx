@@ -31,11 +31,17 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
         }}
         showOutline={false}
       >
-        <Avatar src={src} className="border border-mercury-400" />
+        <Avatar
+          src={src}
+          className="border border-mercury-400"
+          disableAnimation
+        />
       </Badge>
     )
   }
 
-  return <Avatar src={src} className="border border-mercury-400" />
+  return (
+    <Avatar src={src} className="border border-mercury-400" disableAnimation />
+  )
 }
 export default AvatarCustom
