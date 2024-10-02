@@ -25,7 +25,7 @@ export const convertDataFetchToMessage = (
     .map((mess) => ({
       role: getRole(isOwner(currentUserId, mess.userId)),
       content: mess.messages,
-      avatar: mess.user.avatar,
+      avatar: mess.user?.avatar,
     }))
     .reverse()
 }

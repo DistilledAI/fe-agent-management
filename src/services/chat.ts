@@ -31,10 +31,22 @@ export const createGroupChat = async (data: IDataCreateGroupChat) => {
   })
 }
 
-export const getChatHistoryById = async (id: number) => {
+export const getChatHistoryById = async ({
+  id,
+  offset = 0,
+  limit = 20
+}: {
+  id: number
+  offset?: number
+  limit?: number
+}) => {
   return fetchApiAuth({
     method: "get",
     url: endpoint.GET_HISTORY_CHAT(id),
+    params: {
+      offset,
+      limit
+    }
   })
 }
 

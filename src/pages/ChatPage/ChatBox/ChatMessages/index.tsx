@@ -8,7 +8,7 @@ import useMessageSocket from "./useMessageSocket"
 
 const ChatMessages = () => {
   const { messages, setMessages } = useChatMessage()
-  const { loading } = useFetchMessages()
+  const { loading, onLoadPrevMessages } = useFetchMessages()
   useMessageSocket(setMessages)
 
   const renderMessage = (_: number, message: IMessageBox) => {
@@ -36,6 +36,7 @@ const ChatMessages = () => {
       messages={messages}
       itemContent={renderMessage}
       loading={loading}
+      onLoadPrevMessages={onLoadPrevMessages}
     />
   )
 }
