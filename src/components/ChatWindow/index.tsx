@@ -16,6 +16,8 @@ interface ChatWindowProps {
   }) => Promise<number> // return index message on loaded or undefined when no more messages
 }
 
+const LIMIT = 20
+
 const ChatWindow = ({
   messages,
   itemContent,
@@ -25,10 +27,11 @@ const ChatWindow = ({
   onLoadPrevMessages,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
-  const [offset, setOffset] = useState(1)
+  const [offset, setOffset] = useState(LIMIT)
   const [hasMoreMessages, setHasMoreMessages] = useState(true)
   const [isAtBottom, setIsAtBottom] = useState(true)
   const [isLoadMore, setIsLoadMore] = useState(false)
+  const lastMsgIndex = messages.length - 1
 
   const handleScroll = async (e: React.UIEvent<HTMLDivElement>) => {
     const scrollTop = e.currentTarget.scrollTop
@@ -39,7 +42,7 @@ const ChatWindow = ({
 
       const prevMessageIndex = await onLoadPrevMessages({
         offset,
-        limit: 10,
+        limit: LIMIT,
       })
 
       setIsLoadMore(false)
@@ -47,7 +50,7 @@ const ChatWindow = ({
       if (!prevMessageIndex) {
         setHasMoreMessages(false)
       } else {
-        setOffset((prev) => prev + 1)
+        setOffset((prev) => prev + LIMIT)
 
         if (prevMessageIndex !== undefined) {
           virtuosoRef.current?.scrollToIndex({
@@ -90,7 +93,7 @@ const ChatWindow = ({
           style={{ height: "100%" }}
           ref={virtuosoRef}
           data={messages}
-          initialTopMostItemIndex={messages.length - 1}
+          initialTopMostItemIndex={lastMsgIndex}
           onScroll={handleScroll}
           components={{
             Header: () => (isLoadMore ? renderDotLoading("my-4") : <></>),
@@ -107,7 +110,7 @@ const ChatWindow = ({
             <article
               className={twMerge(
                 "px-3 pb-3",
-                messages.length - 1 === index && "pb-3",
+                lastMsgIndex === index && "pb-3",
                 msgBoxClassName,
               )}
               key={index}
