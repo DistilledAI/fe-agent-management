@@ -90,23 +90,25 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
         />
       </div>
 
-      {data.map((chat) => {
-        const toUserId = chat?.id || 0
-        return (
-          <div
-            key={chat.id}
-            onClick={() => handleSelectPerson(toUserId)}
-            className="hover-light-effect relative mb-1 gap-2 rounded-full px-2 py-2"
-          >
-            <AvatarContainer
-              badgeIcon={<FilledUserIcon size={14} />}
-              avatarUrl={""}
-              userName={chat?.username}
-              badgeClassName="bg-[#0FE9A4]"
-            />
-          </div>
-        )
-      })}
+      <div className="max-h-[calc(100%-160px)] overflow-y-auto">
+        {data.map((chat) => {
+          const toUserId = chat?.id || 0
+          return (
+            <div
+              key={chat.id}
+              onClick={() => handleSelectPerson(toUserId)}
+              className="hover-light-effect relative mb-1 gap-2 rounded-full px-2 py-2"
+            >
+              <AvatarContainer
+                badgeIcon={<FilledUserIcon size={14} />}
+                avatarUrl={""}
+                userName={chat?.username}
+                badgeClassName="bg-[#0FE9A4]"
+              />
+            </div>
+          )
+        })}
+      </div>
     </>
   )
 }

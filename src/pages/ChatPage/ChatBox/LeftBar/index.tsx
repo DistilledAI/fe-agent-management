@@ -5,8 +5,8 @@ import PrivateAI from "./PrivateAI"
 
 const LeftBar: React.FC = () => {
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex-1">
+    <div className="-mx-4 flex h-full flex-col overflow-hidden px-4">
+      <div className="h-[calc(100%-44px)] max-h-full flex-1">
         <MyEcho />
         <PrivateAI />
       </div>

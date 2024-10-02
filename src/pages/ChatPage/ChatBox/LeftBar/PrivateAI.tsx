@@ -26,7 +26,7 @@ const PrivateAI: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className="h-full">
       <div className="my-4 h-[1px] w-full bg-mercury-100" />
       {defineElement(MAP_CONTENT_BY_DISPLAY_MODE[displayMode], {
         onChangeDisplayMode,
