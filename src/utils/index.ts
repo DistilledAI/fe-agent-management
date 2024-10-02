@@ -1,5 +1,6 @@
 import FingerprintJS from "@fingerprintjs/fingerprintjs"
 import { cloneElement, createElement } from "react"
+import { toast } from "react-toastify"
 
 export function defineElement(element: any, props = {}) {
   if (element) {
@@ -30,4 +31,10 @@ export const centerTextEllipsis = (
   key?: string,
 ) => {
   return `${text?.slice(0, size || 5)}${key || "..."}${text?.slice(-(size || 5))}`
+}
+
+export const copyClipboard = (event: any, text: string) => {
+  event.stopPropagation()
+  navigator.clipboard.writeText(text)
+  toast.success("Copied!")
 }
