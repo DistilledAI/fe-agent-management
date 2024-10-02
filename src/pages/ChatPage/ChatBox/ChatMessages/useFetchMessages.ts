@@ -52,7 +52,7 @@ const useFetchMessages = () => {
       if (res.data.items) {
         setDataFetch(prevData => [...res.data.items, ...prevData])
         setMessages(
-          (prevData =>  convertDataFetchToMessage([...res.data.items, ...prevData], user?.id ? user.id : 0)
+          (prevData =>  [...convertDataFetchToMessage(res.data.items, user?.id ? user.id : 0), ...prevData]
         ))
       }
       return res.data.items.length || 0

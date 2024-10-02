@@ -1,4 +1,4 @@
-import { logoutIcon, userIcon } from "@assets/svg"
+import { logoutIcon } from "@assets/svg"
 import { WalletIcon } from "@components/Icons/Wallet"
 import { RootState } from "@configs/store"
 import useFetchMe from "@hooks/useFetchMe"
@@ -31,7 +31,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
             <Image
               className="h-full w-full object-cover"
               alt="user"
-              src={userIcon}
+              src={user.avatar}
             />
           </div>
           <span className="text-base">
