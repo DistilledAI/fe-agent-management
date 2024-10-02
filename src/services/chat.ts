@@ -57,3 +57,10 @@ export const getUserById = async (keyword: string) => {
     data: { key: keyword },
   })
 }
+
+export const checkConversation = async (userToId: number) => {
+  return fetchApiAuth({
+    method: "get",
+    url: endpoint.CHECK_CONVERSATION_CHAT(userToId),
+  })
+}
