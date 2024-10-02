@@ -41,12 +41,7 @@ const FYIModal: React.FC<{ openPopup: boolean; setOpenPopup: any }> = ({
             width={`${counter}%`}
           />
 
-          <div className="flex-items-center justify-between px-4">
-            <div className="m-auto">
-              <span className="text-base font-medium text-mercury-950">
-                How do we protect your private data?
-              </span>
-            </div>
+          <div className="flex-items-center justify-end px-4">
             <div className="z-50 cursor-pointer" onClick={onOpenChange}>
               <CloseFilledIcon />
             </div>
