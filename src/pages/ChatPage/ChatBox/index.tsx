@@ -1,12 +1,12 @@
+import DistilledAIIcon from "@components/Icons/DistilledAIIcon"
+import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
+import { useParams } from "react-router-dom"
 import ChatInput from "./ChatInput"
+import ChatMessages from "./ChatMessages"
 import LeftBar from "./LeftBar"
 import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
 import UserAuth from "./UserAuth"
-import DistilledAIIcon from "@components/Icons/DistilledAIIcon"
-import useAuthState from "@hooks/useAuthState"
-import { useParams } from "react-router-dom"
-import ChatMessages from "./ChatMessages"
 
 const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
@@ -28,7 +28,10 @@ const ChatBox = () => {
           {isLogin && chatId ? (
             <ChatMessages />
           ) : (
-            <MyPrivateAgentContent connectWalletLoading={loading} />
+            <MyPrivateAgentContent
+              connectWalletLoading={loading}
+              connectWallet={connectWallet}
+            />
           )}
         </div>
         <div className="space-y-4">

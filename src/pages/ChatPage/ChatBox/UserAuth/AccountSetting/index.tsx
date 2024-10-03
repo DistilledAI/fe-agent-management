@@ -8,8 +8,8 @@ import { logout } from "@reducers/user/UserSlice"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import React, { useRef } from "react"
 import { useDispatch } from "react-redux"
-import MyCredits from "./Credits"
 import PrivateAgent from "./Agent"
+import MyCredits from "./Credits"
 import Language from "./Language"
 import NotificationSetting from "./Notification"
 
@@ -34,7 +34,7 @@ const AccountSetting: React.FC<{
       </div>
       <div className="w-full px-[100px] py-9">
         <div className="text-center text-mercury-900">
-          <p className="mb-1 text-24 font-semibold">My account</p>
+          <p className="mb-1 text-24 font-semibold">My wallet</p>
           <div className="inline-flex items-center">
             <div
               onClick={(e) => copyClipboard(e, user?.publicAddress ?? "")}

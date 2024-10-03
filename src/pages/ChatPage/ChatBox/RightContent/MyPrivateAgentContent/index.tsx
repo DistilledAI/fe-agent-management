@@ -17,9 +17,10 @@ import HugeButton from "../HugeButton"
 import FYIModal from "../Modal/FYIModal"
 import SNSModal from "../Modal/SNSModal"
 
-const MyEchoContent: React.FC<{ connectWalletLoading: boolean }> = ({
-  connectWalletLoading,
-}) => {
+const MyEchoContent: React.FC<{
+  connectWalletLoading: boolean
+  connectWallet: any
+}> = ({ connectWalletLoading, connectWallet }) => {
   const isLogin = useAppSelector((state) => state.user.isLogin)
   const [openPopup, setOpenPopup] = useState<boolean>(false)
   const [ref, isHovered] = useHover()
@@ -31,7 +32,7 @@ const MyEchoContent: React.FC<{ connectWalletLoading: boolean }> = ({
           <ExploreFilledIcon />
           <div className="flex-items-center">
             <DotLoading />
-            <span className="text-base font-medium">Creating your account</span>
+            <span className="text-base font-medium">Creating your wallet</span>
           </div>
         </div>
       )
@@ -39,10 +40,11 @@ const MyEchoContent: React.FC<{ connectWalletLoading: boolean }> = ({
     return (
       <div className="flex-items-center absolute top-1/2 max-w-[390px] -translate-y-[230px] flex-col">
         <FilledExclamationCircleIcon />
-        <span className="text-center text-24 text-mercury-800">
-          <span className="font-semibold text-mercury-950">
-            Create an account
-          </span>
+        <span
+          className="cursor-pointer text-center text-24 text-mercury-800"
+          onClick={() => connectWallet()}
+        >
+          <span className="font-semibold text-mercury-950">Connect wallet</span>
           <br />
           to start your own Private agent.
         </span>

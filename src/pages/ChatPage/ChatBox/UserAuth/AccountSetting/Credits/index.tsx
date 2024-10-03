@@ -19,7 +19,7 @@ const MyCredits = () => {
       </div>
       <div className="grid grid-cols-2 gap-4">
         <Button className="rounded-full border-1 border-mercury-900 bg-[rgba(84,84,84,0.2)] font-medium text-white">
-          Backup your account
+          Backup your wallet
         </Button>
         <Button className="rounded-full border-1 border-mercury-900 bg-[rgba(195,195,195,0.2)] font-medium text-white">
           Get more credits
