@@ -12,6 +12,7 @@ const endpoint = {
   CHAT_SEND_TO_USER: withBaseURL("/chat/send-to-user"),
   CREATE_GROUP_CHAT: withBaseURL("/group/create-group"),
   CHAT_TO_GROUP: withBaseURL("/group/chat-to-group"),
+  CHAT_GROUP_DIRECT: withBaseURL("/group/check-group-direct"),
   GET_HISTORY_CHAT: (id: number) => withBaseURL(`/chat/group/${id}/message`),
   CHECK_CONVERSATION_CHAT: (userToId: number) =>
     withBaseURL(`/chat/check-conversation/${userToId}`),

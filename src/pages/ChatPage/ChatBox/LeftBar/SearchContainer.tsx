@@ -7,7 +7,7 @@ import { Input } from "@nextui-org/react"
 import { debounce } from "lodash"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { checkConversation, createGroupChat, getUserById } from "services/chat"
+import { checkGroupDirect, createGroupChat, getUserById } from "services/chat"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 
 const SearchContainer: React.FC<ContentDisplayMode> = ({
@@ -57,14 +57,14 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
 
   const handleSelectPerson = async (chat: any) => {
     try {
-      const userToId = chat?.id || 0
-      const checkConversationResponse = await checkConversation(userToId)
-      const groupId = checkConversationResponse?.data?.group?.id
+      const receiverId = chat?.id
+      const checkGroupDirectResponse = await checkGroupDirect({
+        members: [receiverId],
+      })
+      const groupId = checkGroupDirectResponse?.data?.group?.id
       if (!groupId) {
-        const receiverId = chat?.id
-        const senderId = user?.id
         const createGroupResponse = await createGroupChat({
-          members: [senderId, receiverId],
+          members: [receiverId],
         })
         const newGroupId = createGroupResponse?.data?.id
         if (newGroupId) {

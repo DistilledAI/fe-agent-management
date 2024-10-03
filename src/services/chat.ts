@@ -43,6 +43,14 @@ export const createGroupChat = async (data: IDataCreateGroupChat) => {
   })
 }
 
+export const checkGroupDirect = async (data: IDataCreateGroupChat) => {
+  return fetchApiAuth({
+    method: "post",
+    url: endpoint.CHAT_GROUP_DIRECT,
+    data,
+  })
+}
+
 export const getChatHistoryById = async ({
   id,
   offset = 0,
