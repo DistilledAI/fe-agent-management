@@ -41,6 +41,7 @@ const ChatWindow = ({
   useLayoutEffect(() => {
     if (chatId) {
       setHasMoreMessages(true)
+      setOffset(LIMIT)
     }
   }, [chatId])
 
@@ -149,7 +150,7 @@ const ChatWindow = ({
         />
       ) : null}
       {isScrollBottom && (
-        <div className="bg-fading-white absolute bottom-0 z-10 flex h-20 w-full items-center justify-center overflow-hidden bg-cover bg-no-repeat">
+        <div className="absolute bottom-0 z-10 flex h-20 w-full items-center justify-center overflow-hidden bg-fading-white bg-cover bg-no-repeat">
           <Button
             onClick={onScrollToBottom}
             className="w-10 min-w-10 rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2"
