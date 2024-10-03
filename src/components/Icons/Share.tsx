@@ -1,3 +1,5 @@
+import { IconProps } from "types/icons"
+
 export const ShareWithQrIcon = () => {
   return (
     <svg
@@ -38,6 +40,28 @@ export const ShareWithCloudIcon = () => {
         d="M7.5 12.5L10 10M10 10L12.5 12.5M10 10V17.5"
         stroke="#545454"
         stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  )
+}
+
+export const ShareFilledIcon = ({
+  size = 24,
+  color = "#545454",
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M4 4.5H3.5C3.23478 4.5 2.98043 4.60536 2.79289 4.79289C2.60536 4.98043 2.5 5.23478 2.5 5.5V9.5C2.5 9.76522 2.60536 10.0196 2.79289 10.2071C2.98043 10.3946 3.23478 10.5 3.5 10.5H8.5C8.76522 10.5 9.01957 10.3946 9.20711 10.2071C9.39464 10.0196 9.5 9.76522 9.5 9.5V5.5C9.5 5.23478 9.39464 4.98043 9.20711 4.79289C9.01957 4.60536 8.76522 4.5 8.5 4.5H8M6 7V1.5M6 1.5L4.5 3M6 1.5L7.5 3"
+        stroke={color}
         stroke-linecap="round"
         stroke-linejoin="round"
       />

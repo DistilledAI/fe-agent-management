@@ -57,7 +57,7 @@ export const checkGroupDirect = async (data: IDataCreateGroupChat) => {
 
 export const leaveGroup = async (groupId: number) => {
   return fetchApiAuth({
-    method: "post",
+    method: "delete",
     url: endpoint.LEAVE_GROUP(groupId),
   })
 }
