@@ -26,7 +26,7 @@ const MyEcho: React.FC = () => {
         My Private Agent
       </span>
       {isActive && (
-        <div className="absolute -left-4 top-1/2 h-[40px] w-[5px] -translate-y-1/2 rounded-br-full rounded-tr-full bg-mercury-950" />
+        <div className="absolute -left-[17px] top-1/2 h-10 w-[5px] -translate-y-1/2 rounded-br-full rounded-tr-full bg-mercury-950" />
       )}
     </div>
   )
