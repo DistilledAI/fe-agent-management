@@ -62,8 +62,10 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                 <></>
               ),
           }}
+          increaseViewportBy={500}
           endReached={(index) => {
-            if (index >= LIMIT) {
+            console.log("INDEX", index)
+            if (index + 1 >= LIMIT) {
               handleLoadMore()
             }
           }}
