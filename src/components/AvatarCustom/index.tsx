@@ -1,10 +1,13 @@
-import { Avatar, Badge } from "@nextui-org/react"
+import { Avatar, Badge, SlotsToClasses } from "@nextui-org/react"
 import { ReactNode } from "react"
 import { twMerge } from "tailwind-merge"
 
 export interface AvatarCustomProps {
   badgeIcon?: string | ReactNode
   src?: string
+  classNames?:
+    | SlotsToClasses<"base" | "img" | "name" | "icon" | "fallback">
+    | undefined
   badgeClassName?: string
   badgeBaseClassName?: string
 }
@@ -12,6 +15,7 @@ export interface AvatarCustomProps {
 const AvatarCustom: React.FC<AvatarCustomProps> = ({
   badgeIcon,
   src,
+  classNames,
   badgeClassName,
   badgeBaseClassName,
 }) => {
@@ -41,7 +45,12 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
   }
 
   return (
-    <Avatar src={src} className="border border-mercury-400" disableAnimation />
+    <Avatar
+      classNames={classNames}
+      src={src}
+      className="border border-mercury-400"
+      disableAnimation
+    />
   )
 }
 export default AvatarCustom

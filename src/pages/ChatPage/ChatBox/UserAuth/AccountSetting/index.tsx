@@ -8,6 +8,10 @@ import { logout } from "@reducers/user/UserSlice"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import React, { useRef } from "react"
 import { useDispatch } from "react-redux"
+import MyCredits from "./Credits"
+import PrivateAgent from "./Agent"
+import Language from "./Language"
+import NotificationSetting from "./Notification"
 
 const AccountSetting: React.FC<{
   isOpen: boolean
@@ -28,7 +32,7 @@ const AccountSetting: React.FC<{
       <div onClick={onClose} className="absolute right-5 top-10 cursor-pointer">
         <CloseFilledIcon />
       </div>
-      <div className="w-full py-9">
+      <div className="w-full px-[100px] py-9">
         <div className="text-center text-mercury-900">
           <p className="mb-1 text-24 font-semibold">My account</p>
           <div className="inline-flex items-center">
@@ -37,7 +41,7 @@ const AccountSetting: React.FC<{
               className="flex cursor-pointer"
             >
               <span>Address:</span>
-              <span className="ml-1 font-bold">
+              <span className="ml-1 font-semibold">
                 {centerTextEllipsis(user?.publicAddress ?? "", 6)}
               </span>
             </div>
@@ -59,6 +63,22 @@ const AccountSetting: React.FC<{
             >
               <LogoutIcon />
             </div>
+          </div>
+        </div>
+        <div className="mt-9 flex flex-wrap gap-6">
+          <div className="w-[calc(56%-12px)]">
+            <MyCredits />
+            <div className="mt-4 flex flex-wrap gap-4">
+              <div className="w-[calc(50%-8px)]">
+                <Language />
+              </div>
+              <div className="w-[calc(50%-8px)]">
+                <NotificationSetting />
+              </div>
+            </div>
+          </div>
+          <div className="w-[calc(44%-12px)]">
+            <PrivateAgent />
           </div>
         </div>
       </div>

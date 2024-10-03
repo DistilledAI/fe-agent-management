@@ -7,3 +7,15 @@ export const getUser = async () => {
     url: endpoint.GET_USER,
   })
 }
+
+interface IUserUpdate {
+  username?: string
+  avatar?: string
+}
+export const updateUser = async (data: IUserUpdate) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.UPDATE_USER,
+    data,
+  })
+}
