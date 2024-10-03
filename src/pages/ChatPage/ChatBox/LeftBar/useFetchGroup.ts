@@ -1,4 +1,5 @@
 import useAuthState from "@hooks/useAuthState"
+import { IUser } from "@reducers/user/UserSlice"
 import { useEffect, useState } from "react"
 import { getGroupList } from "services/chat"
 
@@ -8,6 +9,8 @@ export interface IGroup {
   image?: string
   userAId: number
   userBId: number
+  userA: IUser
+  userB: IUser
   createBy: number
   status: number
   createdAt: string

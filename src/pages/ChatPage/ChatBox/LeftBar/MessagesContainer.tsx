@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroup from "./useFetchGroup"
 import { twMerge } from "tailwind-merge"
+import { getAvatarGroupChat } from "./helpers"
 
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
@@ -46,8 +47,12 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
               >
                 <AvatarContainer
                   badgeIcon={<FilledUserIcon size={14} />}
-                  avatarUrl={chat.group.image}
-                  userName={`Agent #${chat.groupId}`}
+                  avatarUrl={getAvatarGroupChat(
+                    chat.userId,
+                    chat.group.userA,
+                    chat.group.userB,
+                  )}
+                  userName={chat.group.name}
                   badgeClassName="bg-[#0FE9A4]"
                 />
                 <div

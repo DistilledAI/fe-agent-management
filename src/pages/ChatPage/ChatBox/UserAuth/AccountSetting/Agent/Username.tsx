@@ -4,6 +4,7 @@ import { Button } from "@nextui-org/react"
 import { IUser, updateUser as updateUserSlice } from "@reducers/user/UserSlice"
 import { useRef } from "react"
 import { useDispatch } from "react-redux"
+import { toast } from "react-toastify"
 import { updateUser } from "services/user"
 
 const AgentUsername = () => {
@@ -16,6 +17,7 @@ const AgentUsername = () => {
     if (username === user?.username) return
     dispatch(updateUserSlice({ user: { ...user, username } as IUser }))
     await updateUser({ username })
+    toast.success("Updated successfully!")
   }
 
   const handleFocus = () => {
