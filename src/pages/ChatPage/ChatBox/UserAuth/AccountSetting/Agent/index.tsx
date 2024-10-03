@@ -15,7 +15,9 @@ const PrivateAgent = () => {
   return (
     <div className="flex flex-col gap-4 rounded-[22px] border-1 border-white bg-mercury-30 p-4">
       <div className="flex items-center justify-between">
-        <span className="font-semibold">My Private Agent:</span>
+        <span className="text-base font-semibold text-mercury-950">
+          My Private Agent:
+        </span>
         <div className="relative">
           <AvatarCustom src={user?.avatar} />
           <Button className="absolute -bottom-2 -right-1 flex h-6 w-6 min-w-0 items-center justify-center rounded-full bg-white p-0">
