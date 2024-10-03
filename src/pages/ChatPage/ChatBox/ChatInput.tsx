@@ -1,25 +1,17 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { MicrophoneFilledIcon } from "@components/Icons/Microphone"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
-import useAuthState from "@hooks/useAuthState"
 import { Button, Textarea } from "@nextui-org/react"
 import { useChatMessage } from "providers/MessageProvider"
 import { useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
-import { postChatSendToUser } from "services/chat"
+import { useParams } from "react-router-dom"
+import { postChatToGroup } from "services/chat"
 import { RoleChat } from "./ChatMessages/helpers"
-import { getToUserId } from "./helpers"
 
 const ChatInput = () => {
-  const { user } = useAuthState()
-  const { setMessages: setMessageContext, dataFetch } = useChatMessage()
-  const toUserId = getToUserId(dataFetch?.[0], user?.id ?? 0)
+  const { setMessages: setMessageContext } = useChatMessage()
+  const { chatId } = useParams()
   const [messages, setMessages] = useState("")
-  const navigate = useNavigate()
-
-  const location = useLocation()
-  const toUserIdState = location?.state?.userToId
-  const finalToUserId = toUserIdState || toUserId
 
   const onSubmit = async () => {
     if (!messages) return
@@ -28,14 +20,11 @@ const ChatInput = () => {
       ...prev,
       { content: messages, role: RoleChat.OWNER },
     ])
-    const response = await postChatSendToUser({
-      messages,
-      toUserId: finalToUserId,
-    })
 
-    if (response && !!toUserIdState) {
-      navigate(`/chat/${response?.data?.groupId}`)
-    }
+    await postChatToGroup({
+      groupId: Number(chatId),
+      messages,
+    })
   }
 
   const handleKeyDown = (e: any) => {

@@ -2,11 +2,12 @@ import AvatarContainer from "@components/AvatarContainer"
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
+import useAuthState from "@hooks/useAuthState"
 import { Input } from "@nextui-org/react"
 import { debounce } from "lodash"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { checkConversation, getUserById } from "services/chat"
+import { checkConversation, createGroupChat, getUserById } from "services/chat"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 
 const SearchContainer: React.FC<ContentDisplayMode> = ({
@@ -17,6 +18,8 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
   const [query, setQuery] = useState<string>("")
   const [data, setData] = useState<any[]>([])
   const [_, setLoading] = useState<boolean>(true)
+  const { user } = useAuthState()
+  console.log("🚀 ~ user:", user)
 
   useEffect(() => {
     inputRef?.current?.focus()
@@ -52,17 +55,24 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
     [setQuery],
   )
 
-  const handleSelectPerson = async (userToId: number) => {
+  const handleSelectPerson = async (chat: any) => {
     try {
-      const response = await checkConversation(userToId)
-      const groupId = response?.data?.group?.id
+      const userToId = chat?.id || 0
+      const checkConversationResponse = await checkConversation(userToId)
+      const groupId = checkConversationResponse?.data?.group?.id
       if (!!groupId) {
         navigate(`/chat/${groupId}`)
         onBackToBoxMessage()
         return
       }
 
-      navigate(`/chat/${0}`, { state: { userToId } })
+      const receiverUserName: string = chat?.username
+      const senderUserName = user?.username as string
+      const createGroupResponse = await createGroupChat({
+        members: [`${senderUserName}-${receiverUserName}`],
+      })
+      const newGroupId = createGroupResponse?.data?.group?.id
+      navigate(`/chat/${newGroupId}`)
       onBackToBoxMessage()
     } catch (error) {
       console.log("error", error)
@@ -95,12 +105,10 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
 
       <div className="max-h-[calc(100%-160px)] overflow-y-auto">
         {data.map((chat) => {
-          console.log("🚀 ~ {data.map ~ chat:", chat)
-          const userToId = chat?.id || 0
           return (
             <div
               key={chat.id}
-              onClick={() => handleSelectPerson(userToId)}
+              onClick={() => handleSelectPerson(chat)}
               className="hover-light-effect relative mb-1 gap-2 rounded-full px-2 py-2"
             >
               <AvatarContainer

@@ -20,6 +20,18 @@ export const postChatSendToUser = async (data: IDataChatSendToUser) => {
   })
 }
 
+interface IDataChatToGroup {
+  groupId: number
+  messages: string
+}
+export const postChatToGroup = async (data: IDataChatToGroup) => {
+  return fetchApiAuth({
+    method: "post",
+    url: endpoint.CHAT_TO_GROUP,
+    data,
+  })
+}
+
 interface IDataCreateGroupChat {
   members: Array<string>
 }
@@ -34,7 +46,7 @@ export const createGroupChat = async (data: IDataCreateGroupChat) => {
 export const getChatHistoryById = async ({
   id,
   offset = 0,
-  limit = 20
+  limit = 20,
 }: {
   id: number
   offset?: number
@@ -45,8 +57,8 @@ export const getChatHistoryById = async ({
     url: endpoint.GET_HISTORY_CHAT(id),
     params: {
       offset,
-      limit
-    }
+      limit,
+    },
   })
 }
 
