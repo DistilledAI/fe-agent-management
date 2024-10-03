@@ -33,7 +33,7 @@ export const postChatToGroup = async (data: IDataChatToGroup) => {
 }
 
 interface IDataCreateGroupChat {
-  members: Array<string>
+  members: Array<number>
 }
 export const createGroupChat = async (data: IDataCreateGroupChat) => {
   return fetchApiAuth({

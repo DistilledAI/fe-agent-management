@@ -60,19 +60,21 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
       const userToId = chat?.id || 0
       const checkConversationResponse = await checkConversation(userToId)
       const groupId = checkConversationResponse?.data?.group?.id
-      if (!!groupId) {
-        navigate(`/chat/${groupId}`)
-        onBackToBoxMessage()
+      if (!groupId) {
+        const receiverId = chat?.id
+        const senderId = user?.id
+        const createGroupResponse = await createGroupChat({
+          members: [senderId, receiverId],
+        })
+        const newGroupId = createGroupResponse?.data?.id
+        if (newGroupId) {
+          navigate(`/chat/${newGroupId}`)
+          onBackToBoxMessage()
+        }
         return
       }
 
-      const receiverUserName: string = chat?.username
-      const senderUserName = user?.username as string
-      const createGroupResponse = await createGroupChat({
-        members: [`${senderUserName}-${receiverUserName}`],
-      })
-      const newGroupId = createGroupResponse?.data?.group?.id
-      navigate(`/chat/${newGroupId}`)
+      navigate(`/chat/${groupId}`)
       onBackToBoxMessage()
     } catch (error) {
       console.log("error", error)
