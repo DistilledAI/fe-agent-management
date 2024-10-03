@@ -36,7 +36,10 @@ const ChatInput = () => {
 
   return (
     <div className="flex items-center gap-4 rounded-full bg-mercury-200 p-3">
-      <Button className="h-9 w-[52px] min-w-[52px] rounded-full border border-white bg-mercury-30 px-4 py-2">
+      <Button
+        isDisabled
+        className="h-9 w-[52px] min-w-[52px] rounded-full border border-white bg-mercury-30 px-4 py-2"
+      >
         <PaperClipFilledIcon />
       </Button>
       <Textarea
@@ -53,7 +56,7 @@ const ChatInput = () => {
         onValueChange={setMessages}
         value={messages}
       />
-      <Button isIconOnly className="rounded-full bg-mercury-200">
+      <Button isDisabled isIconOnly className="rounded-full bg-mercury-200">
         <MicrophoneFilledIcon />
       </Button>
       <Button

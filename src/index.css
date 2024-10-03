@@ -48,7 +48,7 @@
   }
 
   .hover-light-effect {
-    @apply cursor-pointer transition-all duration-300 ease-out hover:bg-mercury-100 hover:text-mercury-900;
+    @apply cursor-pointer transition-all duration-300 ease-linear hover:bg-mercury-100 hover:text-mercury-900;
   }
 
   .btn-primary {

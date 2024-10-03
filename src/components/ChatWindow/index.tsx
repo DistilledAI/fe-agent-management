@@ -32,17 +32,18 @@ const ChatWindow = ({
   onLoadPrevMessages,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
-  const [offset, setOffset] = useState(LIMIT)
-  const [hasMoreMessages, setHasMoreMessages] = useState(true)
-  const [isAtBottom, setIsAtBottom] = useState(true)
-  const [isLoadMore, setIsLoadMore] = useState(false)
-  const [isScrollBottom, setIsScrollBottom] = useState(false)
+  const [offset, setOffset] = useState<number>(LIMIT)
+  const [hasMoreMessages, setHasMoreMessages] = useState<boolean>(true)
+  const [isAtBottom, setIsAtBottom] = useState<boolean>(true)
+  const [isLoadMore, setIsLoadMore] = useState<boolean>(false)
+  const [isScrollBottom, setIsScrollBottom] = useState<boolean>(false)
   const lastMsgIndex = messages.length - 1
 
   useLayoutEffect(() => {
     if (chatId) {
       setHasMoreMessages(true)
       setOffset(LIMIT)
+      setIsScrollBottom(false)
     }
   }, [chatId])
 
@@ -102,7 +103,7 @@ const ChatWindow = ({
   return (
     <div
       className={twMerge(
-        "relative h-full flex-1 overflow-hidden scroll-smooth rounded-[22px] border-[2px] border-white bg-mercury-30 p-3",
+        "relative h-full flex-1 overflow-hidden rounded-[22px] border-[2px] border-white bg-mercury-30 p-3 transition-all duration-500 ease-in-out",
         className,
       )}
     >
