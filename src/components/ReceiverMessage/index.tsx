@@ -1,4 +1,5 @@
 import AvatarCustom, { AvatarCustomProps } from "@components/AvatarCustom"
+import Markdown from "react-markdown"
 import { twMerge } from "tailwind-merge"
 
 interface ReceiverMsgProps {
@@ -16,7 +17,7 @@ const ReceiverMessage = ({
     <div className="flex gap-4">
       <AvatarCustom {...avatar} />
       <p className={twMerge("text-base-md flex-1", contentClassName)}>
-        {content}
+        <Markdown>{content}</Markdown>
       </p>
     </div>
   )
