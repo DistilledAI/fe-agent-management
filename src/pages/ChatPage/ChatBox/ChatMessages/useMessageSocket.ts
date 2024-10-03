@@ -1,9 +1,8 @@
-import { useSocket } from "providers/SocketProvider"
-import { IMessageBox, RoleChat } from "./helpers"
-import React, { useEffect, useState } from "react"
-import useAuthState from "@hooks/useAuthState"
-import { useParams } from "react-router-dom"
 import { IUser } from "@reducers/user/UserSlice"
+import { useSocket } from "providers/SocketProvider"
+import React, { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import { IMessageBox, RoleChat } from "./helpers"
 
 interface IDataListen {
   event: string
@@ -18,11 +17,10 @@ const useMessageSocket = (
   const { chatId } = useParams()
   const [data, setData] = useState<string>("")
   const { socket } = useSocket()
-  const { user } = useAuthState()
 
   useEffect(() => {
-    if (user && socket) {
-      const event = `chat-userId-${user.id}`
+    if (socket) {
+      const event = "chat-group"
       socket.on(event, (e) => {
         setData(JSON.stringify(e))
       })
@@ -31,7 +29,7 @@ const useMessageSocket = (
         socket.off(event)
       }
     }
-  }, [user, socket])
+  }, [socket])
 
   useEffect(() => {
     if (data) {
