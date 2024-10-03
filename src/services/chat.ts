@@ -1,10 +1,14 @@
 import endpoint from "./endpoint"
 import { fetchApiAuth } from "./fetchApi"
 
-export const getGroupList = async () => {
+export const getGroupList = async (offset: number = 0, limit: number = 10) => {
   return fetchApiAuth({
     method: "get",
     url: endpoint.GET_MY_CHAT_GROUP_LIST,
+    params: {
+      offset,
+      limit,
+    },
   })
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { getChatHistoryById } from "services/chat"
-import { IGroup } from "../LeftBar/useFetchGroup"
+import { IGroup } from "../LeftBar/useFetchGroups"
 import { IUser } from "@reducers/user/UserSlice"
 import { convertDataFetchToMessage } from "./helpers"
 import useAuthState from "@hooks/useAuthState"
@@ -28,7 +28,7 @@ const useFetchMessages = () => {
     try {
       if (!chatId) return
       setLoading(true)
-      const res = await getChatHistoryById({ id: Number(chatId)})
+      const res = await getChatHistoryById({ id: Number(chatId) })
       if (res.data.items) {
         setDataFetch(res.data.items)
         setMessages(
@@ -42,18 +42,26 @@ const useFetchMessages = () => {
     }
   }
 
-  const onLoadPrevMessages = async ({ offset, limit }: {
+  const onLoadPrevMessages = async ({
+    offset,
+    limit,
+  }: {
     offset?: number
     limit?: number
   }) => {
     try {
       if (!chatId) return
-      const res = await getChatHistoryById({ id: Number(chatId), offset, limit})
+      const res = await getChatHistoryById({
+        id: Number(chatId),
+        offset,
+        limit,
+      })
       if (res.data.items) {
-        setDataFetch(prevData => [...res.data.items, ...prevData])
-        setMessages(
-          (prevData =>  [...convertDataFetchToMessage(res.data.items, user?.id ? user.id : 0), ...prevData]
-        ))
+        setDataFetch((prevData) => [...res.data.items, ...prevData])
+        setMessages((prevData) => [
+          ...convertDataFetchToMessage(res.data.items, user?.id ? user.id : 0),
+          ...prevData,
+        ])
       }
       return res.data.items.length || 0
     } catch (error) {
