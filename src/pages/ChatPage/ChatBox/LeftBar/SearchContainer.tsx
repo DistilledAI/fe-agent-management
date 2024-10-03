@@ -1,8 +1,8 @@
 import AvatarContainer from "@components/AvatarContainer"
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
+import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
-import useAuthState from "@hooks/useAuthState"
 import { Input } from "@nextui-org/react"
 import { debounce } from "lodash"
 import { useCallback, useEffect, useRef, useState } from "react"
@@ -18,8 +18,6 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
   const [query, setQuery] = useState<string>("")
   const [data, setData] = useState<any[]>([])
   const [_, setLoading] = useState<boolean>(true)
-  const { user } = useAuthState()
-  console.log("🚀 ~ user:", user)
 
   useEffect(() => {
     inputRef?.current?.focus()
@@ -81,6 +79,11 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
     }
   }
 
+  const onClearInputValue = () => {
+    setQuery("")
+    debounceSearch("")
+  }
+
   return (
     <>
       <div className="flex-items-center mb-4 justify-between gap-2 px-2">
@@ -91,13 +94,23 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
           placeholder="Search"
           labelPlacement="outside"
           startContent={<FilledSearchIcon />}
+          endContent={
+            query && (
+              <div
+                className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-mercury-300 p-[2px]"
+                onClick={() => onClearInputValue()}
+              >
+                <CloseFilledIcon size={18} color="#676767" />
+              </div>
+            )
+          }
           classNames={{
             inputWrapper:
               "!bg-mercury-200 rounded-full focus-visible:ring-opacity-0",
             innerWrapper:
               "!bg-mercury-200 rounded-full focus-visible:ring-opacity-0",
             input:
-              "text-18 !text-mercury-950 caret-[#363636] focus-visible:ring-opacity-0",
+              "text-18 !text-mercury-950 caret-[#363636] focus-visible:ring-opacity-0 font-medium",
           }}
           onChange={handleOnChangeValue}
           value={query}
