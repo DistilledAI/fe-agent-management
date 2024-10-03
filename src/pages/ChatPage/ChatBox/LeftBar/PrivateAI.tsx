@@ -1,3 +1,4 @@
+import useAuthState from "@hooks/useAuthState"
 import { defineElement } from "@utils/index"
 import { useState } from "react"
 import MessagesContainer from "./MessagesContainer"
@@ -20,10 +21,13 @@ export interface ContentDisplayMode {
 
 const PrivateAI: React.FC = () => {
   const [displayMode, setDisplayMode] = useState<string>(DISPLAY_MODES.MESSAGES)
+  const { isLogin } = useAuthState()
 
   const onChangeDisplayMode = (modeValue: string) => {
     setDisplayMode(modeValue)
   }
+
+  if (!isLogin) return <div />
 
   return (
     <div className="h-full">
