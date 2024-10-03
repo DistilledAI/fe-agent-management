@@ -1,6 +1,6 @@
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
-import { useLayoutEffect, useRef, useState } from "react"
+import { useLayoutEffect, useRef, useState, useCallback } from "react"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import DotLoading from "@components/DotLoading"
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
@@ -20,6 +20,7 @@ interface ChatWindowProps {
 }
 
 const LIMIT = 20
+const AT_BOTTOM_THRESHOLD = 300
 
 const ChatWindow = ({
   messages,
@@ -45,44 +46,37 @@ const ChatWindow = ({
     }
   }, [chatId])
 
-  const onScroll = async (e: React.UIEvent<HTMLDivElement>) => {
-    const scrollTop = e.currentTarget.scrollTop
-    const scrollHeight = e.currentTarget.scrollHeight
-    const clientHeight = e.currentTarget.clientHeight
+  const onScroll = useCallback(
+    async (e: React.UIEvent<HTMLDivElement>) => {
+      const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
 
-    if (scrollTop === 0 && !loading && hasMoreMessages) {
-      setIsLoadMore(true)
-      setIsAtBottom(false)
+      if (scrollTop === 0 && !loading && hasMoreMessages) {
+        setIsLoadMore(true)
+        setIsAtBottom(false)
 
-      const prevMessageIndex = await onLoadPrevMessages({
-        offset,
-        limit: LIMIT,
-      })
+        const prevMessageIndex = await onLoadPrevMessages({
+          offset,
+          limit: LIMIT,
+        })
 
-      setIsLoadMore(false)
+        setIsLoadMore(false)
 
-      if (!prevMessageIndex) {
-        setHasMoreMessages(false)
-      } else {
-        setOffset((prev) => prev + LIMIT)
-
-        if (prevMessageIndex !== undefined) {
+        if (!prevMessageIndex) {
+          setHasMoreMessages(false)
+        } else {
+          setOffset((prev) => prev + LIMIT)
           virtuosoRef.current?.scrollToIndex({
             index: prevMessageIndex,
             behavior: "auto",
           })
         }
       }
-    }
 
-    const scrollPosition = scrollHeight - clientHeight - scrollTop
-
-    if (scrollPosition > 300) {
-      setIsScrollBottom(true)
-    } else {
-      setIsScrollBottom(false)
-    }
-  }
+      const scrollPosition = scrollHeight - clientHeight - scrollTop
+      setIsScrollBottom(scrollPosition > 300)
+    },
+    [hasMoreMessages, loading, offset, onLoadPrevMessages],
+  )
 
   const onScrollToBottom = () => {
     virtuosoRef.current?.scrollToIndex({
@@ -91,8 +85,8 @@ const ChatWindow = ({
     })
   }
 
-  const renderDotLoading = (className?: string) => {
-    return (
+  const renderDotLoading = useCallback(
+    (className?: string) => (
       <div
         className={twMerge(
           "flex h-full items-center justify-center",
@@ -101,8 +95,9 @@ const ChatWindow = ({
       >
         <DotLoading />
       </div>
-    )
-  }
+    ),
+    [],
+  )
 
   return (
     <div
@@ -127,14 +122,9 @@ const ChatWindow = ({
           components={{
             Header: () => (isLoadMore ? renderDotLoading("my-4") : <></>),
           }}
-          followOutput={() => {
-            if (isAtBottom) {
-              return "smooth"
-            }
-            return false
-          }}
-          atBottomStateChange={(atBottom) => setIsAtBottom(atBottom)}
-          atBottomThreshold={300}
+          followOutput={isAtBottom ? "smooth" : false}
+          atBottomStateChange={setIsAtBottom}
+          atBottomThreshold={AT_BOTTOM_THRESHOLD}
           itemContent={(index, message) => (
             <article
               className={twMerge(
@@ -150,7 +140,7 @@ const ChatWindow = ({
         />
       ) : null}
       {isScrollBottom && (
-        <div className="absolute bottom-0 z-10 flex h-20 w-full items-center justify-center overflow-hidden bg-fading-white bg-cover bg-no-repeat">
+        <div className="absolute inset-x-0 bottom-0 z-10 flex h-20 w-full items-center justify-center bg-fading-white bg-cover bg-no-repeat">
           <Button
             onClick={onScrollToBottom}
             className="w-10 min-w-10 rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2"
