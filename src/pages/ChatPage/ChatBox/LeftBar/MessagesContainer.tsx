@@ -68,6 +68,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
             }
           }}
           itemContent={(_, groupItem) => {
+            console.log("🚀 ~ groupItem:", groupItem)
             const isActive = Number(chatId) === groupItem.groupId
             return (
               <div
@@ -75,7 +76,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                 aria-selected={isActive}
                 onClick={() => navigate(`/chat/${groupItem.groupId}`)}
                 className={twMerge(
-                  "hover-light-effect group/item relative mx-4 mb-2 gap-2 rounded-full px-2 py-2",
+                  "hover-light-effect group/item group relative mx-4 mb-2 gap-2 rounded-full px-2 py-2",
                   isActive && "bg-mercury-100",
                 )}
               >
@@ -98,7 +99,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                       "block h-10 rounded-br-full rounded-tr-full opacity-100",
                   )}
                 />
-                <MoreChatAction groupId={groupItem.id} />
+                <MoreChatAction groupId={groupItem.groupId} />
               </div>
             )
           }}
