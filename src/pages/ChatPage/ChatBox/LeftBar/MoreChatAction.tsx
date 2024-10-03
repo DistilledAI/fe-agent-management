@@ -16,7 +16,7 @@ import { leaveGroup } from "services/chat"
 
 const MoreChatAction: React.FC<{ groupId: number }> = ({ groupId }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const { isOpen: openPopup, onOpen, onOpenChange } = useDisclosure()
+  const { isOpen: openPopup, onOpen, onOpenChange, onClose } = useDisclosure()
   const navigate = useNavigate()
 
   const handleLeaveGroup = async () => {
@@ -43,7 +43,7 @@ const MoreChatAction: React.FC<{ groupId: number }> = ({ groupId }) => {
             <DotFilledIcon size={16} />
           </div>
         </PopoverTrigger>
-        <PopoverContent>
+        <PopoverContent className="bg-mercury-950">
           <div className="px-1 py-2">
             <span
               className="text-base-sb cursor-pointer text-white"
@@ -79,15 +79,18 @@ const MoreChatAction: React.FC<{ groupId: number }> = ({ groupId }) => {
                 </div>
               </div>
 
-              <div className="flex justify-between gap-2">
-                <Button className="mt-4 w-full rounded-full">
-                  <span className="text-18 text-mercury-30">Cancel</span>
+              <div className="flex justify-end gap-2">
+                <Button
+                  className="mt-4 min-w-32 rounded-full bg-mercury-200 text-[15px] font-medium text-primary"
+                  onClick={onClose}
+                >
+                  Cancel
                 </Button>
                 <Button
-                  className="mt-4 w-full rounded-full"
+                  className="mt-4 min-w-32 rounded-full bg-mercury-950 text-[15px] font-medium text-white"
                   onClick={() => handleLeaveGroup()}
                 >
-                  <span className="text-18 text-mercury-30">Leave group</span>
+                  Leave group
                 </Button>
               </div>
             </div>
