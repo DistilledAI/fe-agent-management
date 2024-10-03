@@ -1,3 +1,4 @@
+import useAuthState from "@hooks/useAuthState"
 import { IUser } from "@reducers/user/UserSlice"
 import { useSocket } from "providers/SocketProvider"
 import React, { useEffect, useState } from "react"
@@ -17,11 +18,13 @@ const useMessageSocket = (
   const { chatId } = useParams()
   const [data, setData] = useState<string>("")
   const { socket } = useSocket()
+  const { user } = useAuthState()
 
   useEffect(() => {
     if (socket) {
       const event = "chat-group"
       socket.on(event, (e) => {
+        if (e?.user?.id === user?.id) return
         setData(JSON.stringify(e))
       })
 
@@ -29,7 +32,7 @@ const useMessageSocket = (
         socket.off(event)
       }
     }
-  }, [socket])
+  }, [socket, user])
 
   useEffect(() => {
     if (data) {
