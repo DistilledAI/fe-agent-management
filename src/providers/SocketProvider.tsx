@@ -33,10 +33,21 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         auth: {
           authorization: `Bearer ${cachedLocalStorage.getWithExpiry(storageKey.ACCESS_TOKEN)}`,
         },
+        reconnection: true,
+        reconnectionAttempts: 3,
+        reconnectionDelay: 2000,
       })
+
       socketRef.current.connect()
       socketRef.current.on("connect", () => console.log("Socket connected"))
       socketRef.current.on("error", (error) => console.error(error))
+
+      socketRef.current.on("disconnect", (reason) => {
+        console.log(`Socket disconnected: ${reason}`)
+        if (reason === "io server disconnect") {
+          socketRef.current?.connect()
+        }
+      })
 
       socketRef.current.on("reconnect", (attempt) => {
         console.log(`Reconnected after ${attempt} attempts`)
@@ -48,6 +59,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
       return () => {
         if (socketRef.current) {
+          socketRef.current.off("disconnect")
           socketRef.current.off("reconnect")
           socketRef.current.off("reconnect_attempt")
           socketRef.current.disconnect()

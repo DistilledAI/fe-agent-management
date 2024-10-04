@@ -1,30 +1,32 @@
 import ComingSoon from "@components/ComingSoon"
-import { WorldGlobalIcon } from "@components/Icons/World"
+import { StarUserIconOutline } from "@components/Icons/UserIcon"
 import { Select, SelectItem } from "@nextui-org/react"
 
-const Language = () => {
+const VoiceCharacter = () => {
   return (
     <ComingSoon>
       <div className="rounded-[22px] border-1 border-white bg-mercury-30 p-4">
         <div className="mb-4 flex items-center gap-2">
-          <WorldGlobalIcon />
-          <span className="font-medium text-mercury-600">Language</span>
+          <StarUserIconOutline />
+          <span className="font-medium text-mercury-600">Voice Character</span>
         </div>
         <Select
-          placeholder="Select language"
+          placeholder="Select voice"
           className="w-full"
           classNames={{
             trigger: "rounded-full !bg-mercury-100",
           }}
-          defaultSelectedKeys={["english"]}
+          defaultSelectedKeys={["natasha"]}
           disableSelectorIconRotation
           selectionMode="single"
         >
-          <SelectItem key={"english"}>English</SelectItem>
+          <SelectItem key={"natasha"} className="whitespace-nowrap">
+            Natasha-Bristish
+          </SelectItem>
         </Select>
       </div>
     </ComingSoon>
   )
 }
 
-export default Language
+export default VoiceCharacter

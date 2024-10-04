@@ -55,6 +55,9 @@ export default {
         brown: {
           10: "#A2845E",
         },
+        green: {
+          10: "#34C759",
+        },
         primary: "#363636",
         code: {
           agent: {

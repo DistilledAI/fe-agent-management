@@ -12,6 +12,10 @@ import PrivateAgent from "./Agent"
 import MyCredits from "./Credits"
 import Language from "./Language"
 import NotificationSetting from "./Notification"
+import PrivateAgentPod from "./AgentPod"
+import AgentCreative from "./Creative"
+import VoiceChat from "./VoiceChat"
+import VoiceCharacter from "./VoiceCharacter"
 
 const AccountSetting: React.FC<{
   isOpen: boolean
@@ -29,10 +33,16 @@ const AccountSetting: React.FC<{
       style={{ boxShadow: "0px -32px 30px 0px #FFF inset" }}
       className="fixed bottom-0 left-1/2 z-[99] mx-auto h-[75%] w-[1100px] max-w-full -translate-x-1/2 translate-y-[100%] rounded-b-[32px] rounded-t-[40px] bg-[rgba(211,211,211,0.70)] backdrop-blur-[8px] duration-500 aria-checked:translate-y-0"
     >
-      <div onClick={onClose} className="absolute right-5 top-10 cursor-pointer">
+      <div
+        onClick={onClose}
+        className="absolute right-5 top-10 z-[1] cursor-pointer"
+      >
         <CloseFilledIcon />
       </div>
-      <div className="w-full px-[100px] py-9 duration-500">
+      <div
+        aria-checked={isOpen}
+        className="h-full w-full translate-y-[100px] px-[100px] py-9 delay-100 duration-500 aria-checked:translate-y-0"
+      >
         <div className="text-center text-mercury-900">
           <p className="mb-1 text-24 font-semibold">My wallet</p>
           <div className="inline-flex items-center">
@@ -65,7 +75,7 @@ const AccountSetting: React.FC<{
             </div>
           </div>
         </div>
-        <div className="mt-9 flex flex-wrap gap-6">
+        <div className="mt-9 flex max-h-[calc(100%-64px)] flex-wrap gap-6 overflow-y-auto pb-[60px] scrollbar-hide">
           <div className="w-[calc(56%-12px)]">
             <MyCredits />
             <div className="mt-4 flex flex-wrap gap-4">
@@ -76,9 +86,25 @@ const AccountSetting: React.FC<{
                 <NotificationSetting />
               </div>
             </div>
+            <div className="mt-4 flex flex-wrap gap-4">
+              <div className="w-[calc(60%-8px)]">
+                <AgentCreative />
+              </div>
+              <div className="w-[calc(40%-8px)]">
+                <VoiceChat />
+                <div className="mt-4">
+                  <VoiceCharacter />
+                </div>
+              </div>
+            </div>
           </div>
           <div className="w-[calc(44%-12px)]">
-            <PrivateAgent />
+            <div>
+              <PrivateAgent />
+            </div>
+            <div className="mt-4">
+              <PrivateAgentPod />
+            </div>
           </div>
         </div>
       </div>
