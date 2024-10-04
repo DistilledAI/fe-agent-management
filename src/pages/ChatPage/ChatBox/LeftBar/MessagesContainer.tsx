@@ -6,6 +6,7 @@ import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
+import ActiveEffect from "./ActiveEffect"
 import { getAvatarGroupChat } from "./helpers"
 import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
@@ -103,15 +104,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                   userName={groupItem.group.name}
                   badgeClassName="bg-[#0FE9A4]"
                 />
-                <div
-                  className={twMerge(
-                    "absolute -left-[17px] top-1/2 w-[5px] -translate-y-1/2 bg-lgd-code-agent-1 opacity-0 transition-all duration-300 ease-linear",
-                    !isActive &&
-                      "h-3 rounded-br-lg rounded-tr-lg group-hover/item:opacity-100",
-                    isActive &&
-                      "block h-10 rounded-br-full rounded-tr-full opacity-100",
-                  )}
-                />
+                <ActiveEffect isActive={isActive} />
                 <div
                   aria-checked={isHasNoti(groupItem.groupId)}
                   className="absolute left-[10px] top-[10px] hidden h-2 w-2 rounded-full bg-red-600 aria-checked:block"
