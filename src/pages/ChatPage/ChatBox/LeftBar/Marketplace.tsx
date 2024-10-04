@@ -3,7 +3,7 @@ import { Button } from "@nextui-org/react"
 
 const Marketplace = () => {
   return (
-    <Button className="btn-primary">
+    <Button className="btn-primary !h-[62px]">
       <div>
         <FilledSquareCircleIcon />
       </div>

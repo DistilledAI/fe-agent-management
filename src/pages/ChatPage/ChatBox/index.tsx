@@ -25,17 +25,17 @@ const ChatBox = () => {
         </div>
         <div className="grid h-full max-h-[calc(100%-143px)] w-full grid-cols-[280px_1fr] gap-4">
           <LeftBar />
-          {isLogin && chatId ? (
-            <ChatMessages />
-          ) : (
-            <MyPrivateAgentContent
-              connectWalletLoading={loading}
-              connectWallet={connectWallet}
-            />
-          )}
-        </div>
-        <div className="space-y-4">
-          <ChatInput />
+          <div className="space-y-4">
+            {isLogin && chatId ? (
+              <ChatMessages />
+            ) : (
+              <MyPrivateAgentContent
+                connectWalletLoading={loading}
+                connectWallet={connectWallet}
+              />
+            )}
+            <ChatInput />
+          </div>
         </div>
       </div>
     </div>

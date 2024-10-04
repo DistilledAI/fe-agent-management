@@ -30,7 +30,7 @@ const MyEchoContent: React.FC = () => {
 
           <HugeButton
             icon={<FilledBrainAIIcon />}
-            label="Create your Echo Agent"
+            label="Create your Private Agent"
             isDisable
           />
           <div className="absolute bottom-[60px] flex items-center gap-2">
