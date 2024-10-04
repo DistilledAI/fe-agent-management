@@ -38,8 +38,20 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       socketRef.current.on("connect", () => console.log("Socket connected"))
       socketRef.current.on("error", (error) => console.error(error))
 
+      socketRef.current.on("reconnect", (attempt) => {
+        console.log(`Reconnected after ${attempt} attempts`)
+      })
+
+      socketRef.current.on("reconnect_attempt", (attempt) => {
+        console.log(`Attempting to reconnect: Attempt ${attempt}`)
+      })
+
       return () => {
-        if (socketRef.current) socketRef.current.disconnect()
+        if (socketRef.current) {
+          socketRef.current.off("reconnect")
+          socketRef.current.off("reconnect_attempt")
+          socketRef.current.disconnect()
+        }
       }
     }
   }, [isLogin])
