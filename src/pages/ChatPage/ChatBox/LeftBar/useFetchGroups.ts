@@ -16,7 +16,7 @@ export interface IGroup {
   createdAt: string
 }
 
-interface UserGroup {
+export interface UserGroup {
   id: number
   userId: number
   groupId: number

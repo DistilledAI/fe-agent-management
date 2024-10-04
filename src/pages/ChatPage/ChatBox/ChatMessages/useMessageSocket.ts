@@ -21,7 +21,7 @@ const useMessageSocket = (
   const { user } = useAuthState()
 
   useEffect(() => {
-    if (socket) {
+    if (socket && user) {
       const event = "chat-group"
       socket.on(event, (e) => {
         if (e?.user?.id === user?.id) return

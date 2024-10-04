@@ -10,6 +10,7 @@ import { getAvatarGroupChat } from "./helpers"
 import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroups from "./useFetchGroups"
+import useGroupSocket from "./useGroupSocket"
 
 const LIMIT = 10
 
@@ -17,10 +18,17 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
 }) => {
   const { fetchGroups, groups, isLoading } = useFetchGroups()
+  const [hasNotiList, setHasNotiList] = useState<Array<number>>([])
+  useGroupSocket(setHasNotiList)
   const navigate = useNavigate()
   const { chatId } = useParams()
   const [hasMore, setHasMore] = useState(true)
   const [offset, setOffset] = useState(10)
+
+  const isHasNoti = (groupId: number) => {
+    if (groupId === Number(chatId)) return false
+    return hasNotiList.includes(groupId)
+  }
 
   const handleLoadMore = async () => {
     if (hasMore) {
@@ -64,19 +72,22 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
           }}
           increaseViewportBy={500}
           endReached={(index) => {
-            console.log("INDEX", index)
             if (index + 1 >= LIMIT) {
               handleLoadMore()
             }
           }}
           itemContent={(_, groupItem) => {
-            console.log("🚀 ~ groupItem:", groupItem)
             const isActive = Number(chatId) === groupItem.groupId
             return (
               <div
                 key={groupItem.id}
                 aria-selected={isActive}
-                onClick={() => navigate(`/chat/${groupItem.groupId}`)}
+                onClick={() => {
+                  setHasNotiList((prev) =>
+                    prev.filter((id) => id !== groupItem.groupId),
+                  )
+                  navigate(`/chat/${groupItem.groupId}`)
+                }}
                 className={twMerge(
                   "hover-light-effect group/item group relative mx-4 mb-2 gap-2 rounded-full px-2 py-2",
                   isActive && "bg-mercury-100",
@@ -101,6 +112,10 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                       "block h-10 rounded-br-full rounded-tr-full opacity-100",
                   )}
                 />
+                <div
+                  aria-checked={isHasNoti(groupItem.groupId)}
+                  className="absolute left-[10px] top-[10px] hidden h-2 w-2 rounded-full bg-red-600 aria-checked:block"
+                ></div>
                 <MoreChatAction groupId={groupItem.groupId} />
               </div>
             )
