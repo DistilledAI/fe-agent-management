@@ -1,5 +1,5 @@
+import MarkdownMessage from "@components/Markdown"
 import { twMerge } from "tailwind-merge"
-import Markdown from "react-markdown"
 
 interface SenderMsgProps {
   content: string
@@ -20,7 +20,7 @@ const SenderMessage = ({
       )}
     >
       <p className={twMerge("text-base-md text-mercury-30", contentClassName)}>
-        <Markdown>{content}</Markdown>
+        <MarkdownMessage msg={content} />
       </p>
     </div>
   )
