@@ -78,7 +78,7 @@ const MyEchoContent: React.FC<{
                   <DatabaseImportIcon />
                 </div>
               }
-              label="Create your Echo Agent"
+              label="Create your Private Agent"
               isDisable={false}
             />
           </div>
@@ -88,7 +88,7 @@ const MyEchoContent: React.FC<{
               isHovered && "top-1/4 -translate-x-[200px]",
             )}
           >
-            <HugeButton icon={<PDFTypeIcon />} label="PDPs" isDisable={false} />
+            <HugeButton icon={<PDFTypeIcon />} label="PDFs" isDisable={true} />
           </div>
           <div
             className={twMerge(
@@ -99,7 +99,7 @@ const MyEchoContent: React.FC<{
             <HugeButton
               icon={<EmailUpIcon />}
               label="Emails"
-              isDisable={false}
+              isDisable={true}
             />
           </div>
           <div
@@ -111,7 +111,7 @@ const MyEchoContent: React.FC<{
             <HugeButton
               icon={<PhotoPlusIcon />}
               label="Photos & Videos"
-              isDisable={false}
+              isDisable={true}
             />
           </div>
           <div
