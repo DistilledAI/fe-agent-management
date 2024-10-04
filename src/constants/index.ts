@@ -17,3 +17,11 @@ export const SITE_LLM_SUPPORTED = {
 }
 
 export const DISTILLED_AI_URL = "https://distilled.ai/"
+
+export enum RoleUser {
+  ADMIN = 1,
+  USER = 2,
+  BANNED = 3,
+  BOT = 4,
+  SUPER_ADMIN = 10,
+}

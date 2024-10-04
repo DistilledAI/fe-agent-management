@@ -32,7 +32,7 @@ const AccountSetting: React.FC<{
       <div onClick={onClose} className="absolute right-5 top-10 cursor-pointer">
         <CloseFilledIcon />
       </div>
-      <div className="w-full px-[100px] py-9">
+      <div className="w-full px-[100px] py-9 duration-500">
         <div className="text-center text-mercury-900">
           <p className="mb-1 text-24 font-semibold">My wallet</p>
           <div className="inline-flex items-center">

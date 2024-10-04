@@ -6,11 +6,14 @@ import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
-import { getAvatarGroupChat } from "./helpers"
+import { getAvatarGroupChat, getRoleUser } from "./helpers"
 import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroups from "./useFetchGroups"
 import useGroupSocket from "./useGroupSocket"
+import { RoleUser } from "@constants/index"
+import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
+import { IUser } from "@reducers/user/UserSlice"
 
 const LIMIT = 10
 
@@ -28,6 +31,20 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
   const isHasNoti = (groupId: number) => {
     if (groupId === Number(chatId)) return false
     return hasNotiList.includes(groupId)
+  }
+
+  const getIconGroup = (ownerId: number, userA: IUser, userB: IUser) => {
+    return getRoleUser(ownerId, userA, userB) === RoleUser.USER ? (
+      <FilledUserIcon size={14} />
+    ) : (
+      <FilledBrainAIIcon size={14} />
+    )
+  }
+
+  const getColorGroupIcon = (ownerId: number, userA: IUser, userB: IUser) => {
+    return getRoleUser(ownerId, userA, userB) === RoleUser.USER
+      ? "bg-[#0FE9A4]"
+      : "bg-[#FC0]"
   }
 
   const handleLoadMore = async () => {
@@ -94,14 +111,22 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                 )}
               >
                 <AvatarContainer
-                  badgeIcon={<FilledUserIcon size={14} />}
+                  badgeIcon={getIconGroup(
+                    groupItem.userId,
+                    groupItem.group.userA,
+                    groupItem.group.userB,
+                  )}
                   avatarUrl={getAvatarGroupChat(
                     groupItem.userId,
                     groupItem.group.userA,
                     groupItem.group.userB,
                   )}
                   userName={groupItem.group.name}
-                  badgeClassName="bg-[#0FE9A4]"
+                  badgeClassName={getColorGroupIcon(
+                    groupItem.userId,
+                    groupItem.group.userA,
+                    groupItem.group.userB,
+                  )}
                 />
                 <div
                   className={twMerge(
