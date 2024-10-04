@@ -66,7 +66,7 @@ const useFetchGroups = () => {
     if (isLogin) fetchGroups({})
   }, [isLogin])
 
-  return { isLoading, groups, fetchGroups }
+  return { isLoading, groups, fetchGroups, setGroups }
 }
 
 export default useFetchGroups

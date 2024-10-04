@@ -13,8 +13,12 @@ import {
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { leaveGroup } from "services/chat"
+import { UserGroup } from "./useFetchGroups"
 
-const MoreChatAction: React.FC<{ groupId: number }> = ({ groupId }) => {
+const MoreChatAction: React.FC<{
+  groupId: number
+  setGroups: React.Dispatch<React.SetStateAction<UserGroup[]>>
+}> = ({ groupId, setGroups }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const { isOpen: openPopup, onOpen, onOpenChange, onClose } = useDisclosure()
   const navigate = useNavigate()
@@ -23,6 +27,7 @@ const MoreChatAction: React.FC<{ groupId: number }> = ({ groupId }) => {
     try {
       const response = await leaveGroup(groupId)
       if (response?.data?.message) {
+        setGroups((prev) => prev.filter((item) => item.groupId !== groupId))
         onOpenChange()
         navigate("/")
       }

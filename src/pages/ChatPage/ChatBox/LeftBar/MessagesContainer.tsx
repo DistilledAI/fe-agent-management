@@ -17,7 +17,7 @@ const LIMIT = 10
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
 }) => {
-  const { fetchGroups, groups, isLoading } = useFetchGroups()
+  const { fetchGroups, groups, isLoading, setGroups } = useFetchGroups()
   const [hasNotiList, setHasNotiList] = useState<Array<number>>([])
   useGroupSocket(setHasNotiList)
   const navigate = useNavigate()
@@ -62,7 +62,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
           data={groups}
           components={{
             Footer: () =>
-              isLoading ? (
+              isLoading && groups.length > 0 ? (
                 <div className="flex items-center justify-center">
                   <DotLoading />
                 </div>
@@ -116,7 +116,10 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                   aria-checked={isHasNoti(groupItem.groupId)}
                   className="absolute left-[10px] top-[10px] hidden h-2 w-2 rounded-full bg-red-600 aria-checked:block"
                 ></div>
-                <MoreChatAction groupId={groupItem.groupId} />
+                <MoreChatAction
+                  setGroups={setGroups}
+                  groupId={groupItem.groupId}
+                />
               </div>
             )
           }}
