@@ -70,7 +70,6 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
             }
           }}
           itemContent={(_, groupItem) => {
-            console.log("🚀 ~ groupItem:", groupItem)
             const isActive = Number(chatId) === groupItem.groupId
             return (
               <div
