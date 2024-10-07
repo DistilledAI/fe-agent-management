@@ -4,7 +4,7 @@ import { Button } from "@nextui-org/react"
 import { useRef } from "react"
 import { twMerge } from "tailwind-merge"
 
-interface Props {
+interface DrawerBottomProps {
   isOpen: boolean
   onClose: () => void
   children: React.ReactNode
@@ -24,7 +24,7 @@ const DrawerBottom = ({
   isOutsideClose = true,
   className,
   classNames,
-}: Props) => {
+}: DrawerBottomProps) => {
   const outsideRef = useRef<any>()
   useOutsideClick(outsideRef, onClose)
 
