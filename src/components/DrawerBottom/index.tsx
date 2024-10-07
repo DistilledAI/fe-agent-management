@@ -1,6 +1,5 @@
-import { CloseFilledIcon } from "@components/Icons/DefiLens"
+import CloseButton from "@components/CloseButton"
 import useOutsideClick from "@hooks/useOutSideClick"
-import { Button } from "@nextui-org/react"
 import { useRef } from "react"
 import { twMerge } from "tailwind-merge"
 
@@ -32,22 +31,19 @@ const DrawerBottom = ({
     <div
       ref={isOutsideClose ? outsideRef : null}
       className={twMerge(
-        "shadow-4 fixed bottom-0 left-1/2 z-[99] mx-auto h-[75%] w-[1100px] max-w-full -translate-x-1/2 translate-y-[100%] rounded-b-[32px] rounded-t-[40px] bg-[rgba(211,211,211,0.70)] backdrop-blur-[15px] duration-500",
+        "shadow-4 fixed bottom-0 left-1/2 z-[99] mx-auto h-[calc(100dvh-200px)] w-[1100px] max-w-full -translate-x-1/2 translate-y-[100%] rounded-b-[32px] rounded-t-[40px] bg-[rgba(211,211,211,0.70)] backdrop-blur-[15px] duration-500",
         isOpen && "translate-y-0",
         className,
         classNames?.base,
       )}
     >
-      <Button
-        isIconOnly
-        onClick={onClose}
+      <CloseButton
+        onClose={onClose}
         className={twMerge(
-          "absolute right-5 top-10 z-[1] rounded-full bg-transparent hover:bg-mercury-70",
+          "absolute right-5 top-10 z-[1]",
           classNames?.closeButton,
         )}
-      >
-        <CloseFilledIcon />
-      </Button>
+      />
       <div
         className={twMerge(
           "h-full w-full translate-y-[100px] px-[100px] py-10 delay-100 duration-500",

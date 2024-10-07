@@ -1,15 +1,19 @@
-import { PATHS_NAME } from "@constants/index"
+import { PATH_NAMES } from "@constants/index"
 import ChatPage from "@pages/ChatPage"
 import Test from "@pages/Test"
 import { createBrowserRouter } from "react-router-dom"
 
 const router = createBrowserRouter([
   {
-    path: PATHS_NAME.HOME,
+    path: PATH_NAMES.HOME,
     element: <ChatPage />,
   },
   {
-    path: PATHS_NAME.CHAT_DETAIL,
+    path: PATH_NAMES.CHAT_DETAIL,
+    element: <ChatPage />,
+  },
+  {
+    path: `${PATH_NAMES.INVITE}/:userId`,
     element: <ChatPage />,
   },
   {

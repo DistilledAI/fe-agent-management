@@ -2,12 +2,13 @@ import AvatarCustom from "@components/AvatarCustom"
 import { CopyIcon } from "@components/Icons/Copy"
 import { EditPenOutlineIcon } from "@components/Icons/Edit"
 import { MetamaskIconSmall } from "@components/Icons/MetamaskIcon"
-import { ShareWithCloudIcon, ShareWithQrIcon } from "@components/Icons/Share"
+import { ShareWithCloudIcon } from "@components/Icons/Share"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import AgentUsername from "./Username"
 import AgentDescription from "./Description"
+import ShareAgent from "./ShareAgent"
 
 const PrivateAgent = () => {
   const { user } = useAuthState()
@@ -43,10 +44,7 @@ const PrivateAgent = () => {
         </div>
       </div>
       <div className="flex items-center justify-between gap-2">
-        <Button className="flex rounded-full bg-mercury-100">
-          <ShareWithQrIcon />
-          <span className="font-medium text-mercury-950">Share as QR</span>
-        </Button>
+        <ShareAgent />
         <Button className="flex rounded-full bg-mercury-100">
           <ShareWithCloudIcon />
           <span className="font-medium text-mercury-950">
