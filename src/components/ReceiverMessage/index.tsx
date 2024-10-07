@@ -6,18 +6,20 @@ interface ReceiverMsgProps {
   content: string
   avatar: AvatarCustomProps
   contentClassName?: string
+  isTyping?: boolean
 }
 
 const ReceiverMessage = ({
   content,
   avatar,
   contentClassName,
+  isTyping,
 }: ReceiverMsgProps) => {
   return (
     <div className="flex gap-4">
       <AvatarCustom {...avatar} />
       <p className={twMerge("text-base-md flex-1", contentClassName)}>
-        <MarkdownMessage msg={content} />
+        {isTyping ? "..." : <MarkdownMessage msg={content} />}
       </p>
     </div>
   )

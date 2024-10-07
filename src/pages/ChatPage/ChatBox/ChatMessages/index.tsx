@@ -20,6 +20,7 @@ const ChatMessages = () => {
           <ReceiverMessage
             avatar={{ src: message.avatar }}
             content={message.content}
+            isTyping={message.isTyping}
           />
         ) : null}
         {message.role === RoleChat.OWNER ? (

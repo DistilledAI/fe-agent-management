@@ -38,3 +38,14 @@ export const copyClipboard = (event: any, text: string) => {
   navigator.clipboard.writeText(text)
   toast.success("Copied!")
 }
+
+export const makeId = (length = 8) => {
+  let result = ""
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+  const charactersLength = characters.length
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength))
+  }
+  return result
+}

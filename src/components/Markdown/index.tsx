@@ -12,7 +12,16 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     return md
   }
 
-  return <Markdown>{breakLine(msg)}</Markdown>
+  const renderers = {
+    ol: ({ children }: any) => (
+      <ol style={{ listStyleType: "decimal", paddingLeft: "16px" }}>
+        {children}
+      </ol>
+    ),
+    li: ({ children }: any) => <li>{children}</li>,
+  }
+
+  return <Markdown components={renderers}>{breakLine(msg)}</Markdown>
 }
 
 export default MarkdownMessage

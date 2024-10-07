@@ -7,6 +7,7 @@ import { useState } from "react"
 import { useParams } from "react-router-dom"
 import { postChatToGroup } from "services/chat"
 import { RoleChat } from "./ChatMessages/helpers"
+import { makeId } from "@utils/index"
 
 const ChatInput = () => {
   const { setMessages: setMessageContext } = useChatMessage()
@@ -18,7 +19,7 @@ const ChatInput = () => {
     setMessages("")
     setMessageContext((prev) => [
       ...prev,
-      { content: messages, role: RoleChat.OWNER },
+      { content: messages, role: RoleChat.OWNER, id: makeId() },
     ])
 
     await postChatToGroup({

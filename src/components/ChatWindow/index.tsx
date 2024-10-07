@@ -1,6 +1,12 @@
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
-import { useLayoutEffect, useRef, useState, useCallback } from "react"
+import {
+  useLayoutEffect,
+  useRef,
+  useState,
+  useCallback,
+  useEffect,
+} from "react"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import DotLoading from "@components/DotLoading"
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
@@ -49,6 +55,16 @@ const ChatWindow = ({
       setIsScrollBottom(false)
     }
   }, [chatId])
+
+  useEffect(() => {
+    if (!isScrollBottom) {
+      virtuosoRef.current?.scrollToIndex({
+        index: "LAST",
+        behavior: "smooth",
+        align: "end",
+      })
+    }
+  }, [messages, isScrollBottom])
 
   const onScroll = useCallback(
     async (e: React.UIEvent<HTMLDivElement>) => {
