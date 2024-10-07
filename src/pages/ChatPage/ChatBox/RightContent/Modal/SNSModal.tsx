@@ -41,8 +41,8 @@ const SNSModal: React.FC<{ openPopup: boolean; setOpenPopup: any }> = ({
               placeholder="Enter your profile link"
               labelPlacement="outside"
               startContent={
-                <div className="flex-items-center rounded-full bg-mercury-30 p-[6px]">
-                  <span className="text-16 text-mercury-950">Twitter</span>
+                <div className="flex-items-center rounded-full bg-mercury-30 px-2 py-[6px]">
+                  <span className="text-16 text-mercury-950">LinkedIn</span>
                   <ChevronDownIcon />
                 </div>
               }

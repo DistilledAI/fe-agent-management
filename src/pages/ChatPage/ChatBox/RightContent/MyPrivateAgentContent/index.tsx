@@ -14,8 +14,8 @@ import mainContentBg from "assets/images/main-content-bg.jpg"
 import { useState } from "react"
 import { twMerge } from "tailwind-merge"
 import HugeButton from "../HugeButton"
+import CreatPrivateAgentModal from "../Modal/CreatPrivateAgentModal"
 import FYIModal from "../Modal/FYIModal"
-import SNSModal from "../Modal/SNSModal"
 
 const MyEchoContent: React.FC<{
   connectWalletLoading: boolean
@@ -131,7 +131,10 @@ const MyEchoContent: React.FC<{
           </div>
         </div>
       </MainContainer>
-      <SNSModal openPopup={openPopup} setOpenPopup={setOpenPopup} />
+      <CreatPrivateAgentModal
+        openPopup={openPopup}
+        setOpenPopup={setOpenPopup}
+      />
     </>
   )
 }
@@ -156,6 +159,7 @@ const MainContainer: React.FC<{
               Your Private Agent is private to you only, unless you publish it
               to the Marketplace.
             </span>
+
             <div
               className="flex-items-center mt-2 cursor-pointer justify-center gap-2"
               onClick={() => setOpenFYIPopupp(true)}
