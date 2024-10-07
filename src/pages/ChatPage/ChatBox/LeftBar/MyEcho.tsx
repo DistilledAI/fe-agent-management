@@ -1,5 +1,5 @@
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
-import { PATHS_NAME } from "@constants/index"
+import { PATH_NAMES } from "@constants/index"
 import { AGENT_TYPE, updateAgentType } from "@reducers/chatbot/AgentSlice"
 import { useDispatch } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
@@ -9,7 +9,7 @@ const MyEcho: React.FC = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
-  const isActive = location.pathname === PATHS_NAME.HOME
+  const isActive = location.pathname === PATH_NAMES.HOME
 
   const handleChooseMyEcho = () => {
     navigate("/")

@@ -1,7 +1,9 @@
-export const PATHS_NAME = {
+export const PATH_NAMES = {
   HOME: "/",
   LLM: "/chatbot",
+  CHAT: "/chat",
   CHAT_DETAIL: "/chat/:chatId",
+  INVITE: "/invite",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {

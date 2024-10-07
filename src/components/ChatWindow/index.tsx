@@ -27,7 +27,7 @@ interface ChatWindowProps {
 }
 
 const LIMIT = 20
-const AT_BOTTOM_THRESHOLD = 300
+const AT_BOTTOM_THRESHOLD = 200
 
 const ChatWindow = ({
   messages,
@@ -50,9 +50,9 @@ const ChatWindow = ({
 
   useLayoutEffect(() => {
     if (chatId) {
+      setIsScrollBottom(false)
       setHasMoreMessages(true)
       setOffset(LIMIT)
-      setIsScrollBottom(false)
     }
   }, [chatId])
 
@@ -93,7 +93,7 @@ const ChatWindow = ({
       }
 
       const scrollPosition = scrollHeight - clientHeight - scrollTop
-      setIsScrollBottom(scrollPosition > 300)
+      setIsScrollBottom(scrollPosition > AT_BOTTOM_THRESHOLD)
     },
     [hasMoreMessages, loading, offset, onLoadPrevMessages],
   )
@@ -106,6 +106,7 @@ const ChatWindow = ({
     virtuosoRef.current?.scrollToIndex({
       index: "LAST",
       behavior: "smooth",
+      align: "end",
     })
   }
 
@@ -141,7 +142,10 @@ const ChatWindow = ({
           style={{ height: "100%" }}
           ref={virtuosoRef}
           data={messages}
-          initialTopMostItemIndex={lastMsgIndex}
+          initialTopMostItemIndex={{
+            index: "LAST",
+            align: "end",
+          }}
           onScroll={onScroll}
           components={{
             Header: () => (isLoadMore ? renderDotLoading("my-4") : <></>),

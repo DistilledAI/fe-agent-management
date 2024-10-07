@@ -1,6 +1,7 @@
 import useAuthState from "@hooks/useAuthState"
 import { IUser } from "@reducers/user/UserSlice"
 import { useEffect, useState } from "react"
+import { useSearchParams } from "react-router-dom"
 import { getGroupList } from "services/chat"
 
 export interface IGroup {
@@ -35,6 +36,8 @@ const useFetchGroups = () => {
   const [groups, setGroups] = useState<UserGroup[]>([])
   const { isLogin } = useAuthState()
   const [isLoading, setIsLoading] = useState(false)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const isInvited = searchParams.get("isInvited")
 
   const fetchGroups = async ({
     offset,
@@ -63,8 +66,14 @@ const useFetchGroups = () => {
   }
 
   useEffect(() => {
-    if (isLogin) fetchGroups({})
-  }, [isLogin])
+    if (isLogin || isInvited === "true") fetchGroups({})
+    if (isInvited === "true") {
+      setSearchParams((params) => {
+        params.delete("isInvited")
+        return params
+      })
+    }
+  }, [isLogin, isInvited, setSearchParams])
 
   return { isLoading, groups, fetchGroups, setGroups }
 }
