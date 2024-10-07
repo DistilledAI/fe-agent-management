@@ -1,12 +1,10 @@
 import { CopyIcon } from "@components/Icons/Copy"
-import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { MetamaskIconSmall } from "@components/Icons/MetamaskIcon"
 import { LogoutIcon } from "@components/Icons/OutputIcon"
 import useAuthState from "@hooks/useAuthState"
-import useOutsideClick from "@hooks/useOutSideClick"
 import { logout } from "@reducers/user/UserSlice"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
-import React, { useRef } from "react"
+import React from "react"
 import { useDispatch } from "react-redux"
 import PrivateAgent from "./Agent"
 import MyCredits from "./Credits"
@@ -24,8 +22,6 @@ const AccountSetting: React.FC<{
 }> = ({ isOpen, onClose }) => {
   const { user } = useAuthState()
   const dispatch = useDispatch()
-  const accountRef = useRef<any>()
-  useOutsideClick(accountRef, onClose)
 
   return (
     <DrawerBottom isOpen={isOpen} onClose={onClose}>
