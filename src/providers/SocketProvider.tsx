@@ -40,10 +40,11 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         reconnectionDelay: 2000,
       })
 
-      setSocket(initSocket)
-
       initSocket.connect()
-      initSocket.on("connect", () => console.log("Socket connected"))
+      initSocket.on("connect", () => {
+        setSocket(initSocket)
+        console.log("Socket connected")
+      })
       initSocket.on("error", (error) => console.error(error))
 
       initSocket.on("disconnect", (reason) => {

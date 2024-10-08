@@ -1,7 +1,7 @@
 import useAuthState from "@hooks/useAuthState"
 import { IUser } from "@reducers/user/UserSlice"
 import { useSocket } from "providers/SocketProvider"
-import { useEffect, useState } from "react"
+import { useEffect, useRef } from "react"
 import { useParams } from "react-router-dom"
 import { RoleChat } from "./ChatMessages/helpers"
 import { makeId } from "@utils/index"
@@ -27,7 +27,7 @@ const useMessageSocket = () => {
   const { chatId } = useParams()
   const { socket } = useSocket()
   const { user } = useAuthState()
-  const [indexRes, setIndexRes] = useState(0)
+  const indexResRef = useRef(-1)
   const { setGroupsHaveNotification, setIsNewMsgOnCurrentWindow, setMessages } =
     useChatMessage()
 
@@ -52,8 +52,8 @@ const useMessageSocket = () => {
   }
 
   const isReloadWhenResponse = (index: number) => {
-    if (index === 1) setIndexRes(1)
-    if (indexRes !== 1) return true
+    if (index === 0) indexResRef.current = 0
+    if (indexResRef.current !== 0 && index !== 0) return true
 
     return false
   }
@@ -88,7 +88,7 @@ const useMessageSocket = () => {
   }
 
   const handleWithDone = (e: IDataListen) => {
-    const isNeedAppendWhenDone = indexRes !== 1
+    const isNeedAppendWhenDone = indexResRef.current !== 0
     if (isNeedAppendWhenDone)
       setMessages((prev) =>
         prev.map((item) => {
@@ -152,7 +152,7 @@ const useMessageSocket = () => {
   }, [socket, user?.id, isPassRuleMessage, isPassRuleNotification])
 
   useEffect(() => {
-    setIndexRes(0)
+    indexResRef.current = -1
   }, [chatId])
 }
 
