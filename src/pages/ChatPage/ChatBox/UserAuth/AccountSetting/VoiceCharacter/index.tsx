@@ -11,6 +11,7 @@ const VoiceCharacter = () => {
           <span className="font-medium text-mercury-600">Voice Character</span>
         </div>
         <Select
+          aria-label="Select Voice Character"
           placeholder="Select voice"
           className="w-full"
           classNames={{

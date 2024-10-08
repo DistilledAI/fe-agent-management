@@ -38,7 +38,7 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
         <Avatar
           src={src}
           className="border border-mercury-400"
-          disableAnimation
+          disableAnimation={true}
         />
       </Badge>
     )
@@ -49,7 +49,7 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
       classNames={classNames}
       src={src}
       className="border border-mercury-400"
-      disableAnimation
+      disableAnimation={true}
     />
   )
 }

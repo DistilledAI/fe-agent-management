@@ -8,6 +8,7 @@ const AgentCreative = () => {
       <div className="rounded-[22px] border-1 border-white bg-mercury-30 p-4">
         <div className="flex items-center justify-between">
           <Select
+            aria-label="Select Agent Creative"
             placeholder="Select language"
             className="w-[100px]"
             classNames={{

@@ -56,16 +56,16 @@ export const ArrowLeftFilledIcon = ({
         stroke={color}
         strokeWidth="1.5"
         strokeMiterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M17.0834 10H3.05835"
         stroke={color}
         strokeWidth="1.5"
         strokeMiterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   )

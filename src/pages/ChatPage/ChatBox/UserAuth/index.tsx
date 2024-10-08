@@ -17,7 +17,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
 
   useFetchMe()
 
-  return user ? (
+  return user?.publicAddress ? (
     <>
       <Button onClick={onOpen} className="btn-primary h-11 w-fit">
         <div className="h-8 w-8 rounded-full border-1 border-mercury-400">

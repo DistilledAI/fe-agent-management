@@ -16,23 +16,23 @@ export const DatabaseImportIcon = ({
         <path
           d="M4.17627 6C4.17627 7.657 7.54756 9 11.7057 9C15.8638 9 19.2351 7.657 19.2351 6C19.2351 4.343 15.8638 3 11.7057 3C7.54756 3 4.17627 4.343 4.17627 6Z"
           stroke={color}
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M4.17627 6V12C4.17627 13.657 7.54756 15 11.7057 15C12.5113 15 13.2869 14.95 14.0153 14.856M19.2351 12V6"
           stroke={color}
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M4.17627 12V18C4.17627 19.657 7.54756 21 11.7057 21C11.8663 21 12.0263 20.998 12.1857 20.994M18.2939 22V16M18.2939 16L21.1174 19M18.2939 16L15.4704 19"
           stroke={color}
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </g>
       <defs>

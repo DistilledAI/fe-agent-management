@@ -29,7 +29,7 @@ const useInviteUser = () => {
         })
         const newGroupId = createGroupResponse?.data?.id
         if (newGroupId) {
-          navigate(`${PATH_NAMES.CHAT}/${newGroupId}`)
+          navigate(`${PATH_NAMES.CHAT}/${newGroupId}?isInvited=true`)
         }
         return
       }
@@ -53,7 +53,6 @@ const useInviteUser = () => {
           expiry,
         )
         handleInviteUserLoggedIn()
-        console.log("Access token saved to sessionStorage:", accessToken)
       } else {
         console.log("Access token not found in response")
       }

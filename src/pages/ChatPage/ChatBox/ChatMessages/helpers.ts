@@ -14,8 +14,9 @@ export interface IMessageBox {
   index?: number
 }
 
-const isOwner = (currentUserId: number, userId: number) =>
-  currentUserId === userId
+const isOwner = (currentUserId: number, userId: number) => {
+  return currentUserId === userId
+}
 
 const getRole = (isOwner: boolean): RoleChat =>
   isOwner ? RoleChat.OWNER : RoleChat.CUSTOMER
