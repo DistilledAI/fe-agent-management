@@ -11,10 +11,10 @@ import { getAvatarGroupChat, getRoleUser } from "./helpers"
 import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroups from "./useFetchGroups"
-import useGroupSocket from "./useGroupSocket"
 import { RoleUser } from "@constants/index"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { IUser } from "@reducers/user/UserSlice"
+import { useChatMessage } from "providers/MessageProvider"
 
 const LIMIT = 10
 
@@ -22,16 +22,19 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
 }) => {
   const { fetchGroups, groups, isLoading, setGroups } = useFetchGroups()
-  const [hasNotiList, setHasNotiList] = useState<Array<number>>([])
-  useGroupSocket(setHasNotiList)
+  const {
+    groupsHaveNotification,
+    setGroupsHaveNotification,
+    setIsNewMsgOnCurrentWindow,
+  } = useChatMessage()
   const navigate = useNavigate()
   const { chatId } = useParams()
   const [hasMore, setHasMore] = useState(true)
   const [offset, setOffset] = useState(10)
 
-  const isHasNoti = (groupId: number) => {
+  const isHasNotification = (groupId: number) => {
     if (groupId === Number(chatId)) return false
-    return hasNotiList.includes(groupId)
+    return groupsHaveNotification.includes(groupId)
   }
 
   const getIconGroup = (ownerId: number, userA: IUser, userB: IUser) => {
@@ -101,9 +104,10 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                 key={groupItem.id}
                 aria-selected={isActive}
                 onClick={() => {
-                  setHasNotiList((prev) =>
+                  setGroupsHaveNotification((prev) =>
                     prev.filter((id) => id !== groupItem.groupId),
                   )
+                  setIsNewMsgOnCurrentWindow(false)
                   navigate(`/chat/${groupItem.groupId}`)
                 }}
                 className={twMerge(
@@ -131,7 +135,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                 />
                 <ActiveEffect isActive={isActive} />
                 <div
-                  aria-checked={isHasNoti(groupItem.groupId)}
+                  aria-checked={isHasNotification(groupItem.groupId)}
                   className="absolute left-[10px] top-[10px] hidden h-2 w-2 rounded-full bg-red-600 aria-checked:block"
                 ></div>
                 <MoreChatAction

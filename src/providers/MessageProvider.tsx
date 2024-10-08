@@ -11,6 +11,10 @@ export interface MessageState {
   setDataFetch: React.Dispatch<React.SetStateAction<IMessage[]>>
   messages: IMessageBox[]
   setMessages: React.Dispatch<React.SetStateAction<IMessageBox[]>>
+  groupsHaveNotification: Array<number>
+  setGroupsHaveNotification: React.Dispatch<React.SetStateAction<Array<number>>>
+  isNewMsgOnCurrentWindow: boolean
+  setIsNewMsgOnCurrentWindow: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const initialState: MessageState = {
@@ -18,6 +22,10 @@ export const initialState: MessageState = {
   setDataFetch: () => null,
   messages: [],
   setMessages: () => null,
+  groupsHaveNotification: [],
+  setGroupsHaveNotification: () => null,
+  isNewMsgOnCurrentWindow: false,
+  setIsNewMsgOnCurrentWindow: () => null,
 }
 
 const MessageProviderContext = createContext(initialState)
@@ -27,10 +35,24 @@ export const ChatMessageProvider: React.FC<MessageProviderProps> = ({
 }) => {
   const [dataFetch, setDataFetch] = useState<IMessage[]>([])
   const [messages, setMessages] = useState<IMessageBox[]>([])
+  const [isNewMsgOnCurrentWindow, setIsNewMsgOnCurrentWindow] =
+    useState<boolean>(false)
+  const [groupsHaveNotification, setGroupsHaveNotification] = useState<
+    Array<number>
+  >([])
 
   return (
     <MessageProviderContext.Provider
-      value={{ dataFetch, messages, setDataFetch, setMessages }}
+      value={{
+        dataFetch,
+        messages,
+        setDataFetch,
+        setMessages,
+        groupsHaveNotification,
+        setGroupsHaveNotification,
+        isNewMsgOnCurrentWindow,
+        setIsNewMsgOnCurrentWindow,
+      }}
     >
       {children}
     </MessageProviderContext.Provider>

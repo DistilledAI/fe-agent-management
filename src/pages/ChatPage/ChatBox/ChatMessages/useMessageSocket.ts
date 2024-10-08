@@ -5,6 +5,7 @@ import React, { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { IMessageBox, RoleChat } from "./helpers"
 import { makeId } from "@utils/index"
+import { useChatMessage } from "providers/MessageProvider"
 
 interface IDataListen {
   event: string
@@ -28,8 +29,10 @@ const useMessageSocket = (
   const { chatId } = useParams()
   const { socket } = useSocket()
   const { user } = useAuthState()
+  const { setGroupsHaveNotification, setIsNewMsgOnCurrentWindow } =
+    useChatMessage()
 
-  const isPassRule = (e: IDataListen) => {
+  const isPassRuleMessage = (e: IDataListen) => {
     if (e.user.id === user?.id) return false
     if (e.group !== Number(chatId)) return false
 
@@ -77,21 +80,51 @@ const useMessageSocket = (
     ])
   }
 
+  const handleResponseForMessage = (e: IDataListen) => {
+    if (!isPassRuleMessage(e)) return
+    if (e.event === StatusMessage.TYPING) handleWithTyping(e)
+    if (e.event === StatusMessage.UPDATE) handleWithUpdate(e)
+    if (e.event === StatusMessage.GROUP) handleWithGroup(e)
+  }
+
+  const isPassRuleNotification = (e: IDataListen) => {
+    if (e?.user?.id === user?.id) return false
+    if (Number(chatId) === e.group) return false
+    return true
+  }
+
+  const handleResponseForNotification = (e: IDataListen) => {
+    if (!isPassRuleNotification(e)) return
+    setGroupsHaveNotification((prev) =>
+      prev.includes(e.group) ? [...prev] : [...prev, e.group],
+    )
+  }
+
+  const isPassRuleNewMsg = (e: IDataListen) => {
+    if (e?.user?.id === user?.id) return false
+    if (Number(chatId) !== e.group) return false
+    return true
+  }
+
+  const handleResponseForNewMsg = (e: IDataListen) => {
+    if (!isPassRuleNewMsg(e)) return
+    setIsNewMsgOnCurrentWindow(true)
+  }
+
   useEffect(() => {
     if (socket && user) {
       const event = "chat-group"
       socket.on(event, (e: IDataListen) => {
-        if (!isPassRule(e)) return
-        if (e.event === StatusMessage.TYPING) handleWithTyping(e)
-        if (e.event === StatusMessage.UPDATE) handleWithUpdate(e)
-        if (e.event === StatusMessage.GROUP) handleWithGroup(e)
+        handleResponseForMessage(e)
+        handleResponseForNotification(e)
+        handleResponseForNewMsg(e)
       })
 
       return () => {
         socket.off(event)
       }
     }
-  }, [socket, user, isPassRule])
+  }, [socket, user, isPassRuleMessage, isPassRuleNotification])
 }
 
 export default useMessageSocket
