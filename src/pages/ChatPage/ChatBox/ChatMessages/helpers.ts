@@ -11,6 +11,7 @@ export interface IMessageBox {
   content: string
   avatar?: string
   isTyping?: boolean
+  index?: number
 }
 
 const isOwner = (currentUserId: number, userId: number) =>
