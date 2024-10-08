@@ -243,12 +243,18 @@ export const ExploreFilledIcon = () => {
   )
 }
 
-export const MetamaskIconSmall = () => {
+export const MetamaskIconSmall = ({
+  width = 22,
+  height = 20,
+}: {
+  width?: number
+  height?: number
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="22"
-      height="20"
+      width={width}
+      height={height}
       viewBox="0 0 22 20"
       fill="none"
     >

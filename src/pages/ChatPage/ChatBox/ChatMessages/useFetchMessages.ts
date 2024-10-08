@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { getChatHistoryById } from "services/chat"
 import { IGroup } from "../LeftBar/useFetchGroups"
 import { IUser } from "@reducers/user/UserSlice"
 import { convertDataFetchToMessage } from "./helpers"
 import useAuthState from "@hooks/useAuthState"
 import { useChatMessage } from "providers/MessageProvider"
+import { PATH_NAMES } from "@constants/index"
 
 export interface IMessage {
   id: number
@@ -21,8 +22,9 @@ export interface IMessage {
 const useFetchMessages = () => {
   const [loading, setLoading] = useState(false)
   const { setDataFetch, setMessages } = useChatMessage()
-  const { user } = useAuthState()
+  const { user, sessionAccessToken } = useAuthState()
   const { chatId } = useParams()
+  const navigate = useNavigate()
 
   const fetchMessages = async () => {
     try {
@@ -31,12 +33,17 @@ const useFetchMessages = () => {
       const res = await getChatHistoryById({ id: Number(chatId) })
       if (res.data.items) {
         setDataFetch(res.data.items)
+        const userIdSender = res.data.items?.[0]?.userId
         setMessages(
-          convertDataFetchToMessage(res.data.items, user?.id ? user.id : 0),
+          convertDataFetchToMessage(
+            res.data.items,
+            user?.id ? user.id : userIdSender ? userIdSender : 0,
+          ),
         )
       }
     } catch (error) {
       console.error(error)
+      navigate(PATH_NAMES.HOME)
     } finally {
       setLoading(false)
     }
@@ -70,10 +77,14 @@ const useFetchMessages = () => {
   }
 
   useEffect(() => {
-    setDataFetch([])
-    setMessages([])
     if (user?.id) fetchMessages()
   }, [chatId, user?.id])
+
+  useEffect(() => {
+    if (chatId && sessionAccessToken) {
+      fetchMessages()
+    }
+  }, [chatId, sessionAccessToken])
 
   return { loading, fetchMessages, onLoadPrevMessages }
 }

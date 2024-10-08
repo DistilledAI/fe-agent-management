@@ -25,5 +25,6 @@ export enum RoleUser {
   USER = 2,
   BANNED = 3,
   BOT = 4,
+  ANONYMOUS = 5,
   SUPER_ADMIN = 10,
 }

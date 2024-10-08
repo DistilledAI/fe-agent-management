@@ -7,7 +7,7 @@ import useAuthState from "./useAuthState"
 const useFetchMe = () => {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
-  const { isLogin } = useAuthState()
+  const { isLogin, sessionAccessToken } = useAuthState()
 
   const fetchData = async () => {
     try {
@@ -16,7 +16,6 @@ const useFetchMe = () => {
       if (res.data) {
         dispatch(updateUser({ user: res.data }))
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(error)
       if (error.response.data.message === "Unauthorized") {
@@ -28,10 +27,10 @@ const useFetchMe = () => {
   }
 
   useEffect(() => {
-    if (isLogin) fetchData()
-  }, [isLogin])
+    if (isLogin && !sessionAccessToken) fetchData()
+  }, [isLogin, sessionAccessToken])
 
-  return { loading }
+  return { loading, fetchData }
 }
 
 export default useFetchMe
