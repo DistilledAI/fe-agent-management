@@ -15,6 +15,7 @@ import { RoleUser } from "@constants/index"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { IUser } from "@reducers/user/UserSlice"
 import { useChatMessage } from "providers/MessageProvider"
+import useAuthState from "@hooks/useAuthState"
 
 const LIMIT = 10
 
@@ -27,6 +28,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
     setGroupsHaveNotification,
     setIsNewMsgOnCurrentWindow,
   } = useChatMessage()
+  const { user } = useAuthState()
   const navigate = useNavigate()
   const { chatId } = useParams()
   const [hasMore, setHasMore] = useState(true)
@@ -60,6 +62,10 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
       if (!newGroups.length) return setHasMore(false)
       setOffset((prev) => prev + LIMIT)
     }
+  }
+
+  const getNameGroup = (userA: IUser, userB: IUser) => {
+    return userA.username === user?.username ? userB.username : userA.username
   }
 
   return (
@@ -126,7 +132,10 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                     groupItem.group.userA,
                     groupItem.group.userB,
                   )}
-                  userName={groupItem.group.name}
+                  userName={getNameGroup(
+                    groupItem.group.userA,
+                    groupItem.group.userB,
+                  )}
                   badgeClassName={getColorGroupIcon(
                     groupItem.userId,
                     groupItem.group.userA,
