@@ -1,73 +1,38 @@
 import distilledAiPrivateAgent from "@assets/video/distilled-ai-private-agent-3d.mp4"
-import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
-import { Button, Input, Modal, ModalContent } from "@nextui-org/react"
+import { Modal, ModalContent } from "@nextui-org/react"
 import { useState } from "react"
-import { SubmitHandler, useForm } from "react-hook-form"
-import CollectingContent from "./CollectingContent"
+import ProfileLinkForm from "./ProfileLinkForm"
 import TranferDataContent from "./TranferDataContent"
-
-type Inputs = {
-  linkedIn: string
-}
 
 const CreatPrivateAgentModal: React.FC<{
   openPopup: boolean
   setOpenPopup: any
 }> = ({ openPopup, setOpenPopup }) => {
   const [contentStep, setContentStep] = useState<number>(1)
-  const { register, handleSubmit, watch } = useForm<Inputs>()
-  const linkedInValue = watch("linkedIn")
-  const onOpenChange = () => {
-    setOpenPopup(!openPopup)
-  }
+  const [collectedData, setCollectedData] = useState<any>(null)
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    setContentStep(2)
-    console.log(data, "data")
+  const onOpenChange = () => {
+    setContentStep(1)
+    setOpenPopup(!openPopup)
   }
 
   const renderModalContent = () => {
     switch (contentStep) {
       case 2:
-        return <CollectingContent />
-
-      case 3:
-        return <TranferDataContent />
-
+        return (
+          <TranferDataContent
+            setContentStep={setContentStep}
+            collectedData={collectedData}
+            setOpenPopup={setOpenPopup}
+          />
+        )
       default:
         return (
-          <>
-            <span className="text-[24px] font-semibold text-mercury-950">
-              Website links (including Social Media)
-            </span>
-            <Input
-              placeholder="Enter your profile link"
-              labelPlacement="outside"
-              startContent={
-                <div className="flex-items-center rounded-full bg-mercury-30 px-2 py-[6px]">
-                  <span className="text-16 text-mercury-950">LinkedIn</span>
-                  <ChevronDownIcon />
-                </div>
-              }
-              classNames={{
-                inputWrapper:
-                  "!bg-mercury-200 rounded-full mt-4 !border !border-mercury-400 px-2",
-                innerWrapper: "!bg-mercury-200 rounded-full",
-                input: "text-18 !text-mercury-950 caret-[#363636]",
-              }}
-              size="lg"
-              {...register("linkedIn")}
-            />
-            <Button
-              className="mt-4 w-full rounded-full bg-mercury-950"
-              size="lg"
-              onClick={handleSubmit(onSubmit)}
-              isDisabled={!linkedInValue}
-            >
-              <span className="text-18 text-mercury-30">Connect</span>
-            </Button>
-          </>
+          <ProfileLinkForm
+            setContentStep={setContentStep}
+            setCollectedData={setCollectedData}
+          />
         )
     }
   }

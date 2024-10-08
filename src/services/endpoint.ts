@@ -10,6 +10,8 @@ const endpoint = {
   UPDATE_USER: withBaseURL("/user/update"),
   CREATE_ANONYMOUS: withBaseURL("/user/create-anonymous"),
 
+  //bot
+  CREATE_BOT: withBaseURL("/bot/create-bot"),
   //chat
   GET_MY_CHAT_GROUP_LIST: withBaseURL("/chat/group/list"),
   CHAT_SEND_TO_USER: withBaseURL("/chat/send-to-user"),
@@ -20,6 +22,8 @@ const endpoint = {
   GET_HISTORY_CHAT: (id: number) => withBaseURL(`/chat/group/${id}/message`),
   CHECK_CONVERSATION_CHAT: (userToId: number) =>
     withBaseURL(`/chat/check-conversation/${userToId}`),
+  GET_USER_PROFILE: (type: string, userName: string) =>
+    withBaseURL(`/user/${type}-crawl/${userName}`),
 }
 
 export default endpoint

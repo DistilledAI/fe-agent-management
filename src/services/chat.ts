@@ -95,3 +95,31 @@ export const checkConversation = async (userToId: number) => {
     url: endpoint.CHECK_CONVERSATION_CHAT(userToId),
   })
 }
+
+export const getProfileInfo = async ({
+  type,
+  userName,
+}: {
+  type: string
+  userName: string | null
+}) => {
+  return fetchApiAuth({
+    method: "get",
+    url: endpoint.GET_USER_PROFILE(type, userName),
+  })
+}
+
+interface CreateBot {
+  name?: string
+  publicAddress?: string
+  linkedin?: string
+  email: string
+  webhook?: string
+}
+export const createBot = async (data: CreateBot) => {
+  return fetchApiAuth({
+    method: "post",
+    url: endpoint.CREATE_BOT,
+    data,
+  })
+}

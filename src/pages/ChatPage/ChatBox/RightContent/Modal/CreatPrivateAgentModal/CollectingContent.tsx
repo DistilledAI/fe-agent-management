@@ -3,7 +3,7 @@ import useTextCreeping from "@hooks/useTextCreeping"
 
 const LIST_TEXT_DEFAULT_1 = ["Your own private agent starts from here."]
 
-const CollectingContent: React.FC = () => {
+const CollectingContent: React.FC<{ setContentStep: any }> = () => {
   const { text } = useTextCreeping({ listText: LIST_TEXT_DEFAULT_1 })
 
   return (
