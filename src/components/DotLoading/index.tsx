@@ -3,9 +3,10 @@ import { twMerge } from "tailwind-merge"
 
 interface DotLoadingProps {
   dotColor?: string
+  className?: string
 }
 
-const DotLoading: React.FC<DotLoadingProps> = ({ dotColor }) => {
+const DotLoading: React.FC<DotLoadingProps> = ({ dotColor, className }) => {
   const [loading, setLoading] = useState<boolean>(false)
 
   const handleAnimation = () => {
@@ -17,7 +18,7 @@ const DotLoading: React.FC<DotLoadingProps> = ({ dotColor }) => {
   }, [loading])
 
   return (
-    <div className="flex-items-center relative w-8">
+    <div className={`flex-items-center relative w-8 ${className}`}>
       <div className="absolute left-1/2 -translate-x-1/2">
         <div
           className={twMerge(

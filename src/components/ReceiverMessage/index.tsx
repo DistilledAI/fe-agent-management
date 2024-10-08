@@ -1,4 +1,5 @@
 import AvatarCustom, { AvatarCustomProps } from "@components/AvatarCustom"
+import DotLoading from "@components/DotLoading"
 import MarkdownMessage from "@components/Markdown"
 import { twMerge } from "tailwind-merge"
 
@@ -19,7 +20,11 @@ const ReceiverMessage = ({
     <div className="flex gap-4">
       <AvatarCustom {...avatar} />
       <p className={twMerge("text-base-md flex-1", contentClassName)}>
-        {isTyping ? "..." : <MarkdownMessage msg={content} />}
+        {isTyping ? (
+          <DotLoading className="mt-2" />
+        ) : (
+          <MarkdownMessage msg={content} />
+        )}
       </p>
     </div>
   )
