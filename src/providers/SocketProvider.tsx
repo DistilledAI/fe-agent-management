@@ -1,8 +1,8 @@
 import { envConfig } from "@configs/env"
 import useAuthState from "@hooks/useAuthState"
 import { getAccessToken } from "@utils/storage"
-import React, { createContext, useContext, useEffect, useRef } from "react"
-import type { Socket } from "socket.io-client"
+import React, { createContext, useContext, useEffect, useState } from "react"
+import { Socket } from "socket.io-client"
 import { io } from "socket.io-client"
 
 type SocketProviderProps = {
@@ -21,13 +21,13 @@ const SocketProviderContext = createContext(initialState)
 
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const { isLogin } = useAuthState()
-  const socketRef = useRef<Socket>()
+  const [socket, setSocket] = useState<Socket>()
 
   useEffect(() => {
     if (isLogin) {
       const accessToken = getAccessToken()
 
-      socketRef.current = io(envConfig.socketUrl, {
+      const initSocket = io(envConfig.socketUrl, {
         path: "/socket.io",
         transports: ["websocket"],
         rejectUnauthorized: false,
@@ -40,36 +40,38 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         reconnectionDelay: 2000,
       })
 
-      socketRef.current.connect()
-      socketRef.current.on("connect", () => console.log("Socket connected"))
-      socketRef.current.on("error", (error) => console.error(error))
+      setSocket(initSocket)
 
-      socketRef.current.on("disconnect", (reason) => {
+      initSocket.connect()
+      initSocket.on("connect", () => console.log("Socket connected"))
+      initSocket.on("error", (error) => console.error(error))
+
+      initSocket.on("disconnect", (reason) => {
         console.log(`Socket disconnected: ${reason}`)
-        socketRef.current?.connect()
+        initSocket?.connect()
       })
 
-      socketRef.current.on("reconnect", (attempt) => {
+      initSocket.on("reconnect", (attempt) => {
         console.log(`Reconnected after ${attempt} attempts`)
       })
 
-      socketRef.current.on("reconnect_attempt", (attempt) => {
+      initSocket.on("reconnect_attempt", (attempt) => {
         console.log(`Attempting to reconnect: Attempt ${attempt}`)
       })
 
       return () => {
-        if (socketRef.current) {
-          socketRef.current.off("disconnect")
-          socketRef.current.off("reconnect")
-          socketRef.current.off("reconnect_attempt")
-          socketRef.current.disconnect()
+        if (initSocket) {
+          initSocket.off("disconnect")
+          initSocket.off("reconnect")
+          initSocket.off("reconnect_attempt")
+          initSocket.disconnect()
         }
       }
     }
   }, [isLogin])
 
   return (
-    <SocketProviderContext.Provider value={{ socket: socketRef.current }}>
+    <SocketProviderContext.Provider value={{ socket }}>
       {children}
     </SocketProviderContext.Provider>
   )
