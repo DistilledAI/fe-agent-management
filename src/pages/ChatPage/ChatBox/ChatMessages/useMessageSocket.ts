@@ -4,6 +4,7 @@ import { useSocket } from "providers/SocketProvider"
 import React, { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { IMessageBox, RoleChat } from "./helpers"
+import { makeId } from "@utils/index"
 
 interface IDataListen {
   event: string
@@ -18,6 +19,7 @@ enum StatusMessage {
   TYPING = "typing",
   UPDATE = "update",
   DONE = "message_done",
+  GROUP = "chat-group",
 }
 
 const useMessageSocket = (
@@ -30,13 +32,6 @@ const useMessageSocket = (
   const isPassRule = (e: IDataListen) => {
     if (e.user.id === user?.id) return false
     if (e.group !== Number(chatId)) return false
-    if (!e.msgId) return false
-    const passCheckEvent = [
-      StatusMessage.DONE,
-      StatusMessage.TYPING,
-      StatusMessage.UPDATE,
-    ].includes(e.event as StatusMessage)
-    if (!passCheckEvent) return false
 
     return true
   }
@@ -69,6 +64,19 @@ const useMessageSocket = (
     )
   }
 
+  const handleWithGroup = (e: IDataListen) => {
+    if (e.messages === "...") return
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: makeId(),
+        role: RoleChat.CUSTOMER,
+        content: e.messages,
+        avatar: e.user.avatar,
+      },
+    ])
+  }
+
   useEffect(() => {
     if (socket && user) {
       const event = "chat-group"
@@ -76,6 +84,7 @@ const useMessageSocket = (
         if (!isPassRule(e)) return
         if (e.event === StatusMessage.TYPING) handleWithTyping(e)
         if (e.event === StatusMessage.UPDATE) handleWithUpdate(e)
+        if (e.event === StatusMessage.GROUP) handleWithGroup(e)
       })
 
       return () => {

@@ -24,7 +24,7 @@ const useGroupSocket = (
         socket.off(event)
       }
     }
-  }, [socket, user, chatId])
+  }, [socket, user, chatId, setHasNotiList])
 }
 
 export default useGroupSocket
