@@ -123,3 +123,10 @@ export const createBot = async (data: CreateBot) => {
     data,
   })
 }
+
+export const getMyPrivateAgent = async () => {
+  return fetchApiAuth({
+    method: "get",
+    url: endpoint.GET_BOT_LIST,
+  })
+}

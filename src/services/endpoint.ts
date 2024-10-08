@@ -12,6 +12,8 @@ const endpoint = {
 
   //bot
   CREATE_BOT: withBaseURL("/bot/create-bot"),
+  GET_BOT_LIST: withBaseURL("/bot/list"),
+
   //chat
   GET_MY_CHAT_GROUP_LIST: withBaseURL("/chat/group/list"),
   CHAT_SEND_TO_USER: withBaseURL("/chat/send-to-user"),
