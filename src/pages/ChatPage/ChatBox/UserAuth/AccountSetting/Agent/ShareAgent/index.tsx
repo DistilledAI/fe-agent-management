@@ -11,7 +11,7 @@ const ShareAgent = () => {
         <ShareWithQrIcon />
         <span className="font-medium text-mercury-950">Share as QR</span>
       </Button>
-      <ShareModal isOpen={isOpen} onClose={onClose} />
+      {isOpen && <ShareModal isOpen={isOpen} onClose={onClose} />}
     </>
   )
 }

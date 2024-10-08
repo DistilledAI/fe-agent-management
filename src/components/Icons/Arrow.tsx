@@ -1,4 +1,4 @@
-import { BgIconProps } from "types/icons"
+import { BgIconProps, IconProps } from "types/icons"
 
 export const ArrowUpFilledIcon = ({
   size = 20,
@@ -66,6 +66,34 @@ export const ArrowLeftFilledIcon = ({
         strokeMiterlimit="10"
         stroke-linecap="round"
         stroke-linejoin="round"
+      />
+    </svg>
+  )
+}
+
+export const ArrowBottomSquareOutlineIcon = ({
+  size = 12,
+  color = "#545454",
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 12 12"
+      fill="none"
+    >
+      <path
+        d="M4 6L6 8M6 8L8 6M6 8V4"
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M6 1.5C9.6 1.5 10.5 2.4 10.5 6C10.5 9.6 9.6 10.5 6 10.5C2.4 10.5 1.5 9.6 1.5 6C1.5 2.4 2.4 1.5 6 1.5Z"
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   )

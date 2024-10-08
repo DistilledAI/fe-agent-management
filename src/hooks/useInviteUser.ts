@@ -3,6 +3,8 @@ import { useEffect } from "react"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { checkGroupDirect, createGroupChat } from "services/chat"
 import useAuthState from "./useAuthState"
+import { postCreateAnonymous } from "services/auth"
+import { cachedSessionStorage, storageKey } from "@utils/storage"
 
 const useInviteUser = () => {
   const navigate = useNavigate()
@@ -10,8 +12,12 @@ const useInviteUser = () => {
   const { pathname } = useLocation()
   const { user, isLogin } = useAuthState()
   const userId = Number(params?.userId)
+  const isInvitePathName = pathname === `${PATH_NAMES.INVITE}/${userId}`
+  const sessionAccessToken = cachedSessionStorage.getWithExpiry(
+    storageKey.ACCESS_TOKEN,
+  )
 
-  const handleInviteUser = async () => {
+  const handleInviteUserLoggedIn = async () => {
     try {
       const checkGroupDirectResponse = await checkGroupDirect({
         members: [userId],
@@ -23,24 +29,48 @@ const useInviteUser = () => {
         })
         const newGroupId = createGroupResponse?.data?.id
         if (newGroupId) {
-          navigate(`${PATH_NAMES.CHAT}/${newGroupId}?isInvited=true`)
+          navigate(`${PATH_NAMES.CHAT}/${newGroupId}`)
         }
         return
       }
-      navigate(`${PATH_NAMES.CHAT}/${groupId}?isInvited=true`)
+      navigate(`${PATH_NAMES.CHAT}/${groupId}`)
     } catch (error) {
       console.log("error", error)
       navigate(`/${PATH_NAMES.CHAT}`)
     }
   }
 
+  const handleInviteAnonymous = async () => {
+    try {
+      const res = await postCreateAnonymous()
+      const accessToken = res?.data?.accessToken
+      const expiry = Date.now() + 24 * 60 * 60 * 1000
+
+      if (accessToken) {
+        cachedSessionStorage.setWithExpiry(
+          storageKey.ACCESS_TOKEN,
+          accessToken,
+          expiry,
+        )
+        handleInviteUserLoggedIn()
+        console.log("Access token saved to sessionStorage:", accessToken)
+      } else {
+        console.log("Access token not found in response")
+      }
+    } catch (error) {
+      console.log("error", error)
+    }
+  }
+
   useEffect(() => {
-    if (
-      pathname === `${PATH_NAMES.INVITE}/${userId}` &&
-      user?.id !== userId &&
-      isLogin
-    ) {
-      handleInviteUser()
+    if (isInvitePathName && !isLogin && !sessionAccessToken) {
+      handleInviteAnonymous()
+    }
+  }, [isInvitePathName, isLogin, sessionAccessToken])
+
+  useEffect(() => {
+    if (isInvitePathName && user?.id !== userId && isLogin) {
+      handleInviteUserLoggedIn()
     }
   }, [pathname, userId, user?.id, isLogin])
 

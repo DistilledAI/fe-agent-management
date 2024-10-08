@@ -20,7 +20,7 @@ const DrawerBottom = ({
   isOpen,
   onClose,
   children,
-  isOutsideClose = true,
+  isOutsideClose = false,
   className,
   classNames,
 }: DrawerBottomProps) => {

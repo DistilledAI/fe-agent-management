@@ -1,29 +1,35 @@
 import { distilledAIIcon } from "@assets/svg"
 import CloseButton from "@components/CloseButton"
+import { ArrowBottomSquareOutlineIcon } from "@components/Icons/Arrow"
 import { CopyIcon } from "@components/Icons/Copy"
 import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-} from "@nextui-org/react"
+import { Modal, ModalBody, ModalContent, ModalHeader } from "@nextui-org/react"
 import { copyClipboard } from "@utils/index"
-import { QRCodeSVG } from "qrcode.react"
+import { QRCodeCanvas } from "qrcode.react"
+import { IModalProps } from "types/modal"
+import { saveAs } from "file-saver"
+import { useRef } from "react"
 
-interface ShareModalProps {
-  isOpen: boolean
-  onClose: () => void
-}
+const appUrl = window.location.origin
 
-const appUrl = window.location.hostname
-
-const ShareModal = ({ isOpen, onClose }: ShareModalProps) => {
+const ShareModal = ({ isOpen, onClose }: IModalProps) => {
   const { user } = useAuthState()
+  const qrRef = useRef<HTMLCanvasElement>(null)
 
   const inviteUrl = `${appUrl}${PATH_NAMES.INVITE}/${user?.id}`
+
+  const handleDownloadQR = () => {
+    if (qrRef.current) {
+      const canvas = qrRef.current
+      canvas.toBlob((blob) => {
+        if (blob) {
+          saveAs(blob, "my-agent-qr-code.png")
+        }
+      })
+    }
+  }
+
   return (
     <Modal
       isOpen={isOpen}
@@ -46,9 +52,10 @@ const ShareModal = ({ isOpen, onClose }: ShareModalProps) => {
             className="absolute right-3 top-1/2 -translate-y-1/2"
           />
         </ModalHeader>
-        <ModalBody className="flex items-center justify-center pb-4">
-          <QRCodeSVG
-            value={`${appUrl}/${PATH_NAMES.INVITE}/123`}
+        <ModalBody className="flex items-center justify-center space-y-2 pb-4">
+          <QRCodeCanvas
+            ref={qrRef}
+            value={inviteUrl}
             size={256}
             title="My Agent QR"
             imageSettings={{
@@ -60,16 +67,22 @@ const ShareModal = ({ isOpen, onClose }: ShareModalProps) => {
             level="H"
           />
 
-          <div className="flex items-center gap-1">
-            <span className="line-clamp-1 whitespace-nowrap text-base text-mercury-950">
-              {inviteUrl}
-            </span>
-            <Button
-              onClick={(e) => copyClipboard(e, inviteUrl)}
-              className="h-auto w-auto min-w-0 bg-transparent p-0"
+          <div className="flex w-full items-center justify-center gap-8">
+            <div
+              className="group/item flex cursor-pointer items-center gap-1 hover:opacity-70"
+              onClick={handleDownloadQR}
             >
-              <CopyIcon />
-            </Button>
+              <ArrowBottomSquareOutlineIcon color="#a2845e" size={20} />
+              <span className="text-base-md text-brown-10">Save image</span>
+            </div>
+
+            <div
+              className="group/item flex cursor-pointer items-center gap-1 hover:opacity-70"
+              onClick={(e) => copyClipboard(e, inviteUrl)}
+            >
+              <CopyIcon color="#a2845e" />
+              <span className="text-base-md text-brown-10">Copy link</span>
+            </div>
           </div>
         </ModalBody>
       </ModalContent>

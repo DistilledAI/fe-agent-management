@@ -1,6 +1,6 @@
 import { envConfig } from "@configs/env"
 import useAuthState from "@hooks/useAuthState"
-import cachedLocalStorage, { storageKey } from "@utils/storage"
+import { getAccessToken } from "@utils/storage"
 import React, { createContext, useContext, useEffect, useRef } from "react"
 import type { Socket } from "socket.io-client"
 import { io } from "socket.io-client"
@@ -25,13 +25,15 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
   useEffect(() => {
     if (isLogin) {
+      const accessToken = getAccessToken()
+
       socketRef.current = io(envConfig.socketUrl, {
         path: "/socket.io",
         transports: ["websocket"],
         rejectUnauthorized: false,
         agent: false,
         auth: {
-          authorization: `Bearer ${cachedLocalStorage.getWithExpiry(storageKey.ACCESS_TOKEN)}`,
+          authorization: `Bearer ${accessToken}`,
         },
         reconnection: true,
         reconnectionAttempts: 3,
