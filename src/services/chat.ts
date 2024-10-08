@@ -101,7 +101,7 @@ export const getProfileInfo = async ({
   userName,
 }: {
   type: string
-  userName: string | null
+  userName: string
 }) => {
   return fetchApiAuth({
     method: "get",
