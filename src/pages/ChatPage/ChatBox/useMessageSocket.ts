@@ -137,7 +137,7 @@ const useMessageSocket = () => {
   }
 
   useEffect(() => {
-    if (socket && user?.id) {
+    if (socket) {
       const event = "chat-group"
       socket.on(event, (e: IDataListen) => {
         handleResponseForMessage(e)
