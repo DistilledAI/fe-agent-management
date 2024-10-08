@@ -21,3 +21,10 @@ export const signatureAuth = async (data: IDataSignatureAuth) => {
     data,
   })
 }
+
+export const postCreateAnonymous = async () => {
+  return fetchApi({
+    method: "POST",
+    url: endpoint.CREATE_ANONYMOUS,
+  })
+}

@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit"
-import cachedLocalStorage, { storageKey } from "@utils/storage"
+import {
+  storageKey,
+  cachedLocalStorage,
+  cachedSessionStorage,
+} from "@utils/storage"
 
 export interface IUser {
   id: number
@@ -39,6 +43,8 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state, action: { payload: LoginSuccessPayload }) => {
+      cachedSessionStorage.removeItem(storageKey.ACCESS_TOKEN)
+
       const { user, accessToken, expire } = action.payload
       state.user = user
       state.isLogin = true
@@ -52,6 +58,7 @@ const userSlice = createSlice({
       state.user = null
       state.isLogin = false
       cachedLocalStorage.removeItem(storageKey.ACCESS_TOKEN)
+      cachedSessionStorage.removeItem(storageKey.ACCESS_TOKEN)
     },
     updateUser: (state, action: { payload: UpdateUserPayload }) => {
       state.user = action.payload.user

@@ -1,10 +1,10 @@
 import { CloseFilledIcon } from "@components/Icons/DefiLens/index.tsx"
-import "@rainbow-me/rainbowkit/styles.css"
 import Providers from "Providers.tsx"
 import React from "react"
 import ReactDOM from "react-dom/client"
 import { ToastContainer } from "react-toastify"
 import App from "./App.tsx"
+import "@rainbow-me/rainbowkit/styles.css"
 import "react-toastify/dist/ReactToastify.css"
 import "./index.css"
 

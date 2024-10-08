@@ -15,6 +15,8 @@ import AgentCreative from "./Creative"
 import VoiceChat from "./VoiceChat"
 import VoiceCharacter from "./VoiceCharacter"
 import DrawerBottom from "@components/DrawerBottom"
+import { PATH_NAMES } from "@constants/index"
+import { useNavigate } from "react-router-dom"
 
 const AccountSetting: React.FC<{
   isOpen: boolean
@@ -22,6 +24,7 @@ const AccountSetting: React.FC<{
 }> = ({ isOpen, onClose }) => {
   const { user } = useAuthState()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   return (
     <DrawerBottom isOpen={isOpen} onClose={onClose}>
@@ -49,6 +52,7 @@ const AccountSetting: React.FC<{
           <div
             onClick={() => {
               dispatch(logout())
+              navigate(PATH_NAMES.HOME)
               onClose()
             }}
             className="ml-3 cursor-pointer"

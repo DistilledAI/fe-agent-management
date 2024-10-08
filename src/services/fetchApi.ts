@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios"
 import TokenService from "./token"
-import cachedLocalStorage, { storageKey } from "@utils/storage"
+import { getAccessToken } from "@utils/storage"
 
 export const METHODS = {
   GET: "GET",
@@ -23,9 +23,8 @@ export const fetchApiAuth = axios.create({
 
 fetchApiAuth.interceptors.request.use(
   async (config) => {
-    const accessToken = cachedLocalStorage.getWithExpiry(
-      storageKey.ACCESS_TOKEN,
-    )
+    const accessToken = getAccessToken()
+
     if (!accessToken) {
       return config
     }
