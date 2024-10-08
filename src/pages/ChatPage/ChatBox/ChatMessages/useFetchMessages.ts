@@ -22,7 +22,7 @@ export interface IMessage {
 const useFetchMessages = () => {
   const [loading, setLoading] = useState(false)
   const { setDataFetch, setMessages } = useChatMessage()
-  const { user, sessionAccessToken } = useAuthState()
+  const { user } = useAuthState()
   const { chatId } = useParams()
   const navigate = useNavigate()
 
@@ -33,12 +33,8 @@ const useFetchMessages = () => {
       const res = await getChatHistoryById({ id: Number(chatId) })
       if (res.data.items) {
         setDataFetch(res.data.items)
-        const userIdSender = res.data.items?.[0]?.userId
         setMessages(
-          convertDataFetchToMessage(
-            res.data.items,
-            user?.id ? user.id : userIdSender ? userIdSender : 0,
-          ),
+          convertDataFetchToMessage(res.data.items, user?.id ? user.id : 0),
         )
       }
     } catch (error) {
@@ -79,12 +75,6 @@ const useFetchMessages = () => {
   useEffect(() => {
     if (user?.id) fetchMessages()
   }, [chatId, user?.id])
-
-  useEffect(() => {
-    if (chatId && sessionAccessToken) {
-      fetchMessages()
-    }
-  }, [chatId, sessionAccessToken])
 
   return { loading, fetchMessages, onLoadPrevMessages }
 }

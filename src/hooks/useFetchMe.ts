@@ -14,7 +14,24 @@ const useFetchMe = () => {
       setLoading(true)
       const res = await getUser()
       if (res.data) {
-        dispatch(updateUser({ user: res.data }))
+        if (sessionAccessToken) {
+          dispatch(
+            updateUser({
+              user: {
+                id: res?.data?.id,
+                createdAt: "",
+                publicAddress: "",
+                role: 5,
+                status: 0,
+                typeLogin: "",
+                username: "",
+                avatar: "",
+              },
+            }),
+          )
+        } else {
+          dispatch(updateUser({ user: res.data }))
+        }
       }
     } catch (error: any) {
       console.error(error)
@@ -27,7 +44,7 @@ const useFetchMe = () => {
   }
 
   useEffect(() => {
-    if (isLogin && !sessionAccessToken) fetchData()
+    if (isLogin) fetchData()
   }, [isLogin, sessionAccessToken])
 
   return { loading, fetchData }

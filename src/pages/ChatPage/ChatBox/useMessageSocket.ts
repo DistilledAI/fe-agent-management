@@ -137,7 +137,7 @@ const useMessageSocket = () => {
   }
 
   useEffect(() => {
-    if (socket && user) {
+    if (socket && user?.id) {
       const event = "chat-group"
       socket.on(event, (e: IDataListen) => {
         handleResponseForMessage(e)
@@ -149,7 +149,7 @@ const useMessageSocket = () => {
         socket.off(event)
       }
     }
-  }, [socket, user, isPassRuleMessage, isPassRuleNotification])
+  }, [socket, user?.id, isPassRuleMessage, isPassRuleNotification])
 
   useEffect(() => {
     setIndexRes(0)

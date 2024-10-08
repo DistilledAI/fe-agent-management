@@ -11,6 +11,7 @@ const Language = () => {
           <span className="font-medium text-mercury-600">Language</span>
         </div>
         <Select
+          aria-label="Select Language"
           placeholder="Select language"
           className="w-full"
           classNames={{
