@@ -1,9 +1,9 @@
 import useAuthState from "@hooks/useAuthState"
 import { IUser } from "@reducers/user/UserSlice"
 import { useSocket } from "providers/SocketProvider"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { IMessageBox, RoleChat } from "./helpers"
+import { RoleChat } from "./ChatMessages/helpers"
 import { makeId } from "@utils/index"
 import { useChatMessage } from "providers/MessageProvider"
 
@@ -23,13 +23,11 @@ enum StatusMessage {
   GROUP = "chat-group",
 }
 
-const useMessageSocket = (
-  setMessages: React.Dispatch<React.SetStateAction<IMessageBox[]>>,
-) => {
+const useMessageSocket = () => {
   const { chatId } = useParams()
   const { socket } = useSocket()
   const { user } = useAuthState()
-  const { setGroupsHaveNotification, setIsNewMsgOnCurrentWindow } =
+  const { setGroupsHaveNotification, setIsNewMsgOnCurrentWindow, setMessages } =
     useChatMessage()
 
   const isPassRuleMessage = (e: IDataListen) => {

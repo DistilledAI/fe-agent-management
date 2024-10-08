@@ -7,11 +7,13 @@ import ChatMessages from "./ChatMessages"
 import LeftBar from "./LeftBar"
 import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
 import UserAuth from "./UserAuth"
+import useMessageSocket from "./useMessageSocket"
 
 const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
   const { chatId } = useParams()
   const { isLogin } = useAuthState()
+  useMessageSocket()
 
   return (
     <div className="flex h-full items-center justify-center pb-10 pt-[18px]">
