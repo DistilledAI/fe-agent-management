@@ -74,10 +74,10 @@ const TranferDataContent: React.FC<{
   const renderLeftContent = () => {
     if (isRequested) {
       return (
-        <>
+        <div>
           <div className="relative mb-4 flex max-w-[300px] items-center gap-2 text-base transition-all duration-500 ease-linear">
             <CheckedIcon />
-            <span className="text-[24px] font-semibold text-mercury-950">
+            <span className="text-[24px] font-semibold leading-9 text-mercury-950">
               Creation requested!
             </span>
           </div>
@@ -87,12 +87,12 @@ const TranferDataContent: React.FC<{
             when your private intelligence is{" "}
             <span className="font-bold">ready on the pod.</span>
           </span>
-        </>
+        </div>
       )
     }
 
     return (
-      <>
+      <div>
         <div className="relative mb-4 max-w-[300px] text-base transition-all duration-500 ease-linear">
           <span className="text-[24px] font-semibold text-mercury-950">
             {text2}
@@ -105,12 +105,12 @@ const TranferDataContent: React.FC<{
           private intelligence is{" "}
           <span className="font-bold">ready on the pod.</span>
         </span>
-      </>
+      </div>
     )
   }
 
   return (
-    <div className="grid w-[800px] grid-cols-2">
+    <div className="grid h-fit w-[800px] grid-cols-2">
       <div className="w-full">
         <div className="flex-items-center mb-2 w-full gap-4">
           <div className="flex-items-center h-9 w-9 justify-center rounded-full bg-yellow-10">
@@ -121,48 +121,50 @@ const TranferDataContent: React.FC<{
             <span className="text-base">{profileLink}</span>
           </div>
         </div>
-        <WordCloundContent paragraph={paragraphValue} />
+        <div>
+          <WordCloundContent paragraph={paragraphValue} />
+        </div>
       </div>
-      <div>
+      <div className="flex flex-col justify-between">
         {renderLeftContent()}
-
-        {!isRequested && (
-          <Input
-            placeholder="Email address"
-            labelPlacement="outside"
-            classNames={{
-              inputWrapper:
-                "!bg-mercury-200 rounded-full mt-8 !border !border-mercury-400",
-              innerWrapper: "!bg-mercury-200 rounded-full",
-              input: "text-18 !text-mercury-950 caret-[#363636]",
-            }}
-            size="lg"
-            {...register("email")}
-          />
-        )}
-
-        {isRequested ? (
-          <Button
-            className="mt-4 w-full rounded-full bg-mercury-950"
-            size="lg"
-            onClick={() => onCloseModal()}
-          >
-            <span className="text-18 text-mercury-30">Got it!</span>
-          </Button>
-        ) : (
-          <Button
-            className="mt-4 w-full rounded-full bg-mercury-950"
-            size="lg"
-            onClick={handleSubmit(onSubmit)}
-            disabled={!inputValue}
-            isLoading={loading}
-          >
-            <span className="text-18 text-mercury-30">Enter waitlist</span>
-            <div className="rotate-180">
-              <ArrowLeftFilledIcon color="#FAFAFA" />
-            </div>
-          </Button>
-        )}
+        <div className="pb-8">
+          {!isRequested && (
+            <Input
+              placeholder="Email address"
+              labelPlacement="outside"
+              classNames={{
+                inputWrapper:
+                  "!bg-mercury-200 rounded-full mt-8 !border !border-mercury-400",
+                innerWrapper: "!bg-mercury-200 rounded-full",
+                input: "text-18 !text-mercury-950 caret-[#363636]",
+              }}
+              size="lg"
+              {...register("email")}
+            />
+          )}
+          {isRequested ? (
+            <Button
+              className="mt-4 w-full rounded-full bg-mercury-950"
+              size="lg"
+              onClick={() => onCloseModal()}
+            >
+              <span className="text-18 text-mercury-30">Got it!</span>
+            </Button>
+          ) : (
+            <Button
+              className="mt-4 w-full rounded-full bg-mercury-950"
+              size="lg"
+              onClick={handleSubmit(onSubmit)}
+              disabled={!inputValue}
+              isLoading={loading}
+            >
+              <span className="text-18 text-mercury-30">Enter waitlist</span>
+              <div className="rotate-180">
+                <ArrowLeftFilledIcon color="#FAFAFA" />
+              </div>
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   )
