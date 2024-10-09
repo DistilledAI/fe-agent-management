@@ -36,7 +36,7 @@ const AgentDescription = () => {
           onKeyDown={handleKeyDown}
           className="line-clamp-1 block max-w-52 text-ellipsis whitespace-nowrap text-mercury-900 focus:border-none focus:outline-none"
         >
-          AI Experience Researcher
+          -
         </span>
         <Button
           onClick={handleFocus}

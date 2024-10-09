@@ -64,7 +64,7 @@ const PrivateAgent = () => {
             contentEditable
             className="line-clamp-1 block max-w-36 text-ellipsis whitespace-nowrap text-mercury-900 focus:border-none focus:outline-none"
           >
-            {firstBot?.username}
+            {firstBot?.username ?? "-"}
           </span>
           <Button className="h-auto w-auto min-w-0 bg-transparent p-0">
             <EditPenFilledIcon />
@@ -76,7 +76,9 @@ const PrivateAgent = () => {
         <span className="text-mercury-600">Address:</span>
         <div className="flex items-center gap-2">
           <span className="line-clamp-1 whitespace-nowrap text-mercury-900">
-            {centerTextEllipsis(firstBot?.publicAddress ?? "", 6)}
+            {firstBot?.publicAddress
+              ? centerTextEllipsis(firstBot?.publicAddress, 6)
+              : "-"}
           </span>
           <Button
             onClick={(e) => copyClipboard(e, firstBot?.publicAddress ?? "")}
@@ -88,10 +90,10 @@ const PrivateAgent = () => {
         </div>
       </div>
       <div className="flex items-center justify-between gap-2">
-        <ShareAgent isDisabled={isPending} />
+        <ShareAgent isDisabled={isPending || !firstBot} />
         <Button
           className="flex rounded-full bg-mercury-100"
-          isDisabled={isPending}
+          isDisabled={isPending || !firstBot}
         >
           <ShareWithCloudIcon />
           <span className="font-medium text-mercury-950">
