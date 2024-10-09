@@ -4,6 +4,10 @@ import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { getGroupList } from "services/chat"
 
+export enum TypeGroup {
+  DIRECT = "DIRECT",
+  PRIVATE_GROUP = "PRIVATE_GROUP",
+}
 export interface IGroup {
   id: number
   name: string
@@ -15,6 +19,7 @@ export interface IGroup {
   createBy: number
   status: number
   createdAt: string
+  typeGroup: TypeGroup
 }
 
 export interface UserGroup {

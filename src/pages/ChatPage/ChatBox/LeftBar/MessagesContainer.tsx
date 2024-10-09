@@ -10,7 +10,7 @@ import ActiveEffect from "./ActiveEffect"
 import { getAvatarGroupChat, getRoleUser } from "./helpers"
 import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
-import useFetchGroups from "./useFetchGroups"
+import useFetchGroups, { TypeGroup } from "./useFetchGroups"
 import { RoleUser } from "@constants/index"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { IUser } from "@reducers/user/UserSlice"
@@ -122,25 +122,41 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                 )}
               >
                 <AvatarContainer
-                  badgeIcon={getIconGroup(
-                    groupItem.userId,
-                    groupItem.group.userA,
-                    groupItem.group.userB,
-                  )}
-                  avatarUrl={getAvatarGroupChat(
-                    groupItem.userId,
-                    groupItem.group.userA,
-                    groupItem.group.userB,
-                  )}
-                  userName={getNameGroup(
-                    groupItem.group.userA,
-                    groupItem.group.userB,
-                  )}
-                  badgeClassName={getColorGroupIcon(
-                    groupItem.userId,
-                    groupItem.group.userA,
-                    groupItem.group.userB,
-                  )}
+                  badgeIcon={
+                    groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP
+                      ? null
+                      : getIconGroup(
+                          groupItem.userId,
+                          groupItem.group.userA,
+                          groupItem.group.userB,
+                        )
+                  }
+                  avatarUrl={
+                    groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP
+                      ? undefined
+                      : getAvatarGroupChat(
+                          groupItem.userId,
+                          groupItem.group.userA,
+                          groupItem.group.userB,
+                        )
+                  }
+                  userName={
+                    groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP
+                      ? groupItem.group.name
+                      : getNameGroup(
+                          groupItem.group.userA,
+                          groupItem.group.userB,
+                        )
+                  }
+                  badgeClassName={
+                    groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP
+                      ? "bg-[#0FE9A4]"
+                      : getColorGroupIcon(
+                          groupItem.userId,
+                          groupItem.group.userA,
+                          groupItem.group.userB,
+                        )
+                  }
                 />
                 <ActiveEffect isActive={isActive} />
                 <div
