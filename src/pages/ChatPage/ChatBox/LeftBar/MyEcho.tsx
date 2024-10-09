@@ -2,14 +2,18 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { PATH_NAMES } from "@constants/index"
 import { AGENT_TYPE, updateAgentType } from "@reducers/chatbot/AgentSlice"
 import { useDispatch } from "react-redux"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import ActiveEffect from "./ActiveEffect"
 
 const MyEcho: React.FC = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
-  const isActive = location.pathname === PATH_NAMES.HOME
+  const { privateChatId } = useParams()
+  const isActive = [
+    PATH_NAMES.HOME,
+    PATH_NAMES.PRIVATE_AGENT + "/" + privateChatId,
+  ].includes(location.pathname)
 
   const handleChooseMyEcho = () => {
     navigate("/")

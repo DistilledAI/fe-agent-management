@@ -13,12 +13,14 @@ import { RoleUser } from "@constants/index"
 
 const ChatInput = () => {
   const { setMessages: setMessageContext } = useChatMessage()
-  const { chatId } = useParams()
+  const { chatId, privateChatId } = useParams()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [messages, setMessages] = useState("")
   const boxRef = useRef<HTMLDivElement>(null)
   const heightBoxRef = useRef(0)
   const { setStyle } = useStyleBoxChat()
+
+  const groupId = chatId ?? privateChatId
 
   const onSubmit = async () => {
     if (!messages) return
@@ -33,7 +35,7 @@ const ChatInput = () => {
     ])
     setMessages("")
     await postChatToGroup({
-      groupId: Number(chatId),
+      groupId: Number(groupId),
       messages,
     })
   }

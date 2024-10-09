@@ -24,16 +24,18 @@ enum StatusMessage {
 }
 
 const useMessageSocket = () => {
-  const { chatId } = useParams()
+  const { chatId, privateChatId } = useParams()
   const { socket } = useSocket()
   const { user } = useAuthState()
   const indexResRef = useRef(-1)
   const { setGroupsHaveNotification, setIsNewMsgOnCurrentWindow, setMessages } =
     useChatMessage()
 
+  const groupChatId = chatId || privateChatId
+
   const isPassRuleMessage = (e: IDataListen) => {
     if (e.user.id === user?.id) return false
-    if (e.group !== Number(chatId)) return false
+    if (e.group !== Number(groupChatId)) return false
 
     return true
   }
@@ -116,7 +118,7 @@ const useMessageSocket = () => {
 
   const isPassRuleNotification = (e: IDataListen) => {
     if (e?.user?.id === user?.id) return false
-    if (Number(chatId) === e.group) return false
+    if (Number(groupChatId) === e.group) return false
     return true
   }
 
@@ -129,7 +131,7 @@ const useMessageSocket = () => {
 
   const isPassRuleNewMsg = (e: IDataListen) => {
     if (e?.user?.id === user?.id) return false
-    if (Number(chatId) !== e.group) return false
+    if (Number(groupChatId) !== e.group) return false
     return true
   }
 
@@ -155,7 +157,7 @@ const useMessageSocket = () => {
 
   useEffect(() => {
     indexResRef.current = -1
-  }, [chatId])
+  }, [groupChatId])
 }
 
 export default useMessageSocket

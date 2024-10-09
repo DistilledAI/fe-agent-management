@@ -3,7 +3,12 @@ import useAuthState from "@hooks/useAuthState"
 import { useEffect, useState } from "react"
 import CreatePrivateAgent from "./CreatePrivateAgent"
 import PrivateAgentChatContent from "./PrivateAgentChatContent"
-import usePrivateAgent from "./usePrivateAgent"
+import usePrivateAgent, { PRIVATE_AGENT_STATUS } from "./usePrivateAgent"
+import { checkGroupDirect, createGroupChat } from "services/chat"
+import { useNavigate } from "react-router-dom"
+import { PATH_NAMES } from "@constants/index"
+
+const GROUP_DEFAULT_FOR_PRIVATE_AGENT = 396
 
 const MyPrivateAgentContent: React.FC<{
   connectWalletLoading: boolean
@@ -11,13 +16,35 @@ const MyPrivateAgentContent: React.FC<{
 }> = ({ connectWalletLoading, connectWallet }) => {
   const { privateAgentData, callGetMyPrivateAgent, loading } = usePrivateAgent()
   const { isLogin } = useAuthState()
+  const navigate = useNavigate()
   const privateAgentStatus = privateAgentData?.status
-  // const isPending = privateAgentStatus === PRIVATE_AGENT_STATUS.PENDING
+  const isPending = privateAgentStatus === PRIVATE_AGENT_STATUS.PENDING
   const [isCreated, setCreated] = useState<boolean>(false)
+
+  const checkCreatedGroupAgent = async () => {
+    if (isPending) {
+      const res = await checkGroupDirect({
+        members: [GROUP_DEFAULT_FOR_PRIVATE_AGENT],
+      })
+      const groupId = res?.data?.group?.id
+      if (!groupId) {
+        const createGroupResponse = await createGroupChat({
+          members: [GROUP_DEFAULT_FOR_PRIVATE_AGENT],
+        })
+        const newGroupId = createGroupResponse?.data?.id
+        if (newGroupId) {
+          navigate(`${PATH_NAMES.PRIVATE_AGENT}/${newGroupId}`)
+        }
+        return
+      }
+      navigate(`${PATH_NAMES.PRIVATE_AGENT}/${groupId}`)
+    }
+  }
 
   useEffect(() => {
     callGetMyPrivateAgent()
-  }, [isLogin, isCreated])
+    checkCreatedGroupAgent()
+  }, [isLogin, isCreated, isPending])
 
   if (loading)
     return (
@@ -30,7 +57,7 @@ const MyPrivateAgentContent: React.FC<{
       </div>
     )
 
-  if (!!privateAgentStatus) return <PrivateAgentChatContent />
+  if (privateAgentData) return <PrivateAgentChatContent />
 
   return (
     <CreatePrivateAgent

@@ -15,6 +15,10 @@ const router = createBrowserRouter([
     path: `${PATH_NAMES.INVITE}/:userId`,
     element: <ChatPage />,
   },
+  {
+    path: `${PATH_NAMES.PRIVATE_AGENT}/:privateChatId`,
+    element: <ChatPage />,
+  },
 ])
 
 export default router
