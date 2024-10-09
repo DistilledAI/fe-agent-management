@@ -10,9 +10,7 @@ export const getAvatarGroupChat = (
 }
 
 export const getRoleUser = (ownerId: number, userA: IUser, userB: IUser) => {
-  if (userA.role === RoleUser.ANONYMOUS || userB.role === RoleUser.ANONYMOUS)
-    return RoleUser.USER
-
   const info = ownerId === userA.id ? userB : userA
+  if (info.role === RoleUser.ANONYMOUS) return RoleUser.USER
   return info.role === RoleUser.USER ? RoleUser.USER : RoleUser.BOT
 }
