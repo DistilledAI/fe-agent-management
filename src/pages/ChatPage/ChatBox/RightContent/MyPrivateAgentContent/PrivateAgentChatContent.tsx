@@ -23,7 +23,7 @@ const PrivateAgentChatContent: React.FC = () => {
     role: RoleChat.CUSTOMER,
     content:
       "The system is being set up, and you will receive a notification via email once it's complete.",
-    avatar: "/src/assets/svg/brain-ai.svg",
+    avatar: "/brain-ai.svg",
     isTyping: false,
     index: 0,
   }
