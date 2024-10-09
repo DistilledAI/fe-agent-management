@@ -50,6 +50,7 @@ const useMessageSocket = () => {
         avatar: e.user.avatar,
         isTyping: true,
         roleOwner: e.user.role,
+        createdAt: new Date().toISOString(),
       },
     ])
   }
@@ -87,6 +88,7 @@ const useMessageSocket = () => {
         content: e.messages,
         avatar: e.user.avatar,
         roleOwner: e.user.role,
+        createdAt: new Date().toISOString(),
       },
     ])
   }

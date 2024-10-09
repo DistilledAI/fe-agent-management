@@ -9,6 +9,9 @@ import { useStyleBoxChat } from "../StyleProvider"
 import { RoleUser } from "@constants/index"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
+import { twMerge } from "tailwind-merge"
+
+const TIME_BREAK = 15
 
 const ChatMessages = () => {
   const { messages } = useChatMessage()
@@ -26,9 +29,93 @@ const ChatMessages = () => {
   const getBadgeColor = (role: RoleUser) =>
     role === RoleUser.BOT ? "bg-[#FC0]" : "bg-[#0FE9A4]"
 
-  const renderMessage = (_: number, message: IMessageBox) => {
+  const getTimeDiff = (date1: string, date2: string): number => {
+    const time1 = new Date(date1).getTime()
+    const time2 = new Date(date2).getTime()
+
+    return (time1 - time2) / 1000
+  }
+
+  const groupedMessages = (
+    index: number,
+    message: IMessageBox,
+    messages: IMessageBox[],
+  ) => {
+    let groupType = "none"
+    const prevMsg = messages[index - 1]
+    const nextMsg = messages[index + 1]
+
+    const prevTimeDiff = getTimeDiff(message?.createdAt, prevMsg?.createdAt)
+    const nextTimeDiff = getTimeDiff(nextMsg?.createdAt, message?.createdAt)
+
+    if (message.role === RoleChat.OWNER) {
+      if (prevMsg && prevMsg.role === RoleChat.OWNER) {
+        if (prevTimeDiff < 30) {
+          if (
+            nextMsg &&
+            nextMsg.role === RoleChat.OWNER &&
+            nextTimeDiff < TIME_BREAK
+          ) {
+            groupType = "middle"
+          } else {
+            groupType = "bottom"
+          }
+        } else {
+          groupType = "top"
+          if (
+            !nextMsg ||
+            nextMsg.role !== message.role ||
+            nextTimeDiff > TIME_BREAK
+          ) {
+            groupType = "none"
+          }
+        }
+      } else {
+        groupType =
+          nextMsg &&
+          nextMsg.role === RoleChat.OWNER &&
+          nextTimeDiff < TIME_BREAK
+            ? "top"
+            : "none"
+      }
+    }
+
+    const borderRaridusStyle = {
+      none: "",
+      top: "rounded-t-[20px] rounded-bl-[20px] rounded-br",
+      middle: "rounded-tr rounded-br rounded-tl-[20px] rounded-bl-[20px]",
+      bottom: "rounded-tr",
+    }[groupType]
+
+    const paddingBottomStyle = {
+      none: "pb-3",
+      top: "pb-[3px]",
+      middle: "pb-[3px]",
+      bottom: "pb-3",
+    }[groupType]
+
+    return {
+      borderRaridusStyle,
+      paddingBottomStyle,
+    }
+  }
+
+  const renderMessage = (index: number, message: IMessageBox) => {
+    const lastMsgIndex = messages.length - 1
+    const { paddingBottomStyle, borderRaridusStyle } = groupedMessages(
+      index,
+      message,
+      messages,
+    )
     return (
-      <>
+      <article
+        className={twMerge(
+          "px-3 pb-3",
+          message.role === RoleChat.OWNER && paddingBottomStyle,
+          lastMsgIndex === index && "pb-3",
+        )}
+        key={index}
+      >
         {message.role === RoleChat.CUSTOMER ? (
           <ReceiverMessage
             avatar={{
@@ -43,10 +130,10 @@ const ChatMessages = () => {
         {message.role === RoleChat.OWNER ? (
           <SenderMessage
             content={message.content}
-            baseClassName="bg-lgd-code-agent-1"
+            baseClassName={twMerge("bg-lgd-code-agent-1", borderRaridusStyle)}
           />
         ) : null}
-      </>
+      </article>
     )
   }
 

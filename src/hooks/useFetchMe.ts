@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { getUser } from "services/user"
 import useAuthState from "./useAuthState"
+import { RoleUser } from "@constants/index"
 
 const useFetchMe = () => {
   const [loading, setLoading] = useState(false)
@@ -21,7 +22,7 @@ const useFetchMe = () => {
                 id: res?.data?.id,
                 createdAt: "",
                 publicAddress: "",
-                role: 5,
+                role: RoleUser.ANONYMOUS,
                 status: 0,
                 typeLogin: "",
                 username: "",

@@ -16,6 +16,7 @@ export interface IMessageBox {
   isTyping?: boolean
   index?: number
   typeGroup?: TypeGroup
+  createdAt: string
 }
 
 const isOwner = (currentUserId: number, userId: number) => {
@@ -37,6 +38,7 @@ export const convertDataFetchToMessage = (
       avatar: mess.user?.avatar,
       roleOwner: mess.user.role,
       typeGroup: mess.group.typeGroup,
+      createdAt: mess.createdAt,
     }))
     .reverse()
 }
