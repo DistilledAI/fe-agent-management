@@ -19,13 +19,13 @@ const ReceiverMessage = ({
   return (
     <div className="flex gap-4">
       <AvatarCustom {...avatar} />
-      <p className={twMerge("text-base-md flex-1", contentClassName)}>
+      <div className={twMerge("text-base-md flex-1", contentClassName)}>
         {isTyping ? (
           <DotLoading className="mt-2" />
         ) : (
           <MarkdownMessage msg={content} />
         )}
-      </p>
+      </div>
     </div>
   )
 }
