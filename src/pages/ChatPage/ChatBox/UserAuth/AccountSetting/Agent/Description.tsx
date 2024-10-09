@@ -31,7 +31,6 @@ const AgentDescription = () => {
       <div className="flex items-center gap-2">
         <span
           ref={descRef}
-          contentEditable
           onBlur={handleUpdate}
           onKeyDown={handleKeyDown}
           className="line-clamp-1 block max-w-52 text-ellipsis whitespace-nowrap text-mercury-900 focus:border-none focus:outline-none"

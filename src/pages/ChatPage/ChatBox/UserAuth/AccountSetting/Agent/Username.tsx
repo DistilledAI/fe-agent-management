@@ -44,7 +44,6 @@ const AgentUsername = () => {
       <div className="flex items-center gap-2">
         <span
           ref={nameRef}
-          contentEditable
           onBlur={handleUpdate}
           onKeyDown={handleKeyDown}
           className="line-clamp-1 block max-w-36 text-ellipsis whitespace-nowrap text-mercury-900 focus:border-none focus:outline-none"

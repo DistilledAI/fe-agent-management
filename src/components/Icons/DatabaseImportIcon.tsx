@@ -12,7 +12,7 @@ export const DatabaseImportIcon = ({
       viewBox="0 0 23 24"
       fill="none"
     >
-      <g clip-path="url(#clip0_937_5444)">
+      <g clipPath="url(#clip0_937_5444)">
         <path
           d="M4.17627 6C4.17627 7.657 7.54756 9 11.7057 9C15.8638 9 19.2351 7.657 19.2351 6C19.2351 4.343 15.8638 3 11.7057 3C7.54756 3 4.17627 4.343 4.17627 6Z"
           stroke={color}

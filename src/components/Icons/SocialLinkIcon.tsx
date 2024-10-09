@@ -30,8 +30,8 @@ export const ThreeDotsIcon = ({ color = "#A2845E" }: IconProps) => {
       fill="none"
     >
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M1.2942 2H0.353027V0H1.2942V2ZM5.05891 2H3.17656V0H5.05891V2ZM8.82362 2H6.94126V0H8.82362V2ZM11.6471 2H10.706V0H11.6471V2Z"
         fill={color}
       />

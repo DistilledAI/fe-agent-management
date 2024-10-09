@@ -60,10 +60,7 @@ const PrivateAgent = () => {
       <div className="flex items-center justify-between">
         <span className="text-mercury-600">Name:</span>
         <div className="flex items-center gap-2">
-          <span
-            contentEditable
-            className="line-clamp-1 block max-w-36 text-ellipsis whitespace-nowrap text-mercury-900 focus:border-none focus:outline-none"
-          >
+          <span className="line-clamp-1 block max-w-36 text-ellipsis whitespace-nowrap text-mercury-900 focus:border-none focus:outline-none">
             {firstBot?.username ?? "-"}
           </span>
           <Button className="h-auto w-auto min-w-0 bg-transparent p-0">
