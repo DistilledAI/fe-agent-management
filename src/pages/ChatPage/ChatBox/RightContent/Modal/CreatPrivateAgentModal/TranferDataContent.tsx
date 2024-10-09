@@ -22,7 +22,8 @@ const TranferDataContent: React.FC<{
   setContentStep: any
   collectedData: any
   setOpenPopup: any
-}> = ({ collectedData, setContentStep, setOpenPopup }) => {
+  setCreated: any
+}> = ({ collectedData, setContentStep, setOpenPopup, setCreated }) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [isRequested, setRequested] = useState<boolean>(false)
   const { text: text2 } = useTextCreeping({ listText: LIST_TEXT_DEFAULT_2 })
@@ -69,6 +70,7 @@ const TranferDataContent: React.FC<{
   const onCloseModal = () => {
     setContentStep(1)
     setOpenPopup(false)
+    setCreated(true)
   }
 
   const renderLeftContent = () => {

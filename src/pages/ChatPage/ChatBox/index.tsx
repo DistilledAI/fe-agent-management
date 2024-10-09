@@ -16,7 +16,8 @@ const ChatBox = () => {
   useMessageSocket()
 
   return (
-    <div className="flex h-full items-center justify-center pb-10 pt-[18px]">
+    <div className="flex h-full items-center justify-center pb-10 pt-[18px]"
+    >
       <div className="flex h-full w-full max-w-[1100px] flex-col gap-y-4 rounded-[32px] border border-mercury-100 bg-mercury-70 p-4">
         <div className="flex items-center justify-between">
           <DistilledAIIcon
