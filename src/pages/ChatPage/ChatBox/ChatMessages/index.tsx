@@ -50,7 +50,7 @@ const ChatMessages = () => {
 
     if (message.role === RoleChat.OWNER) {
       if (prevMsg && prevMsg.role === RoleChat.OWNER) {
-        if (prevTimeDiff < 30) {
+        if (prevTimeDiff < TIME_BREAK) {
           if (
             nextMsg &&
             nextMsg.role === RoleChat.OWNER &&
