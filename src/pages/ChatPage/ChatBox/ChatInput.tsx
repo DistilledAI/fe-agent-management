@@ -3,7 +3,7 @@ import { MicrophoneFilledIcon } from "@components/Icons/Microphone"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
 import { Button, Textarea } from "@nextui-org/react"
 import { useChatMessage } from "providers/MessageProvider"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import { postChatToGroup } from "services/chat"
 import { RoleChat } from "./ChatMessages/helpers"
@@ -12,16 +12,17 @@ import { makeId } from "@utils/index"
 const ChatInput = () => {
   const { setMessages: setMessageContext } = useChatMessage()
   const { chatId } = useParams()
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [messages, setMessages] = useState("")
+  const inputRef = useRef<HTMLTextAreaElement>(null)
 
   const onSubmit = async () => {
     if (!messages) return
-    setMessages("")
     setMessageContext((prev) => [
       ...prev,
       { content: messages, role: RoleChat.OWNER, id: makeId() },
     ])
-
+    setMessages("")
     await postChatToGroup({
       groupId: Number(chatId),
       messages,
@@ -31,7 +32,15 @@ const ChatInput = () => {
   const handleKeyDown = (e: any) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault()
-      onSubmit()
+      if (!isSubmitting) {
+        setIsSubmitting(true)
+        onSubmit()
+
+        setTimeout(() => {
+          setIsSubmitting(false)
+          setMessages("")
+        }, 1)
+      }
     }
   }
 
@@ -51,6 +60,7 @@ const ChatInput = () => {
           input:
             "text-[18px] text-mercury-900 placeholder:text-mercury-700  font-barlow",
         }}
+        ref={inputRef}
         onKeyDown={handleKeyDown}
         minRows={1}
         maxRows={3}
