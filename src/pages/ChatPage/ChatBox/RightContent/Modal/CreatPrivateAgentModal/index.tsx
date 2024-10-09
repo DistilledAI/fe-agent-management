@@ -9,7 +9,8 @@ import TranferDataContent from "./TranferDataContent"
 const CreatPrivateAgentModal: React.FC<{
   openPopup: boolean
   setOpenPopup: any
-}> = ({ openPopup, setOpenPopup }) => {
+  setCreated: any
+}> = ({ openPopup, setOpenPopup, setCreated }) => {
   const [contentStep, setContentStep] = useState<number>(1)
   const [collectedData, setCollectedData] = useState<any>(null)
   const isWordcloundStep = contentStep === 2
@@ -27,6 +28,7 @@ const CreatPrivateAgentModal: React.FC<{
             setContentStep={setContentStep}
             collectedData={collectedData}
             setOpenPopup={setOpenPopup}
+            setCreated={setCreated}
           />
         )
       default:

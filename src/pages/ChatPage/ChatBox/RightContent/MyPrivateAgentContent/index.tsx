@@ -1,6 +1,6 @@
 import DotLoading from "@components/DotLoading"
 import useAuthState from "@hooks/useAuthState"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import CreatePrivateAgent from "./CreatePrivateAgent"
 import PrivateAgentChatContent from "./PrivateAgentChatContent"
 import usePrivateAgent from "./usePrivateAgent"
@@ -13,10 +13,11 @@ const MyPrivateAgentContent: React.FC<{
   const { isLogin } = useAuthState()
   const privateAgentStatus = privateAgentData?.status
   // const isPending = privateAgentStatus === PRIVATE_AGENT_STATUS.PENDING
+  const [isCreated, setCreated] = useState<boolean>(false)
 
   useEffect(() => {
     callGetMyPrivateAgent()
-  }, [isLogin])
+  }, [isLogin, isCreated])
 
   if (loading)
     return (
@@ -35,6 +36,7 @@ const MyPrivateAgentContent: React.FC<{
     <CreatePrivateAgent
       connectWalletLoading={connectWalletLoading}
       connectWallet={connectWallet}
+      setCreated={setCreated}
     />
   )
 }

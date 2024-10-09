@@ -20,7 +20,8 @@ import FYIModal from "../Modal/FYIModal"
 const CreatePrivateAgent: React.FC<{
   connectWalletLoading: boolean
   connectWallet: any
-}> = ({ connectWalletLoading, connectWallet }) => {
+  setCreated: any
+}> = ({ connectWalletLoading, connectWallet, setCreated }) => {
   const isLogin = useAppSelector((state) => state.user.isLogin)
   const [openPopup, setOpenPopup] = useState<boolean>(false)
   const [ref, isHovered] = useHover()
@@ -134,6 +135,7 @@ const CreatePrivateAgent: React.FC<{
       <CreatPrivateAgentModal
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
+        setCreated={setCreated}
       />
     </>
   )
