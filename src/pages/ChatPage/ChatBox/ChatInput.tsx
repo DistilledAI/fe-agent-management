@@ -9,6 +9,7 @@ import { postChatToGroup } from "services/chat"
 import { RoleChat } from "./ChatMessages/helpers"
 import { makeId } from "@utils/index"
 import { useStyleBoxChat } from "./StyleProvider"
+import { RoleUser } from "@constants/index"
 
 const ChatInput = () => {
   const { setMessages: setMessageContext } = useChatMessage()
@@ -23,7 +24,12 @@ const ChatInput = () => {
     if (!messages) return
     setMessageContext((prev) => [
       ...prev,
-      { content: messages, role: RoleChat.OWNER, id: makeId() },
+      {
+        content: messages,
+        role: RoleChat.OWNER,
+        id: makeId(),
+        roleOwner: RoleUser.USER,
+      },
     ])
     setMessages("")
     await postChatToGroup({

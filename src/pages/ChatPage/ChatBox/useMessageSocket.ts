@@ -47,6 +47,7 @@ const useMessageSocket = () => {
         content: "",
         avatar: e.user.avatar,
         isTyping: true,
+        roleOwner: e.user.role,
       },
     ])
   }
@@ -83,6 +84,7 @@ const useMessageSocket = () => {
         role: RoleChat.CUSTOMER,
         content: e.messages,
         avatar: e.user.avatar,
+        roleOwner: e.user.role,
       },
     ])
   }

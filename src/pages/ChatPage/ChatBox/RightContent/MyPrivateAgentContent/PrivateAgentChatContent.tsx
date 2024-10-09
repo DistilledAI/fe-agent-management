@@ -3,6 +3,7 @@ import ReceiverMessage from "@components/ReceiverMessage"
 import { useParams } from "react-router-dom"
 import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
 import useFetchMessages from "../../ChatMessages/useFetchMessages"
+import { RoleUser } from "@constants/index"
 
 const PrivateAgentChatContent: React.FC = () => {
   const { loading, onLoadPrevMessages } = useFetchMessages()
@@ -26,6 +27,7 @@ const PrivateAgentChatContent: React.FC = () => {
     avatar: "/brain-ai.svg",
     isTyping: false,
     index: 0,
+    roleOwner: RoleUser.BOT,
   }
 
   return (

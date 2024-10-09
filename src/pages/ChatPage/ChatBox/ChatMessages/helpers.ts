@@ -1,4 +1,6 @@
+import { RoleUser } from "@constants/index"
 import { IMessage } from "./useFetchMessages"
+import { TypeGroup } from "../LeftBar/useFetchGroups"
 
 export enum RoleChat {
   OWNER = "owner",
@@ -8,10 +10,12 @@ export enum RoleChat {
 export interface IMessageBox {
   id: number | string
   role: RoleChat
+  roleOwner: RoleUser
   content: string
   avatar?: string
   isTyping?: boolean
   index?: number
+  typeGroup?: TypeGroup
 }
 
 const isOwner = (currentUserId: number, userId: number) => {
@@ -31,6 +35,8 @@ export const convertDataFetchToMessage = (
       role: getRole(isOwner(currentUserId, mess.userId)),
       content: mess.messages,
       avatar: mess.user?.avatar,
+      roleOwner: mess.user.role,
+      typeGroup: mess.group.typeGroup,
     }))
     .reverse()
 }
