@@ -156,13 +156,14 @@ const options = {
   fontWeight: "normal",
   padding: 1,
   rotations: 3,
-  rotationAngles: [-45, -45],
+  // rotationAngles: [-45, -45],
+  rotationAngles: [0, 0],
   scale: "sqrt",
   spiral: "archimedean",
   transitionDuration: 800,
 } as any
 
-const size = [360, 200] as any
+const size = [300, 300] as any
 
 const WordCloundContent: React.FC<{ paragraph: string }> = ({ paragraph }) => {
   const wordFrequency = (paragraph: string, stopwords: Array<string>) => {
