@@ -6,6 +6,7 @@ import {
   useState,
   useCallback,
   useEffect,
+  CSSProperties,
 } from "react"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import DotLoading from "@components/DotLoading"
@@ -24,6 +25,7 @@ interface ChatWindowProps {
     limit?: number
   }) => Promise<number> // return index message on loaded or undefined when no more messages
   chatId: string | undefined
+  style?: CSSProperties
 }
 
 const LIMIT = 20
@@ -37,6 +39,7 @@ const ChatWindow = ({
   loading,
   chatId,
   onLoadPrevMessages,
+  style,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [offset, setOffset] = useState<number>(LIMIT)
@@ -133,6 +136,7 @@ const ChatWindow = ({
 
   return (
     <div
+      style={style}
       className={twMerge(
         "relative h-full flex-1 overflow-hidden rounded-[22px] border-[2px] border-white bg-mercury-30 p-3 transition-all duration-500 ease-in-out",
         className,

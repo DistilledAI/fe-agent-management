@@ -5,11 +5,13 @@ import { IMessageBox, RoleChat } from "./helpers"
 import { useChatMessage } from "providers/MessageProvider"
 import useFetchMessages from "./useFetchMessages"
 import { useParams } from "react-router-dom"
+import { useStyleBoxChat } from "../StyleProvider"
 
 const ChatMessages = () => {
   const { messages } = useChatMessage()
   const { loading, onLoadPrevMessages } = useFetchMessages()
   const { chatId } = useParams()
+  const { style } = useStyleBoxChat()
 
   const renderMessage = (_: number, message: IMessageBox) => {
     return (
@@ -39,6 +41,7 @@ const ChatMessages = () => {
       loading={loading}
       onLoadPrevMessages={onLoadPrevMessages}
       chatId={chatId}
+      style={style}
     />
   )
 }

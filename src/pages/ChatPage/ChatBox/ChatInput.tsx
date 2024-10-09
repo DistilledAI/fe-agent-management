@@ -3,18 +3,21 @@ import { MicrophoneFilledIcon } from "@components/Icons/Microphone"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
 import { Button, Textarea } from "@nextui-org/react"
 import { useChatMessage } from "providers/MessageProvider"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import { postChatToGroup } from "services/chat"
 import { RoleChat } from "./ChatMessages/helpers"
 import { makeId } from "@utils/index"
+import { useStyleBoxChat } from "./StyleProvider"
 
 const ChatInput = () => {
   const { setMessages: setMessageContext } = useChatMessage()
   const { chatId } = useParams()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [messages, setMessages] = useState("")
-  const inputRef = useRef<HTMLTextAreaElement>(null)
+  const boxRef = useRef<HTMLDivElement>(null)
+  const heightBoxRef = useRef(0)
+  const { setStyle } = useStyleBoxChat()
 
   const onSubmit = async () => {
     if (!messages) return
@@ -44,8 +47,25 @@ const ChatInput = () => {
     }
   }
 
+  const handleCheckHeight = () => {
+    const height = boxRef.current?.clientHeight
+    if (!height) return
+    setStyle({
+      paddingBottom:
+        height === heightBoxRef.current ? 12 : height - heightBoxRef.current,
+    })
+  }
+
+  useEffect(() => {
+    const height = boxRef.current?.clientHeight
+    if (height) heightBoxRef.current = height
+  }, [])
+
   return (
-    <div className="flex items-center gap-4 rounded-full bg-mercury-200 p-3">
+    <div
+      ref={boxRef}
+      className="absolute -bottom-[82px] left-0 z-[11] flex w-full items-center gap-4 rounded-[35px] bg-mercury-200 p-3 duration-500"
+    >
       <Button
         isDisabled
         className="h-9 w-[52px] min-w-[52px] rounded-full border border-white bg-mercury-30 px-4 py-2"
@@ -60,10 +80,10 @@ const ChatInput = () => {
           input:
             "text-[18px] text-mercury-900 placeholder:text-mercury-700  font-barlow",
         }}
-        ref={inputRef}
         onKeyDown={handleKeyDown}
         minRows={1}
-        maxRows={3}
+        maxRows={4}
+        onKeyUp={handleCheckHeight}
         onValueChange={setMessages}
         value={messages}
       />
