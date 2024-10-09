@@ -31,6 +31,7 @@ const ChatInput = () => {
         role: RoleChat.OWNER,
         id: makeId(),
         roleOwner: RoleUser.USER,
+        createdAt: new Date().toISOString(),
       },
     ])
     setMessages("")

@@ -6,6 +6,7 @@ import { twMerge } from "tailwind-merge"
 interface ReceiverMsgProps {
   content: string
   avatar: AvatarCustomProps
+  baseClassName?: string
   contentClassName?: string
   isTyping?: boolean
 }
@@ -13,11 +14,12 @@ interface ReceiverMsgProps {
 const ReceiverMessage = ({
   content,
   avatar,
+  baseClassName,
   contentClassName,
   isTyping,
 }: ReceiverMsgProps) => {
   return (
-    <div className="flex gap-4">
+    <div className={twMerge("flex gap-4", baseClassName)}>
       <AvatarCustom {...avatar} />
       <div className={twMerge("text-base-md flex-1", contentClassName)}>
         {isTyping ? (

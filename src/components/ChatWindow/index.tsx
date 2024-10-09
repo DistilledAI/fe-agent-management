@@ -18,7 +18,6 @@ interface ChatWindowProps {
   messages: Array<IMessageBox>
   itemContent: (index: number, message: IMessageBox) => JSX.Element
   className?: string
-  msgBoxClassName?: string
   loading?: boolean
   onLoadPrevMessages: (params: {
     offset: number
@@ -35,7 +34,6 @@ const ChatWindow = ({
   messages,
   itemContent,
   className,
-  msgBoxClassName,
   loading,
   chatId,
   onLoadPrevMessages,
@@ -49,8 +47,6 @@ const ChatWindow = ({
   const [isScrollBottom, setIsScrollBottom] = useState<boolean>(false)
   const { isNewMsgOnCurrentWindow, setIsNewMsgOnCurrentWindow } =
     useChatMessage()
-
-  const lastMsgIndex = messages.length - 1
 
   useLayoutEffect(() => {
     if (chatId) {
@@ -164,18 +160,7 @@ const ChatWindow = ({
           followOutput={isAtBottom ? "smooth" : false}
           atBottomStateChange={setIsAtBottom}
           atBottomThreshold={AT_BOTTOM_THRESHOLD}
-          itemContent={(index, message) => (
-            <article
-              className={twMerge(
-                "px-3 pb-3",
-                lastMsgIndex === index && "pb-3",
-                msgBoxClassName,
-              )}
-              key={index}
-            >
-              {itemContent(index, message)}
-            </article>
-          )}
+          itemContent={(index, message) => itemContent(index, message)}
         />
       ) : null}
       {isScrollBottom && (
