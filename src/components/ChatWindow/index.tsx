@@ -25,6 +25,7 @@ interface ChatWindowProps {
   }) => Promise<number> // return index message on loaded or undefined when no more messages
   chatId: string | undefined
   style?: CSSProperties
+  msgBoxClassName?: string
 }
 
 const LIMIT = 20
@@ -38,6 +39,7 @@ const ChatWindow = ({
   chatId,
   onLoadPrevMessages,
   style,
+  msgBoxClassName,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [offset, setOffset] = useState<number>(LIMIT)
@@ -47,6 +49,7 @@ const ChatWindow = ({
   const [isScrollBottom, setIsScrollBottom] = useState<boolean>(false)
   const { isNewMsgOnCurrentWindow, setIsNewMsgOnCurrentWindow } =
     useChatMessage()
+  const lastMsgIndex = messages.length - 1
 
   useLayoutEffect(() => {
     if (chatId) {
@@ -59,12 +62,12 @@ const ChatWindow = ({
   useEffect(() => {
     if (!isScrollBottom) {
       virtuosoRef.current?.scrollToIndex({
-        index: "LAST",
+        index: lastMsgIndex,
         behavior: "smooth",
         align: "end",
       })
     }
-  }, [messages, isScrollBottom])
+  }, [lastMsgIndex, isScrollBottom])
 
   useEffect(() => {
     if (isAtBottom) {
@@ -110,7 +113,7 @@ const ChatWindow = ({
     }
 
     virtuosoRef.current?.scrollToIndex({
-      index: "LAST",
+      index: lastMsgIndex,
       behavior: "smooth",
       align: "end",
     })
@@ -150,7 +153,7 @@ const ChatWindow = ({
           ref={virtuosoRef}
           data={messages}
           initialTopMostItemIndex={{
-            index: "LAST",
+            index: lastMsgIndex,
             align: "end",
           }}
           onScroll={onScroll}
@@ -160,7 +163,18 @@ const ChatWindow = ({
           followOutput={isAtBottom ? "smooth" : false}
           atBottomStateChange={setIsAtBottom}
           atBottomThreshold={AT_BOTTOM_THRESHOLD}
-          itemContent={(index, message) => itemContent(index, message)}
+          itemContent={(index, message) => (
+            <article
+              className={twMerge(
+                "px-3 pb-3",
+                lastMsgIndex === index && "mb-3",
+                msgBoxClassName,
+              )}
+              key={index}
+            >
+              {itemContent(index, message)}
+            </article>
+          )}
         />
       ) : null}
       {isScrollBottom && (

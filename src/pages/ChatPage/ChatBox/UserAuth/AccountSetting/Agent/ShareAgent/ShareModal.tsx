@@ -3,21 +3,24 @@ import CloseButton from "@components/CloseButton"
 import { ArrowBottomSquareOutlineIcon } from "@components/Icons/Arrow"
 import { CopyIcon } from "@components/Icons/Copy"
 import { PATH_NAMES } from "@constants/index"
-import useAuthState from "@hooks/useAuthState"
 import { Modal, ModalBody, ModalContent, ModalHeader } from "@nextui-org/react"
 import { copyClipboard } from "@utils/index"
 import { QRCodeCanvas } from "qrcode.react"
 import { IModalProps } from "types/modal"
 import { saveAs } from "file-saver"
 import { useRef } from "react"
+import { IUser } from "@reducers/user/UserSlice"
 
 const appUrl = window.location.origin
 
-const ShareModal = ({ isOpen, onClose }: IModalProps) => {
-  const { user } = useAuthState()
+interface ShareModal extends IModalProps {
+  agentData: IUser
+}
+
+const ShareModal = ({ isOpen, onClose, agentData }: ShareModal) => {
   const qrRef = useRef<HTMLCanvasElement>(null)
 
-  const inviteUrl = `${appUrl}${PATH_NAMES.INVITE}/${user?.id}`
+  const inviteUrl = `${appUrl}${PATH_NAMES.INVITE}/${agentData?.id}`
 
   const handleDownloadQR = () => {
     if (qrRef.current) {

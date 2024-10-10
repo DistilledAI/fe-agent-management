@@ -1,8 +1,14 @@
 import { ShareWithQrIcon } from "@components/Icons/Share"
 import { Button, useDisclosure } from "@nextui-org/react"
 import ShareModal from "./ShareModal"
+import { IUser } from "@reducers/user/UserSlice"
 
-const ShareAgent: React.FC<{ isDisabled: boolean }> = ({ isDisabled }) => {
+interface ShareAgentProps {
+  isDisabled?: boolean
+  agentData: IUser
+}
+
+const ShareAgent = ({ isDisabled, agentData }: ShareAgentProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
@@ -15,7 +21,9 @@ const ShareAgent: React.FC<{ isDisabled: boolean }> = ({ isDisabled }) => {
         <ShareWithQrIcon />
         <span className="font-medium text-mercury-950">Share as QR</span>
       </Button>
-      {isOpen && <ShareModal isOpen={isOpen} onClose={onClose} />}
+      {isOpen && (
+        <ShareModal isOpen={isOpen} onClose={onClose} agentData={agentData} />
+      )}
     </>
   )
 }

@@ -87,7 +87,10 @@ const PrivateAgent = () => {
         </div>
       </div>
       <div className="flex items-center justify-between gap-2">
-        <ShareAgent isDisabled={isPending || !firstBot} />
+        <ShareAgent
+          agentData={firstBot}
+          // isDisabled={isPending || !firstBot}
+        />
         <Button
           className="flex rounded-full bg-mercury-100"
           isDisabled={isPending || !firstBot}

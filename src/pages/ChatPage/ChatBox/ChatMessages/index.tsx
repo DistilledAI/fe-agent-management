@@ -101,18 +101,16 @@ const ChatMessages = () => {
   }
 
   const renderMessage = (index: number, message: IMessageBox) => {
-    const lastMsgIndex = messages.length - 1
     const { paddingBottomStyle, borderRaridusStyle } = groupedMessages(
       index,
       message,
       messages,
     )
     return (
-      <article
+      <div
         className={twMerge(
           "px-3 pb-3",
           message.role === RoleChat.OWNER && paddingBottomStyle,
-          lastMsgIndex === index && "pb-3",
         )}
         key={index}
       >
@@ -133,7 +131,7 @@ const ChatMessages = () => {
             baseClassName={twMerge("bg-lgd-code-agent-1", borderRaridusStyle)}
           />
         ) : null}
-      </article>
+      </div>
     )
   }
 
@@ -146,6 +144,7 @@ const ChatMessages = () => {
       onLoadPrevMessages={onLoadPrevMessages}
       chatId={chatId}
       style={style}
+      msgBoxClassName="p-0"
     />
   )
 }
