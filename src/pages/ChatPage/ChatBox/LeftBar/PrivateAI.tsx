@@ -1,6 +1,7 @@
 import useAuthState from "@hooks/useAuthState"
 import { defineElement } from "@utils/index"
 import { useState } from "react"
+import AddPerson from "./AddPerson"
 import MessagesContainer from "./MessagesContainer"
 import SearchContainer from "./SearchContainer"
 
@@ -13,6 +14,7 @@ export const DISPLAY_MODES = {
 const MAP_CONTENT_BY_DISPLAY_MODE = {
   [DISPLAY_MODES.MESSAGES]: <MessagesContainer />,
   [DISPLAY_MODES.SEARCH]: <SearchContainer />,
+  [DISPLAY_MODES.ADD_PERSON]: <AddPerson />,
 }
 
 export interface ContentDisplayMode {

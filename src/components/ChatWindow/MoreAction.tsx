@@ -16,9 +16,7 @@ const MoreAction: React.FC = () => {
   const botStatus = botInfo?.status
   const myBotData = botInfo?.myBot
   const botId = myBotData?.id
-  const [isBotEnabled, setIsBotEnabled] = useState<boolean>(
-    botStatus === BOT_STATUS.ENABLE,
-  )
+  const isBotEnabled = botStatus === BOT_STATUS.ENABLE
 
   const callCheckStatusBotInGroup = async () => {
     try {
@@ -46,7 +44,7 @@ const MoreAction: React.FC = () => {
       }
       const response = await changeStatusBotInGroup(payloadData)
       if (response) {
-        setIsBotEnabled(!isBotEnabled)
+        callCheckStatusBotInGroup()
       }
     } catch (error) {
       console.log("error", error)
