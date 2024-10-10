@@ -8,6 +8,7 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from "react"
@@ -27,7 +28,11 @@ interface ChatWindowProps {
   style?: CSSProperties
   msgBoxClassName?: string
   children?: React.ReactNode
-  Footer?: React.ReactNode
+  Footer?:
+    | React.ComponentType<{
+        context?: any
+      }>
+    | undefined
 }
 
 const LIMIT = 20
@@ -137,6 +142,8 @@ const ChatWindow = ({
     [],
   )
 
+  const memoizedFooter = useMemo(() => Footer, [])
+
   return (
     <div
       style={style}
@@ -163,7 +170,7 @@ const ChatWindow = ({
           onScroll={onScroll}
           components={{
             Header: () => (isLoadMore ? renderDotLoading("my-4") : <></>),
-            Footer: () => Footer,
+            Footer: memoizedFooter,
           }}
           followOutput={isAtBottom ? "smooth" : false}
           atBottomStateChange={setIsAtBottom}
