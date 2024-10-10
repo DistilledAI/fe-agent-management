@@ -1,14 +1,13 @@
 import DotLoading from "@components/DotLoading"
+import { envConfig } from "@configs/env"
+import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { checkGroupDirect, createGroupChat } from "services/chat"
 import CreatePrivateAgent from "./CreatePrivateAgent"
 import PrivateAgentChatContent from "./PrivateAgentChatContent"
 import usePrivateAgent, { PRIVATE_AGENT_STATUS } from "./usePrivateAgent"
-import { checkGroupDirect, createGroupChat } from "services/chat"
-import { useNavigate } from "react-router-dom"
-import { PATH_NAMES } from "@constants/index"
-
-const GROUP_DEFAULT_FOR_PRIVATE_AGENT = 396
 
 const MyPrivateAgentContent: React.FC<{
   connectWalletLoading: boolean
@@ -20,16 +19,17 @@ const MyPrivateAgentContent: React.FC<{
   const privateAgentStatus = privateAgentData?.status
   const isPending = privateAgentStatus === PRIVATE_AGENT_STATUS.PENDING
   const [isCreated, setCreated] = useState<boolean>(false)
+  const groupDefaultForPrivateAgent = envConfig.groupDefaultForPrivateAgent
 
   const checkCreatedGroupAgent = async () => {
     if (isPending) {
       const res = await checkGroupDirect({
-        members: [GROUP_DEFAULT_FOR_PRIVATE_AGENT],
+        members: [groupDefaultForPrivateAgent],
       })
       const groupId = res?.data?.group?.id
       if (!groupId) {
         const createGroupResponse = await createGroupChat({
-          members: [GROUP_DEFAULT_FOR_PRIVATE_AGENT],
+          members: [groupDefaultForPrivateAgent],
         })
         const newGroupId = createGroupResponse?.data?.id
         if (newGroupId) {
