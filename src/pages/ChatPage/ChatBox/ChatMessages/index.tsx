@@ -148,9 +148,8 @@ const ChatMessages = () => {
       chatId={chatId}
       style={style}
       msgBoxClassName="p-0"
-    >
-      <MoreAction />
-    </ChatWindow>
+      Footer={<MoreAction />}
+    />
   )
 }
 

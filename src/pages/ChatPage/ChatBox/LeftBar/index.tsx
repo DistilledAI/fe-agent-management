@@ -1,4 +1,4 @@
-import Marketplace from "./Marketplace"
+import Marketplace from "@pages/Marketplace"
 import MyEcho from "./MyEcho"
 import Playground from "./Playground"
 import PrivateAI from "./PrivateAI"
