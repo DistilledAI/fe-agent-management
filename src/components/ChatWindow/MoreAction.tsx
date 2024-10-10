@@ -53,6 +53,8 @@ const MoreAction: React.FC = () => {
     }
   }
 
+  if (!myBotData) return <div />
+
   return (
     <div className="flex w-full items-center justify-end pb-3">
       <div
