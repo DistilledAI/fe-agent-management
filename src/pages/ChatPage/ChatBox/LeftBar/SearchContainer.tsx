@@ -1,8 +1,10 @@
 import AvatarContainer from "@components/AvatarContainer"
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
+import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
+import { RoleUser } from "@constants/index"
 import { Input } from "@nextui-org/react"
 import { debounce } from "lodash"
 import { useCallback, useEffect, useRef, useState } from "react"
@@ -84,6 +86,13 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
     debounceSearch("")
   }
 
+  const getBadgeIcon = (role: RoleUser) =>
+    role === RoleUser.BOT ? (
+      <FilledBrainAIIcon size={14} />
+    ) : (
+      <FilledUserIcon size={14} />
+    )
+
   return (
     <>
       <div className="flex-items-center mb-4 justify-between gap-2 px-2">
@@ -127,10 +136,12 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
               className="hover-light-effect relative mb-1 gap-2 rounded-full px-2 py-2"
             >
               <AvatarContainer
-                badgeIcon={<FilledUserIcon size={14} />}
+                badgeIcon={getBadgeIcon(chat?.role)}
                 avatarUrl={chat?.avatar}
                 userName={chat?.username}
-                badgeClassName="bg-[#0FE9A4]"
+                badgeClassName={
+                  chat?.role === RoleUser.USER ? "bg-[#0FE9A4]" : "bg-yellow-10"
+                }
               />
             </div>
           )
