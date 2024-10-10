@@ -12,7 +12,7 @@ const BOT_STATUS = {
 const MoreAction: React.FC = () => {
   const { chatId, privateChatId } = useParams()
   const [botInfo, setBotInfo] = useState<any>(null)
-  const [isShowNotification, setShowNotification] = useState<boolean>(false)
+  //   const [isShowNotification, setShowNotification] = useState<boolean>(false)
   const groupId = chatId ?? privateChatId
   const botStatus = botInfo?.status
   const myBotData = botInfo?.myBot
@@ -35,11 +35,11 @@ const MoreAction: React.FC = () => {
     callCheckStatusBotInGroup()
   }, [])
 
-  useEffect(() => {
-    setTimeout(() => {
-      setShowNotification(false)
-    }, 5000)
-  }, [isShowNotification])
+  //   useEffect(() => {
+  //     setTimeout(() => {
+  //       setShowNotification(false)
+  //     }, 5000)
+  //   }, [isShowNotification])
 
   const handleSetDelegate = async () => {
     const status = isBotEnabled ? BOT_STATUS.DISABLE : BOT_STATUS.ENABLE
@@ -59,24 +59,24 @@ const MoreAction: React.FC = () => {
     }
   }
 
-  const renderNotification = () => {
-    if (isShowNotification)
-      return (
-        <div className="mb-5 flex justify-center">
-          <span className="text-mercury-500 text-base">
-            You now delegate chat to your agent
-          </span>
-        </div>
-      )
+  //   const renderNotification = () => {
+  //     if (isShowNotification && !isBotEnabled)
+  //       return (
+  //         <div className="mb-5 flex justify-center">
+  //           <span className="text-mercury-500 text-base">
+  //             You now delegate chat to your agent
+  //           </span>
+  //         </div>
+  //       )
 
-    return <div />
-  }
+  //     return <div />
+  //   }
 
   if (!myBotData) return <div />
 
   return (
     <>
-      {renderNotification()}
+      {/* {renderNotification()} */}
       <div className="flex w-full items-center justify-end pb-3">
         <div
           className="flex w-fit cursor-pointer items-center gap-2 rounded-3xl bg-mercury-70 p-3"
