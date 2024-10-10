@@ -1,11 +1,10 @@
 import ChatWindow from "@components/ChatWindow"
 import ReceiverMessage from "@components/ReceiverMessage"
+import SenderMessage from "@components/SenderMessage"
+import { useChatMessage } from "providers/MessageProvider"
 import { useParams } from "react-router-dom"
 import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
-// import { RoleUser } from "@constants/index"
-import { useChatMessage } from "providers/MessageProvider"
 import useFetchPrivateAgentMessages from "./useFetchPrivateAgentMessages"
-import SenderMessage from "@components/SenderMessage"
 
 const PrivateAgentChatContent: React.FC = () => {
   const { loading, onLoadPrevMessages } = useFetchPrivateAgentMessages()
@@ -34,17 +33,6 @@ const PrivateAgentChatContent: React.FC = () => {
       </>
     )
   }
-
-  // const defaultMessage = {
-  //   id: "0",
-  //   role: RoleChat.CUSTOMER,
-  //   content:
-  //     "Hi, I am your Private agent. I’d be happy to help you with everything!",
-  //   avatar: "/brain-ai.svg",
-  //   isTyping: false,
-  //   index: 0,
-  //   roleOwner: RoleUser.BOT,
-  // }
 
   return (
     <ChatWindow

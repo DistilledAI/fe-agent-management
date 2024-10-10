@@ -1,15 +1,16 @@
 import ChatWindow from "@components/ChatWindow"
-import ReceiverMessage from "@components/ReceiverMessage"
-import SenderMessage from "@components/SenderMessage"
-import { IMessageBox, RoleChat } from "./helpers"
-import { useChatMessage } from "providers/MessageProvider"
-import useFetchMessages from "./useFetchMessages"
-import { useParams } from "react-router-dom"
-import { useStyleBoxChat } from "../StyleProvider"
-import { RoleUser } from "@constants/index"
+import MoreAction from "@components/ChatWindow/MoreAction"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
+import ReceiverMessage from "@components/ReceiverMessage"
+import SenderMessage from "@components/SenderMessage"
+import { RoleUser } from "@constants/index"
+import { useChatMessage } from "providers/MessageProvider"
+import { useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
+import { useStyleBoxChat } from "../StyleProvider"
+import { IMessageBox, RoleChat } from "./helpers"
+import useFetchMessages from "./useFetchMessages"
 
 const TIME_BREAK = 15
 
@@ -107,31 +108,33 @@ const ChatMessages = () => {
       messages,
     )
     return (
-      <div
-        className={twMerge(
-          "px-3 pb-3",
-          message.role === RoleChat.OWNER && paddingBottomStyle,
-        )}
-        key={index}
-      >
-        {message.role === RoleChat.CUSTOMER ? (
-          <ReceiverMessage
-            avatar={{
-              src: message.avatar,
-              badgeIcon: getBadgeIcon(message.roleOwner),
-              badgeClassName: getBadgeColor(message.roleOwner),
-            }}
-            content={message.content}
-            isTyping={message.isTyping}
-          />
-        ) : null}
-        {message.role === RoleChat.OWNER ? (
-          <SenderMessage
-            content={message.content}
-            baseClassName={twMerge("bg-lgd-code-agent-1", borderRaridusStyle)}
-          />
-        ) : null}
-      </div>
+      <>
+        <div
+          className={twMerge(
+            "px-3 pb-3",
+            message.role === RoleChat.OWNER && paddingBottomStyle,
+          )}
+          key={index}
+        >
+          {message.role === RoleChat.CUSTOMER ? (
+            <ReceiverMessage
+              avatar={{
+                src: message.avatar,
+                badgeIcon: getBadgeIcon(message.roleOwner),
+                badgeClassName: getBadgeColor(message.roleOwner),
+              }}
+              content={message.content}
+              isTyping={message.isTyping}
+            />
+          ) : null}
+          {message.role === RoleChat.OWNER ? (
+            <SenderMessage
+              content={message.content}
+              baseClassName={twMerge("bg-lgd-code-agent-1", borderRaridusStyle)}
+            />
+          ) : null}
+        </div>
+      </>
     )
   }
 
@@ -145,7 +148,9 @@ const ChatMessages = () => {
       chatId={chatId}
       style={style}
       msgBoxClassName="p-0"
-    />
+    >
+      <MoreAction />
+    </ChatWindow>
   )
 }
 

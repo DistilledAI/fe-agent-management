@@ -1,18 +1,18 @@
-import { Virtuoso, VirtuosoHandle } from "react-virtuoso"
-import { twMerge } from "tailwind-merge"
-import {
-  useLayoutEffect,
-  useRef,
-  useState,
-  useCallback,
-  useEffect,
-  CSSProperties,
-} from "react"
-import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import DotLoading from "@components/DotLoading"
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { Button } from "@nextui-org/react"
+import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import { useChatMessage } from "providers/MessageProvider"
+import {
+  CSSProperties,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react"
+import { Virtuoso, VirtuosoHandle } from "react-virtuoso"
+import { twMerge } from "tailwind-merge"
 
 interface ChatWindowProps {
   messages: Array<IMessageBox>
@@ -26,6 +26,7 @@ interface ChatWindowProps {
   chatId: string | undefined
   style?: CSSProperties
   msgBoxClassName?: string
+  children?: React.ReactNode
 }
 
 const LIMIT = 20
@@ -40,6 +41,7 @@ const ChatWindow = ({
   onLoadPrevMessages,
   style,
   msgBoxClassName,
+  children,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [offset, setOffset] = useState<number>(LIMIT)
@@ -200,6 +202,7 @@ const ChatWindow = ({
           </Button>
         </div>
       )}
+      {children}
     </div>
   )
 }

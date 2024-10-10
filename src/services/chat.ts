@@ -130,3 +130,24 @@ export const getMyPrivateAgent = async () => {
     url: endpoint.GET_BOT_LIST,
   })
 }
+
+export interface ChangeStatusBotInGroup {
+  groupId: string | undefined | number
+  botId: number
+  status: number
+}
+
+export const changeStatusBotInGroup = async (data: ChangeStatusBotInGroup) => {
+  return fetchApiAuth({
+    method: "post",
+    url: endpoint.CHANGE_STATUS_BOT_IN_GROUP,
+    data,
+  })
+}
+
+export const checkStatusBotInGroup = async (groupId: string | undefined) => {
+  return fetchApiAuth({
+    method: "get",
+    url: endpoint.CHECK_STATUS_BOT_IN_GROUP(groupId),
+  })
+}
