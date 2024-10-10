@@ -12,6 +12,7 @@ const BOT_STATUS = {
 const MoreAction: React.FC = () => {
   const { chatId, privateChatId } = useParams()
   const [botInfo, setBotInfo] = useState<any>(null)
+  const [isShowNotification, setShowNotification] = useState<boolean>(false)
   const groupId = chatId ?? privateChatId
   const botStatus = botInfo?.status
   const myBotData = botInfo?.myBot
@@ -34,6 +35,12 @@ const MoreAction: React.FC = () => {
     callCheckStatusBotInGroup()
   }, [])
 
+  useEffect(() => {
+    setTimeout(() => {
+      setShowNotification(false)
+    }, 5000)
+  }, [isShowNotification])
+
   const handleSetDelegate = async () => {
     const status = isBotEnabled ? BOT_STATUS.DISABLE : BOT_STATUS.ENABLE
     try {
@@ -45,37 +52,54 @@ const MoreAction: React.FC = () => {
       const response = await changeStatusBotInGroup(payloadData)
       if (response) {
         callCheckStatusBotInGroup()
+        setShowNotification(true)
       }
     } catch (error) {
       console.log("error", error)
     }
   }
 
+  const renderNotification = () => {
+    if (isShowNotification)
+      return (
+        <div className="mb-5 flex justify-center">
+          <span className="text-mercury-500 text-base">
+            You now delegate chat to your agent
+          </span>
+        </div>
+      )
+
+    return <div />
+  }
+
   if (!myBotData) return <div />
 
   return (
-    <div className="flex w-full items-center justify-end pb-3">
-      <div
-        className="flex w-fit cursor-pointer items-center gap-2 rounded-3xl bg-mercury-70 p-3"
-        onClick={() => handleSetDelegate()}
-      >
-        {isBotEnabled ? (
-          <>
-            <FilledBrainAIIcon size={20} />
-            <span className="text-base text-mercury-900">
-              Take over this chat by yourself
-            </span>
-          </>
-        ) : (
-          <>
-            <FilledUserIcon size={20} />
-            <span className="text-base text-mercury-900">
-              Delegate to your Private agent
-            </span>
-          </>
-        )}
+    <>
+      {renderNotification()}
+      <div className="flex w-full items-center justify-end pb-3">
+        <div
+          className="flex w-fit cursor-pointer items-center gap-2 rounded-3xl bg-mercury-70 p-3"
+          onClick={() => handleSetDelegate()}
+        >
+          {isBotEnabled ? (
+            <>
+              <FilledBrainAIIcon size={20} />
+              <span className="text-base text-mercury-900 transition-all duration-500 ease-in-out">
+                Take over this chat by yourself
+              </span>
+            </>
+          ) : (
+            <>
+              <FilledUserIcon size={20} />
+              <span className="text-base text-mercury-900 transition-all duration-500 ease-in-out">
+                Delegate to your Private agent
+              </span>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 export default MoreAction
