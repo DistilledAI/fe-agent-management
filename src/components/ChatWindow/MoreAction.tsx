@@ -54,9 +54,9 @@ const MoreAction: React.FC = () => {
   }
 
   return (
-    <>
+    <div className="flex w-full items-center justify-end pb-3">
       <div
-        className="flex-items-center absolute bottom-5 right-6 flex cursor-pointer gap-2 rounded-3xl bg-mercury-70 p-3"
+        className="flex w-fit cursor-pointer items-center gap-2 rounded-3xl bg-mercury-70 p-3"
         onClick={() => handleSetDelegate()}
       >
         {isBotEnabled ? (
@@ -75,7 +75,7 @@ const MoreAction: React.FC = () => {
           </>
         )}
       </div>
-    </>
+    </div>
   )
 }
 export default MoreAction

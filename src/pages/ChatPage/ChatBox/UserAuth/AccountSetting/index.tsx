@@ -31,7 +31,7 @@ const AccountSetting: React.FC<{
       {isOpen && (
         <>
           <div className="text-center text-mercury-900">
-            <p className="mb-1 text-24 font-semibold">My wallet</p>
+            <h3 className="mb-1 text-24 font-semibold">My wallet</h3>
             <div className="inline-flex items-center">
               <div
                 onClick={(e) => copyClipboard(e, user?.publicAddress ?? "")}

@@ -27,6 +27,7 @@ interface ChatWindowProps {
   style?: CSSProperties
   msgBoxClassName?: string
   children?: React.ReactNode
+  Footer?: React.ReactNode
 }
 
 const LIMIT = 20
@@ -42,6 +43,7 @@ const ChatWindow = ({
   style,
   msgBoxClassName,
   children,
+  Footer,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [offset, setOffset] = useState<number>(LIMIT)
@@ -155,12 +157,13 @@ const ChatWindow = ({
           ref={virtuosoRef}
           data={messages}
           initialTopMostItemIndex={{
-            index: lastMsgIndex,
+            index: "LAST",
             align: "end",
           }}
           onScroll={onScroll}
           components={{
             Header: () => (isLoadMore ? renderDotLoading("my-4") : <></>),
+            Footer: () => Footer,
           }}
           followOutput={isAtBottom ? "smooth" : false}
           atBottomStateChange={setIsAtBottom}
