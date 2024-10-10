@@ -13,23 +13,32 @@ const MyPrivateAgentContent: React.FC<{
   connectWalletLoading: boolean
   connectWallet: any
 }> = ({ connectWalletLoading, connectWallet }) => {
+  const groupDefaultForPrivateAgent = envConfig.groupDefaultForPrivateAgent
   const { privateAgentData, callGetMyPrivateAgent, loading } = usePrivateAgent()
   const { isLogin } = useAuthState()
   const navigate = useNavigate()
-  const privateAgentStatus = privateAgentData?.status
-  const isPending = privateAgentStatus === PRIVATE_AGENT_STATUS.PENDING
   const [isCreated, setCreated] = useState<boolean>(false)
-  const groupDefaultForPrivateAgent = envConfig.groupDefaultForPrivateAgent
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const privateAgentStatus = privateAgentData?.status
+  const privateAgentId = privateAgentData?.id
+  const MAP_MEMBER_ID_FROM_STATUS = {
+    [PRIVATE_AGENT_STATUS.PENDING]: groupDefaultForPrivateAgent,
+    [PRIVATE_AGENT_STATUS.ACTIVE]: privateAgentId,
+  }
+  const memberId = MAP_MEMBER_ID_FROM_STATUS[privateAgentStatus]
 
   const checkCreatedGroupAgent = async () => {
-    if (isPending) {
+    if (!memberId) return
+    setIsLoading(true)
+    try {
       const res = await checkGroupDirect({
-        members: [groupDefaultForPrivateAgent],
+        members: [memberId],
       })
       const groupId = res?.data?.group?.id
       if (!groupId) {
         const createGroupResponse = await createGroupChat({
-          members: [groupDefaultForPrivateAgent],
+          members: [memberId],
         })
         const newGroupId = createGroupResponse?.data?.id
         if (newGroupId) {
@@ -37,16 +46,20 @@ const MyPrivateAgentContent: React.FC<{
         }
         return
       }
-      navigate(`${PATH_NAMES.PRIVATE_AGENT}/${groupId}`)
+      return navigate(`${PATH_NAMES.PRIVATE_AGENT}/${groupId}`)
+    } catch (error) {
+      console.log(error, "error")
+    } finally {
+      setIsLoading(false)
     }
   }
 
   useEffect(() => {
     callGetMyPrivateAgent()
     checkCreatedGroupAgent()
-  }, [isLogin, isCreated, isPending])
+  }, [isLogin, isCreated, privateAgentStatus])
 
-  if (loading)
+  if (loading || isLoading)
     return (
       <div
         className={
