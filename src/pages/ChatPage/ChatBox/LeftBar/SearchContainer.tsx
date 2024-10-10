@@ -23,6 +23,7 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
 
   useEffect(() => {
     inputRef?.current?.focus()
+    onSearch("")
   }, [])
 
   const onBackToBoxMessage = () => {
