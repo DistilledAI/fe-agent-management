@@ -9,6 +9,7 @@ import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
 import { StyleBoxChatProvider } from "./StyleProvider"
 import UserAuth from "./UserAuth"
 import useMessageSocket from "./useMessageSocket"
+import useReconnectWallet from "@hooks/useReconnectWallet"
 
 const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
@@ -16,6 +17,7 @@ const ChatBox = () => {
   const { isLogin } = useAuthState()
   const { privateChatId } = useParams()
 
+  useReconnectWallet()
   useMessageSocket()
   const isEnableTextInput = isLogin && (privateChatId || chatId)
 
