@@ -20,7 +20,7 @@ export const initialState: SocketState = {
 const SocketProviderContext = createContext(initialState)
 
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
-  const { isLogin } = useAuthState()
+  const { isLogin, sessionAccessToken } = useAuthState()
   const [socket, setSocket] = useState<Socket>()
 
   useEffect(() => {
@@ -112,7 +112,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         }
       }
     }
-  }, [isLogin])
+  }, [isLogin, sessionAccessToken])
 
   return (
     <SocketProviderContext.Provider value={{ socket }}>
