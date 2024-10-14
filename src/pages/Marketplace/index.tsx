@@ -2,69 +2,111 @@ import DrawerBottom from "@components/DrawerBottom"
 import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { FilledSquareCircleIcon } from "@components/Icons/FilledSquareCircleIcon"
 import { Button, useDisclosure } from "@nextui-org/react"
-import { useState } from "react"
 import { twMerge } from "tailwind-merge"
-
-const CATEGORIES = [
-  {
-    key: "private-agents",
-    name: "Private agents",
-  },
-  {
-    key: "productivity",
-    name: "Productivity",
-  },
-  {
-    key: "gen-ai-tools",
-    name: "GenAI Tools",
-  },
-  {
-    key: "learning",
-    name: "Learning",
-  },
-  {
-    key: "wellness",
-    name: "Wellness",
-  },
-  {
-    key: "search-engine",
-    name: "Search engine",
-  },
-  {
-    key: "foundational-access",
-    name: "Foundational access",
-  },
-  {
-    key: "sns",
-    name: "SNS",
-  },
-  {
-    key: "finance",
-    name: "Finance",
-  },
-  {
-    key: "characters-org",
-    name: "Characters & Org",
-  },
-]
+import PrivateAgents from "./PrivateAgents"
+// import useAuthState from "@hooks/useAuthState"
+import Productivity from "./Productivity"
+import ComingSoon from "@components/ComingSoon"
+import GenAITools from "./GenAITools"
+import useSliderMrkt from "./useSliderMrkt"
+import { useEffect, useRef } from "react"
 
 const Marketplace = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [slider, setSlider] = useState<number>(0)
+  // const { isLogin } = useAuthState()
+  const CATEGORIES = [
+    {
+      key: "private-agents",
+      name: "Private agents",
+      component: <PrivateAgents onClose={onClose} />,
+      isComing: false,
+    },
+    {
+      key: "productivity",
+      name: "Productivity",
+      component: <Productivity />,
+      isComing: true,
+    },
+    {
+      key: "gen-ai-tools",
+      name: "GenAI Tools",
+      component: <GenAITools />,
+      isComing: true,
+    },
+    {
+      key: "learning",
+      name: "Learning",
+      component: <div className="text-base-md">Coming soon...</div>,
+      isComing: false,
+    },
+    {
+      key: "wellness",
+      name: "Wellness",
+      component: <div className="text-base-md">Coming soon...</div>,
+      isComing: false,
+    },
+    {
+      key: "search-engine",
+      name: "Search engine",
+      component: <div className="text-base-md">Coming soon...</div>,
+      isComing: false,
+    },
+    {
+      key: "foundational-access",
+      name: "Foundational access",
+      component: <div className="text-base-md">Coming soon...</div>,
+      isComing: false,
+    },
+    {
+      key: "sns",
+      name: "SNS",
+      component: <div className="text-base-md">Coming soon...</div>,
+      isComing: false,
+    },
+    {
+      key: "finance",
+      name: "Finance",
+      component: <div className="text-base-md">Coming soon...</div>,
+      isComing: false,
+    },
+    {
+      key: "characters-org",
+      name: "Characters & Org",
+      component: <div className="text-base-md">Coming soon...</div>,
+      isComing: false,
+    },
+  ]
 
-  const onPrevSlider = () => {
-    if (slider === 0) return
-    setSlider((prevSlider) => prevSlider - 1)
-  }
+  const { slider, onPrevSlider, onNextSlider, setSlider } = useSliderMrkt({
+    isOpen,
+    itemsCount: CATEGORIES.length - 1,
+  })
 
-  const onNextSlider = () => {
-    if (slider === CATEGORIES.length - 1) return
-    setSlider((prevSlider) => prevSlider + 1)
-  }
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (slider > 3 && containerRef.current) {
+      console.log({ containerRef, scrollLeft: containerRef.current.scrollLeft })
+      containerRef.current.scrollTo({
+        left: containerRef.current.scrollLeft + 500,
+        behavior: "smooth",
+      })
+    }
+    if (slider < 7 && containerRef.current) {
+      containerRef.current.scrollTo({
+        left: containerRef.current.scrollLeft - 500,
+        behavior: "smooth",
+      })
+    }
+  }, [slider])
 
   return (
     <>
-      <Button onClick={onOpen} isDisabled className="btn-primary !h-[62px]">
+      <Button
+        onClick={onOpen}
+        // isDisabled={!isLogin}
+        className="btn-primary min-h-[60px]"
+      >
         <div>
           <FilledSquareCircleIcon />
         </div>
@@ -79,7 +121,10 @@ const Marketplace = () => {
         }}
       >
         <h3 className="mb-6 text-center text-24 font-semibold">Marketplace</h3>
-        <div className="flex w-full items-center gap-4 overflow-hidden overflow-x-auto px-20 pb-3">
+        <div
+          className="flex w-full items-center gap-4 overflow-hidden overflow-x-auto whitespace-nowrap px-20 pb-3 scrollbar-hide"
+          ref={containerRef}
+        >
           {CATEGORIES.map((category, index) => (
             <Button
               key={category.key}
@@ -94,7 +139,10 @@ const Marketplace = () => {
             </Button>
           ))}
         </div>
-        <div className="relative flex h-full w-full items-center gap-4 overflow-hidden px-20 pb-3">
+        <div
+          className="relative flex h-full w-full items-center gap-4 overflow-hidden px-20 pb-3"
+          id="slider-container"
+        >
           {CATEGORIES.map((category, index) => (
             <div
               className={
@@ -115,13 +163,34 @@ const Marketplace = () => {
               </h6>
               <div
                 className={twMerge(
-                  "shadow-5 h-full min-w-[350px] rounded-[22px] bg-mercury-30 p-4",
+                  "h-full min-w-[350px] rounded-[22px] bg-mercury-30 p-1 shadow-5",
                 )}
-              ></div>
+              >
+                <div
+                  className={twMerge(
+                    "max-h-[88%] space-y-3 overflow-y-auto px-1 py-3 pb-10",
+                    category.isComing && "overflow-y-visible",
+                  )}
+                >
+                  {category.isComing ? (
+                    <ComingSoon>
+                      <div
+                        className={twMerge(
+                          category.isComing && "space-y-3 px-2 opacity-60",
+                        )}
+                      >
+                        {category.component}
+                      </div>
+                    </ComingSoon>
+                  ) : (
+                    category.component
+                  )}
+                </div>
+              </div>
             </div>
           ))}
           <Button
-            className="shadow-5 fixed left-4 h-[68px] min-w-[68px] rounded-full border border-mercury-100 bg-white"
+            className="fixed left-4 h-[68px] min-w-[68px] rounded-full border border-mercury-100 bg-white shadow-5"
             onClick={onPrevSlider}
           >
             <div className="rotate-90">
@@ -129,7 +198,7 @@ const Marketplace = () => {
             </div>
           </Button>
           <Button
-            className="shadow-5 fixed right-4 h-[68px] min-w-[68px] rounded-full border border-mercury-100 bg-white"
+            className="fixed right-4 h-[68px] min-w-[68px] rounded-full border border-mercury-100 bg-white shadow-5"
             onClick={onNextSlider}
           >
             <div className="-rotate-90">

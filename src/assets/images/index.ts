@@ -3,4 +3,5 @@ export { default as distilledAiLogo } from "./distilledai_logo.png"
 export { default as fyiPrivateDataBg } from "./fyi-private-data-bg.png"
 export { default as fyiPrivateDataImage } from "./fyi-private-data-image.png"
 export { default as scaler } from "./scaler.png"
-
+export { default as fluxAIEx } from "./flux-ai-ex.png"
+export { default as stableDiffusionAIEx } from "./stable-diffusion-ai-ex.png"

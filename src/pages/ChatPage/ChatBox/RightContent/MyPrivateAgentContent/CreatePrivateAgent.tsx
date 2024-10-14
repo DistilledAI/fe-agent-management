@@ -70,7 +70,7 @@ const CreatePrivateAgent: React.FC<{
     <>
       <MainContainer>
         <div className="absolute h-[60%] w-[80%]" ref={ref}>
-          <div className="absolute left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2">
             <HugeButton
               icon={
                 <div className="flex-items-center gap-1">
@@ -85,7 +85,7 @@ const CreatePrivateAgent: React.FC<{
           </div>
           <div
             className={twMerge(
-              "absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out",
+              "absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out",
               isHovered && "top-1/4 -translate-x-[200px]",
             )}
           >
@@ -93,7 +93,7 @@ const CreatePrivateAgent: React.FC<{
           </div>
           <div
             className={twMerge(
-              "absolute right-1/2 top-1/2 z-30 -translate-y-1/2 translate-x-1/2 transition-all duration-500 ease-out",
+              "absolute right-1/2 top-1/2 z-20 -translate-y-1/2 translate-x-1/2 transition-all duration-500 ease-out",
               isHovered && "top-1/4 translate-x-[200px]",
             )}
           >
@@ -105,7 +105,7 @@ const CreatePrivateAgent: React.FC<{
           </div>
           <div
             className={twMerge(
-              "absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out",
+              "absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out",
               isHovered && "-translate-x-[280px] -translate-y-1/4",
             )}
           >
@@ -117,7 +117,7 @@ const CreatePrivateAgent: React.FC<{
           </div>
           <div
             className={twMerge(
-              "absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out",
+              "absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out",
               isHovered && "-translate-y-1/4 translate-x-[120px]",
             )}
             onClick={() => {
@@ -158,8 +158,8 @@ const MainContainer: React.FC<{
           {children}
           <div className="absolute bottom-[60px]">
             <span className="text-base-m text-mercury-800">
-              Your Private Agent is private to you only, unless you publish it
-              to the Marketplace.
+              Your Private Agent is exclusively accessible to you unless you
+              choose to publish it on the Marketplace.
             </span>
 
             <div

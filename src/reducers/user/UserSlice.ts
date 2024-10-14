@@ -1,3 +1,4 @@
+import { TYPE_BOT } from "@constants/index"
 import { createSlice } from "@reduxjs/toolkit"
 import {
   storageKey,
@@ -14,6 +15,10 @@ export interface IUser {
   typeLogin: string
   username: string
   avatar?: string
+  description?: string
+  owner?: number
+  typeBot?: TYPE_BOT
+  configBot?: string
 }
 
 interface LoginSuccessPayload {
@@ -32,7 +37,20 @@ export interface IUserState {
 }
 
 const initStateValues = {
-  user: null,
+  user: {
+    id: -1,
+    createdAt: "",
+    publicAddress: "",
+    role: -1,
+    status: -1,
+    typeLogin: "",
+    username: "",
+    avatar: "",
+    description: "",
+    owner: -1,
+    typeBot: -1,
+    configBot: "",
+  },
   isLogin: !!cachedLocalStorage.getWithExpiry(storageKey.ACCESS_TOKEN),
 }
 

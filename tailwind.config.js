@@ -35,6 +35,7 @@ export default {
       colors: {
         mercury: {
           30: "#FAFAFA",
+          50: "#F6F6F6",
           70: "#F4F4F5",
           100: "#E6E6E6",
           200: "#DFDFDF",
@@ -71,6 +72,18 @@ export default {
       backgroundImage: {
         "lgd-code-agent-1":
           "linear-gradient(53deg, #DC6D1E -2.17%, #F17C1C 134.29%)",
+        "lgd-code-agent-2":
+          "linear-gradient(53deg, #4A38E9 -2.17%, #766CFE 134.29%)",
+        "lgd-code-agent-3":
+          "linear-gradient(53deg, #7EB204 -2.17%, #94D51D 134.29%)",
+        "lgd-code-agent-4":
+          "linear-gradient(53deg, #DC3A3C -2.17%, #FA7B7D 134.29%)",
+        "lgd-code-agent-5":
+          "linear-gradient(53deg, #903ADC -2.17%, #BE7BFA 134.29%)",
+        "lgd-code-agent-6":
+          "linear-gradient(53deg, #3AB9DC -2.17%, #7BDAFA 134.29%)",
+        "lgd-code-agent-6":
+          "linear-gradient(53deg, #F4B815 -2.17%, #FBD879 134.29%)",
         "fading-white":
           "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #FFF 100%)",
       },

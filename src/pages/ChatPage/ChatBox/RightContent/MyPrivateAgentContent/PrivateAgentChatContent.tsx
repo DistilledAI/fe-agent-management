@@ -5,6 +5,7 @@ import { useChatMessage } from "providers/MessageProvider"
 import { useParams } from "react-router-dom"
 import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
 import useFetchPrivateAgentMessages from "./useFetchPrivateAgentMessages"
+import { brainAIIcon } from "@assets/svg"
 
 const PrivateAgentChatContent: React.FC = () => {
   const { loading, onLoadPrevMessages } = useFetchPrivateAgentMessages()
@@ -17,7 +18,7 @@ const PrivateAgentChatContent: React.FC = () => {
         {message.role === RoleChat.CUSTOMER ? (
           <ReceiverMessage
             avatar={{
-              src: "/brain-ai.svg",
+              src: brainAIIcon,
               classNames: { base: "bg-white p-1" },
             }}
             content={message.content}

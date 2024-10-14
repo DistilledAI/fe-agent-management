@@ -29,3 +29,14 @@ export enum RoleUser {
   ANONYMOUS = 5,
   SUPER_ADMIN = 10,
 }
+
+export const STATUS_AGENT = {
+  ACTIVE: 1,
+  SUSPENDED: 2,
+  DELETED: 3,
+  PENDING: 4,
+}
+
+export enum TYPE_BOT {
+  VOICE = 2,
+}
