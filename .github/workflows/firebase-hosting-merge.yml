@@ -47,4 +47,4 @@ jobs:
       
       # Deploy master
       - name: Set firebase project alias
-        run: npx firebase deploy --only hosting:mesh-distilled-ai --token ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MESS_DISTILLED_AI }}
+        run: npx firebase deploy --only hosting:mesh-distilled-ai --token ${{ secrets.FIREBASE_TOKEN_PHUTX }}
