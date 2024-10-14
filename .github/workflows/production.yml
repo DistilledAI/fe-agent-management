@@ -6,7 +6,7 @@ name: Deploy To Firebase
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [master]
+    branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -51,11 +51,9 @@ jobs:
         run: yarn build
         env:
           CI: false
-          VITE_APP_CHATBOT_URL: ${{ secrets.VITE_APP_CHATBOT_URL_PROD }}
-          VITE_APP_ENV_MODE: ${{ secrets.VITE_APP_ENV_MODE_PROD }}
-          VITE_APP_SIGNING_SECRET: ${{ secrets.VITE_APP_SIGNING_SECRET_PROD }}
-          VITE_APP_BASE_LLM_URL: ${{ secrets.VITE_APP_BASE_LLM_URL_PROD }}
-          VITE_APP_MIXPANEL_TOKEN: ${{ secrets.VITE_APP_MIXPANEL_TOKEN_PROD }}
-      # Deploy master
-      - name: Set firebase project alias
-        run: yarn firebase deploy --only hosting:widget-layer --token ${{ secrets.FIREBASE_TOKEN_PHUTX }}
+          VITE_BASE_API_URL=https://api-echo.distilled.ai/distill
+          VITE_SOCKET_URL=wss://api-echo.distilled.ai
+          VITE_GROUP_DEFAULT_FOR_PRIVATE_AGENT=396
+      # # Deploy master
+      # - name: Set firebase project alias
+      #   run: yarn firebase deploy --only hosting:widget-layer --token ${{ secrets.FIREBASE_TOKEN_PHUTX }}
