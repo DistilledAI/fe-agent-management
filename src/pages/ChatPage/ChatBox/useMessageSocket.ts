@@ -29,8 +29,12 @@ const useMessageSocket = () => {
   const { socket } = useSocket()
   const { user } = useAuthState()
   const indexResRef = useRef(-1)
-  const { setGroupsHaveNotification, setIsNewMsgOnCurrentWindow, setMessages } =
-    useChatMessage()
+  const {
+    setGroupsHaveNotification,
+    setIsNewMsgOnCurrentWindow,
+    setMessages,
+    setIsChatting,
+  } = useChatMessage()
 
   const groupChatId = chatId || privateChatId
 
@@ -42,6 +46,7 @@ const useMessageSocket = () => {
   }
 
   const handleWithTyping = (e: IDataListen) => {
+    setIsChatting(true)
     setMessages((prev) => [
       ...prev,
       {
@@ -114,6 +119,7 @@ const useMessageSocket = () => {
         }),
       )
     }
+    setIsChatting(false)
   }
 
   const handleResponseForMessage = (e: IDataListen) => {

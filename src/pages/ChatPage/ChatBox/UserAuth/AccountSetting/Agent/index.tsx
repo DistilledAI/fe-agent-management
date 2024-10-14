@@ -10,6 +10,7 @@ import { getMyPrivateAgent } from "services/chat"
 // import AgentDescription from "./Description"
 import ShareAgent from "./ShareAgent"
 import { STATUS_AGENT } from "@constants/index"
+import { brainAIIcon } from "@assets/svg"
 
 const PrivateAgent = () => {
   const [listBot, setListBot] = useState<any[]>([])
@@ -45,7 +46,7 @@ const PrivateAgent = () => {
           <span className="text-base font-medium text-[#FF9500]">
             {MAP_LABEL_FROM_STATUS[status]}
           </span>
-          <AvatarCustom src={firstBot?.avatar} />
+          <AvatarCustom src={firstBot?.avatar || brainAIIcon} />
           {/* <Button className="absolute -bottom-2 -right-1 flex h-6 w-6 min-w-0 items-center justify-center rounded-full bg-white p-0">
             <EditPenOutlineIcon />
           </Button> */}

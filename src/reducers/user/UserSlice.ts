@@ -37,7 +37,20 @@ export interface IUserState {
 }
 
 const initStateValues = {
-  user: null,
+  user: {
+    id: -1,
+    createdAt: "",
+    publicAddress: "",
+    role: -1,
+    status: -1,
+    typeLogin: "",
+    username: "",
+    avatar: "",
+    description: "",
+    owner: -1,
+    typeBot: -1,
+    configBot: "",
+  },
   isLogin: !!cachedLocalStorage.getWithExpiry(storageKey.ACCESS_TOKEN),
 }
 

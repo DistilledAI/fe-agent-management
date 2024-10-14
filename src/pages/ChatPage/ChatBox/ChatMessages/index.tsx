@@ -15,7 +15,7 @@ import useFetchMessages from "./useFetchMessages"
 const TIME_BREAK = 15
 
 const ChatMessages = () => {
-  const { messages } = useChatMessage()
+  const { messages, isChatting } = useChatMessage()
   const { loading, onLoadPrevMessages } = useFetchMessages()
   const { chatId } = useParams()
   const { style } = useStyleBoxChat()
@@ -149,6 +149,7 @@ const ChatMessages = () => {
       style={style}
       msgBoxClassName="p-0"
       Footer={() => <MoreAction />}
+      isChatting={isChatting}
     />
   )
 }

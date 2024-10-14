@@ -33,6 +33,7 @@ interface ChatWindowProps {
         context?: any
       }>
     | undefined
+  isChatting?: boolean
 }
 
 const LIMIT = 20
@@ -49,6 +50,7 @@ const ChatWindow = ({
   msgBoxClassName,
   children,
   Footer,
+  isChatting,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [offset, setOffset] = useState<number>(LIMIT)
@@ -58,25 +60,26 @@ const ChatWindow = ({
   const [isScrollBottom, setIsScrollBottom] = useState<boolean>(false)
   const { isNewMsgOnCurrentWindow, setIsNewMsgOnCurrentWindow } =
     useChatMessage()
-  const lastMsgIndex = messages.length - 1
 
   useLayoutEffect(() => {
     if (chatId) {
       setIsScrollBottom(false)
       setHasMoreMessages(true)
       setOffset(LIMIT)
+      setIsAtBottom(true)
+      setIsNewMsgOnCurrentWindow(false)
     }
   }, [chatId])
 
   useEffect(() => {
     if (!isScrollBottom) {
       virtuosoRef.current?.scrollToIndex({
-        index: lastMsgIndex,
+        index: messages.length - 1,
         behavior: "smooth",
         align: "end",
       })
     }
-  }, [lastMsgIndex, isScrollBottom])
+  }, [messages, isScrollBottom, isChatting])
 
   useEffect(() => {
     if (isAtBottom) {
@@ -97,8 +100,6 @@ const ChatWindow = ({
           limit: LIMIT,
         })
 
-        setIsLoadMore(false)
-
         if (!prevMessageIndex) {
           setHasMoreMessages(false)
         } else {
@@ -108,6 +109,7 @@ const ChatWindow = ({
             behavior: "auto",
           })
         }
+        setIsLoadMore(false)
       }
 
       const scrollPosition = scrollHeight - clientHeight - scrollTop
@@ -117,15 +119,15 @@ const ChatWindow = ({
   )
 
   const onScrollToBottom = () => {
-    if (isNewMsgOnCurrentWindow) {
-      setIsNewMsgOnCurrentWindow(false)
-    }
-
     virtuosoRef.current?.scrollToIndex({
-      index: lastMsgIndex,
+      index: "LAST",
       behavior: "smooth",
       align: "end",
     })
+
+    if (isNewMsgOnCurrentWindow) {
+      setIsNewMsgOnCurrentWindow(false)
+    }
   }
 
   const renderDotLoading = useCallback(
@@ -160,14 +162,16 @@ const ChatWindow = ({
       )}
       {!loading && messages.length ? (
         <Virtuoso
-          style={{ height: "100%" }}
+          style={{
+            height: "100%",
+          }}
           ref={virtuosoRef}
           data={messages}
           initialTopMostItemIndex={{
             index: "LAST",
             align: "end",
           }}
-          increaseViewportBy={500}
+          increaseViewportBy={600}
           onScroll={onScroll}
           components={{
             Header: () => (isLoadMore ? renderDotLoading("my-4") : <></>),
@@ -178,11 +182,7 @@ const ChatWindow = ({
           atBottomThreshold={AT_BOTTOM_THRESHOLD}
           itemContent={(index, message) => (
             <article
-              className={twMerge(
-                "px-3 pb-3",
-                // lastMsgIndex === index && "mb-3",
-                msgBoxClassName,
-              )}
+              className={twMerge("px-3 pb-3", msgBoxClassName)}
               key={index}
             >
               {itemContent(index, message)}

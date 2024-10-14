@@ -1,7 +1,7 @@
-import BrainAIIcon from "@components/Icons/BrainAIIcon";
+import { BrainAIIcon } from "@components/Icons/BrainAIIcon"
 
 const Agents = () => {
-  return <BrainAIIcon />;
-};
+  return <BrainAIIcon />
+}
 
-export default Agents;
+export default Agents
