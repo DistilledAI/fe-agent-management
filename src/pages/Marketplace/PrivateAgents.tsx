@@ -18,13 +18,15 @@ const PrivateAgents = ({ onClose }: PrivateAgentsProps) => {
   const navigate = useNavigate()
   const { user } = useAuthState()
   const [agents, setAgents] = useState<IUser[]>([])
-  const { handleInviteUserLoggedIn } = useInviteUser()
+  useInviteUser()
 
   const handleChatWithAgent = async (agent: IUser) => {
     if (user && user.id === agent.owner) {
       navigate(`${PATH_NAMES.PRIVATE_AGENT}/${agent.id}`)
     } else {
-      await handleInviteUserLoggedIn(agent.id)
+      const inviteUrl = `${PATH_NAMES.INVITE}/${agent?.id}`
+
+      navigate(inviteUrl)
     }
     onClose()
   }

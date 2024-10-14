@@ -1,6 +1,5 @@
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
-import useAuthState from "@hooks/useAuthState"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { changeStatusBotInGroup, checkStatusBotInGroup } from "services/chat"
@@ -11,7 +10,6 @@ const BOT_STATUS = {
 }
 
 const MoreAction: React.FC = () => {
-  const { user } = useAuthState()
   const { chatId, privateChatId } = useParams()
   const [botInfo, setBotInfo] = useState<any>(null)
   //   const [isShowNotification, setShowNotification] = useState<boolean>(false)
@@ -34,10 +32,8 @@ const MoreAction: React.FC = () => {
   }
 
   useEffect(() => {
-    if (user?.owner) {
-      callCheckStatusBotInGroup()
-    }
-  }, [user?.owner])
+    callCheckStatusBotInGroup()
+  }, [])
 
   //   useEffect(() => {
   //     setTimeout(() => {
