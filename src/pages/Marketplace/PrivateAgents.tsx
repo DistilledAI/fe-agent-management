@@ -48,40 +48,39 @@ const PrivateAgents = ({ onClose }: PrivateAgentsProps) => {
     })()
   }, [])
 
-  return (
-    <div className="space-y-6">
-      {agents.map((agent, index) => (
-        <div className="flex justify-between gap-6" key={index}>
-          <div className="flex gap-4">
-            <AvatarCustom
-              badgeClassName="bg-yellow-10"
-              src={agent.avatar}
-              badgeIcon={<FilledBrainAIIcon size={14} />}
-            />
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-base-b line-clamp-1 text-mercury-800">
-                  {agent.username}
-                </span>
-                {/* <div>
+  return agents.map((agent, index) => (
+    <div
+      className="flex justify-between gap-6 border-b border-b-mercury-70 py-2 last:border-none"
+      key={index}
+    >
+      <div className="flex gap-4">
+        <AvatarCustom
+          badgeClassName="bg-yellow-10"
+          src={agent.avatar}
+          badgeIcon={<FilledBrainAIIcon size={14} />}
+        />
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="text-base-b line-clamp-1 text-mercury-800">
+              {agent.username}
+            </span>
+            {/* <div>
                   <PinnedIcon />
                 </div> */}
-              </div>
-              <p className="max-w-[187px] text-13 font-medium text-mercury-600">
-                {agent.description || "Distilled AI Agent"}
-              </p>
-            </div>
           </div>
-          <Button
-            className="border-mercury-50 min-w-[52px] rounded-full border bg-mercury-100 px-4 py-2"
-            onClick={() => handleChatWithAgent(agent)}
-          >
-            <MessageDots />
-          </Button>
+          <p className="max-w-[187px] text-13 font-medium text-mercury-600">
+            {agent.description || "Distilled AI Agent"}
+          </p>
         </div>
-      ))}
+      </div>
+      <Button
+        className="min-w-[52px] rounded-full border border-mercury-50 bg-mercury-100 px-4 py-2"
+        onClick={() => handleChatWithAgent(agent)}
+      >
+        <MessageDots />
+      </Button>
     </div>
-  )
+  ))
 }
 
 export default PrivateAgents

@@ -8,6 +8,9 @@ import PrivateAgents from "./PrivateAgents"
 // import Productivity from "./Productivity"
 // import GenAITools from "./GenAITools"
 import useAuthState from "@hooks/useAuthState"
+import Productivity from "./Productivity"
+import ComingSoon from "@components/ComingSoon"
+import GenAITools from "./GenAITools"
 
 const Marketplace = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -19,51 +22,61 @@ const Marketplace = () => {
       key: "private-agents",
       name: "Private agents",
       component: <PrivateAgents onClose={onClose} />,
+      isComing: false,
     },
     {
       key: "productivity",
       name: "Productivity",
-      component: <div className="text-base-md">Coming soon...</div>,
+      component: <Productivity />,
+      isComing: true,
     },
     {
       key: "gen-ai-tools",
       name: "GenAI Tools",
-      component: <div className="text-base-md">Coming soon...</div>,
+      component: <GenAITools />,
+      isComing: true,
     },
     {
       key: "learning",
       name: "Learning",
       component: <div className="text-base-md">Coming soon...</div>,
+      isComing: false,
     },
     {
       key: "wellness",
       name: "Wellness",
       component: <div className="text-base-md">Coming soon...</div>,
+      isComing: false,
     },
     {
       key: "search-engine",
       name: "Search engine",
       component: <div className="text-base-md">Coming soon...</div>,
+      isComing: false,
     },
     {
       key: "foundational-access",
       name: "Foundational access",
       component: <div className="text-base-md">Coming soon...</div>,
+      isComing: false,
     },
     {
       key: "sns",
       name: "SNS",
       component: <div className="text-base-md">Coming soon...</div>,
+      isComing: false,
     },
     {
       key: "finance",
       name: "Finance",
       component: <div className="text-base-md">Coming soon...</div>,
+      isComing: false,
     },
     {
       key: "characters-org",
       name: "Characters & Org",
       component: <div className="text-base-md">Coming soon...</div>,
+      isComing: false,
     },
   ]
 
@@ -137,8 +150,25 @@ const Marketplace = () => {
                   "h-full min-w-[350px] rounded-[22px] bg-mercury-30 p-1 shadow-5",
                 )}
               >
-                <div className="max-h-[88%] overflow-y-auto p-3 pb-10">
-                  {category.component}
+                <div
+                  className={twMerge(
+                    "max-h-[88%] space-y-3 overflow-y-auto p-3 pb-10",
+                    category.isComing && "overflow-y-visible",
+                  )}
+                >
+                  {category.isComing ? (
+                    <ComingSoon>
+                      <div
+                        className={twMerge(
+                          category.isComing && "space-y-3 opacity-60",
+                        )}
+                      >
+                        {category.component}
+                      </div>
+                    </ComingSoon>
+                  ) : (
+                    category.component
+                  )}
                 </div>
               </div>
             </div>
