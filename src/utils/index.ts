@@ -1,4 +1,5 @@
 import FingerprintJS from "@fingerprintjs/fingerprintjs"
+import { IUser } from "@reducers/user/UserSlice"
 import { cloneElement, createElement } from "react"
 import { toast } from "react-toastify"
 
@@ -48,4 +49,71 @@ export const makeId = (length = 8) => {
     result += characters.charAt(Math.floor(Math.random() * charactersLength))
   }
   return result
+}
+
+export const textToVoice = async (
+  text: string,
+  speaker: IUser["configBot"],
+) => {
+  if (!window.speechSynthesis) {
+    console.error("Speech Synthesis is not supported.")
+    return
+  }
+
+  try {
+    const response = await fetch(
+      "https://ai-dev.cupiee.com/voice/text_to_speech",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text,
+          lang: "en",
+          speaker,
+          pitch: 1,
+          ref_voice: "",
+        }),
+      },
+    )
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok")
+    }
+
+    const blob = await response.blob()
+
+    if (blob) {
+      const audioContext = new AudioContext()
+      const reader = new FileReader()
+
+      reader.onload = () => {
+        if (reader.result instanceof ArrayBuffer) {
+          audioContext.decodeAudioData(
+            reader.result,
+            (buffer) => {
+              const source = audioContext.createBufferSource()
+              source.buffer = buffer
+              source.connect(audioContext.destination)
+              source.start(0)
+            },
+            (error) => {
+              console.error("Error decoding audio data:", error)
+            },
+          )
+        }
+      }
+
+      reader.onerror = (error) => {
+        console.error("Error reading audio blob:", error)
+      }
+
+      reader.readAsArrayBuffer(blob)
+    } else {
+      console.error("Response is not a Blob.")
+    }
+  } catch (error) {
+    console.error("Error fetching audio data:", error)
+  }
 }

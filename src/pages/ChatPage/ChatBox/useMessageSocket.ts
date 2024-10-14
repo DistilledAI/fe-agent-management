@@ -4,8 +4,9 @@ import { useSocket } from "providers/SocketProvider"
 import { useEffect, useRef } from "react"
 import { useParams } from "react-router-dom"
 import { RoleChat } from "./ChatMessages/helpers"
-import { makeId } from "@utils/index"
+import { makeId, textToVoice } from "@utils/index"
 import { useChatMessage } from "providers/MessageProvider"
+import { TYPE_BOT } from "@constants/index"
 
 interface IDataListen {
   event: string
@@ -28,8 +29,12 @@ const useMessageSocket = () => {
   const { socket } = useSocket()
   const { user } = useAuthState()
   const indexResRef = useRef(-1)
-  const { setGroupsHaveNotification, setIsNewMsgOnCurrentWindow, setMessages } =
-    useChatMessage()
+  const {
+    setGroupsHaveNotification,
+    setIsNewMsgOnCurrentWindow,
+    setMessages,
+    setIsChatting,
+  } = useChatMessage()
 
   const groupChatId = chatId || privateChatId
 
@@ -41,6 +46,7 @@ const useMessageSocket = () => {
   }
 
   const handleWithTyping = (e: IDataListen) => {
+    setIsChatting(true)
     setMessages((prev) => [
       ...prev,
       {
@@ -64,6 +70,8 @@ const useMessageSocket = () => {
 
   const handleWithUpdate = (e: IDataListen) => {
     if (isReloadWhenResponse(e.index)) return
+    const isBotVoice = e.user.typeBot === TYPE_BOT.VOICE
+    if (isBotVoice) return
     setMessages((prev) =>
       prev.map((item) => {
         if (item.id === e.msgId) {
@@ -95,7 +103,9 @@ const useMessageSocket = () => {
 
   const handleWithDone = (e: IDataListen) => {
     const isNeedAppendWhenDone = indexResRef.current !== 0
-    if (isNeedAppendWhenDone)
+    const isBotVoice = e.user.typeBot === TYPE_BOT.VOICE
+    if (isBotVoice) textToVoice(e.messages, e.user.configBot)
+    if (isNeedAppendWhenDone) {
       setMessages((prev) =>
         prev.map((item) => {
           if (item.id === e.msgId) {
@@ -108,6 +118,8 @@ const useMessageSocket = () => {
           return item
         }),
       )
+    }
+    setIsChatting(false)
   }
 
   const handleResponseForMessage = (e: IDataListen) => {

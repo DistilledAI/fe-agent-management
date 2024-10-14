@@ -15,6 +15,8 @@ export interface MessageState {
   setGroupsHaveNotification: React.Dispatch<React.SetStateAction<Array<number>>>
   isNewMsgOnCurrentWindow: boolean
   setIsNewMsgOnCurrentWindow: React.Dispatch<React.SetStateAction<boolean>>
+  setIsChatting: React.Dispatch<React.SetStateAction<boolean>>
+  isChatting: boolean
 }
 
 export const initialState: MessageState = {
@@ -26,6 +28,8 @@ export const initialState: MessageState = {
   setGroupsHaveNotification: () => null,
   isNewMsgOnCurrentWindow: false,
   setIsNewMsgOnCurrentWindow: () => null,
+  setIsChatting: () => null,
+  isChatting: false,
 }
 
 const MessageProviderContext = createContext(initialState)
@@ -35,6 +39,7 @@ export const ChatMessageProvider: React.FC<MessageProviderProps> = ({
 }) => {
   const [dataFetch, setDataFetch] = useState<IMessage[]>([])
   const [messages, setMessages] = useState<IMessageBox[]>([])
+  const [isChatting, setIsChatting] = useState<boolean>(false)
   const [isNewMsgOnCurrentWindow, setIsNewMsgOnCurrentWindow] =
     useState<boolean>(false)
   const [groupsHaveNotification, setGroupsHaveNotification] = useState<
@@ -52,6 +57,8 @@ export const ChatMessageProvider: React.FC<MessageProviderProps> = ({
         setGroupsHaveNotification,
         isNewMsgOnCurrentWindow,
         setIsNewMsgOnCurrentWindow,
+        setIsChatting,
+        isChatting,
       }}
     >
       {children}

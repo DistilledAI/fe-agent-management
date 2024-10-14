@@ -2,7 +2,7 @@ import { brainAIIcon } from "@assets/svg"
 import { Image } from "@nextui-org/react"
 import { IconProps } from "types/icons"
 
-const BrainAIIcon = () => {
+export const BrainAIIcon = () => {
   return (
     <div className="h-14 w-14 rounded-full border border-mercury-900 bg-mercury-950 p-[6px]">
       <div className="flex h-full w-full items-center justify-center rounded-full border border-mercury-900 bg-white">
@@ -11,8 +11,6 @@ const BrainAIIcon = () => {
     </div>
   )
 }
-
-export default BrainAIIcon
 
 export const FilledBrainAIIcon = ({
   size = 20,

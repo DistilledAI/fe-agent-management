@@ -65,7 +65,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
   }
 
   const getNameGroup = (userA: IUser, userB: IUser) => {
-    return userA.id === user?.id ? userB.username : userA.username
+    return userA?.id === user?.id ? userB?.username : userA?.username
   }
 
   return (
@@ -73,7 +73,9 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
       <div className="flex-items-center mb-4 justify-between px-2">
         <span className="text-base-14">Messages</span>
         <div className="flex-items-center gap-4">
-          <FilledUsersPlusIcon />
+          <div className="opacity-30">
+            <FilledUsersPlusIcon />
+          </div>
           <div
             onClick={() => onChangeDisplayMode(DISPLAY_MODES.SEARCH)}
             className="cursor-pointer"

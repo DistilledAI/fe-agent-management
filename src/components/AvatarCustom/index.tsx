@@ -1,5 +1,5 @@
 import { Avatar, Badge, SlotsToClasses } from "@nextui-org/react"
-import { ReactNode } from "react"
+import React, { ReactNode } from "react"
 import { twMerge } from "tailwind-merge"
 
 export interface AvatarCustomProps {
@@ -10,6 +10,7 @@ export interface AvatarCustomProps {
     | undefined
   badgeClassName?: string
   badgeBaseClassName?: string
+  icon?: React.ReactNode
 }
 
 const AvatarCustom: React.FC<AvatarCustomProps> = ({
@@ -18,6 +19,7 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
   classNames,
   badgeClassName,
   badgeBaseClassName,
+  icon,
 }) => {
   if (badgeIcon) {
     return (
@@ -37,7 +39,8 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
       >
         <Avatar
           src={src}
-          className="border border-mercury-400"
+          icon={icon}
+          className="border border-mercury-400 bg-mercury-100"
           disableAnimation={true}
         />
       </Badge>
@@ -48,7 +51,8 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
     <Avatar
       classNames={classNames}
       src={src}
-      className="border border-mercury-400"
+      icon={icon}
+      className="border border-mercury-400 bg-mercury-100"
       disableAnimation={true}
     />
   )
