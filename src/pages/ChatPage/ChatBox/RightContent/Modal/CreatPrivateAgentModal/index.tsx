@@ -64,7 +64,7 @@ const CreatPrivateAgentModal: React.FC<{
             <span className="text-[24px] font-semibold text-mercury-950">
               Create Private Agent
             </span>
-            <div className="z-50 cursor-pointer" onClick={onOpenChange}>
+            <div className="z-20 cursor-pointer" onClick={onOpenChange}>
               <CloseFilledIcon color="#545454" />
             </div>
           </div>

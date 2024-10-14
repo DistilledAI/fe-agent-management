@@ -31,7 +31,7 @@ const DrawerBottom = ({
     <div
       ref={isOutsideClose ? outsideRef : null}
       className={twMerge(
-        "fixed bottom-0 left-1/2 z-[99] mx-auto h-[calc(100dvh-200px)] w-[1100px] max-w-full -translate-x-1/2 translate-y-[100%] rounded-b-[32px] rounded-t-[40px] bg-[rgba(211,211,211,0.70)] shadow-4 backdrop-blur-[15px] duration-400 ease-in-out",
+        "fixed bottom-0 left-1/2 z-[40] mx-auto h-[calc(100dvh-200px)] w-[1100px] max-w-full -translate-x-1/2 translate-y-[100%] rounded-b-[32px] rounded-t-[40px] bg-[rgba(211,211,211,0.70)] shadow-4 backdrop-blur-[15px] duration-400 ease-in-out",
         isOpen && "translate-y-0",
         className,
         classNames?.base,
