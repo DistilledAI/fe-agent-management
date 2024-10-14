@@ -1,7 +1,6 @@
 import { fluxAIEx, stableDiffusionAIEx } from "@assets/images"
 import AvatarCustom from "@components/AvatarCustom"
 import { MessageDots } from "@components/Icons/Message"
-import { PinIcon } from "@components/Icons/Pin"
 import { Button } from "@nextui-org/react"
 
 const GEN_AI_TOOLS = [
@@ -30,9 +29,6 @@ const GenAITools = () => {
             <span className="text-base-b line-clamp-1 text-mercury-800">
               {item.name}
             </span>
-            <div>
-              <PinIcon />
-            </div>
           </div>
           <p className="max-w-[187px] text-13 font-medium text-mercury-600">
             {item.description || "Distilled AI Agent"}

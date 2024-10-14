@@ -2,7 +2,6 @@ import AvatarCustom from "@components/AvatarCustom"
 import { MailBoltIcon } from "@components/Icons/EmailUpIcon"
 import { MessageDots } from "@components/Icons/Message"
 import { PencilCogIcon } from "@components/Icons/Pencil"
-import { PinIcon } from "@components/Icons/Pin"
 import { PlaneTiltIcon } from "@components/Icons/Plane"
 import { Button } from "@nextui-org/react"
 
@@ -37,9 +36,6 @@ const Productivity = () => {
             <span className="text-base-b line-clamp-1 text-mercury-800">
               {item.name}
             </span>
-            <div>
-              <PinIcon />
-            </div>
           </div>
           <p className="max-w-[187px] text-13 font-medium text-mercury-600">
             {item.description || "Distilled AI Agent"}

@@ -2,21 +2,17 @@ import DrawerBottom from "@components/DrawerBottom"
 import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { FilledSquareCircleIcon } from "@components/Icons/FilledSquareCircleIcon"
 import { Button, useDisclosure } from "@nextui-org/react"
-import { useState } from "react"
 import { twMerge } from "tailwind-merge"
 import PrivateAgents from "./PrivateAgents"
-// import Productivity from "./Productivity"
-// import GenAITools from "./GenAITools"
 import useAuthState from "@hooks/useAuthState"
 import Productivity from "./Productivity"
 import ComingSoon from "@components/ComingSoon"
 import GenAITools from "./GenAITools"
+import useSliderMrkt from "./useSliderMrkt"
 
 const Marketplace = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [slider, setSlider] = useState<number>(0)
   const { isLogin } = useAuthState()
-
   const CATEGORIES = [
     {
       key: "private-agents",
@@ -80,15 +76,10 @@ const Marketplace = () => {
     },
   ]
 
-  const onPrevSlider = () => {
-    if (slider === 0) return
-    setSlider((prevSlider) => prevSlider - 1)
-  }
-
-  const onNextSlider = () => {
-    if (slider === CATEGORIES.length - 1) return
-    setSlider((prevSlider) => prevSlider + 1)
-  }
+  const { slider, onPrevSlider, onNextSlider, setSlider } = useSliderMrkt({
+    isOpen,
+    itemsCount: CATEGORIES.length - 1,
+  })
 
   return (
     <>
@@ -126,7 +117,10 @@ const Marketplace = () => {
             </Button>
           ))}
         </div>
-        <div className="relative flex h-full w-full items-center gap-4 overflow-hidden px-20 pb-3">
+        <div
+          className="relative flex h-full w-full items-center gap-4 overflow-hidden px-20 pb-3"
+          id="slider-container"
+        >
           {CATEGORIES.map((category, index) => (
             <div
               className={
@@ -152,7 +146,7 @@ const Marketplace = () => {
               >
                 <div
                   className={twMerge(
-                    "max-h-[88%] space-y-3 overflow-y-auto p-3 pb-10",
+                    "max-h-[88%] space-y-3 overflow-y-auto px-1 py-3 pb-10",
                     category.isComing && "overflow-y-visible",
                   )}
                 >
@@ -160,7 +154,7 @@ const Marketplace = () => {
                     <ComingSoon>
                       <div
                         className={twMerge(
-                          category.isComing && "space-y-3 opacity-60",
+                          category.isComing && "space-y-3 px-2 opacity-60",
                         )}
                       >
                         {category.component}

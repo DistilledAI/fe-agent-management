@@ -4,7 +4,6 @@ import { MessageDots } from "@components/Icons/Message"
 import { PATH_NAMES, RoleUser, STATUS_AGENT } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import useInviteUser from "@hooks/useInviteUser"
-// import { PinnedIcon } from "@components/Icons/Pin"
 import { Button } from "@nextui-org/react"
 import { IUser } from "@reducers/user/UserSlice"
 import { useEffect, useState } from "react"
@@ -50,8 +49,9 @@ const PrivateAgents = ({ onClose }: PrivateAgentsProps) => {
 
   return agents.map((agent, index) => (
     <div
-      className="flex justify-between gap-6 border-b border-b-mercury-70 py-2 last:border-none"
+      className="flex cursor-pointer justify-between gap-6 rounded-[22px] border-b border-b-mercury-70 p-2 last:border-none hover:bg-mercury-200"
       key={index}
+      onClick={() => handleChatWithAgent(agent)}
     >
       <div className="flex gap-4">
         <AvatarCustom
@@ -64,19 +64,13 @@ const PrivateAgents = ({ onClose }: PrivateAgentsProps) => {
             <span className="text-base-b line-clamp-1 text-mercury-800">
               {agent.username}
             </span>
-            {/* <div>
-                  <PinnedIcon />
-                </div> */}
           </div>
           <p className="max-w-[187px] text-13 font-medium text-mercury-600">
             {agent.description || "Distilled AI Agent"}
           </p>
         </div>
       </div>
-      <Button
-        className="min-w-[52px] rounded-full border border-mercury-50 bg-mercury-100 px-4 py-2"
-        onClick={() => handleChatWithAgent(agent)}
-      >
+      <Button className="min-w-[52px] rounded-full border border-mercury-50 bg-mercury-100 px-4 py-2">
         <MessageDots />
       </Button>
     </div>
