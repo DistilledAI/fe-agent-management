@@ -4,7 +4,7 @@ import { FilledSquareCircleIcon } from "@components/Icons/FilledSquareCircleIcon
 import { Button, useDisclosure } from "@nextui-org/react"
 import { twMerge } from "tailwind-merge"
 import PrivateAgents from "./PrivateAgents"
-import useAuthState from "@hooks/useAuthState"
+// import useAuthState from "@hooks/useAuthState"
 import Productivity from "./Productivity"
 import ComingSoon from "@components/ComingSoon"
 import GenAITools from "./GenAITools"
@@ -13,7 +13,7 @@ import { useEffect, useRef } from "react"
 
 const Marketplace = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { isLogin } = useAuthState()
+  // const { isLogin } = useAuthState()
   const CATEGORIES = [
     {
       key: "private-agents",
@@ -104,7 +104,7 @@ const Marketplace = () => {
     <>
       <Button
         onClick={onOpen}
-        isDisabled={!isLogin}
+        // isDisabled={!isLogin}
         className="btn-primary min-h-[60px]"
       >
         <div>
