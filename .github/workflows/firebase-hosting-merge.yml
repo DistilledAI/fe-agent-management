@@ -53,7 +53,9 @@ jobs:
       - name: Deploy to Firebase
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.import-credentials.outputs.file_path }}
-        run: yarn firebase deploy --only hosting:mesh-distilled-ai
+        run: |
+          yarn firebase target:apply hosting mesh-distilled-ai
+          yarn firebase deploy --only hosting:mesh-distilled-ai
 
       - name: Remove credentials file
         if: success() || failure()

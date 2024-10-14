@@ -2,6 +2,16 @@
   "projects": {
     "default": "oraichain-dapp"
   },
+  "targets": {
+    "oraichain-dapp": {
+      "hosting": {
+        "mesh-distilled-ai": [
+          "mesh-distilled-ai"
+        ]
+      }
+    }
+  },
+  "etags": {},
   "target": {
     "oraichain-dapp": {
       "mesh-distilled-ai": [
