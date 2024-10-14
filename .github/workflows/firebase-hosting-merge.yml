@@ -17,9 +17,9 @@ jobs:
         run: npm ci && npm run build
         env:
           CI: false
-          VITE_BASE_API_URL=https://api-echo.distilled.ai/distill
-          VITE_SOCKET_URL=wss://api-echo.distilled.ai
-          VITE_GROUP_DEFAULT_FOR_PRIVATE_AGENT=396
+          VITE_BASE_API_URL: https://api-echo.distilled.ai/distill
+          VITE_SOCKET_URL: wss://api-echo.distilled.ai
+          VITE_GROUP_DEFAULT_FOR_PRIVATE_AGENT: 396
         
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
