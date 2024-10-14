@@ -9,6 +9,7 @@ import Productivity from "./Productivity"
 import ComingSoon from "@components/ComingSoon"
 import GenAITools from "./GenAITools"
 import useSliderMrkt from "./useSliderMrkt"
+import { useEffect, useRef } from "react"
 
 const Marketplace = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -81,6 +82,24 @@ const Marketplace = () => {
     itemsCount: CATEGORIES.length - 1,
   })
 
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (slider > 3 && containerRef.current) {
+      console.log({ containerRef, scrollLeft: containerRef.current.scrollLeft })
+      containerRef.current.scrollTo({
+        left: containerRef.current.scrollLeft + 500,
+        behavior: "smooth",
+      })
+    }
+    if (slider < 7 && containerRef.current) {
+      containerRef.current.scrollTo({
+        left: containerRef.current.scrollLeft - 500,
+        behavior: "smooth",
+      })
+    }
+  }, [slider])
+
   return (
     <>
       <Button
@@ -102,7 +121,10 @@ const Marketplace = () => {
         }}
       >
         <h3 className="mb-6 text-center text-24 font-semibold">Marketplace</h3>
-        <div className="flex w-full items-center gap-4 overflow-hidden overflow-x-auto px-20 pb-3">
+        <div
+          className="flex w-full items-center gap-4 overflow-hidden overflow-x-auto whitespace-nowrap px-20 pb-3 scrollbar-hide"
+          ref={containerRef}
+        >
           {CATEGORIES.map((category, index) => (
             <Button
               key={category.key}
