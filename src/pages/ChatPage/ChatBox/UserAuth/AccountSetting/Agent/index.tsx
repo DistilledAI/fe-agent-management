@@ -12,9 +12,7 @@ import { brainAIIcon } from "@assets/svg"
 import { STATUS_AGENT } from "@constants/index"
 import ShareAgent from "./ShareAgent"
 
-const PrivateAgent: React.FC<{ setTypeContent?: any }> = ({
-  setTypeContent,
-}) => {
+const PrivateAgent: React.FC = () => {
   const [listBot, setListBot] = useState<any[]>([])
   const firstBot = listBot?.[0]
   const status = firstBot?.status
