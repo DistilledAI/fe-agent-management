@@ -27,7 +27,7 @@ const MoreAction: React.FC = () => {
         setBotInfo(botStatusData)
       }
     } catch (error) {
-      console.log("error", error)
+      console.error("error", error)
     }
   }
 
@@ -55,7 +55,7 @@ const MoreAction: React.FC = () => {
         // setShowNotification(true)
       }
     } catch (error) {
-      console.log("errorr", error)
+      console.error("errorr", error)
     }
   }
 
