@@ -41,8 +41,9 @@ jobs:
 
           VITE_BASE_API_URL: https://api-echo.distilled.ai/distill
           VITE_SOCKET_URL: wss://api-echo.distilled.ai
-          VITE_GROUP_DEFAULT_FOR_PRIVATE_AGENT: 40
+          VITE_GROUP_DEFAULT_FOR_PRIVATE_AGENT: 5
           VITE_GIT_COMMIT_ID: ${{ github.sha }}
+          
 
 
       - name: Import Firebase service account credentials
