@@ -1,6 +1,6 @@
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { PATH_NAMES } from "@constants/index"
-import { AGENT_TYPE, updateAgentType } from "@reducers/chatbot/AgentSlice"
+import { AGENT_TYPE, updateAgentType } from "@reducers/agentSlice"
 import { useDispatch } from "react-redux"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import ActiveEffect from "./ActiveEffect"

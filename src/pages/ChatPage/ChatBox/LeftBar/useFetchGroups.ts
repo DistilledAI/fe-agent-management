@@ -1,5 +1,5 @@
 import useAuthState from "@hooks/useAuthState"
-import { IUser } from "@reducers/user/UserSlice"
+import { IUser } from "@reducers/userSlice"
 import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { getGroupList } from "services/chat"

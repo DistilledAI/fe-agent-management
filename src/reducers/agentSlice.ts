@@ -15,7 +15,7 @@ const initStateValues = {
 
 const initialState: AgentState = initStateValues
 
-const AgentSlice = createSlice({
+const agentSlice = createSlice({
   name: "agents",
   initialState,
   reducers: {
@@ -28,6 +28,6 @@ const AgentSlice = createSlice({
   },
 })
 
-export const { updateAgentType } = AgentSlice.actions
+export const { updateAgentType } = agentSlice.actions
 
-export default AgentSlice.reducer
+export default agentSlice.reducer

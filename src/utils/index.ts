@@ -1,5 +1,5 @@
 import FingerprintJS from "@fingerprintjs/fingerprintjs"
-import { IUser } from "@reducers/user/UserSlice"
+import { IUser } from "@reducers/userSlice"
 import { cloneElement, createElement } from "react"
 import { toast } from "react-toastify"
 
