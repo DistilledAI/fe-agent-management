@@ -142,7 +142,6 @@ const ChatMessages = () => {
 
   return (
     <ChatWindow
-      className={activeColor.borderColor}
       messages={messages}
       itemContent={renderMessage}
       loading={loading}

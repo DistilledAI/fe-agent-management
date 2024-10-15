@@ -77,10 +77,10 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
   ) => {
     return groups.map((group) => {
       const groupId = group.groupId
-      const color = colors[groupId % colors.length]
+      const bgColor = colors[groupId % colors.length].bgColor
       return {
         ...group,
-        ...color,
+        bgColor,
       }
     })
   }
@@ -128,7 +128,6 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
               dispatch(
                 updateActiveColor({
                   bgColor: groupItem.bgColor,
-                  borderColor: groupItem.borderColor,
                 }),
               )
             }
