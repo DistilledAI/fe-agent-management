@@ -66,6 +66,10 @@ export default {
             1: "#DC6D1E",
             2: "#4A38E9",
             3: "#7EB204",
+            4: "#DC3A3C",
+            5: "#903ADC",
+            6: "#3AB9DC",
+            7: "#F4B815",
           },
         },
       },
@@ -82,7 +86,7 @@ export default {
           "linear-gradient(53deg, #903ADC -2.17%, #BE7BFA 134.29%)",
         "lgd-code-agent-6":
           "linear-gradient(53deg, #3AB9DC -2.17%, #7BDAFA 134.29%)",
-        "lgd-code-agent-6":
+        "lgd-code-agent-7":
           "linear-gradient(53deg, #F4B815 -2.17%, #FBD879 134.29%)",
         "fading-white":
           "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #FFF 100%)",

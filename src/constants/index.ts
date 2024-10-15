@@ -40,3 +40,34 @@ export const STATUS_AGENT = {
 export enum TYPE_BOT {
   VOICE = 2,
 }
+
+export const ACTIVE_COLORS = [
+  {
+    bgColor: "bg-lgd-code-agent-1",
+    borderColor: "border-code-agent-1",
+  },
+  {
+    bgColor: "bg-lgd-code-agent-2",
+    borderColor: "border-code-agent-2",
+  },
+  {
+    bgColor: "bg-lgd-code-agent-3",
+    borderColor: "border-code-agent-3",
+  },
+  {
+    bgColor: "bg-lgd-code-agent-4",
+    borderColor: "border-code-agent-4",
+  },
+  {
+    bgColor: "bg-lgd-code-agent-5",
+    borderColor: "border-code-agent-5",
+  },
+  {
+    bgColor: "bg-lgd-code-agent-6",
+    borderColor: "border-code-agent-6",
+  },
+  {
+    bgColor: "bg-lgd-code-agent-7",
+    borderColor: "border-code-agent-7",
+  },
+]
