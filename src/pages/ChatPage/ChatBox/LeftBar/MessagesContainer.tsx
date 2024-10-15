@@ -75,8 +75,9 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
     colors: Array<ActiveColorState>,
     groups: any[],
   ) => {
-    return groups.map((group, index) => {
-      const color = colors[index % colors.length]
+    return groups.map((group) => {
+      const groupId = group.groupId
+      const color = colors[groupId % colors.length]
       return {
         ...group,
         ...color,
