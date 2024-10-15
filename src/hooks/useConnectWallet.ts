@@ -27,6 +27,14 @@ const useConnectWallet = () => {
       toast.warning("Please install MetaMask to continue!")
       return
     }
+    const isTrustWalletDefault =
+      window.ethereum.isTrust || window.ethereum.isTrustWallet
+    if (isTrustWalletDefault) {
+      toast.warning(
+        "Trust Wallet is set to default, please turn off and reload page to use MetaMask!",
+      )
+      return
+    }
     try {
       setLoading(true)
 
