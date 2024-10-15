@@ -2,7 +2,10 @@
 # https://github.com/firebase/firebase-tools
 
 name: Deploy to Firebase Hosting on PR
-'on': pull_request
+'on':
+  pull_request:
+    branches:
+      - main
 jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
@@ -40,9 +43,15 @@ jobs:
         run: yarn build
         env:
           CI: false
-          VITE_BASE_API_URL: https://api-dev.distilled.ai/distill
-          VITE_SOCKET_URL: wss://api-dev.distilled.ai
-          VITE_GROUP_DEFAULT_FOR_PRIVATE_AGENT: 454
+          VITE_BASE_API_URL: $${{
+            github.ref == 'refs/heads/main' && 'https://api-dev.distilled.ai/distill' || 'https://api-echo.distilled.ai/distill'
+          }}
+          VITE_SOCKET_URL: $${{
+            github.ref == 'refs/heads/main' && 'wss://api-dev.distilled.ai' || 'wss://api-dev.distilled.ai'
+          }}
+          VITE_GROUP_DEFAULT_FOR_PRIVATE_AGENT: $${{
+            github.ref == 'refs/heads/main' && '454' || '454'
+          }}
 
       - name: Import Firebase service account credentials
         id: import-credentials
