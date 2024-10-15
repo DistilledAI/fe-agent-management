@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import useAuthState from "./useAuthState"
 import { useDispatch } from "react-redux"
-import { logout } from "@reducers/user/UserSlice"
+import { logout } from "@reducers/userSlice"
 
 const useReconnectWallet = () => {
   const { isLogin, user } = useAuthState()

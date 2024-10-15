@@ -1,5 +1,5 @@
 import { RoleUser } from "@constants/index"
-import { IUser } from "@reducers/user/UserSlice"
+import { IUser } from "@reducers/userSlice"
 
 export const getAvatarGroupChat = (
   ownerId: number,

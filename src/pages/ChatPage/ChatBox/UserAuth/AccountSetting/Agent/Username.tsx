@@ -1,7 +1,7 @@
 import { EditPenFilledIcon } from "@components/Icons/Edit"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
-import { IUser, updateUser as updateUserSlice } from "@reducers/user/UserSlice"
+import { IUser, updateUser as updateUserSlice } from "@reducers/userSlice"
 import { useRef } from "react"
 import { useDispatch } from "react-redux"
 import { toast } from "react-toastify"

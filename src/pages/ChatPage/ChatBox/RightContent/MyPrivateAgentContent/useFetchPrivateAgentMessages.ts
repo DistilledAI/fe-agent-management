@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getChatHistoryById } from "services/chat"
-import { IUser } from "@reducers/user/UserSlice"
+import { IUser } from "@reducers/userSlice"
 import useAuthState from "@hooks/useAuthState"
 import { useChatMessage } from "providers/MessageProvider"
 import { PATH_NAMES } from "@constants/index"

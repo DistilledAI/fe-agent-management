@@ -32,8 +32,8 @@ const ChatBox = () => {
           <UserAuth connectWallet={connectWallet} loading={loading} />
         </div>
         <div className="grid h-full max-h-[calc(100%-143px)] w-full grid-cols-[280px_1fr] gap-4">
-          <LeftBar />
           <StyleBoxChatProvider>
+            <LeftBar />
             <div className="relative space-y-4">
               {isLogin && chatId ? (
                 <ChatMessages />

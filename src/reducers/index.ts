@@ -1,11 +1,13 @@
 import { combineReducers, Reducer } from "@reduxjs/toolkit"
-import agentReducer, { AgentState } from "./chatbot/AgentSlice"
-import userReducer, { IUserState } from "./user/UserSlice"
+import agentReducer, { AgentState } from "./agentSlice"
+import userReducer, { IUserState } from "./userSlice"
 
-const rootReducer: Reducer<{
+type TReducer = {
   agents: AgentState
   user: IUserState
-}> = combineReducers({
+}
+
+const rootReducer: Reducer<TReducer> = combineReducers({
   agents: agentReducer,
   user: userReducer,
 })

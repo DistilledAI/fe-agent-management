@@ -13,7 +13,7 @@ import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroups, { TypeGroup } from "./useFetchGroups"
 import { RoleUser } from "@constants/index"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
-import { IUser } from "@reducers/user/UserSlice"
+import { IUser } from "@reducers/userSlice"
 import { useChatMessage } from "providers/MessageProvider"
 import useAuthState from "@hooks/useAuthState"
 
