@@ -22,12 +22,12 @@ const MyEcho: React.FC = () => {
 
   return (
     <div
-      className="flex-items-center hover-light-effect group/item group relative gap-2 rounded-full px-2 py-4 aria-selected:bg-mercury-100"
+      className="flex-items-center hover-light-effect group/item group relative gap-2 rounded-full border-white bg-mercury-30 px-2 py-4 aria-selected:border-mercury-100 aria-selected:bg-mercury-100"
       onClick={() => handleChooseMyEcho()}
       aria-selected={!!isActive}
     >
       <FilledBrainAIIcon />
-      <span className="text-base font-normal group-aria-selected:font-bold">
+      <span className="text-base font-normal group-aria-selected:font-semibold">
         My Private Agent
       </span>
 
