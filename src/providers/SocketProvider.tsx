@@ -64,6 +64,10 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
           }
         })
 
+        initSocket.on("distill-error", (error) => {
+          console.log(`Socket error distill: ${error}`)
+        })
+
         initSocket.on("reconnect", (attempt) => {
           console.log(`Reconnected after ${attempt} attempts`)
         })
