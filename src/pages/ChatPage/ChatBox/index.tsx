@@ -1,7 +1,7 @@
 import DistilledAIIcon from "@components/Icons/DistilledAIIcon"
 import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import ChatInput from "./ChatInput"
 import ChatMessages from "./ChatMessages"
 import LeftBar from "./LeftBar"
@@ -10,16 +10,22 @@ import { StyleBoxChatProvider } from "./StyleProvider"
 import UserAuth from "./UserAuth"
 import useMessageSocket from "./useMessageSocket"
 import useReconnectWallet from "@hooks/useReconnectWallet"
+import { useEffect } from "react"
 
 const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
   const { chatId } = useParams()
   const { isLogin } = useAuthState()
   const { privateChatId } = useParams()
+  const navigate = useNavigate()
 
   useReconnectWallet()
   useMessageSocket()
   const isEnableTextInput = isLogin && (privateChatId || chatId)
+
+  useEffect(() => {
+    if (chatId && !isLogin) navigate("/")
+  }, [isLogin, chatId, navigate])
 
   return (
     <div className="flex h-full items-center justify-center pb-10 pt-[18px]">
