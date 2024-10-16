@@ -4,10 +4,12 @@ import { ethers } from "ethers"
 import { toast } from "react-toastify"
 import { useDispatch } from "react-redux"
 import { loginSuccess } from "@reducers/userSlice"
+import { useAccount } from "wagmi"
 
 const useConnectWallet = () => {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
+  const { address } = useAccount()
 
   const login = async (input: IDataSignatureAuth) => {
     const res = await signatureAuth(input)
@@ -19,6 +21,28 @@ const useConnectWallet = () => {
           expire: Date.now() + 24 * 60 * 60 * 1000,
         }),
       )
+    }
+  }
+
+  const withTimeout = (promise: any, timeoutMs: number) => {
+    return Promise.race([
+      promise,
+      new Promise((_, reject) =>
+        setTimeout(
+          () => reject("Timeout after " + timeoutMs + " ms"),
+          timeoutMs,
+        ),
+      ),
+    ])
+  }
+
+  const getPublicAddress = async (signer: ethers.providers.JsonRpcSigner) => {
+    try {
+      const res = await withTimeout(signer.getAddress(), 2000)
+      return res
+    } catch (error) {
+      console.log(error)
+      return address
     }
   }
 
@@ -42,7 +66,7 @@ const useConnectWallet = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       await provider.send("eth_requestAccounts", [])
       const signer = await provider.getSigner()
-      const publicAddress = await signer.getAddress()
+      const publicAddress = await getPublicAddress(signer)
 
       const domain = {}
       const types = {
