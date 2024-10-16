@@ -75,7 +75,7 @@ const ChatWindow = ({
     if (!isScrollBottom) {
       virtuosoRef.current?.scrollToIndex({
         index: messages.length - 1,
-        behavior: "smooth",
+        behavior: isChatting ? "smooth" : "auto",
         align: "end",
       })
     }
