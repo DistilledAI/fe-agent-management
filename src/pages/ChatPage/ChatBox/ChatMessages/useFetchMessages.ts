@@ -20,8 +20,13 @@ export interface IMessage {
   user: IUser
 }
 
+export const queryChatMessagesKey = (chatId: string | undefined) => {
+  if (!chatId) return []
+  return [`chat-messages-${chatId}`]
+}
+
 const useFetchMessages = () => {
-  const { setDataFetch, setMessages } = useChatMessage()
+  const { setMessages } = useChatMessage()
   const { user } = useAuthState()
   const { chatId } = useParams()
   const navigate = useNavigate()
@@ -30,11 +35,11 @@ const useFetchMessages = () => {
   const fetchMessages = async () => {
     if (!chatId) return
     const res = await getChatHistoryById({ id: Number(chatId) })
-    return res.data.items
+    return convertDataFetchToMessage(res.data.items, user?.id ? user.id : 0)
   }
 
   const { data, error, isFetching } = useQuery({
-    queryKey: ["chatMessages", chatId],
+    queryKey: queryChatMessagesKey(chatId),
     queryFn: fetchMessages,
     enabled: !!chatId && !!user?.id,
     staleTime: 5 * 60 * 1000,
@@ -43,10 +48,9 @@ const useFetchMessages = () => {
 
   useEffect(() => {
     if (data) {
-      setDataFetch(data)
-      setMessages(convertDataFetchToMessage(data, user?.id ? user.id : 0))
+      setMessages(data)
     }
-  }, [data, setDataFetch, setMessages, user?.id])
+  }, [data?.length, chatId])
 
   useEffect(() => {
     if (error) {
@@ -70,16 +74,16 @@ const useFetchMessages = () => {
         limit,
       })
       if (res.data.items) {
-        queryClient.setQueryData(["chatMessages", chatId], (oldData: any) => [
-          ...res.data.items,
-          ...oldData,
-        ])
+        const newMessages = convertDataFetchToMessage(
+          res.data.items,
+          user?.id ? user.id : 0,
+        )
+        queryClient.setQueryData(
+          queryChatMessagesKey(chatId),
+          (oldData: any) => [...newMessages, ...oldData],
+        )
 
-        setDataFetch((prevData) => [...res.data.items, ...prevData])
-        setMessages((prevData) => [
-          ...convertDataFetchToMessage(res.data.items, user?.id ? user.id : 0),
-          ...prevData,
-        ])
+        setMessages((prevData) => [...newMessages, ...prevData])
       }
       return res.data.items.length || 0
     } catch (error) {

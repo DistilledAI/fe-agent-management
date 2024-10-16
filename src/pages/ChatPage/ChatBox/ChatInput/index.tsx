@@ -11,9 +11,11 @@ import SpeechRecognition, {
 } from "react-speech-recognition"
 import { postChatToGroup } from "services/chat"
 import { twMerge } from "tailwind-merge"
-import { RoleChat } from "../ChatMessages/helpers"
+import { IMessageBox, RoleChat } from "../ChatMessages/helpers"
 import { useStyleBoxChat } from "../StyleProvider"
 import VoiceChat from "./Voice"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { queryChatMessagesKey } from "../ChatMessages/useFetchMessages"
 
 const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
   isDisabledInput,
@@ -21,49 +23,56 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
   const { setMessages: setMessageContext } = useChatMessage()
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const { chatId, privateChatId } = useParams()
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const [isFocus, setIsFocus] = useState(false)
   const [messages, setMessages] = useState("")
   const boxRef = useRef<HTMLDivElement>(null)
   const heightBoxRef = useRef(0)
   const { setStyle } = useStyleBoxChat()
+  const queryClient = useQueryClient()
 
   const groupId = chatId ?? privateChatId
 
+  const mutation = useMutation({
+    mutationFn: (message: string) =>
+      postChatToGroup({
+        groupId: Number(groupId),
+        messages: message,
+      }),
+    onSuccess: () => {
+      SpeechRecognition.stopListening()
+    },
+    onError: (error) => {
+      console.error("Failed to send message", error)
+    },
+  })
+
   const onSubmit = async () => {
     if (!messages) return
-    setMessageContext((prev) => [
-      ...prev,
-      {
-        content: messages,
-        role: RoleChat.OWNER,
-        id: makeId(),
-        roleOwner: RoleUser.USER,
-        createdAt: new Date().toISOString(),
-      },
-    ])
-    setMessages("")
-    SpeechRecognition.stopListening()
 
-    await postChatToGroup({
-      groupId: Number(groupId),
-      messages,
-    })
+    setMessages("")
+
+    const newMessage = {
+      content: messages,
+      role: RoleChat.OWNER,
+      id: makeId(),
+      roleOwner: RoleUser.USER,
+      createdAt: new Date().toISOString(),
+    }
+    setMessageContext((prev) => [...prev, newMessage])
+    queryClient.setQueryData(
+      queryChatMessagesKey(groupId),
+      (oldData: IMessageBox[]) => {
+        return [...oldData, newMessage]
+      },
+    )
+
+    mutation.mutate(messages)
   }
 
   const handleKeyDown = (e: any) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault()
-      if (!isSubmitting) {
-        setIsSubmitting(true)
-        onSubmit()
-
-        setTimeout(() => {
-          setIsSubmitting(false)
-          setMessages("")
-          SpeechRecognition.stopListening()
-        }, 1)
-      }
+      onSubmit()
     }
   }
 
@@ -101,7 +110,7 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
           inputWrapper:
             "bg-mercury-200 border-none focus-within:!bg-mercury-200 hover:!bg-mercury-200 shadow-none px-0",
           input:
-            "text-[18px] text-mercury-900 placeholder:text-mercury-700  font-barlow",
+            "text-[18px] text-mercury-900 placeholder:text-mercury-700 font-barlow",
         }}
         onKeyDown={handleKeyDown}
         minRows={1}
@@ -123,7 +132,7 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
       />
       <Button
         onClick={onSubmit}
-        isDisabled={!messages}
+        isDisabled={!messages || mutation.isPending}
         type="submit"
         isIconOnly
         className="h-9 w-[52px] min-w-[52px] rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2"

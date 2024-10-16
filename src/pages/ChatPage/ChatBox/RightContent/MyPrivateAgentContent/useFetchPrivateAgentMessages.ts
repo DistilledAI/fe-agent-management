@@ -21,7 +21,7 @@ export interface IMessage {
 
 const useFetchPrivateAgentMessages = () => {
   const [loading, setLoading] = useState(false)
-  const { setDataFetch, setMessages } = useChatMessage()
+  const { setMessages } = useChatMessage()
   const { user } = useAuthState()
   const { privateChatId } = useParams()
   const navigate = useNavigate()
@@ -32,7 +32,6 @@ const useFetchPrivateAgentMessages = () => {
       setLoading(true)
       const res = await getChatHistoryById({ id: Number(privateChatId) })
       if (res.data.items) {
-        setDataFetch(res.data.items)
         setMessages(
           convertDataFetchToMessage(res.data.items, user?.id ? user.id : 0),
         )
@@ -60,7 +59,6 @@ const useFetchPrivateAgentMessages = () => {
         limit,
       })
       if (res.data.items) {
-        setDataFetch((prevData) => [...res.data.items, ...prevData])
         setMessages((prevData) => [
           ...convertDataFetchToMessage(res.data.items, user?.id ? user.id : 0),
           ...prevData,

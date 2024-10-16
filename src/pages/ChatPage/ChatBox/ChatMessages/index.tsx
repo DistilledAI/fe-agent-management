@@ -16,7 +16,7 @@ import { useAppSelector } from "@hooks/useAppRedux"
 const TIME_BREAK = 15
 
 const ChatMessages = () => {
-  const { messages, isChatting } = useChatMessage()
+  const { isChatting, messages } = useChatMessage()
   const { loading, onLoadPrevMessages } = useFetchMessages()
   const { chatId } = useParams()
   const { style } = useStyleBoxChat()
