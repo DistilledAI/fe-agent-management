@@ -1,7 +1,9 @@
 import { envConfig } from "@configs/env"
 import useAuthState from "@hooks/useAuthState"
+import { logout } from "@reducers/user/UserSlice"
 import { getAccessToken } from "@utils/storage"
 import React, { createContext, useContext, useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 import { Socket } from "socket.io-client"
 import { io } from "socket.io-client"
 
@@ -22,12 +24,15 @@ const SocketProviderContext = createContext(initialState)
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const { isLogin, sessionAccessToken } = useAuthState()
   const [socket, setSocket] = useState<Socket>()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     let initSocket: Socket | undefined
 
     if (isLogin) {
       const accessToken = getAccessToken()
+
+      if (!accessToken) dispatch(logout())
 
       const createSocketConnection = () => {
         initSocket = io(envConfig.socketUrl, {
@@ -112,7 +117,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         }
       }
     }
-  }, [isLogin, sessionAccessToken])
+  }, [isLogin, sessionAccessToken, dispatch])
 
   return (
     <SocketProviderContext.Provider value={{ socket }}>
