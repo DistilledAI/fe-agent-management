@@ -83,7 +83,7 @@ export default {
         "lgd-code-agent-4":
           "linear-gradient(53deg, #C0494B -2.17%, #C54B4D 134.29%)",
         "lgd-code-agent-5":
-          "linear-gradient(53deg, #7E57A0 -2.17%, #9A7CB4 134.29%))",
+          "linear-gradient(53deg, #7E57A0 -2.17%, #9A7CB4 134.29%)",
         "lgd-code-agent-6":
           "linear-gradient(53deg, #4C8898 -2.17%, #5B99AD 134.29%)",
         "lgd-code-agent-7":
