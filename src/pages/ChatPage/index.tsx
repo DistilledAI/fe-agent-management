@@ -7,6 +7,8 @@ import { useLocation, useParams } from "react-router-dom"
 import ChatBox from "./ChatBox"
 import ChatHeader from "./ChatHeader"
 import ChatPageMobile from "./Mobile"
+import { useLocation, useParams } from "react-router-dom"
+import { PATH_NAMES } from "@constants/index"
 
 const ChatPage = () => {
   const { screenWidth } = useWindowSize()
