@@ -1,7 +1,7 @@
 import useWindowSize from "@hooks/useWindowSize"
 import React from "react"
-import HeaderMobile from "./HeaderMobile"
 import FooterMobile from "./FooterMobile"
+import HeaderMobile from "./HeaderMobile"
 
 const MainLayout: React.FC<{
   children:

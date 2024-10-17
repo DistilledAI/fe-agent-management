@@ -1,10 +1,10 @@
+import useAuthState from "@hooks/useAuthState"
+import useReconnectWallet from "@hooks/useReconnectWallet"
 import { useParams } from "react-router-dom"
+import useMessageSocket from "../ChatBox/useMessageSocket"
+import ChatDetail from "./ChatDetail"
 import ChatList from "./ChatList"
 import ChatSearch from "./ChatSearch"
-import useAuthState from "@hooks/useAuthState"
-import ChatDetail from "./ChatDetail"
-import useMessageSocket from "../ChatBox/useMessageSocket"
-import useReconnectWallet from "@hooks/useReconnectWallet"
 
 const ChatPageMobile = () => {
   const { chatId } = useParams()
