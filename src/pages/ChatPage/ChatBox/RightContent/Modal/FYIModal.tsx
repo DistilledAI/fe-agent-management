@@ -39,6 +39,7 @@ const FYIModal: React.FC<{ openPopup: boolean; setOpenPopup: any }> = ({
         base: "bg-white max-sm:!m-0 max-sm:h-[calc(100vh-120px)]",
       }}
       size="2xl"
+      placement="bottom-center"
     >
       <ModalContent>
         <div className="max-sm:h-full relative mt-4 h-[600px] w-auto">
