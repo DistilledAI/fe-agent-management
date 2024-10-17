@@ -26,14 +26,17 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [socket, setSocket] = useState<Socket>()
   const dispatch = useDispatch()
 
+  const handleGetAccessToken = () => {
+    const accessToken = getAccessToken()
+    if (!accessToken) dispatch(logout())
+
+    return accessToken
+  }
+
   useEffect(() => {
     let initSocket: Socket | undefined
 
     if (isLogin) {
-      const accessToken = getAccessToken()
-
-      if (!accessToken) dispatch(logout())
-
       const createSocketConnection = () => {
         initSocket = io(envConfig.socketUrl, {
           path: "/socket.io",
@@ -41,7 +44,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
           rejectUnauthorized: false,
           agent: false,
           auth: {
-            authorization: `Bearer ${accessToken}`,
+            authorization: `Bearer ${handleGetAccessToken()}`,
           },
           reconnection: true,
           reconnectionDelay: 2000,
@@ -64,8 +67,12 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
           }
         })
 
-        initSocket.on("distill-error", (error) => {
-          console.log(`Socket error distill: ${error}`)
+        initSocket.on("distill-error", (reason) => {
+          console.log(`Socket error distill: ${reason}`)
+          if (reason?.status === 401) {
+            initSocket?.disconnect()
+            dispatch(logout())
+          }
         })
 
         initSocket.on("reconnect", (attempt) => {
