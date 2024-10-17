@@ -1,4 +1,3 @@
-import { IconExpandClose, IconExpandOpen } from "@components/Icons/DefiLens"
 import { useEffect } from "react"
 
 const FullScreen = ({ containerRef, fullScreen, fullScreenChange }) => {
@@ -45,7 +44,15 @@ const FullScreen = ({ containerRef, fullScreen, fullScreenChange }) => {
         }
       }}
     >
-      {fullScreen ? <IconExpandClose /> : <IconExpandOpen />}
+      {/* {fullScreen ? <IconExpandClose /> : <IconExpandOpen />} */}
+
+      <div>
+        {fullScreen ? (
+          <div className="bg-slate-500">THUONGDO</div>
+        ) : (
+          <span className="bg-slate-500">DOTHUONG</span>
+        )}
+      </div>
     </button>
   )
 }
