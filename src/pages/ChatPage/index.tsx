@@ -1,12 +1,12 @@
 import MainLayout from "@components/Layout/MainLayout"
+import { PATH_NAMES } from "@constants/index"
 import useInviteUser from "@hooks/useInviteUser"
 import useWindowSize from "@hooks/useWindowSize"
 import { ChatMessageProvider } from "providers/MessageProvider"
+import { useLocation, useParams } from "react-router-dom"
 import ChatBox from "./ChatBox"
 import ChatHeader from "./ChatHeader"
 import ChatPageMobile from "./Mobile"
-import { useLocation, useParams } from "react-router-dom"
-import { PATH_NAMES } from "@constants/index"
 
 const ChatPage = () => {
   const { screenWidth } = useWindowSize()
