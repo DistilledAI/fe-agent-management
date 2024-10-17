@@ -4,8 +4,7 @@ import { logout } from "@reducers/user/UserSlice"
 import { getAccessToken } from "@utils/storage"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import { Socket } from "socket.io-client"
-import { io } from "socket.io-client"
+import { io, Socket } from "socket.io-client"
 
 type SocketProviderProps = {
   children: React.ReactNode
@@ -69,10 +68,10 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
         initSocket.on("distill-error", (reason) => {
           console.log(`Socket error distill: ${reason}`)
-          if (reason?.status === 401) {
-            initSocket?.disconnect()
-            dispatch(logout())
-          }
+          // if (reason?.status === 401) {
+          //   initSocket?.disconnect()
+          //   dispatch(logout())
+          // }
         })
 
         initSocket.on("reconnect", (attempt) => {

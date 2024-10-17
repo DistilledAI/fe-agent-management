@@ -109,6 +109,7 @@ const CreatePrivateAgent: React.FC<{
             }
             label="Create your Private Agent"
             isDisable={false}
+            radiusFull
           />
         </div>
         <div
@@ -121,6 +122,7 @@ const CreatePrivateAgent: React.FC<{
             icon={<PDFTypeIcon />}
             label="PDFs"
             isDisable={true}
+            radiusFull
           />
         </div>
         <div
@@ -133,6 +135,7 @@ const CreatePrivateAgent: React.FC<{
             icon={<EmailUpIcon />}
             label="Emails"
             isDisable={true}
+            radiusFull
           />
         </div>
         <div
@@ -145,6 +148,7 @@ const CreatePrivateAgent: React.FC<{
             icon={<PhotoPlusIcon />}
             label="Photos & Videos"
             isDisable={true}
+            radiusFull
           />
         </div>
         <div
@@ -160,6 +164,7 @@ const CreatePrivateAgent: React.FC<{
             icon={<SocialLinkIcon />}
             label="Website links (including Social Media)"
             isDisable={false}
+            radiusFull
           />
         </div>
       </div>

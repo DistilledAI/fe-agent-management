@@ -117,6 +117,14 @@ const ProfileLinkForm: React.FC<{
   }
 
   if (loading) {
+    if (isMobile)
+      return (
+        <>
+          <IntroVideo />
+          <CollectingContent setContentStep={setContentStep} />
+        </>
+      )
+
     return <CollectingContent setContentStep={setContentStep} />
   }
 
@@ -124,7 +132,6 @@ const ProfileLinkForm: React.FC<{
     return (
       <>
         <IntroVideo />
-
         <span className="flex items-center justify-center text-center text-[24px] font-semibold text-mercury-950">
           Website links/Social Media
         </span>

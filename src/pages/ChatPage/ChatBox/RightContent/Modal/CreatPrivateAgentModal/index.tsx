@@ -46,28 +46,19 @@ const CreatPrivateAgentModal: React.FC<{
   const renderModalContentWraper = () => {
     if (isMobile) {
       return (
-        <div className="relative h-[680px] w-full bg-cover bg-center bg-no-repeat">
-          <div className="flex-items-center absolute left-0 top-4 z-10 w-full justify-center px-4">
+        <div className="max-sm:h-full relative h-[680px] w-full bg-cover bg-center bg-no-repeat">
+          <div className="flex-items-center relative left-0 top-4 z-10 w-full justify-center px-4">
             <span className="text-18 font-semibold text-mercury-950">
               Create Private Agent
             </span>
-            <div className="z-20 cursor-pointer" onClick={onOpenChange}>
+            <div
+              className="absolute right-4 z-20 cursor-pointer"
+              onClick={onOpenChange}
+            >
               <CloseFilledIcon color="#545454" />
             </div>
           </div>
 
-          {/* {!isWordcloundStep && (
-            <video
-              autoPlay
-              playsInline
-              loop
-              muted
-              className="h-full object-cover"
-            >
-              <source src={distilledAiPrivateAgent} type="video/mp4" />
-              <track kind="captions"></track>
-            </video>
-          )} */}
           <div
             className="absolute bottom-10 left-1/2 w-full -translate-x-1/2 rounded-[22px] p-6 backdrop-blur-md aria-selected:pb-0"
             aria-selected={isWordcloundStep}
@@ -123,7 +114,7 @@ const CreatPrivateAgentModal: React.FC<{
       onOpenChange={onOpenChange}
       hideCloseButton
       classNames={{
-        base: "bg-white",
+        base: `bg-white max-sm:!m-0 ${isWordcloundStep ? "max-sm:h-[calc(100vh-140px)]" : "max-sm:h-[calc(100vh-380px)]"}`,
       }}
       size="5xl"
     >

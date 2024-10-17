@@ -12,16 +12,16 @@ export default {
       fontFamily: {
         barlow: ["Barlow", "sans-serif"],
       },
-      screens: {
-        "4xl": { max: "1799px" },
-        "3xl": { max: "1499px" },
-        "2xl": { max: "1399px" },
-        xl: { max: "1199px" },
-        lg: { max: "991px" },
-        md: { max: "767px" },
-        sm: { max: "575px" },
-        sxm: { max: "380px" },
-      },
+      // screens: {
+      //   "4xl": { max: "1799px" },
+      //   "3xl": { max: "1499px" },
+      //   "2xl": { max: "1399px" },
+      //   xl: { max: "1199px" },
+      //   lg: { max: "991px" },
+      //   md: { max: "767px" },
+      //   sm: { max: "575px" },
+      //   sxm: { max: "380px" },
+      // },
       fontSize: {
         10: "0.625rem",
         12: "0.75rem",
