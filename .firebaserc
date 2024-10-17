@@ -7,6 +7,9 @@
       "hosting": {
         "mesh-distilled-ai": [
           "mesh-distilled-ai"
+        ],
+        "mesh-distilled-ai-dev": [
+          "mesh-distilled-ai-dev"
         ]
       }
     }
@@ -16,6 +19,9 @@
     "oraichain-dapp": {
       "mesh-distilled-ai": [
         "mesh-distilled-ai"
+      ],
+      "mesh-distilled-ai-dev": [
+        "mesh-distilled-ai-dev"
       ]
     }
   }

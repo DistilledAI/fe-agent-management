@@ -3,7 +3,7 @@ import { IDataSignatureAuth, signatureAuth } from "services/auth"
 import { ethers } from "ethers"
 import { toast } from "react-toastify"
 import { useDispatch } from "react-redux"
-import { loginSuccess } from "@reducers/user/UserSlice"
+import { loginSuccess } from "@reducers/userSlice"
 import { useAccount } from "wagmi"
 
 const useConnectWallet = () => {

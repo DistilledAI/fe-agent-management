@@ -9,7 +9,7 @@ import { QRCodeCanvas } from "qrcode.react"
 import { IModalProps } from "types/modal"
 import { saveAs } from "file-saver"
 import { useRef } from "react"
-import { IUser } from "@reducers/user/UserSlice"
+import { IUser } from "@reducers/userSlice"
 
 const appUrl = window.location.origin
 

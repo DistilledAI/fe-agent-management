@@ -11,14 +11,16 @@ import { twMerge } from "tailwind-merge"
 import { useStyleBoxChat } from "../StyleProvider"
 import { IMessageBox, RoleChat } from "./helpers"
 import useFetchMessages from "./useFetchMessages"
+import { useAppSelector } from "@hooks/useAppRedux"
 
 const TIME_BREAK = 15
 
 const ChatMessages = () => {
-  const { messages, isChatting } = useChatMessage()
+  const { isChatting, messages } = useChatMessage()
   const { loading, onLoadPrevMessages } = useFetchMessages()
   const { chatId } = useParams()
   const { style } = useStyleBoxChat()
+  const activeColor = useAppSelector((state) => state.activeColor)
 
   const getBadgeIcon = (role: RoleUser) =>
     role === RoleUser.BOT ? (
@@ -130,7 +132,7 @@ const ChatMessages = () => {
           {message.role === RoleChat.OWNER ? (
             <SenderMessage
               content={message.content}
-              baseClassName={twMerge("bg-lgd-code-agent-1", borderRadiusStyle)}
+              baseClassName={twMerge(activeColor.bgColor, borderRadiusStyle)}
             />
           ) : null}
         </div>
@@ -140,7 +142,6 @@ const ChatMessages = () => {
 
   return (
     <ChatWindow
-      className="border-code-agent-1"
       messages={messages}
       itemContent={renderMessage}
       loading={loading}

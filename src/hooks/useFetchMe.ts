@@ -1,4 +1,4 @@
-import { logout, updateUser } from "@reducers/user/UserSlice"
+import { logout, updateUser } from "@reducers/userSlice"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { getUser } from "services/user"

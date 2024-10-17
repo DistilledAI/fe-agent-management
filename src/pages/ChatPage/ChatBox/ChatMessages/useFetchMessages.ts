@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getChatHistoryById } from "services/chat"
 import { IGroup } from "../LeftBar/useFetchGroups"
-import { IUser } from "@reducers/user/UserSlice"
+import { IUser } from "@reducers/userSlice"
 import { convertDataFetchToMessage } from "./helpers"
 import useAuthState from "@hooks/useAuthState"
 import { useChatMessage } from "providers/MessageProvider"
 import { PATH_NAMES } from "@constants/index"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 
 export interface IMessage {
   id: number
@@ -19,31 +20,44 @@ export interface IMessage {
   user: IUser
 }
 
+export const queryChatMessagesKey = (chatId: string | undefined) => {
+  if (!chatId) return []
+  return [`chat-messages-${chatId}`]
+}
+
 const useFetchMessages = () => {
-  const [loading, setLoading] = useState(false)
-  const { setDataFetch, setMessages } = useChatMessage()
+  const { setMessages } = useChatMessage()
   const { user } = useAuthState()
   const { chatId } = useParams()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const fetchMessages = async () => {
-    try {
-      if (!chatId) return
-      setLoading(true)
-      const res = await getChatHistoryById({ id: Number(chatId) })
-      if (res.data.items) {
-        setDataFetch(res.data.items)
-        setMessages(
-          convertDataFetchToMessage(res.data.items, user?.id ? user.id : 0),
-        )
-      }
-    } catch (error) {
+    if (!chatId) return
+    const res = await getChatHistoryById({ id: Number(chatId) })
+    return convertDataFetchToMessage(res.data.items, user?.id ? user.id : 0)
+  }
+
+  const { data, error, isFetching } = useQuery({
+    queryKey: queryChatMessagesKey(chatId),
+    queryFn: fetchMessages,
+    enabled: !!chatId && !!user?.id,
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  })
+
+  useEffect(() => {
+    if (data) {
+      setMessages(data)
+    }
+  }, [data?.length, chatId])
+
+  useEffect(() => {
+    if (error) {
       console.error(error)
       navigate(PATH_NAMES.HOME)
-    } finally {
-      setLoading(false)
     }
-  }
+  }, [error, navigate])
 
   const onLoadPrevMessages = async ({
     offset,
@@ -60,11 +74,16 @@ const useFetchMessages = () => {
         limit,
       })
       if (res.data.items) {
-        setDataFetch((prevData) => [...res.data.items, ...prevData])
-        setMessages((prevData) => [
-          ...convertDataFetchToMessage(res.data.items, user?.id ? user.id : 0),
-          ...prevData,
-        ])
+        const newMessages = convertDataFetchToMessage(
+          res.data.items,
+          user?.id ? user.id : 0,
+        )
+        queryClient.setQueryData(
+          queryChatMessagesKey(chatId),
+          (oldData: any) => [...newMessages, ...oldData],
+        )
+
+        setMessages((prevData) => [...newMessages, ...prevData])
       }
       return res.data.items.length || 0
     } catch (error) {
@@ -72,11 +91,7 @@ const useFetchMessages = () => {
     }
   }
 
-  useEffect(() => {
-    if (user?.id) fetchMessages()
-  }, [chatId, user?.id])
-
-  return { loading, fetchMessages, onLoadPrevMessages }
+  return { loading: isFetching, onLoadPrevMessages }
 }
 
 export default useFetchMessages

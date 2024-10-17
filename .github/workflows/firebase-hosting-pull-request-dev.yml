@@ -5,7 +5,7 @@ name: Deploy to Firebase Hosting on PR
 'on':
   pull_request:
     branches:
-      - main
+      - develop
 jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
@@ -43,9 +43,9 @@ jobs:
         run: yarn build
         env:
           CI: false
-          VITE_BASE_API_URL: https://api-dev.distilled.ai/distill
-          VITE_SOCKET_URL: wss://api-dev.distilled.ai
-          VITE_GROUP_DEFAULT_FOR_PRIVATE_AGENT: 454
+          VITE_BASE_API_URL: https://api-echo.distilled.ai/distill
+          VITE_SOCKET_URL: wss://api-echo.distilled.ai
+          VITE_GROUP_DEFAULT_FOR_PRIVATE_AGENT: 5
           VITE_GIT_COMMIT_ID: ${{ github.sha }}
 
       - name: Import Firebase service account credentials
@@ -57,7 +57,7 @@ jobs:
       - name: Deploy to Firebase
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.import-credentials.outputs.file_path }}
-        run: yarn firebase deploy --only hosting:mesh-distilled-ai
+        run: yarn firebase deploy --only hosting:mesh-distilled-ai-dev
 
       - name: Remove credentials file
         if: success() || failure()
