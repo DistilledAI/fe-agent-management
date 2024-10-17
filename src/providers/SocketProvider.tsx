@@ -1,6 +1,5 @@
 import { envConfig } from "@configs/env"
 import useAuthState from "@hooks/useAuthState"
-import { logout } from "@reducers/user/UserSlice"
 import { getAccessToken } from "@utils/storage"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
@@ -26,13 +25,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [socket, setSocket] = useState<Socket>()
   const dispatch = useDispatch()
 
-  const handleGetAccessToken = () => {
-    const accessToken = getAccessToken()
-    if (!accessToken) dispatch(logout())
-
-    return accessToken
-  }
-
   useEffect(() => {
     let initSocket: Socket | undefined
 
@@ -44,7 +36,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
           rejectUnauthorized: false,
           agent: false,
           auth: {
-            authorization: `Bearer ${handleGetAccessToken()}`,
+            authorization: `Bearer ${getAccessToken()}`,
           },
           reconnection: true,
           reconnectionDelay: 2000,
@@ -62,6 +54,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
         initSocket.on("disconnect", (reason) => {
           console.log(`Socket disconnected: ${reason}`)
+
           if (reason !== "io client disconnect") {
             initSocket?.connect()
           }
@@ -69,10 +62,10 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
         initSocket.on("distill-error", (reason) => {
           console.log(`Socket error distill: ${reason}`)
-          if (reason?.status === 401) {
-            initSocket?.disconnect()
-            dispatch(logout())
-          }
+          initSocket = undefined
+          // const accessToken = getAccessToken()
+          // if (reason?.status === 401 && accessToken) createSocketConnection()
+          // else if (reason?.status === 401 && !accessToken) dispatch(logout())
         })
 
         initSocket.on("reconnect", (attempt) => {
@@ -85,7 +78,9 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       }
 
       // Initial socket connection
-      createSocketConnection()
+      if (!initSocket) {
+        createSocketConnection()
+      }
 
       // Reconnect on network recovery
       const handleOnline = () => {
