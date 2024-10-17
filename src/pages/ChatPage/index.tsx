@@ -5,15 +5,23 @@ import useInviteUser from "@hooks/useInviteUser"
 import MainLayout from "@components/Layout/MainLayout"
 import useWindowSize from "@hooks/useWindowSize"
 import ChatPageMobile from "./Mobile"
+import { useLocation, useParams } from "react-router-dom"
+import { PATH_NAMES } from "@constants/index"
 
 const ChatPage = () => {
   const { screenWidth } = useWindowSize()
+  const { pathname } = useLocation()
+  const { chatId } = useParams()
   useInviteUser()
 
+  const hasLayout = pathname !== `${PATH_NAMES.CHAT}/${chatId}`
+
   return (
-    <MainLayout>
+    <MainLayout isHeader={hasLayout} isFooter={hasLayout}>
       {screenWidth < 768 ? (
-        <ChatPageMobile />
+        <ChatMessageProvider>
+          <ChatPageMobile />
+        </ChatMessageProvider>
       ) : (
         <div className="bg-white font-barlow">
           <ChatHeader />

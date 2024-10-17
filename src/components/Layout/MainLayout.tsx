@@ -9,19 +9,24 @@ const MainLayout: React.FC<{
     | React.ReactElement[]
     | React.ReactNode
     | React.ReactNode[]
-}> = ({ children }) => {
+  isHeader?: boolean
+  isFooter?: boolean
+}> = ({ children, isHeader = true, isFooter = true }) => {
   const { screenWidth } = useWindowSize()
+  const hasHeader = screenWidth < 768 && isHeader
+  const hasFooter = screenWidth < 768 && isFooter
 
   return (
-    <div className="md:bg-mercury-30">
-      {screenWidth < 768 && <HeaderMobile />}
+    <div className="max-sm:bg-mercury-30">
+      {hasHeader && <HeaderMobile />}
       <div
-        aria-checked={screenWidth < 768}
-        className="aria-checked:pb-[60px] aria-checked:pt-[50px]"
+        aria-checked={hasHeader}
+        aria-current={hasFooter}
+        className="aria-current:pb-[60px] aria-checked:pt-[50px]"
       >
         {children}
       </div>
-      {screenWidth < 768 && <FooterMobile />}
+      {hasFooter && <FooterMobile />}
     </div>
   )
 }
