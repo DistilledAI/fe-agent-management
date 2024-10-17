@@ -1,8 +1,8 @@
-import ChatMessages from "@pages/ChatPage/ChatBox/ChatMessages"
-import ChatDetailHeader from "./Header"
-import ChatInput from "@pages/ChatPage/ChatBox/ChatInput"
-import { useParams } from "react-router-dom"
 import useAuthState from "@hooks/useAuthState"
+import ChatInput from "@pages/ChatPage/ChatBox/ChatInput"
+import ChatMessages from "@pages/ChatPage/ChatBox/ChatMessages"
+import { useParams } from "react-router-dom"
+import ChatDetailHeader from "./Header"
 
 const ChatDetail = () => {
   const { chatId, privateChatId } = useParams()
