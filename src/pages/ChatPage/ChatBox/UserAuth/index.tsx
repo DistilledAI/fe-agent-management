@@ -19,7 +19,10 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
 
   return user?.publicAddress ? (
     <>
-      <Button onClick={onOpen} className="btn-primary h-11 w-fit">
+      <Button
+        onClick={onOpen}
+        className="btn-primary h-11 w-fit md:!h-auto md:!w-auto md:min-w-0 md:gap-0 md:p-0"
+      >
         <div className="h-8 w-8 rounded-full border-1 border-mercury-400">
           <Image
             className="h-full w-full object-cover"
@@ -27,7 +30,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
             src={user.avatar ?? userIcon}
           />
         </div>
-        <span className="text-base">
+        <span className="text-base md:hidden">
           {centerTextEllipsis(user.publicAddress, 6)}
         </span>
       </Button>
@@ -39,7 +42,10 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
       isLoading={loading}
       onClick={connectWallet}
     >
-      {!loading && <WalletIcon />} Connect Wallet
+      <div className="flex items-center gap-1 md:hidden">
+        {!loading && <WalletIcon />} Connect Wallet
+      </div>
+      <span className="hidden md:block">Connect</span>
     </Button>
   )
 }

@@ -1,4 +1,4 @@
-import DistilledAIIcon from "@components/Icons/DistilledAIIcon"
+import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
 import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
 import useReconnectWallet from "@hooks/useReconnectWallet"
