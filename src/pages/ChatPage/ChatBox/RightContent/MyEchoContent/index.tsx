@@ -2,7 +2,7 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledExclamationCircleIcon } from "@components/Icons/FilledExclamationCircleIcon"
 import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
 import mainContentBg from "assets/images/main-content-bg.jpg"
-import HugeButton from "../HugeButton"
+import UploadDataButton from "../UploadDataButton"
 
 const MyEchoContent: React.FC = () => {
   const isFirstMessage = true
@@ -28,7 +28,7 @@ const MyEchoContent: React.FC = () => {
             </span>
           </div>
 
-          <HugeButton
+          <UploadDataButton
             icon={<FilledBrainAIIcon />}
             label="Create your Private Agent"
             isDisable
