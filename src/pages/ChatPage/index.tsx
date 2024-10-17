@@ -1,27 +1,30 @@
-import useWindowSize from "@hooks/useWindowSize"
 import ChatBox from "./ChatBox"
 import ChatHeader from "./ChatHeader"
-import OnlySupportDesktop from "./OnlySupportDesktop"
 import { ChatMessageProvider } from "providers/MessageProvider"
 import useInviteUser from "@hooks/useInviteUser"
+import MainLayout from "@components/Layout/MainLayout"
+import useWindowSize from "@hooks/useWindowSize"
+import ChatPageMobile from "./Mobile"
 
 const ChatPage = () => {
-  const { isDesktop } = useWindowSize()
+  const { screenWidth } = useWindowSize()
   useInviteUser()
 
   return (
-    <div className="bg-white font-barlow">
-      <ChatHeader />
-      {isDesktop ? (
-        <div className="h-[calc(100dvh-54px)] w-full">
-          <ChatMessageProvider>
-            <ChatBox />
-          </ChatMessageProvider>
-        </div>
+    <MainLayout>
+      {screenWidth < 768 ? (
+        <ChatPageMobile />
       ) : (
-        <OnlySupportDesktop />
+        <div className="bg-white font-barlow">
+          <ChatHeader />
+          <div className="mx-auto h-[calc(100dvh-54px)] w-full max-w-[calc(100%-30px)]">
+            <ChatMessageProvider>
+              <ChatBox />
+            </ChatMessageProvider>
+          </div>
+        </div>
       )}
-    </div>
+    </MainLayout>
   )
 }
 
