@@ -1,15 +1,13 @@
 import DistilledAIIcon from "@components/Icons/DistilledAIIcon"
 import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
+import useReconnectWallet from "@hooks/useReconnectWallet"
 import { useParams } from "react-router-dom"
 import ChatInput from "./ChatInput"
-import ChatMessages from "./ChatMessages"
-import LeftBar from "./LeftBar"
 import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
 import { StyleBoxChatProvider } from "./StyleProvider"
 import UserAuth from "./UserAuth"
 import useMessageSocket from "./useMessageSocket"
-import useReconnectWallet from "@hooks/useReconnectWallet"
 
 const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
@@ -31,7 +29,7 @@ const ChatBox = () => {
           />
           <UserAuth connectWallet={connectWallet} loading={loading} />
         </div>
-        <div className="grid h-full max-h-[calc(100%-143px)] w-full grid-cols-[280px_1fr] gap-4">
+        {/* <div className="grid h-full max-h-[calc(100%-143px)] w-full grid-cols-[280px_1fr] gap-4">
           <LeftBar />
           <StyleBoxChatProvider>
             <div className="relative space-y-4">
@@ -43,6 +41,23 @@ const ChatBox = () => {
                   connectWallet={connectWallet}
                 />
               )}
+
+              <MyPrivateAgentContent
+                connectWalletLoading={loading}
+                connectWallet={connectWallet}
+              />
+              <ChatInput isDisabledInput={!isEnableTextInput} />
+            </div>
+          </StyleBoxChatProvider>
+        </div> */}
+
+        <div className="h-full w-full">
+          <StyleBoxChatProvider>
+            <div className="relative h-full w-full space-y-4">
+              <MyPrivateAgentContent
+                connectWalletLoading={loading}
+                connectWallet={connectWallet}
+              />
               <ChatInput isDisabledInput={!isEnableTextInput} />
             </div>
           </StyleBoxChatProvider>

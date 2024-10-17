@@ -1,12 +1,19 @@
-import { fyiPrivateDataBg, fyiPrivateDataImage } from "@assets/images"
+import {
+  fyiPrivateDataBg,
+  fyiPrivateDataBgMobile,
+  fyiPrivateDataImage,
+  fyiPrivateDataImageMobile,
+} from "@assets/images"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
-import { Modal, ModalContent } from "@nextui-org/react"
+import useWindowSize from "@hooks/useWindowSize"
+import { Button, Modal, ModalContent } from "@nextui-org/react"
 import { useEffect, useState } from "react"
 
 const FYIModal: React.FC<{ openPopup: boolean; setOpenPopup: any }> = ({
   openPopup,
   setOpenPopup,
 }) => {
+  const { isMobile } = useWindowSize()
   const [counter, setCounter] = useState<number>(10)
   const onOpenChange = () => {
     setOpenPopup(!openPopup)
@@ -32,12 +39,13 @@ const FYIModal: React.FC<{ openPopup: boolean; setOpenPopup: any }> = ({
         base: "bg-white",
       }}
       size="2xl"
+      placement="bottom-center"
     >
       <ModalContent>
-        <div className="relative mt-4 h-[600px] w-auto">
+        <div className="relative mt-4 h-[600px] w-auto max-sm:h-[800px]">
           <img
             className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out"
-            src={fyiPrivateDataBg}
+            src={isMobile ? fyiPrivateDataBgMobile : fyiPrivateDataBg}
             width={`${counter}%`}
           />
 
@@ -47,9 +55,21 @@ const FYIModal: React.FC<{ openPopup: boolean; setOpenPopup: any }> = ({
             </div>
           </div>
 
-          <div className="absolute left-1/2 top-1/2 z-40 h-full w-full -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out">
-            <img src={fyiPrivateDataImage} />
+          <div className="absolute left-1/2 top-1/2 z-40 h-full w-full -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out max-sm:top-[450px]">
+            <img
+              src={isMobile ? fyiPrivateDataImageMobile : fyiPrivateDataImage}
+            />
           </div>
+
+          {isMobile && (
+            <Button
+              className="absolute bottom-[40px] left-1/2 z-[200] h-[48px] w-[calc(100%-32px)] -translate-x-1/2 rounded-full bg-mercury-950 text-white"
+              size="lg"
+              onClick={onOpenChange}
+            >
+              Close
+            </Button>
+          )}
         </div>
       </ModalContent>
     </Modal>

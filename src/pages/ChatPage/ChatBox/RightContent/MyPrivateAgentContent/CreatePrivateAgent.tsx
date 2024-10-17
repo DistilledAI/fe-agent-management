@@ -156,7 +156,7 @@ const MainContainer: React.FC<{
       >
         <div className="flex-items-center relative h-full w-full flex-col justify-center">
           {children}
-          <div className="absolute bottom-[60px]">
+          <div className="absolute bottom-[60px] text-center max-sm:max-w-[380px]">
             <span className="text-base-m text-mercury-800">
               Your Private Agent is exclusively accessible to you unless you
               choose to publish it on the Marketplace.
