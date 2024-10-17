@@ -39,9 +39,10 @@ const FYIModal: React.FC<{ openPopup: boolean; setOpenPopup: any }> = ({
         base: "bg-white max-sm:!m-0 max-sm:h-[calc(100vh-120px)]",
       }}
       size="2xl"
+      placement="bottom-center"
     >
       <ModalContent>
-        <div className="max-sm:h-full relative mt-4 h-[600px] w-auto">
+        <div className="max-sm:h-[800px] relative mt-4 h-[600px] w-auto">
           <img
             className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out"
             src={isMobile ? fyiPrivateDataBgMobile : fyiPrivateDataBg}
