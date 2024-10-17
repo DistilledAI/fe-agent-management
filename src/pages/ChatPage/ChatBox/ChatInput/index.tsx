@@ -85,7 +85,7 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
     <div
       ref={boxRef}
       className={twMerge(
-        "absolute -bottom-[79px] left-0 z-[11] flex w-full items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-3 py-[7.89px] duration-500",
+        "absolute -bottom-[79px] left-0 z-[11] flex w-full items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-3 py-[7.89px] duration-500 max-sm:static max-sm:gap-2",
         isFocus ? "border-mercury-300" : "border-mercury-200",
       )}
     >

@@ -111,7 +111,7 @@ const ChatMessages = () => {
       <>
         <div
           className={twMerge(
-            "px-3 pb-4",
+            "px-3 pb-4 max-sm:px-4",
             message.role === RoleChat.OWNER && paddingBottomStyle,
           )}
           key={index}
@@ -140,7 +140,7 @@ const ChatMessages = () => {
 
   return (
     <ChatWindow
-      className="border-code-agent-1"
+      className="border-code-agent-1 max-sm:rounded-none max-sm:border-none max-sm:p-0"
       messages={messages}
       itemContent={renderMessage}
       loading={loading}
