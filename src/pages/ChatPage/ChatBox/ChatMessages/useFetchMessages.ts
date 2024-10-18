@@ -42,7 +42,7 @@ const useFetchMessages = () => {
     queryKey: queryChatMessagesKey(chatId),
     queryFn: fetchMessages,
     enabled: !!chatId && !!user?.id,
-    staleTime: 5 * 60 * 1000,
+    // staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   })
 
@@ -50,7 +50,7 @@ const useFetchMessages = () => {
     if (data) {
       setMessages(data)
     }
-  }, [data?.length, chatId])
+  }, [data])
 
   useEffect(() => {
     if (error) {

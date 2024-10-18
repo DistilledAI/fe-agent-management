@@ -48,3 +48,40 @@ export const DatabaseImportIcon = ({
     </svg>
   )
 }
+
+export const DatabaseSearchIcon = ({
+  size = 20,
+  color = "#545454",
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M3.33301 5C3.33301 6.38083 6.31801 7.5 9.99967 7.5C13.6813 7.5 16.6663 6.38083 16.6663 5C16.6663 3.61917 13.6813 2.5 9.99967 2.5C6.31801 2.5 3.33301 3.61917 3.33301 5Z"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M3.33301 5V10C3.33301 11.3808 6.31801 12.5 9.99967 12.5M16.6663 9.58333V5"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M3.33301 10V15C3.33301 16.3808 6.31801 17.5 9.99967 17.5M16.833 16.8333L18.333 18.3333M12.4997 15C12.4997 15.663 12.7631 16.2989 13.2319 16.7678C13.7007 17.2366 14.3366 17.5 14.9997 17.5C15.6627 17.5 16.2986 17.2366 16.7674 16.7678C17.2363 16.2989 17.4997 15.663 17.4997 15C17.4997 14.337 17.2363 13.7011 16.7674 13.2322C16.2986 12.7634 15.6627 12.5 14.9997 12.5C14.3366 12.5 13.7007 12.7634 13.2319 13.2322C12.7631 13.7011 12.4997 14.337 12.4997 15Z"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
