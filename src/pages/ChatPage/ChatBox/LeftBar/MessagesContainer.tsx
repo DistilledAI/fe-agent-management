@@ -5,9 +5,8 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { FilledUserIcon, FilledUsersPlusIcon } from "@components/Icons/UserIcon"
 import { ACTIVE_COLORS, RoleUser } from "@constants/index"
-import { useAppDispatch } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
-import { ActiveColorState, updateActiveColor } from "@reducers/activeColorSlice"
+import { ActiveColorState } from "@reducers/activeColorSlice"
 
 import { IUser } from "@reducers/userSlice"
 import { useChatMessage } from "providers/MessageProvider"
@@ -29,7 +28,6 @@ import useFetchGroups, { LIMIT, TypeGroup } from "./useFetchGroups"
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
 }) => {
-  const dispatch = useAppDispatch()
   const { groups, isLoading, setGroups, handleLoadMore } = useFetchGroups()
   const {
     groupsHaveNotification,
@@ -54,7 +52,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
   ) => {
     return groups.map((group) => {
       const groupId = group.groupId
-      const bgColor = colors[groupId % colors.length].bgColor
+      const bgColor = colors[groupId % colors.length]?.bgColor
       return {
         ...group,
         bgColor,
@@ -101,13 +99,6 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
           }}
           itemContent={(_, groupItem) => {
             const isActive = Number(chatId) === groupItem.groupId
-            if (isActive) {
-              dispatch(
-                updateActiveColor({
-                  bgColor: groupItem.bgColor,
-                }),
-              )
-            }
 
             return (
               <div

@@ -4,8 +4,7 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
-import { RoleUser } from "@constants/index"
-import { useAppSelector } from "@hooks/useAppRedux"
+import { ACTIVE_COLORS, RoleUser } from "@constants/index"
 import { useChatMessage } from "providers/MessageProvider"
 import { useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
@@ -20,7 +19,9 @@ const ChatMessages = () => {
   const { loading, onLoadPrevMessages } = useFetchMessages()
   const { chatId } = useParams()
   const { style } = useStyleBoxChat()
-  const activeColor = useAppSelector((state) => state.activeColor)
+  const bgColor = chatId
+    ? ACTIVE_COLORS[Number(chatId) % ACTIVE_COLORS.length]?.bgColor
+    : ""
 
   const getBadgeIcon = (role: RoleUser) =>
     role === RoleUser.BOT ? (
@@ -113,7 +114,7 @@ const ChatMessages = () => {
       <>
         <div
           className={twMerge(
-            "max-sm:px-4 px-3 pb-4",
+            "px-3 pb-4 max-sm:px-4",
             message.role === RoleChat.OWNER && paddingBottomStyle,
           )}
           key={index}
@@ -132,7 +133,7 @@ const ChatMessages = () => {
           {message.role === RoleChat.OWNER ? (
             <SenderMessage
               content={message.content}
-              baseClassName={twMerge(activeColor.bgColor, borderRadiusStyle)}
+              baseClassName={twMerge(bgColor, borderRadiusStyle)}
             />
           ) : null}
         </div>
