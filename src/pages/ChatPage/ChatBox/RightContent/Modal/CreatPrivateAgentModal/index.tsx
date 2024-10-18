@@ -110,7 +110,7 @@ const CreatPrivateAgentModal: React.FC<{
 
   const baseClassName = isWordcloundStep
     ? "bg-white max-sm:!m-0 max-sm:h-[calc(100vh-20px)]"
-    : "bg-white max-sm:!m-0 max-sm:h-[calc(100vh-180px)]"
+    : "bg-white max-sm:!m-0 max-sm:h-[calc(100vh-100px)]"
 
   return (
     <Modal

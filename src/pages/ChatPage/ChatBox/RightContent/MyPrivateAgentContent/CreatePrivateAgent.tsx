@@ -108,7 +108,7 @@ const CreatePrivateAgent: React.FC<{
     }
 
     return (
-      <div className="absolute h-[60%] w-[80%]" ref={ref}>
+      <div className="absolute h-full w-[80%]" ref={ref}>
         <div className="absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2">
           <UploadDataButton
             icon={
