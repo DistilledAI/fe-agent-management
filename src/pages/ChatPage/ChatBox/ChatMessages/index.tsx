@@ -12,7 +12,6 @@ import { twMerge } from "tailwind-merge"
 import { useStyleBoxChat } from "../StyleProvider"
 import { IMessageBox, RoleChat } from "./helpers"
 import useFetchMessages from "./useFetchMessages"
-import { useAppSelector } from "@hooks/useAppRedux"
 
 const TIME_BREAK = 15
 
