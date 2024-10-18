@@ -10,7 +10,7 @@ import useMessageSocket from "../ChatBox/useMessageSocket"
 import ChatDetail from "./ChatDetail"
 import ChatList from "./ChatList"
 import ChatSearch from "./ChatSearch"
-import IntroVideo from "../ChatBox/RightContent/Modal/CreatPrivateAgentModal/IntroVideo"
+import distilledAiPrivateAgent from "@assets/video/distilled-ai-private-agent-3d.mp4"
 import { PATH_NAMES } from "@constants/index"
 
 const ChatPageMobile = () => {
@@ -62,8 +62,14 @@ export const StartNewChat = () => {
 
   return (
     <div className="bg-white p-4 text-center">
-      <div className="mb-7 overflow-hidden rounded-lg">
-        <IntroVideo />
+      <div className="mb-7 w-full overflow-hidden rounded-lg">
+        <video
+          muted
+          autoPlay
+          loop
+          className="w-full"
+          src={distilledAiPrivateAgent}
+        />
       </div>
       <p className="mb-2 text-24 font-semibold">Start a new chat</p>
       <p className="text-14">
