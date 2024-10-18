@@ -1,7 +1,6 @@
 import { userIcon } from "@assets/svg"
 import { WalletIcon } from "@components/Icons/Wallet"
 import { RootState } from "@configs/store"
-import useFetchMe from "@hooks/useFetchMe"
 import { Button, Image, useDisclosure } from "@nextui-org/react"
 import { centerTextEllipsis } from "@utils/index"
 import { useSelector } from "react-redux"
@@ -15,13 +14,11 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const user = useSelector((state: RootState) => state.user.user)
   const { isOpen, onClose, onOpen } = useDisclosure()
 
-  useFetchMe()
-
   return user?.publicAddress ? (
     <>
       <Button
         onClick={onOpen}
-        className="btn-primary max-sm:!h-auto max-sm:!w-auto max-sm:min-w-0 max-sm:gap-0 max-sm:p-0 h-11 w-fit"
+        className="btn-primary h-11 w-fit max-sm:!h-auto max-sm:!w-auto max-sm:min-w-0 max-sm:gap-0 max-sm:p-0"
       >
         <div className="h-8 w-8 rounded-full border-1 border-mercury-400">
           <Image
@@ -30,7 +27,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
             src={user.avatar ?? userIcon}
           />
         </div>
-        <span className="max-sm:hidden text-base">
+        <span className="text-base max-sm:hidden">
           {centerTextEllipsis(user.publicAddress, 6)}
         </span>
       </Button>
@@ -38,14 +35,14 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
     </>
   ) : (
     <Button
-      className="max-sm:h-[36px] h-[44px] rounded-full bg-mercury-950 text-white"
+      className="h-[44px] rounded-full bg-mercury-950 text-white max-sm:h-[36px]"
       isLoading={loading}
       onClick={connectWallet}
     >
-      <div className="max-sm:hidden flex items-center gap-1">
+      <div className="flex items-center gap-1 max-sm:hidden">
         {!loading && <WalletIcon />} Connect Wallet
       </div>
-      <span className="max-sm:block hidden">Connect</span>
+      <span className="hidden max-sm:block">Connect</span>
     </Button>
   )
 }
