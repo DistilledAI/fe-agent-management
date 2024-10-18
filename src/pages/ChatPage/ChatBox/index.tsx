@@ -49,11 +49,6 @@ const ChatBox = () => {
                   connectWallet={connectWallet}
                 />
               )}
-
-              <MyPrivateAgentContent
-                connectWalletLoading={loading}
-                connectWallet={connectWallet}
-              />
               <ChatInput isDisabledInput={!isEnableTextInput} />
             </div>
           </StyleBoxChatProvider>
