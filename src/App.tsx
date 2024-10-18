@@ -5,12 +5,14 @@ import router from "./routes/router"
 import { getAccessToken } from "@utils/storage"
 import { useDispatch } from "react-redux"
 import { logout } from "@reducers/userSlice"
+import useFetchMe from "@hooks/useFetchMe"
 
 const mixpanelToken = import.meta.env.VITE_APP_MIXPANEL_TOKEN
 const envMode = import.meta.env.VITE_APP_ENV_MODE
 
 function App() {
   const dispatch = useDispatch()
+  useFetchMe()
 
   const initMixpanel = () => {
     mixpanel.init(mixpanelToken, {
