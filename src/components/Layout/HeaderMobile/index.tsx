@@ -8,7 +8,7 @@ const HeaderMobile: React.FC = () => {
   const { loading, connectWallet } = useConnectWallet()
 
   return (
-    <div className="fixed left-0 top-0 flex h-[50px] w-full items-center justify-between bg-white px-4">
+    <div className="fixed left-0 top-0 z-50 flex h-[50px] w-full items-center justify-between bg-white px-4">
       <div>
         <BarIcon />
       </div>
