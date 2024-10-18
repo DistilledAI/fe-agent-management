@@ -6,7 +6,7 @@ const IntroVideo: React.FC = () => {
     <ReactPlayer
       width="100%"
       height="100%"
-      controls={true}
+      controls={false}
       url={distilledAiPrivateAgent}
       config={{ file: { attributes: { controlsList: "nodownload" } } }}
       muted

@@ -1,15 +1,17 @@
 import useAuthState from "@hooks/useAuthState"
 import useOutsideClick from "@hooks/useOutSideClick"
 import useReconnectWallet from "@hooks/useReconnectWallet"
-import { ScrollShadow } from "@nextui-org/react"
+import { Button, ScrollShadow } from "@nextui-org/react"
 import { useRef, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import SearchResult from "../ChatBox/LeftBar/SearchContainer/Result"
 import useSearch from "../ChatBox/LeftBar/SearchContainer/useSearch"
 import useMessageSocket from "../ChatBox/useMessageSocket"
 import ChatDetail from "./ChatDetail"
 import ChatList from "./ChatList"
 import ChatSearch from "./ChatSearch"
+import IntroVideo from "../ChatBox/RightContent/Modal/CreatPrivateAgentModal/IntroVideo"
+import { PATH_NAMES } from "@constants/index"
 
 const ChatPageMobile = () => {
   const { chatId } = useParams()
@@ -23,7 +25,7 @@ const ChatPageMobile = () => {
   useReconnectWallet()
   useMessageSocket()
 
-  if (!isLogin) return null
+  if (!isLogin) return <StartNewChat />
 
   return chatId ? (
     <ChatDetail />
@@ -51,6 +53,29 @@ const ChatPageMobile = () => {
       <div className="h-[calc(100vh-110px)] w-full bg-[rgba(255,255,255,0.85)] pt-[56px]">
         <ChatList />
       </div>
+    </div>
+  )
+}
+
+export const StartNewChat = () => {
+  const navigate = useNavigate()
+
+  return (
+    <div className="bg-white p-4 text-center">
+      <div className="mb-7 overflow-hidden rounded-lg">
+        <IntroVideo />
+      </div>
+      <p className="mb-2 text-24 font-semibold">Start a new chat</p>
+      <p className="text-14">
+        Explore the <span className="font-medium">Marketplace</span> to chat
+        with a public agent, interact with an AI Companion, or create your own.
+      </p>
+      <Button
+        onClick={() => navigate(PATH_NAMES.MARKETPLACE)}
+        className="mt-6 h-[46px] min-w-[200px] rounded-full bg-neutral-950 text-[16px] text-white"
+      >
+        Go to Marketplace
+      </Button>
     </div>
   )
 }

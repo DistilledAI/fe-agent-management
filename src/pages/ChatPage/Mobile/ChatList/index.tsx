@@ -21,9 +21,9 @@ import { IUser } from "@reducers/userSlice"
 import { useChatMessage } from "providers/MessageProvider"
 import { useNavigate, useParams } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
+import { StartNewChat } from ".."
 
 const ChatList = () => {
-  const { groups, isLoading, handleLoadMore } = useFetchGroups()
   const {
     groupsHaveNotification,
     setGroupsHaveNotification,
@@ -32,6 +32,7 @@ const ChatList = () => {
   const { user } = useAuthState()
   const navigate = useNavigate()
   const { chatId } = useParams()
+  const { groups, isLoading, handleLoadMore, isFetched } = useFetchGroups()
 
   const getIconGroup = (ownerId: number, userA: IUser, userB: IUser) => {
     return getRoleUser(ownerId, userA, userB) === RoleUser.USER ? (
@@ -40,6 +41,8 @@ const ChatList = () => {
       <FilledBrainAIIcon size={14} />
     )
   }
+
+  if (isFetched && groups.length === 0 && !isLoading) return <StartNewChat />
 
   return (
     <Virtuoso

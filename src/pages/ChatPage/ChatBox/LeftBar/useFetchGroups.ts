@@ -47,6 +47,7 @@ const useFetchGroups = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [offset, setOffset] = useState(LIMIT)
   const isInvited = searchParams.get("isInvited") === "true"
+  const [isFetched, setIsFetched] = useState(false)
 
   const fetchGroups = async ({
     offset,
@@ -54,6 +55,7 @@ const useFetchGroups = () => {
     isLoadMore = false,
   }: FetchConfig) => {
     try {
+      setIsFetched(true)
       setIsLoading(true)
       const res = await getGroupList(offset, limit)
 
@@ -99,7 +101,14 @@ const useFetchGroups = () => {
     if (isLogin) fetchGroups({})
   }, [isLogin, sessionAccessToken])
 
-  return { isLoading, groups, fetchGroups, setGroups, handleLoadMore }
+  return {
+    isLoading,
+    groups,
+    fetchGroups,
+    setGroups,
+    handleLoadMore,
+    isFetched,
+  }
 }
 
 export default useFetchGroups

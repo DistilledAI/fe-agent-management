@@ -2,7 +2,6 @@ import useWindowSize from "@hooks/useWindowSize"
 import React from "react"
 import FooterMobile from "./FooterMobile"
 import HeaderMobile from "./HeaderMobile"
-import useFetchMe from "@hooks/useFetchMe"
 
 const MainLayout: React.FC<{
   children:
@@ -13,7 +12,6 @@ const MainLayout: React.FC<{
   isHeader?: boolean
   isFooter?: boolean
 }> = ({ children, isHeader = true, isFooter = true }) => {
-  useFetchMe()
   const { screenWidth } = useWindowSize()
   const hasHeader = screenWidth < 768 && isHeader
   const hasFooter = screenWidth < 768 && isFooter
