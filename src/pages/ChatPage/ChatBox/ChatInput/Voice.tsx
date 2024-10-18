@@ -62,7 +62,7 @@ const VoiceChat: React.FC<{
           onClick={startVoice}
           isIconOnly
           isDisabled={isDisabled}
-          className="rounded-full bg-mercury-200"
+          className="hidden rounded-full bg-mercury-200 md:block"
         >
           <MicrophoneFilledIcon />
         </Button>

@@ -2,7 +2,7 @@ import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
 import { RoleUser } from "@constants/index"
 import { Button, Textarea } from "@nextui-org/react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { makeId } from "@utils/index"
 import { useChatMessage } from "providers/MessageProvider"
 import { useEffect, useRef, useState } from "react"
@@ -12,8 +12,8 @@ import SpeechRecognition, {
 } from "react-speech-recognition"
 import { postChatToGroup } from "services/chat"
 import { twMerge } from "tailwind-merge"
-import { IMessageBox, RoleChat } from "../ChatMessages/helpers"
-import { queryChatMessagesKey } from "../ChatMessages/useFetchMessages"
+import { RoleChat } from "../ChatMessages/helpers"
+// import { queryChatMessagesKey } from "../ChatMessages/useFetchMessages"
 import { useStyleBoxChat } from "../StyleProvider"
 import VoiceChat from "./Voice"
 
@@ -28,7 +28,7 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
   const boxRef = useRef<HTMLDivElement>(null)
   const heightBoxRef = useRef(0)
   const { setStyle } = useStyleBoxChat()
-  const queryClient = useQueryClient()
+  // const queryClient = useQueryClient()
 
   const groupId = chatId ?? privateChatId
 
@@ -59,12 +59,12 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
       createdAt: new Date().toISOString(),
     }
     setMessageContext((prev) => [...prev, newMessage])
-    queryClient.setQueryData(
-      queryChatMessagesKey(groupId),
-      (oldData: IMessageBox[]) => {
-        return [...oldData, newMessage]
-      },
-    )
+    // queryClient.setQueryData(
+    //   queryChatMessagesKey(groupId),
+    //   (oldData: IMessageBox[]) => {
+    //     return [...oldData, newMessage]
+    //   },
+    // )
 
     mutation.mutate(messages)
   }

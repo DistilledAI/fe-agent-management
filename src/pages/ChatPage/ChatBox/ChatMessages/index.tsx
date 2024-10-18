@@ -12,7 +12,7 @@ import { useStyleBoxChat } from "../StyleProvider"
 import { IMessageBox, RoleChat } from "./helpers"
 import useFetchMessages from "./useFetchMessages"
 
-const TIME_BREAK = 15
+const TIME_BREAK = 10
 
 const ChatMessages = () => {
   const { isChatting, messages } = useChatMessage()
@@ -114,7 +114,7 @@ const ChatMessages = () => {
       <>
         <div
           className={twMerge(
-            "px-3 pb-4 max-sm:px-4 max-sm:pt-3",
+            "px-3 pb-4 max-sm:px-4",
             message.role === RoleChat.OWNER && paddingBottomStyle,
           )}
           key={index}
