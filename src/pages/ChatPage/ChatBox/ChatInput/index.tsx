@@ -2,6 +2,7 @@ import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
 import { RoleUser } from "@constants/index"
 import { Button, Textarea } from "@nextui-org/react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { makeId } from "@utils/index"
 import { useChatMessage } from "providers/MessageProvider"
 import { useEffect, useRef, useState } from "react"
@@ -12,10 +13,9 @@ import SpeechRecognition, {
 import { postChatToGroup } from "services/chat"
 import { twMerge } from "tailwind-merge"
 import { IMessageBox, RoleChat } from "../ChatMessages/helpers"
+import { queryChatMessagesKey } from "../ChatMessages/useFetchMessages"
 import { useStyleBoxChat } from "../StyleProvider"
 import VoiceChat from "./Voice"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { queryChatMessagesKey } from "../ChatMessages/useFetchMessages"
 
 const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
   isDisabledInput,
