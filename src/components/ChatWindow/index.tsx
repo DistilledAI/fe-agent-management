@@ -58,7 +58,7 @@ const ChatWindow = ({
   const [isAtBottom, setIsAtBottom] = useState<boolean>(true)
   const [isLoadMore, setIsLoadMore] = useState<boolean>(false)
   const [isScrollBottom, setIsScrollBottom] = useState<boolean>(false)
-  const { isNewMsgOnCurrentWindow, setIsNewMsgOnCurrentWindow } =
+  const { isNewMsgOnCurrentWindow, setIsNewMsgOnCurrentWindow, setIsChatting } =
     useChatMessage()
 
   useLayoutEffect(() => {
@@ -67,7 +67,7 @@ const ChatWindow = ({
       setHasMoreMessages(true)
       setOffset(LIMIT)
       setIsAtBottom(true)
-      setIsNewMsgOnCurrentWindow(false)
+      setIsChatting(false)
     }
   }, [chatId])
 
@@ -75,7 +75,7 @@ const ChatWindow = ({
     if (!isScrollBottom) {
       virtuosoRef.current?.scrollToIndex({
         index: messages.length - 1,
-        behavior: "smooth",
+        behavior: isChatting ? "smooth" : "auto",
         align: "end",
       })
     }
@@ -90,8 +90,7 @@ const ChatWindow = ({
   const onScroll = useCallback(
     async (e: React.UIEvent<HTMLDivElement>) => {
       const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
-
-      if (scrollTop === 0 && !loading && hasMoreMessages) {
+      if (scrollTop === 0 && hasMoreMessages) {
         setIsLoadMore(true)
         setIsAtBottom(false)
 
@@ -115,7 +114,7 @@ const ChatWindow = ({
       const scrollPosition = scrollHeight - clientHeight - scrollTop
       setIsScrollBottom(scrollPosition > AT_BOTTOM_THRESHOLD)
     },
-    [hasMoreMessages, loading, offset, onLoadPrevMessages],
+    [hasMoreMessages, offset, onLoadPrevMessages],
   )
 
   const onScrollToBottom = () => {

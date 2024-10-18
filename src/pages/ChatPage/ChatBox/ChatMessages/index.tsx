@@ -4,7 +4,7 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
-import { RoleUser } from "@constants/index"
+import { ACTIVE_COLORS, RoleUser } from "@constants/index"
 import { useChatMessage } from "providers/MessageProvider"
 import { useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
@@ -12,13 +12,16 @@ import { useStyleBoxChat } from "../StyleProvider"
 import { IMessageBox, RoleChat } from "./helpers"
 import useFetchMessages from "./useFetchMessages"
 
-const TIME_BREAK = 15
+const TIME_BREAK = 10
 
 const ChatMessages = () => {
-  const { messages, isChatting } = useChatMessage()
+  const { isChatting, messages } = useChatMessage()
   const { loading, onLoadPrevMessages } = useFetchMessages()
   const { chatId } = useParams()
   const { style } = useStyleBoxChat()
+  const bgColor = chatId
+    ? ACTIVE_COLORS[Number(chatId) % ACTIVE_COLORS.length]?.bgColor
+    : ""
 
   const getBadgeIcon = (role: RoleUser) =>
     role === RoleUser.BOT ? (
@@ -111,7 +114,7 @@ const ChatMessages = () => {
       <>
         <div
           className={twMerge(
-            "px-3 pb-4",
+            "px-3 pb-4 max-sm:px-4",
             message.role === RoleChat.OWNER && paddingBottomStyle,
           )}
           key={index}
@@ -130,7 +133,7 @@ const ChatMessages = () => {
           {message.role === RoleChat.OWNER ? (
             <SenderMessage
               content={message.content}
-              baseClassName={twMerge("bg-lgd-code-agent-1", borderRadiusStyle)}
+              baseClassName={twMerge(bgColor, borderRadiusStyle)}
             />
           ) : null}
         </div>
@@ -140,7 +143,7 @@ const ChatMessages = () => {
 
   return (
     <ChatWindow
-      className="border-code-agent-1"
+      className="max-sm:rounded-none max-sm:border-none max-sm:p-0"
       messages={messages}
       itemContent={renderMessage}
       loading={loading}

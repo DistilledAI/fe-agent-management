@@ -86,7 +86,9 @@ const PrivateAgent: React.FC = () => {
           >
             <CopyIcon />
           </Button>
-          <MetamaskIconSmall />
+          <div className="hidden md:block">
+            <MetamaskIconSmall />
+          </div>
         </div>
       </div>
 
@@ -105,10 +107,10 @@ const PrivateAgent: React.FC = () => {
         </div>
       </div> */}
 
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex items-center justify-between gap-2 max-md:flex-col">
         <ShareAgent agentData={firstBot} isDisabled={isPending || !firstBot} />
         <Button
-          className="flex rounded-full bg-mercury-100"
+          className="flex w-full rounded-full bg-mercury-100 max-md:min-h-14"
           // isDisabled={isPending || !firstBot}
           isDisabled
         >

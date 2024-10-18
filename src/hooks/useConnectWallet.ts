@@ -1,9 +1,9 @@
-import { useState } from "react"
-import { IDataSignatureAuth, signatureAuth } from "services/auth"
+import { loginSuccess } from "@reducers/userSlice"
 import { ethers } from "ethers"
-import { toast } from "react-toastify"
+import { useState } from "react"
 import { useDispatch } from "react-redux"
-import { loginSuccess } from "@reducers/user/UserSlice"
+import { toast } from "react-toastify"
+import { IDataSignatureAuth, signatureAuth } from "services/auth"
 import { useAccount } from "wagmi"
 
 const useConnectWallet = () => {

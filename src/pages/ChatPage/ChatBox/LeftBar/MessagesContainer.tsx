@@ -1,28 +1,34 @@
 import AvatarContainer from "@components/AvatarContainer"
+import AvatarGroup from "@components/AvatarGroup"
 import DotLoading from "@components/DotLoading"
+import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { FilledUserIcon, FilledUsersPlusIcon } from "@components/Icons/UserIcon"
-import { useState } from "react"
+import { ACTIVE_COLORS, RoleUser } from "@constants/index"
+import useAuthState from "@hooks/useAuthState"
+import { ActiveColorState } from "@reducers/activeColorSlice"
+
+import { IUser } from "@reducers/userSlice"
+import { useChatMessage } from "providers/MessageProvider"
 import { useNavigate, useParams } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
 import ActiveEffect from "./ActiveEffect"
-import { getAvatarGroupChat, getRoleUser } from "./helpers"
+import {
+  getAvatarGroupChat,
+  getColorGroupIcon,
+  getNameGroup,
+  getRoleUser,
+  isHasNotification,
+} from "./helpers"
 import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
-import useFetchGroups, { TypeGroup } from "./useFetchGroups"
-import { RoleUser } from "@constants/index"
-import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
-import { IUser } from "@reducers/user/UserSlice"
-import { useChatMessage } from "providers/MessageProvider"
-import useAuthState from "@hooks/useAuthState"
-
-const LIMIT = 10
+import useFetchGroups, { LIMIT, TypeGroup } from "./useFetchGroups"
 
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
 }) => {
-  const { fetchGroups, groups, isLoading, setGroups } = useFetchGroups()
+  const { groups, isLoading, setGroups, handleLoadMore } = useFetchGroups()
   const {
     groupsHaveNotification,
     setGroupsHaveNotification,
@@ -31,13 +37,6 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
   const { user } = useAuthState()
   const navigate = useNavigate()
   const { chatId } = useParams()
-  const [hasMore, setHasMore] = useState(true)
-  const [offset, setOffset] = useState(10)
-
-  const isHasNotification = (groupId: number) => {
-    if (groupId === Number(chatId)) return false
-    return groupsHaveNotification.includes(groupId)
-  }
 
   const getIconGroup = (ownerId: number, userA: IUser, userB: IUser) => {
     return getRoleUser(ownerId, userA, userB) === RoleUser.USER ? (
@@ -47,25 +46,18 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
     )
   }
 
-  const getColorGroupIcon = (ownerId: number, userA: IUser, userB: IUser) => {
-    return getRoleUser(ownerId, userA, userB) === RoleUser.USER
-      ? "bg-[#0FE9A4]"
-      : "bg-[#FC0]"
-  }
-
-  const handleLoadMore = async () => {
-    if (hasMore) {
-      const newGroups = await fetchGroups({
-        offset,
-        isLoadMore: true,
-      })
-      if (!newGroups.length) return setHasMore(false)
-      setOffset((prev) => prev + LIMIT)
-    }
-  }
-
-  const getNameGroup = (userA: IUser, userB: IUser) => {
-    return userA?.id === user?.id ? userB?.username : userA?.username
+  const mapColorsToGroups = (
+    colors: Array<ActiveColorState>,
+    groups: any[],
+  ) => {
+    return groups.map((group) => {
+      const groupId = group.groupId
+      const bgColor = colors[groupId % colors.length]?.bgColor
+      return {
+        ...group,
+        bgColor,
+      }
+    })
   }
 
   return (
@@ -88,7 +80,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
       <div className="-mx-4 h-full max-h-[calc(100%-143px)]">
         <Virtuoso
           style={{ height: "100%" }}
-          data={groups}
+          data={mapColorsToGroups(ACTIVE_COLORS, groups)}
           components={{
             Footer: () =>
               isLoading && groups.length > 0 ? (
@@ -107,6 +99,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
           }}
           itemContent={(_, groupItem) => {
             const isActive = Number(chatId) === groupItem.groupId
+
             return (
               <div
                 key={groupItem.id}
@@ -123,48 +116,44 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                   isActive && "bg-mercury-100",
                 )}
               >
-                <AvatarContainer
-                  badgeIcon={
-                    groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP
-                      ? null
-                      : getIconGroup(
-                          groupItem.userId,
-                          groupItem.group.userA,
-                          groupItem.group.userB,
-                        )
-                  }
-                  avatarUrl={
-                    groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP
-                      ? undefined
-                      : getAvatarGroupChat(
-                          groupItem.userId,
-                          groupItem.group.userA,
-                          groupItem.group.userB,
-                        )
-                  }
-                  userName={
-                    groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP
-                      ? groupItem.group.name
-                      : getNameGroup(
-                          groupItem.group.userA,
-                          groupItem.group.userB,
-                        )
-                  }
-                  badgeClassName={
-                    groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP
-                      ? "bg-[#0FE9A4]"
-                      : getColorGroupIcon(
-                          groupItem.userId,
-                          groupItem.group.userA,
-                          groupItem.group.userB,
-                        )
-                  }
+                {groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP ? (
+                  <AvatarGroup groupName={groupItem.group.name} />
+                ) : (
+                  <AvatarContainer
+                    badgeIcon={getIconGroup(
+                      groupItem.userId,
+                      groupItem.group.userA,
+                      groupItem.group.userB,
+                    )}
+                    avatarUrl={getAvatarGroupChat(
+                      groupItem.userId,
+                      groupItem.group.userA,
+                      groupItem.group.userB,
+                    )}
+                    userName={getNameGroup(
+                      user,
+                      groupItem.group.userA,
+                      groupItem.group.userB,
+                    )}
+                    badgeClassName={getColorGroupIcon(
+                      groupItem.userId,
+                      groupItem.group.userA,
+                      groupItem.group.userB,
+                    )}
+                  />
+                )}
+                <ActiveEffect
+                  isActive={isActive}
+                  className={groupItem.bgColor}
                 />
-                <ActiveEffect isActive={isActive} />
                 <div
-                  aria-checked={isHasNotification(groupItem.groupId)}
+                  aria-checked={isHasNotification(
+                    groupsHaveNotification,
+                    groupItem.groupId,
+                    Number(chatId),
+                  )}
                   className="absolute left-[10px] top-[10px] hidden h-2 w-2 rounded-full bg-red-600 aria-checked:block"
-                ></div>
+                />
                 <MoreChatAction
                   setGroups={setGroups}
                   groupId={groupItem.groupId}

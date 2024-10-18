@@ -1,7 +1,7 @@
 import { ShareWithQrIcon } from "@components/Icons/Share"
 import { Button, useDisclosure } from "@nextui-org/react"
 import ShareModal from "./ShareModal"
-import { IUser } from "@reducers/user/UserSlice"
+import { IUser } from "@reducers/userSlice"
 
 interface ShareAgentProps {
   isDisabled?: boolean
@@ -14,7 +14,7 @@ const ShareAgent = ({ isDisabled, agentData }: ShareAgentProps) => {
   return (
     <>
       <Button
-        className="flex rounded-full bg-mercury-100"
+        className="flex w-full rounded-full bg-mercury-100 max-md:min-h-14"
         onClick={onOpen}
         isDisabled={isDisabled}
       >

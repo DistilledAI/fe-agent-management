@@ -9,7 +9,7 @@ import { QRCodeCanvas } from "qrcode.react"
 import { IModalProps } from "types/modal"
 import { saveAs } from "file-saver"
 import { useRef } from "react"
-import { IUser } from "@reducers/user/UserSlice"
+import { IUser } from "@reducers/userSlice"
 
 const appUrl = window.location.origin
 
@@ -44,6 +44,7 @@ const ShareModal = ({ isOpen, onClose, agentData }: ShareModal) => {
         backdrop: "z-[99]",
       }}
       size="sm"
+      placement="center"
     >
       <ModalContent>
         <ModalHeader className="relative">

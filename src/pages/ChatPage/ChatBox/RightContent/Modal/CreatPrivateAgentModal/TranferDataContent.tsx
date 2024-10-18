@@ -32,7 +32,7 @@ const TranferDataContent: React.FC<{
   const profileType = collectedData?.profileType
   const userName = collectedData?.userName
   const aboutValue = collectedData?.about || ""
-  const activitiesValue = collectedData?.activities || ""
+  const activitiesValue = collectedData?.activities || []
   const titleValues = activitiesValue
     ?.map((activity: any) => activity?.title)
     ?.join(" ")
@@ -112,7 +112,7 @@ const TranferDataContent: React.FC<{
   }
 
   return (
-    <div className="grid h-fit w-[800px] grid-cols-2">
+    <div className="grid h-fit w-[800px] grid-cols-2 max-sm:w-full max-sm:grid-cols-none">
       <div className="w-full">
         <div className="flex-items-center mb-2 w-full gap-4">
           <div className="flex-items-center h-9 w-9 justify-center rounded-full bg-yellow-10">

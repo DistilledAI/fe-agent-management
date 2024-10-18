@@ -153,3 +153,10 @@ export const checkStatusBotInGroup = async (groupId: string | undefined) => {
     url: endpoint.CHECK_STATUS_BOT_IN_GROUP(groupId),
   })
 }
+
+export const getGroupChatDetail = async (groupId: number) => {
+  return fetchApiAuth({
+    method: "get",
+    url: endpoint.GET_GROUP_CHAT_DETAIL(groupId),
+  })
+}

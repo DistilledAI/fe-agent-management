@@ -1,7 +1,9 @@
-import DistilledAIIcon from "@components/Icons/DistilledAIIcon"
+import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
 import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
-import { useParams } from "react-router-dom"
+import useReconnectWallet from "@hooks/useReconnectWallet"
+import { useEffect } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 import ChatInput from "./ChatInput"
 import ChatMessages from "./ChatMessages"
 import LeftBar from "./LeftBar"
@@ -9,17 +11,21 @@ import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
 import { StyleBoxChatProvider } from "./StyleProvider"
 import UserAuth from "./UserAuth"
 import useMessageSocket from "./useMessageSocket"
-import useReconnectWallet from "@hooks/useReconnectWallet"
 
 const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
   const { chatId } = useParams()
   const { isLogin } = useAuthState()
   const { privateChatId } = useParams()
+  const navigate = useNavigate()
 
   useReconnectWallet()
   useMessageSocket()
   const isEnableTextInput = isLogin && (privateChatId || chatId)
+
+  useEffect(() => {
+    if (chatId && !isLogin) navigate("/")
+  }, [isLogin, chatId, navigate])
 
   return (
     <div className="flex h-full items-center justify-center pb-10 pt-[18px]">
@@ -32,8 +38,8 @@ const ChatBox = () => {
           <UserAuth connectWallet={connectWallet} loading={loading} />
         </div>
         <div className="grid h-full max-h-[calc(100%-143px)] w-full grid-cols-[280px_1fr] gap-4">
-          <LeftBar />
           <StyleBoxChatProvider>
+            <LeftBar />
             <div className="relative space-y-4">
               {isLogin && chatId ? (
                 <ChatMessages />

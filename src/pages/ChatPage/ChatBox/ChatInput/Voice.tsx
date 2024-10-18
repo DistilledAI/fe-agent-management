@@ -1,8 +1,8 @@
 import { MicrophoneFilledIcon } from "@components/Icons/Microphone"
-import type SpeechRecognition from "react-speech-recognition"
 import { Button } from "@nextui-org/react"
-import { toast } from "react-toastify"
 import React, { useEffect } from "react"
+import type SpeechRecognition from "react-speech-recognition"
+import { toast } from "react-toastify"
 
 const VoiceChat: React.FC<{
   setMessages: React.Dispatch<React.SetStateAction<string>>

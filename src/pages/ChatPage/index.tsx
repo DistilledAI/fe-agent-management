@@ -1,27 +1,38 @@
+import MainLayout from "@components/Layout/MainLayout"
+import { PATH_NAMES } from "@constants/index"
+import useInviteUser from "@hooks/useInviteUser"
 import useWindowSize from "@hooks/useWindowSize"
+import { ChatMessageProvider } from "providers/MessageProvider"
+import { useLocation, useParams } from "react-router-dom"
 import ChatBox from "./ChatBox"
 import ChatHeader from "./ChatHeader"
-import OnlySupportDesktop from "./OnlySupportDesktop"
-import { ChatMessageProvider } from "providers/MessageProvider"
-import useInviteUser from "@hooks/useInviteUser"
+import ChatPageMobile from "./Mobile"
 
 const ChatPage = () => {
-  const { isDesktop } = useWindowSize()
+  const { isMobile } = useWindowSize()
+  const { pathname } = useLocation()
+  const { chatId } = useParams()
   useInviteUser()
 
+  const hasLayout = pathname !== `${PATH_NAMES.CHAT}/${chatId}`
+
   return (
-    <div className="bg-white font-barlow">
-      <ChatHeader />
-      {isDesktop ? (
-        <div className="h-[calc(100dvh-54px)] w-full">
-          <ChatMessageProvider>
-            <ChatBox />
-          </ChatMessageProvider>
-        </div>
+    <MainLayout isHeader={hasLayout} isFooter={hasLayout}>
+      {isMobile ? (
+        <ChatMessageProvider>
+          <ChatPageMobile />
+        </ChatMessageProvider>
       ) : (
-        <OnlySupportDesktop />
+        <div className="bg-white font-barlow">
+          <ChatHeader />
+          <div className="mx-auto h-[calc(100dvh-54px)] w-full max-w-[calc(100%-30px)]">
+            <ChatMessageProvider>
+              <ChatBox />
+            </ChatMessageProvider>
+          </div>
+        </div>
       )}
-    </div>
+    </MainLayout>
   )
 }
 

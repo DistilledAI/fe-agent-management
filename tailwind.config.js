@@ -12,6 +12,16 @@ export default {
       fontFamily: {
         barlow: ["Barlow", "sans-serif"],
       },
+      // screens: {
+      //   "4xl": { max: "1799px" },
+      //   "3xl": { max: "1499px" },
+      //   "2xl": { max: "1399px" },
+      //   xl: { max: "1199px" },
+      //   lg: { max: "991px" },
+      //   md: { max: "767px" },
+      //   sm: { max: "575px" },
+      //   sxm: { max: "380px" },
+      // },
       fontSize: {
         10: "0.625rem",
         12: "0.75rem",
@@ -63,27 +73,31 @@ export default {
         primary: "#363636",
         code: {
           agent: {
-            1: "#DC6D1E",
-            2: "#4A38E9",
-            3: "#7EB204",
+            1: "#E7833B",
+            2: "#635F80",
+            3: "#667F2C",
+            4: "#C0494B",
+            5: "#7E57A0",
+            6: "#4C8898",
+            7: "#7E7150",
           },
         },
       },
       backgroundImage: {
         "lgd-code-agent-1":
-          "linear-gradient(53deg, #DC6D1E -2.17%, #F17C1C 134.29%)",
+          "linear-gradient(53deg, #E7833B -2.17%, #F6903D 134.29%)",
         "lgd-code-agent-2":
-          "linear-gradient(53deg, #4A38E9 -2.17%, #766CFE 134.29%)",
+          "linear-gradient(53deg, #635F80 -2.17%, #7E7AB8 134.29%)",
         "lgd-code-agent-3":
-          "linear-gradient(53deg, #7EB204 -2.17%, #94D51D 134.29%)",
+          "linear-gradient(53deg, #667F2C -2.17%, #92A373 134.29%)",
         "lgd-code-agent-4":
-          "linear-gradient(53deg, #DC3A3C -2.17%, #FA7B7D 134.29%)",
+          "linear-gradient(53deg, #C0494B -2.17%, #C54B4D 134.29%)",
         "lgd-code-agent-5":
-          "linear-gradient(53deg, #903ADC -2.17%, #BE7BFA 134.29%)",
+          "linear-gradient(53deg, #7E57A0 -2.17%, #9A7CB4 134.29%)",
         "lgd-code-agent-6":
-          "linear-gradient(53deg, #3AB9DC -2.17%, #7BDAFA 134.29%)",
-        "lgd-code-agent-6":
-          "linear-gradient(53deg, #F4B815 -2.17%, #FBD879 134.29%)",
+          "linear-gradient(53deg, #4C8898 -2.17%, #5B99AD 134.29%)",
+        "lgd-code-agent-7":
+          "linear-gradient(53deg, #7E7150 -2.17%, #8D7C4D 134.29%)",
         "fading-white":
           "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #FFF 100%)",
       },
@@ -93,6 +107,7 @@ export default {
         3: "0px -2px 0px 0px rgba(255, 255, 255, 0.40) inset, 0px 2px 0px 0px #DEDEE0 inset, 0px 16px 32px -4px rgba(24, 24, 25, 0.10), 0px 2px 4px 0px rgba(24, 24, 25, 0.15)",
         4: "0px -32px 30px 0px #FFF inset",
         5: "0px 16px 32px -4px rgba(24, 24, 25, 0.05), 0px 2px 4px 0px rgba(24, 24, 25, 0.04)",
+        6: "0px 16px 32px -4px rgba(24, 24, 25, 0.10), 0px 2px 4px 0px rgba(24, 24, 25, 0.08)",
       },
     },
   },
