@@ -1,5 +1,6 @@
 import { PATH_NAMES } from "@constants/index"
 import ChatPage from "@pages/ChatPage"
+import Marketplace from "@pages/Marketplace"
 import { createBrowserRouter } from "react-router-dom"
 
 const router = createBrowserRouter([
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: `${PATH_NAMES.PRIVATE_AGENT}/:privateChatId`,
     element: <ChatPage />,
+  },
+  {
+    path: PATH_NAMES.MARKETPLACE,
+    element: <Marketplace />,
   },
 ])
 

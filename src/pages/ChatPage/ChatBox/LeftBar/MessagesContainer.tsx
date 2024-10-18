@@ -16,16 +16,19 @@ import {
 import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroups, { LIMIT, TypeGroup } from "./useFetchGroups"
-import { RoleUser } from "@constants/index"
+import { ACTIVE_COLORS, RoleUser } from "@constants/index"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { IUser } from "@reducers/user/UserSlice"
 import { useChatMessage } from "providers/MessageProvider"
 import useAuthState from "@hooks/useAuthState"
 import AvatarGroup from "@components/AvatarGroup"
+import { ActiveColorState, updateActiveColor } from "@reducers/activeColorSlice"
+import { useAppDispatch } from "@hooks/useAppRedux"
 
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
 }) => {
+  const dispatch = useAppDispatch()
   const { groups, isLoading, setGroups, handleLoadMore } = useFetchGroups()
   const {
     groupsHaveNotification,
@@ -42,6 +45,20 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
     ) : (
       <FilledBrainAIIcon size={14} />
     )
+  }
+
+  const mapColorsToGroups = (
+    colors: Array<ActiveColorState>,
+    groups: any[],
+  ) => {
+    return groups.map((group) => {
+      const groupId = group.groupId
+      const bgColor = colors[groupId % colors.length].bgColor
+      return {
+        ...group,
+        bgColor,
+      }
+    })
   }
 
   return (
@@ -64,7 +81,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
       <div className="-mx-4 h-full max-h-[calc(100%-143px)]">
         <Virtuoso
           style={{ height: "100%" }}
-          data={groups}
+          data={mapColorsToGroups(ACTIVE_COLORS, groups)}
           components={{
             Footer: () =>
               isLoading && groups.length > 0 ? (
@@ -83,6 +100,14 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
           }}
           itemContent={(_, groupItem) => {
             const isActive = Number(chatId) === groupItem.groupId
+            if (isActive) {
+              dispatch(
+                updateActiveColor({
+                  bgColor: groupItem.bgColor,
+                }),
+              )
+            }
+
             return (
               <div
                 key={groupItem.id}
@@ -125,7 +150,10 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                     )}
                   />
                 )}
-                <ActiveEffect isActive={isActive} />
+                <ActiveEffect
+                  isActive={isActive}
+                  className={groupItem.bgColor}
+                />
                 <div
                   aria-checked={isHasNotification(
                     groupsHaveNotification,
@@ -133,7 +161,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                     Number(chatId),
                   )}
                   className="absolute left-[10px] top-[10px] hidden h-2 w-2 rounded-full bg-red-600 aria-checked:block"
-                ></div>
+                />
                 <MoreChatAction
                   setGroups={setGroups}
                   groupId={groupItem.groupId}
