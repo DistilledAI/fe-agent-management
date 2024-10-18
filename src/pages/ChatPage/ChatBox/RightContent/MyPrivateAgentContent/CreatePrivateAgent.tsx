@@ -186,11 +186,13 @@ const CreatePrivateAgent: React.FC<{
     return (
       <MainContainerCreate>
         {renderCreateAccountAction()}
+
         <UploadDataButton
           icon={<FilledBrainAIIcon />}
           label="Start your Private Agent"
           isDisable
           radiusFull={true}
+          customClassName=" absolute top-1/2 -translate-y-1/2"
         />
       </MainContainerCreate>
     )
