@@ -16,7 +16,8 @@ import useFetchGroups, {
   LIMIT,
   TypeGroup,
 } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
-import { IUser } from "@reducers/user/UserSlice"
+import { IUser } from "@reducers/userSlice"
+
 import { useChatMessage } from "providers/MessageProvider"
 import { useNavigate, useParams } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"

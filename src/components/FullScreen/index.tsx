@@ -1,6 +1,14 @@
 import { useEffect } from "react"
 
-const FullScreen = ({ containerRef, fullScreen, fullScreenChange }) => {
+const FullScreen = ({
+  containerRef,
+  fullScreen,
+  fullScreenChange,
+}: {
+  containerRef: any
+  fullScreen: any
+  fullScreenChange: any
+}) => {
   useEffect(() => {
     document.addEventListener("fullscreenchange", fullScreenChange)
     document.addEventListener("mozfullscreenchange", fullScreenChange)
