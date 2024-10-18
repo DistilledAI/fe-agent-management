@@ -2,7 +2,7 @@ import useAuthState from "@hooks/useAuthState"
 import useOutsideClick from "@hooks/useOutSideClick"
 import useReconnectWallet from "@hooks/useReconnectWallet"
 import { Button, ScrollShadow } from "@nextui-org/react"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import SearchResult from "../ChatBox/LeftBar/SearchContainer/Result"
 import useSearch from "../ChatBox/LeftBar/SearchContainer/useSearch"
@@ -21,9 +21,14 @@ const ChatPageMobile = () => {
   const searchRef = useRef<any>(null)
   useOutsideClick(searchRef, () => setIsSearch(false))
   const { data, setQuery, query, debounceSearch } = useSearch(inputRef, false)
+  const navigate = useNavigate()
 
   useReconnectWallet()
   useMessageSocket()
+
+  useEffect(() => {
+    if (chatId && !isLogin) navigate("/")
+  }, [isLogin, chatId, navigate])
 
   if (!isLogin) return <StartNewChat />
 
@@ -64,12 +69,16 @@ export const StartNewChat = () => {
     <div className="bg-white p-4 text-center">
       <div className="mb-7 w-full overflow-hidden rounded-lg">
         <video
-          muted
+          controls={false}
+          playsInline
           autoPlay
+          muted
           loop
           className="w-full"
-          src={distilledAiPrivateAgent}
-        />
+        >
+          <source src={distilledAiPrivateAgent} type="video/mp4" />
+          <track kind="captions" />
+        </video>
       </div>
       <p className="mb-2 text-24 font-semibold">Start a new chat</p>
       <p className="text-14">
