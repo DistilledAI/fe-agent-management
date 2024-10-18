@@ -3,10 +3,14 @@ import ChatList from "./ChatList"
 import ChatSearch from "./ChatSearch"
 import useAuthState from "@hooks/useAuthState"
 import ChatDetail from "./ChatDetail"
+import useMessageSocket from "../ChatBox/useMessageSocket"
+import useReconnectWallet from "@hooks/useReconnectWallet"
 
 const ChatPageMobile = () => {
   const { chatId } = useParams()
   const { isLogin } = useAuthState()
+  useReconnectWallet()
+  useMessageSocket()
 
   return isLogin && chatId ? (
     <ChatDetail />

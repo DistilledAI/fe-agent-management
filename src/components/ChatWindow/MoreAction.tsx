@@ -1,5 +1,7 @@
+import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
+import { Button } from "@nextui-org/react"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { changeStatusBotInGroup, checkStatusBotInGroup } from "services/chat"
@@ -77,7 +79,7 @@ const MoreAction: React.FC = () => {
   return (
     <>
       {/* {renderNotification()} */}
-      <div className="flex w-full items-center justify-end pb-3">
+      <div className="hidden w-full items-center justify-end pb-3 sm:flex">
         <div
           className="flex w-fit cursor-pointer items-center gap-2 rounded-3xl bg-mercury-70 p-3"
           onClick={() => handleSetDelegate()}
@@ -98,6 +100,40 @@ const MoreAction: React.FC = () => {
             </>
           )}
         </div>
+      </div>
+      <div className="block sm:hidden">
+        <Button
+          onClick={handleSetDelegate}
+          className="flex items-center rounded-full bg-mercury-950"
+        >
+          {isBotEnabled ? (
+            <>
+              <span className="text-13 font-medium text-white">Delegate</span>
+              <div className="flex h-4 w-4 items-center justify-center rounded-full bg-[#0FE9A4]">
+                <FilledUserIcon size={12} />
+              </div>
+              <div className="rotate-180">
+                <ArrowLeftFilledIcon color="white" size={12} />
+              </div>
+              <div className="flex h-4 w-4 items-center justify-center rounded-full bg-[#FC0]">
+                <FilledBrainAIIcon size={12} />
+              </div>
+            </>
+          ) : (
+            <>
+              <span className="text-13 font-medium text-white">Take over</span>
+              <div className="flex h-4 w-4 items-center justify-center rounded-full bg-[#FC0]">
+                <FilledBrainAIIcon size={12} />
+              </div>
+              <div className="rotate-180">
+                <ArrowLeftFilledIcon color="white" size={12} />
+              </div>
+              <div className="flex h-4 w-4 items-center justify-center rounded-full bg-[#0FE9A4]">
+                <FilledUserIcon size={12} />
+              </div>
+            </>
+          )}
+        </Button>
       </div>
     </>
   )
