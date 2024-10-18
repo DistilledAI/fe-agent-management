@@ -9,7 +9,7 @@ import ChatHeader from "./ChatHeader"
 import ChatPageMobile from "./Mobile"
 
 const ChatPage = () => {
-  const { screenWidth } = useWindowSize()
+  const { isMobile } = useWindowSize()
   const { pathname } = useLocation()
   const { chatId } = useParams()
   useInviteUser()
@@ -18,7 +18,7 @@ const ChatPage = () => {
 
   return (
     <MainLayout isHeader={hasLayout} isFooter={hasLayout}>
-      {screenWidth < 768 ? (
+      {isMobile ? (
         <ChatMessageProvider>
           <ChatPageMobile />
         </ChatMessageProvider>
