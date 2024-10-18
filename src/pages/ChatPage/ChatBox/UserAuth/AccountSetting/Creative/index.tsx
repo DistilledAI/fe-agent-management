@@ -1,6 +1,6 @@
 import { scaler } from "@assets/images"
 import ComingSoon from "@components/ComingSoon"
-import { Image, Select, SelectItem } from "@nextui-org/react"
+import { Select, SelectItem } from "@nextui-org/react"
 
 const AgentCreative = () => {
   return (
@@ -22,7 +22,11 @@ const AgentCreative = () => {
           </Select>
           <div className="text-mercury-900">Funny, Creative</div>
         </div>
-        <Image className="mt-4 h-auto w-full" src={scaler} />
+        <img
+          className="mt-4 h-auto w-full object-cover"
+          src={scaler}
+          alt="agent creative"
+        />
       </div>
     </ComingSoon>
   )

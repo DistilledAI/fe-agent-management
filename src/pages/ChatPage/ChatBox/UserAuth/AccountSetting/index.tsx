@@ -16,7 +16,7 @@ const AccountSetting: React.FC<{
   const [typeContent, setTypeContent] = useState<string>(TYPE_CONTENT.MY_WALLET)
 
   const MAP_CONTENT_BY_TYPE = {
-    [TYPE_CONTENT.MY_WALLET]: <MyWallet />,
+    [TYPE_CONTENT.MY_WALLET]: <MyWallet onClose={onClose} />,
     [TYPE_CONTENT.MY_DATA]: <MyData />,
   }
 
