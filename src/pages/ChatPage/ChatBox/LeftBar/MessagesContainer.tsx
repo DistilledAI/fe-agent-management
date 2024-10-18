@@ -22,13 +22,11 @@ import { IUser } from "@reducers/user/UserSlice"
 import { useChatMessage } from "providers/MessageProvider"
 import useAuthState from "@hooks/useAuthState"
 import AvatarGroup from "@components/AvatarGroup"
-import { ActiveColorState, updateActiveColor } from "@reducers/activeColorSlice"
-import { useAppDispatch } from "@hooks/useAppRedux"
+import { ActiveColorState } from "@reducers/activeColorSlice"
 
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
 }) => {
-  const dispatch = useAppDispatch()
   const { groups, isLoading, setGroups, handleLoadMore } = useFetchGroups()
   const {
     groupsHaveNotification,
@@ -100,13 +98,6 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
           }}
           itemContent={(_, groupItem) => {
             const isActive = Number(chatId) === groupItem.groupId
-            if (isActive) {
-              dispatch(
-                updateActiveColor({
-                  bgColor: groupItem.bgColor,
-                }),
-              )
-            }
 
             return (
               <div
