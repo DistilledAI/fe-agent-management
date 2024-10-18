@@ -29,7 +29,7 @@ const NAV_MOBILE = [
 const FooterMobile = () => {
   const { pathname } = useLocation()
   const isActive = (path: string) => {
-    return pathname.includes(path)
+    return pathname === path
   }
 
   return (
