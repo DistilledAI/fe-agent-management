@@ -1,8 +1,8 @@
 import { MicrophoneFilledIcon } from "@components/Icons/Microphone"
-import type SpeechRecognition from "react-speech-recognition"
 import { Button } from "@nextui-org/react"
-import { toast } from "react-toastify"
 import React, { useEffect } from "react"
+import type SpeechRecognition from "react-speech-recognition"
+import { toast } from "react-toastify"
 
 const VoiceChat: React.FC<{
   setMessages: React.Dispatch<React.SetStateAction<string>>
@@ -23,6 +23,13 @@ const VoiceChat: React.FC<{
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
       return toast.warning("Your browser is not support")
     }
+
+    console.log("hicccc", SpeechRecognition.browserSupportsSpeechRecognition)
+    const speechRecognitionSupported =
+      "webkitSpeechRecognition" in window || "SpeechRecognition" in window
+
+    console.log("speechRecognitionSupported:", speechRecognitionSupported)
+
     resetTranscript()
     SpeechRecognition.startListening({ continuous: true })
   }
