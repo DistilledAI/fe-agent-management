@@ -23,13 +23,6 @@ const VoiceChat: React.FC<{
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
       return toast.warning("Your browser is not support")
     }
-
-    console.log("hicccc", SpeechRecognition.browserSupportsSpeechRecognition)
-    const speechRecognitionSupported =
-      "webkitSpeechRecognition" in window || "SpeechRecognition" in window
-
-    console.log("speechRecognitionSupported:", speechRecognitionSupported)
-
     resetTranscript()
     SpeechRecognition.startListening({ continuous: true })
   }
@@ -62,7 +55,7 @@ const VoiceChat: React.FC<{
           onClick={startVoice}
           isIconOnly
           isDisabled={isDisabled}
-          className="hidden rounded-full bg-mercury-200 md:block"
+          className="rounded-full bg-mercury-200"
         >
           <MicrophoneFilledIcon />
         </Button>
