@@ -3,12 +3,12 @@ import { IUser } from "@reducers/userSlice"
 import { useSocket } from "providers/SocketProvider"
 import { useEffect, useRef } from "react"
 import { useParams } from "react-router-dom"
-import { IMessageBox, RoleChat } from "./ChatMessages/helpers"
+import { RoleChat } from "./ChatMessages/helpers"
 import { makeId, textToVoice } from "@utils/index"
 import { useChatMessage } from "providers/MessageProvider"
 import { TYPE_BOT } from "@constants/index"
-import { useQueryClient } from "@tanstack/react-query"
-import { queryChatMessagesKey } from "./ChatMessages/useFetchMessages"
+// import { useQueryClient } from "@tanstack/react-query"
+// import { queryChatMessagesKey } from "./ChatMessages/useFetchMessages"
 
 interface IDataListen {
   event: string
@@ -37,7 +37,7 @@ const useMessageSocket = () => {
     setMessages,
     setIsChatting,
   } = useChatMessage()
-  const queryClient = useQueryClient()
+  // const queryClient = useQueryClient()
 
   const groupChatId = chatId || privateChatId
 
@@ -60,12 +60,12 @@ const useMessageSocket = () => {
       createdAt: new Date().toISOString(),
     }
     setMessages((prev) => [...prev, newMsg])
-    queryClient.setQueryData(
-      queryChatMessagesKey(groupChatId),
-      (oldData: IMessageBox[]) => {
-        return [...oldData, newMsg]
-      },
-    )
+    // queryClient.setQueryData(
+    //   queryChatMessagesKey(groupChatId),
+    //   (oldData: IMessageBox[]) => {
+    //     return [...oldData, newMsg]
+    //   },
+    // )
   }
 
   const isReloadWhenResponse = (index: number) => {
@@ -91,21 +91,21 @@ const useMessageSocket = () => {
         return item
       })
     })
-    queryClient.setQueryData(
-      queryChatMessagesKey(groupChatId),
-      (oldData: IMessageBox[]) => {
-        return oldData.map((item) => {
-          if (item.id === e.msgId) {
-            return {
-              ...item,
-              content: (item.content += e.messages),
-              isTyping: false,
-            }
-          }
-          return item
-        })
-      },
-    )
+    // queryClient.setQueryData(
+    //   queryChatMessagesKey(groupChatId),
+    //   (oldData: IMessageBox[]) => {
+    //     return oldData.map((item) => {
+    //       if (item.id === e.msgId) {
+    //         return {
+    //           ...item,
+    //           content: (item.content += e.messages),
+    //           isTyping: false,
+    //         }
+    //       }
+    //       return item
+    //     })
+    //   },
+    // )
   }
 
   const handleWithGroup = (e: IDataListen) => {
@@ -119,12 +119,12 @@ const useMessageSocket = () => {
       createdAt: new Date().toISOString(),
     }
     setMessages((prev) => [...prev, newMsg])
-    queryClient.setQueryData(
-      queryChatMessagesKey(groupChatId),
-      (oldData: IMessageBox[]) => {
-        return [...oldData, newMsg]
-      },
-    )
+    // queryClient.setQueryData(
+    //   queryChatMessagesKey(groupChatId),
+    //   (oldData: IMessageBox[]) => {
+    //     return [...oldData, newMsg]
+    //   },
+    // )
   }
 
   const handleWithDone = (e: IDataListen) => {
@@ -144,21 +144,21 @@ const useMessageSocket = () => {
           return item
         }),
       )
-      queryClient.setQueryData(
-        queryChatMessagesKey(groupChatId),
-        (oldData: IMessageBox[]) => {
-          return oldData.map((item) => {
-            if (item.id === e.msgId) {
-              return {
-                ...item,
-                content: e.messages,
-                isTyping: false,
-              }
-            }
-            return item
-          })
-        },
-      )
+      // queryClient.setQueryData(
+      //   queryChatMessagesKey(groupChatId),
+      //   (oldData: IMessageBox[]) => {
+      //     return oldData.map((item) => {
+      //       if (item.id === e.msgId) {
+      //         return {
+      //           ...item,
+      //           content: e.messages,
+      //           isTyping: false,
+      //         }
+      //       }
+      //       return item
+      //     })
+      //   },
+      // )
     }
     setIsChatting(false)
   }
