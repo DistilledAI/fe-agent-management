@@ -24,7 +24,7 @@ const useWindowSize = () => {
 
   const isDesktop = screenWidth > 1023
   const isTablet = screenWidth > 679 && screenWidth < 1024
-  const isMobile = screenWidth < 426
+  const isMobile = screenWidth < 680
 
   return {
     screenWidth,

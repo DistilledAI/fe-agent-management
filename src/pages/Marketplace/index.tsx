@@ -1,14 +1,14 @@
-import PrivateAgents from "./PrivateAgents"
-import Productivity from "./Productivity"
-import GenAITools from "./GenAITools"
-import useWindowSize from "@hooks/useWindowSize"
-import MarketplaceDesktop from "./Desktop"
-import MarketplaceMobile from "./Mobile"
-import { Button, useDisclosure } from "@nextui-org/react"
 import { FilledSquareCircleIcon } from "@components/Icons/FilledSquareCircleIcon"
+import { PATH_NAMES } from "@constants/index"
+import useWindowSize from "@hooks/useWindowSize"
+import { Button, useDisclosure } from "@nextui-org/react"
 import { useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import { PATH_NAMES } from "@constants/index"
+import MarketplaceDesktop from "./Desktop"
+import GenAITools from "./GenAITools"
+import MarketplaceMobile from "./Mobile"
+import PrivateAgents from "./PrivateAgents"
+import Productivity from "./Productivity"
 
 const Marketplace = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
