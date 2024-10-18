@@ -1,6 +1,8 @@
-import DistilledAIIcon from "@components/Icons/DistilledAIIcon"
+import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
 import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
+import useReconnectWallet from "@hooks/useReconnectWallet"
+import { useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import ChatInput from "./ChatInput"
 import ChatMessages from "./ChatMessages"
@@ -9,8 +11,6 @@ import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
 import { StyleBoxChatProvider } from "./StyleProvider"
 import UserAuth from "./UserAuth"
 import useMessageSocket from "./useMessageSocket"
-import useReconnectWallet from "@hooks/useReconnectWallet"
-import { useEffect } from "react"
 
 const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
@@ -49,6 +49,11 @@ const ChatBox = () => {
                   connectWallet={connectWallet}
                 />
               )}
+
+              <MyPrivateAgentContent
+                connectWalletLoading={loading}
+                connectWallet={connectWallet}
+              />
               <ChatInput isDisabledInput={!isEnableTextInput} />
             </div>
           </StyleBoxChatProvider>

@@ -1,6 +1,7 @@
 import { createPrivateAgentPopup } from "@assets/images"
 import distilledAiPrivateAgent from "@assets/video/distilled-ai-private-agent-3d.mp4"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
+import useWindowSize from "@hooks/useWindowSize"
 import { Modal, ModalContent } from "@nextui-org/react"
 import { useState } from "react"
 import ProfileLinkForm from "./ProfileLinkForm"
@@ -14,6 +15,7 @@ const CreatPrivateAgentModal: React.FC<{
   const [contentStep, setContentStep] = useState<number>(1)
   const [collectedData, setCollectedData] = useState<any>(null)
   const isWordcloundStep = contentStep === 2
+  const { isMobile } = useWindowSize()
 
   const onOpenChange = () => {
     setContentStep(1)
@@ -41,53 +43,82 @@ const CreatPrivateAgentModal: React.FC<{
     }
   }
 
+  const renderModalContentWraper = () => {
+    if (isMobile) {
+      return (
+        <div className="max-sm:h-full relative h-[680px] w-full bg-cover bg-center bg-no-repeat">
+          <div className="flex-items-center relative left-0 top-4 z-10 w-full justify-center px-4">
+            <span className="text-18 font-semibold text-mercury-950">
+              Create Private Agent
+            </span>
+            <div
+              className="absolute right-4 z-20 cursor-pointer"
+              onClick={onOpenChange}
+            >
+              <CloseFilledIcon color="#545454" />
+            </div>
+          </div>
+
+          <div
+            className="absolute bottom-10 left-1/2 w-full -translate-x-1/2 rounded-[22px] p-6 backdrop-blur-md aria-selected:pb-0"
+            aria-selected={isWordcloundStep}
+          >
+            {renderModalContent()}
+          </div>
+        </div>
+      )
+    }
+
+    return (
+      <div
+        className="relative h-[680px] w-full bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: isWordcloundStep
+            ? `url(${createPrivateAgentPopup})`
+            : "",
+        }}
+      >
+        <div className="flex-items-center absolute left-0 top-4 z-10 w-full justify-between px-4">
+          <span className="text-[24px] font-semibold text-mercury-950">
+            Create Private Agent
+          </span>
+          <div className="z-20 cursor-pointer" onClick={onOpenChange}>
+            <CloseFilledIcon color="#545454" />
+          </div>
+        </div>
+        {!isWordcloundStep && (
+          <video
+            autoPlay
+            playsInline
+            loop
+            muted
+            className="h-full object-cover"
+          >
+            <source src={distilledAiPrivateAgent} type="video/mp4" />
+            <track kind="captions"></track>
+          </video>
+        )}
+        <div
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 rounded-[22px] border border-white bg-[rgba(244,244,245,0.50)] p-6 backdrop-blur-md aria-selected:pb-0"
+          aria-selected={isWordcloundStep}
+        >
+          {renderModalContent()}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <Modal
       isOpen={openPopup}
       onOpenChange={onOpenChange}
       hideCloseButton
       classNames={{
-        base: "bg-white",
+        base: `bg-white max-sm:!m-0 ${isWordcloundStep ? "max-sm:h-[calc(100vh-140px)]" : "max-sm:h-[calc(100vh-380px)]"}`,
       }}
       size="5xl"
     >
-      <ModalContent>
-        <div
-          className="relative h-[680px] w-full bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: isWordcloundStep
-              ? `url(${createPrivateAgentPopup})`
-              : "",
-          }}
-        >
-          <div className="flex-items-center absolute left-0 top-4 z-10 w-full justify-between px-4">
-            <span className="text-[24px] font-semibold text-mercury-950">
-              Create Private Agent
-            </span>
-            <div className="z-20 cursor-pointer" onClick={onOpenChange}>
-              <CloseFilledIcon color="#545454" />
-            </div>
-          </div>
-          {!isWordcloundStep && (
-            <video
-              autoPlay
-              playsInline
-              loop
-              muted
-              className="h-full object-cover"
-            >
-              <source src={distilledAiPrivateAgent} type="video/mp4" />
-              <track kind="captions"></track>
-            </video>
-          )}
-          <div
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 rounded-[22px] border border-white bg-[rgba(244,244,245,0.50)] p-6 backdrop-blur-md aria-selected:pb-0"
-            aria-selected={isWordcloundStep}
-          >
-            {renderModalContent()}
-          </div>
-        </div>
-      </ModalContent>
+      <ModalContent>{renderModalContentWraper()}</ModalContent>
     </Modal>
   )
 }

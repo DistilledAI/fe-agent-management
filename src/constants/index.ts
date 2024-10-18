@@ -5,6 +5,7 @@ export const PATH_NAMES = {
   CHAT_DETAIL: "/chat/:chatId",
   INVITE: "/invite",
   PRIVATE_AGENT: "/private-agent",
+  MARKETPLACE: "/marketplace",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {

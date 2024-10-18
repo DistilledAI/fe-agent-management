@@ -3,8 +3,7 @@ import useAuthState from "@hooks/useAuthState"
 import { getAccessToken } from "@utils/storage"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import { Socket } from "socket.io-client"
-import { io } from "socket.io-client"
+import { io, Socket } from "socket.io-client"
 
 type SocketProviderProps = {
   children: React.ReactNode

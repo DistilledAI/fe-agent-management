@@ -12,6 +12,16 @@ export default {
       fontFamily: {
         barlow: ["Barlow", "sans-serif"],
       },
+      // screens: {
+      //   "4xl": { max: "1799px" },
+      //   "3xl": { max: "1499px" },
+      //   "2xl": { max: "1399px" },
+      //   xl: { max: "1199px" },
+      //   lg: { max: "991px" },
+      //   md: { max: "767px" },
+      //   sm: { max: "575px" },
+      //   sxm: { max: "380px" },
+      // },
       fontSize: {
         10: "0.625rem",
         12: "0.75rem",
@@ -97,6 +107,7 @@ export default {
         3: "0px -2px 0px 0px rgba(255, 255, 255, 0.40) inset, 0px 2px 0px 0px #DEDEE0 inset, 0px 16px 32px -4px rgba(24, 24, 25, 0.10), 0px 2px 4px 0px rgba(24, 24, 25, 0.15)",
         4: "0px -32px 30px 0px #FFF inset",
         5: "0px 16px 32px -4px rgba(24, 24, 25, 0.05), 0px 2px 4px 0px rgba(24, 24, 25, 0.04)",
+        6: "0px 16px 32px -4px rgba(24, 24, 25, 0.10), 0px 2px 4px 0px rgba(24, 24, 25, 0.08)",
       },
     },
   },

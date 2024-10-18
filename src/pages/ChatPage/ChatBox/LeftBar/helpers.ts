@@ -14,3 +14,30 @@ export const getRoleUser = (ownerId: number, userA: IUser, userB: IUser) => {
   if (info?.role === RoleUser.ANONYMOUS) return RoleUser.USER
   return info?.role === RoleUser.USER ? RoleUser.USER : RoleUser.BOT
 }
+
+export const isHasNotification = (
+  groupsHaveNotification: number[],
+  groupId: number,
+  chatId: number,
+) => {
+  if (groupId === Number(chatId)) return false
+  return groupsHaveNotification.includes(groupId)
+}
+
+export const getColorGroupIcon = (
+  ownerId: number,
+  userA: IUser,
+  userB: IUser,
+) => {
+  return getRoleUser(ownerId, userA, userB) === RoleUser.USER
+    ? "bg-[#0FE9A4]"
+    : "bg-[#FC0]"
+}
+
+export const getNameGroup = (
+  user: IUser | null,
+  userA: IUser,
+  userB: IUser,
+) => {
+  return userA?.id === user?.id ? userB?.username : userA?.username
+}

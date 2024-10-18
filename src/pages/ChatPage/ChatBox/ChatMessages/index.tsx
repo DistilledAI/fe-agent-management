@@ -5,13 +5,13 @@ import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
 import { RoleUser } from "@constants/index"
+import { useAppSelector } from "@hooks/useAppRedux"
 import { useChatMessage } from "providers/MessageProvider"
 import { useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { useStyleBoxChat } from "../StyleProvider"
 import { IMessageBox, RoleChat } from "./helpers"
 import useFetchMessages from "./useFetchMessages"
-import { useAppSelector } from "@hooks/useAppRedux"
 
 const TIME_BREAK = 15
 
@@ -113,7 +113,7 @@ const ChatMessages = () => {
       <>
         <div
           className={twMerge(
-            "px-3 pb-4",
+            "max-sm:px-4 px-3 pb-4",
             message.role === RoleChat.OWNER && paddingBottomStyle,
           )}
           key={index}
@@ -142,6 +142,7 @@ const ChatMessages = () => {
 
   return (
     <ChatWindow
+      className="max-sm:rounded-none max-sm:border-none max-sm:p-0"
       messages={messages}
       itemContent={renderMessage}
       loading={loading}

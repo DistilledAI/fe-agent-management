@@ -1,7 +1,7 @@
 import { combineReducers, Reducer } from "@reduxjs/toolkit"
+import activeColorReducer, { ActiveColorState } from "./activeColorSlice"
 import agentReducer, { AgentState } from "./agentSlice"
 import userReducer, { IUserState } from "./userSlice"
-import activeColorReducer, { ActiveColorState } from "./activeColorSlice"
 
 type TReducer = {
   agents: AgentState

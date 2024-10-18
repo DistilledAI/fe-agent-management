@@ -37,11 +37,15 @@ interface FetchConfig {
   isLoadMore?: boolean
 }
 
+export const LIMIT = 10
+
 const useFetchGroups = () => {
   const [groups, setGroups] = useState<UserGroup[]>([])
   const { isLogin, sessionAccessToken } = useAuthState()
+  const [hasMore, setHasMore] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [searchParams, setSearchParams] = useSearchParams()
+  const [offset, setOffset] = useState(LIMIT)
   const isInvited = searchParams.get("isInvited") === "true"
 
   const fetchGroups = async ({
@@ -70,6 +74,17 @@ const useFetchGroups = () => {
     }
   }
 
+  const handleLoadMore = async () => {
+    if (hasMore) {
+      const newGroups = await fetchGroups({
+        offset,
+        isLoadMore: true,
+      })
+      if (!newGroups.length) return setHasMore(false)
+      setOffset((prev) => prev + LIMIT)
+    }
+  }
+
   useEffect(() => {
     if (isInvited) {
       fetchGroups({})
@@ -84,7 +99,7 @@ const useFetchGroups = () => {
     if (isLogin) fetchGroups({})
   }, [isLogin, sessionAccessToken])
 
-  return { isLoading, groups, fetchGroups, setGroups }
+  return { isLoading, groups, fetchGroups, setGroups, handleLoadMore }
 }
 
 export default useFetchGroups
