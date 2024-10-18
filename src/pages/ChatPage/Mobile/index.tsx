@@ -23,7 +23,9 @@ const ChatPageMobile = () => {
   useReconnectWallet()
   useMessageSocket()
 
-  return isLogin && chatId ? (
+  if (!isLogin) return null
+
+  return chatId ? (
     <ChatDetail />
   ) : (
     <div className="min-h-[calc(100dvh-110px)] bg-mercury-30 font-barlow">
