@@ -31,7 +31,7 @@ const DrawerBottom = ({
     <div
       ref={isOutsideClose ? outsideRef : null}
       className={twMerge(
-        "fixed bottom-0 left-1/2 z-[40] mx-auto h-[calc(100dvh-200px)] w-[1100px] max-w-full -translate-x-1/2 translate-y-[100%] rounded-b-[32px] rounded-t-[40px] bg-[rgba(211,211,211,0.70)] shadow-4 backdrop-blur-[15px] duration-400 ease-in-out",
+        "fixed bottom-0 left-1/2 z-[40] mx-auto h-[calc(100dvh-8px)] w-[1100px] max-w-full -translate-x-1/2 translate-y-[100%] rounded-b-[14px] rounded-t-[14px] bg-[rgba(211,211,211,0.70)] shadow-4 backdrop-blur-[15px] duration-400 ease-in-out md:h-[calc(100dvh-200px)] md:rounded-b-[32px] md:rounded-t-[40px]",
         isOpen && "translate-y-0",
         className,
         classNames?.base,
@@ -42,13 +42,13 @@ const DrawerBottom = ({
           <CloseButton
             onClose={onClose}
             className={twMerge(
-              "absolute right-5 top-10 z-[1]",
+              "absolute right-3 top-[10px] z-[1] md:right-5 md:top-10",
               classNames?.closeButton,
             )}
           />
           <div
             className={twMerge(
-              "h-full w-full translate-y-[100px] px-[100px] py-10 delay-100 duration-500",
+              "h-full w-full translate-y-[100px] px-3 py-4 delay-100 duration-500 md:px-[100px] md:py-10",
               isOpen && "translate-y-0",
               classNames?.body,
             )}

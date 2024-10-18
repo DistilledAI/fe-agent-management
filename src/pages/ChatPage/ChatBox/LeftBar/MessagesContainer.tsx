@@ -51,7 +51,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
   ) => {
     return groups.map((group) => {
       const groupId = group.groupId
-      const bgColor = colors[groupId % colors.length].bgColor
+      const bgColor = colors[groupId % colors.length]?.bgColor
       return {
         ...group,
         bgColor,

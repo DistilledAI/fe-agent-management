@@ -72,7 +72,7 @@ const MarketplaceMobile = ({ categories }: Props) => {
         ))}
       </div>
 
-      <div className="relative mt-[60px] flex h-full w-full flex-col gap-6 overflow-hidden bg-mercury-70 px-3 py-2 md:flex-row md:items-center">
+      <div className="relative mt-[60px] flex h-full w-full flex-col gap-6 overflow-hidden bg-mercury-70 px-3 py-2 max-md:pb-20 md:flex-row md:items-center">
         {categories.map((category, index) => (
           <div
             className="h-full space-y-3 transition-all duration-500 ease-in-out"

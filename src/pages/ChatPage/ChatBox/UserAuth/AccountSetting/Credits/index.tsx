@@ -9,7 +9,7 @@ const MyCredits = () => {
           background:
             "radial-gradient(102.52% 50% at 50% 50%, #383327 0%, #292929 100%)",
         }}
-        className="border-800 rounded-[22px] border-1 p-8"
+        className="border-800 rounded-[22px] border-1 p-4 md:p-8"
       >
         <div className="mb-6 flex items-center justify-between leading-none">
           <span className="font-medium text-mercury-300">My Credits</span>
@@ -19,11 +19,11 @@ const MyCredits = () => {
           <span className="font-medium text-mercury-600">Balance:</span>
           <span className="font-medium text-mercury-600">$0</span>
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <Button className="rounded-full border-1 border-mercury-900 bg-[rgba(84,84,84,0.2)] font-medium text-white">
+        <div className="flex items-center justify-between gap-4">
+          <Button className="w-full rounded-full border border-mercury-900 bg-mercury-900/20 text-[14px] font-medium text-white max-md:min-h-14 md:text-[16px]">
             Backup your wallet
           </Button>
-          <Button className="rounded-full border-1 border-mercury-900 bg-[rgba(195,195,195,0.2)] font-medium text-white">
+          <Button className="w-full rounded-full border border-mercury-900 bg-[#C3C3C333] text-[14px] font-medium text-white max-md:min-h-14 md:text-[16px]">
             Get more credits
           </Button>
         </div>

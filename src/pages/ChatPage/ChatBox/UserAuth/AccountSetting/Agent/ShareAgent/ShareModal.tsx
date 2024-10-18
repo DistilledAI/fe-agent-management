@@ -44,6 +44,7 @@ const ShareModal = ({ isOpen, onClose, agentData }: ShareModal) => {
         backdrop: "z-[99]",
       }}
       size="sm"
+      placement="center"
     >
       <ModalContent>
         <ModalHeader className="relative">
