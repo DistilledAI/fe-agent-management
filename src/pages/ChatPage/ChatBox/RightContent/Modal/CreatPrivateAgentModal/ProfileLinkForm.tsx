@@ -119,10 +119,10 @@ const ProfileLinkForm: React.FC<{
   if (loading) {
     if (isMobile)
       return (
-        <>
+        <div>
           <IntroVideo />
           <CollectingContent setContentStep={setContentStep} />
-        </>
+        </div>
       )
 
     return <CollectingContent setContentStep={setContentStep} />

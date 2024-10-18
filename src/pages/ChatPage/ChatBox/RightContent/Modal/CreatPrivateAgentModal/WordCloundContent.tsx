@@ -1,3 +1,4 @@
+import useWindowSize from "@hooks/useWindowSize"
 import ReactWordcloud from "react-wordcloud"
 
 const stopwords = [
@@ -163,9 +164,11 @@ const options = {
   transitionDuration: 800,
 } as any
 
-const size = [300, 300] as any
-
 const WordCloundContent: React.FC<{ paragraph: string }> = ({ paragraph }) => {
+  const { isMobile } = useWindowSize()
+  const sizeValue = isMobile ? 200 : 300
+  const size = [sizeValue, sizeValue] as any
+
   const wordFrequency = (paragraph: string, stopwords: Array<string>) => {
     paragraph = paragraph.trim()
     let words = paragraph

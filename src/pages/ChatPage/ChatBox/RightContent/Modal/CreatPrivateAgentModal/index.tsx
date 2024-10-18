@@ -46,7 +46,7 @@ const CreatPrivateAgentModal: React.FC<{
   const renderModalContentWraper = () => {
     if (isMobile) {
       return (
-        <div className="max-sm:h-full relative h-[680px] w-full bg-cover bg-center bg-no-repeat">
+        <div className="h-full w-full bg-cover bg-center bg-no-repeat">
           <div className="flex-items-center relative left-0 top-4 z-10 w-full justify-center px-4">
             <span className="text-18 font-semibold text-mercury-950">
               Create Private Agent
@@ -108,13 +108,17 @@ const CreatPrivateAgentModal: React.FC<{
     )
   }
 
+  const baseClassName = isWordcloundStep
+    ? "bg-white max-sm:!m-0 max-sm:h-[calc(100vh-20px)]"
+    : "bg-white max-sm:!m-0 max-sm:h-[calc(100vh-180px)]"
+
   return (
     <Modal
       isOpen={openPopup}
       onOpenChange={onOpenChange}
       hideCloseButton
       classNames={{
-        base: `bg-white max-sm:!m-0 ${isWordcloundStep ? "max-sm:h-[calc(100vh-140px)]" : "max-sm:h-[calc(100vh-380px)]"}`,
+        base: baseClassName,
       }}
       size="5xl"
     >

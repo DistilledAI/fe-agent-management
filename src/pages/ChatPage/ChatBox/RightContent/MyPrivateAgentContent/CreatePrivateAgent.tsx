@@ -56,40 +56,51 @@ const CreatePrivateAgent: React.FC<{
   const renderContainerCreateContent = () => {
     if (isMobile) {
       return (
-        <div>
-          <div className="flex flex-col items-center">
-            <div className="flex-items-center mb-2 gap-1">
-              <FilledBrainAIIcon color="#A2845E" size={24} />
-              <ThreeDotsIcon />
-              <DatabaseImportIcon />
-            </div>
-
-            <span className="cursor-pointer text-center text-24 text-mercury-800">
-              <span className="font-semibold text-mercury-950">
-                Start your Private agent
-              </span>
-              <br />
-              by connect your data:
+        <div className="mt-[60px] flex flex-col items-center">
+          <div className="flex-items-center mb-2 gap-1">
+            <FilledBrainAIIcon color="#A2845E" size={24} />
+            <ThreeDotsIcon />
+            <DatabaseImportIcon />
+          </div>
+          <span className="cursor-pointer text-center text-20 text-mercury-800">
+            <span className="font-semibold text-mercury-950">
+              Start your Private agent
             </span>
+            <br />
+            by connect your data:
+          </span>
+
+          <div className="absolute top-1/2 -translate-y-1/2">
             <div className="mt-4 flex gap-3">
-              <UploadDataButton icon={<PDFTypeIcon />} label="PDFs" isDisable />
+              <UploadDataButton
+                icon={<PDFTypeIcon />}
+                label="PDFs"
+                isDisable
+                textClassName="text-base-14-b"
+                customClassName="h-[50px]"
+              />
               <UploadDataButton
                 icon={<EmailUpIcon />}
                 label="Emails"
                 isDisable
+                textClassName="text-base-14-b"
+                customClassName="h-[50px]"
               />
             </div>
             <UploadDataButton
               icon={<PhotoPlusIcon />}
               label="Photos & Videos"
-              customClassName="my-3"
               isDisable
+              textClassName="text-base-14-b"
+              customClassName="h-[50px] my-2"
             />
             <UploadDataButton
               icon={<SocialLinkIcon />}
               label="Website links/Social Media"
+              textClassName="text-base-14-b"
               isDisable={false}
               onClick={() => setOpenPopup(true)}
+              customClassName="h-[50px]"
             />
           </div>
         </div>

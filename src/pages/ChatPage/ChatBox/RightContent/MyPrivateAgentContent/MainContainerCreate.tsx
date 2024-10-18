@@ -16,10 +16,10 @@ const MainContainerCreate: React.FC<{
           backgroundImage: `url(${mainContentBg})`,
         }}
       >
-        <div className="flex-items-center relative h-full w-full flex-col justify-center">
+        <div className="flex-items-center relative h-full w-full flex-col justify-between">
           {children}
-          <div className="absolute bottom-[60px] text-center max-sm:max-w-[380px]">
-            <span className="text-base-m text-mercury-800">
+          <div className="absolute bottom-[60px] text-center max-sm:max-w-[320px]">
+            <span className="text-base-md max-sm:text-base-14-md text-mercury-800">
               Your Private Agent is exclusively accessible to you unless you
               choose to publish it on the Marketplace.
             </span>
@@ -29,7 +29,7 @@ const MainContainerCreate: React.FC<{
               onClick={() => setOpenFYIPopupp(true)}
             >
               <FilledShieldCheckedIcon color="#A2845E" />
-              <span className="text-base-m text-brown-10">
+              <span className="text-base-md text-base-14-md text-brown-10">
                 How do we protect your private data?
               </span>
             </div>

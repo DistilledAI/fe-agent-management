@@ -9,6 +9,7 @@ interface UploadDataButtonProps {
   radiusFull?: boolean
   onClick?: any
   customClassName?: string
+  textClassName?: string
 }
 
 const UploadDataButton: React.FC<UploadDataButtonProps> = ({
@@ -18,19 +19,22 @@ const UploadDataButton: React.FC<UploadDataButtonProps> = ({
   radiusFull,
   onClick,
   customClassName,
+  textClassName,
 }) => {
   if (!radiusFull) {
     return (
       <div
         className={twMerge(
-          "shadow-6 flex h-[60px] min-w-[130px] cursor-pointer items-center justify-center gap-2 rounded-full border border-mercury-70 bg-mercury-30 p-4 aria-selected:opacity-40",
+          "flex h-[60px] min-w-[130px] cursor-pointer items-center justify-center gap-2 rounded-full border border-mercury-70 bg-mercury-30 p-4 shadow-6 aria-selected:opacity-40",
           customClassName,
         )}
         aria-selected={isDisable}
         onClick={onClick}
       >
         {icon}
-        <div className="text-base-b mr-2 text-center">{label}</div>
+        <div className={twMerge("text-base-b mr-2 text-center", textClassName)}>
+          {label}
+        </div>
         <TablerPlusIcon />
       </div>
     )
@@ -39,14 +43,16 @@ const UploadDataButton: React.FC<UploadDataButtonProps> = ({
   return (
     <div
       className={twMerge(
-        "shadow-6 flex h-[145px] w-[145px] cursor-pointer flex-col items-center justify-center gap-2 rounded-full border border-mercury-70 bg-mercury-30 p-4 aria-selected:opacity-40",
+        "flex h-[145px] w-[145px] cursor-pointer flex-col items-center justify-center gap-2 rounded-full border border-mercury-70 bg-mercury-30 p-4 shadow-6 aria-selected:opacity-40",
         customClassName,
       )}
       aria-selected={isDisable}
       onClick={onClick}
     >
       {icon}
-      <div className="text-base-b text-center">{label}</div>
+      <div className={twMerge("text-base-b text-center", textClassName)}>
+        {label}
+      </div>
     </div>
   )
 }
