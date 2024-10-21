@@ -22,8 +22,6 @@ const CreatePrivateAgent: React.FC<{
   setCreated: any
 }> = ({ connectWalletLoading, connectWallet, setCreated }) => {
   const { isLogin, sessionAccessToken } = useAuthState()
-  console.log("🚀 ~ sessionAccessToken:", sessionAccessToken)
-  console.log("🚀 ~ isLogin:", isLogin)
   const [openPopup, setOpenPopup] = useState<boolean>(false)
   const [ref, isHovered] = useHover()
   const { isMobile } = useWindowSize()
