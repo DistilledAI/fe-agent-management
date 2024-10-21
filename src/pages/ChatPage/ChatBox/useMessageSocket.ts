@@ -8,7 +8,8 @@ import { makeId, textToVoice } from "@utils/index"
 import { useChatMessage } from "providers/MessageProvider"
 import { TYPE_BOT } from "@constants/index"
 import { useQueryClient } from "@tanstack/react-query"
-import { queryChatMessagesKey } from "./ChatMessages/useFetchMessages"
+import { messagesQueryKey } from "./ChatMessages/useFetchMessages"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 interface IDataListen {
   event: string
@@ -31,14 +32,8 @@ const useMessageSocket = () => {
   const { socket } = useSocket()
   const { user } = useAuthState()
   const indexResRef = useRef(-1)
-  const {
-    setGroupsHaveNotification,
-    setIsNewMsgOnCurrentWindow,
-    // setMessages,
-    setIsChatting,
-  } = useChatMessage()
+  const { setIsNewMsgOnCurrentWindow, setIsChatting } = useChatMessage()
   const queryClient = useQueryClient()
-
   const groupChatId = chatId || privateChatId
 
   const isPassRuleMessage = (e: IDataListen) => {
@@ -59,9 +54,8 @@ const useMessageSocket = () => {
       roleOwner: e.user.role,
       createdAt: new Date().toISOString(),
     }
-    // setMessages((prev) => [...prev, newMsg])
     queryClient.setQueryData(
-      queryChatMessagesKey(groupChatId),
+      messagesQueryKey(groupChatId),
       (oldData: IMessageBox[]) => {
         return [...oldData, newMsg]
       },
@@ -79,20 +73,8 @@ const useMessageSocket = () => {
     if (isReloadWhenResponse(e.index)) return
     const isBotVoice = e.user.typeBot === TYPE_BOT.VOICE
     if (isBotVoice) return
-    // setMessages((prev) => {
-    //   return prev.map((item) => {
-    //     if (item.id === e.msgId) {
-    //       return {
-    //         ...item,
-    //         content: (item.content += e.messages),
-    //         isTyping: false,
-    //       }
-    //     }
-    //     return item
-    //   })
-    // })
     queryClient.setQueryData(
-      queryChatMessagesKey(groupChatId),
+      messagesQueryKey(groupChatId),
       (oldData: IMessageBox[] | undefined) => {
         if (!oldData) return []
 
@@ -120,9 +102,8 @@ const useMessageSocket = () => {
       roleOwner: e.user.role,
       createdAt: new Date().toISOString(),
     }
-    // setMessages((prev) => [...prev, newMsg])
     queryClient.setQueryData(
-      queryChatMessagesKey(groupChatId),
+      messagesQueryKey(groupChatId),
       (oldData: IMessageBox[]) => {
         return [...oldData, newMsg]
       },
@@ -134,20 +115,8 @@ const useMessageSocket = () => {
     const isBotVoice = e.user.typeBot === TYPE_BOT.VOICE
     if (isBotVoice) textToVoice(e.messages, e.user.configBot)
     if (isNeedAppendWhenDone) {
-      // setMessages((prev) =>
-      //   prev.map((item) => {
-      //     if (item.id === e.msgId) {
-      //       return {
-      //         ...item,
-      //         content: e.messages,
-      //         isTyping: false,
-      //       }
-      //     }
-      //     return item
-      //   }),
-      // )
       queryClient.setQueryData(
-        queryChatMessagesKey(groupChatId),
+        messagesQueryKey(groupChatId),
         (oldData: IMessageBox[]) => {
           return oldData.map((item) => {
             if (item.id === e.msgId) {
@@ -181,8 +150,9 @@ const useMessageSocket = () => {
 
   const handleResponseForNotification = (e: IDataListen) => {
     if (!isPassRuleNotification(e)) return
-    setGroupsHaveNotification((prev) =>
-      prev.includes(e.group) ? [...prev] : [...prev, e.group],
+    queryClient.setQueryData<number[]>(
+      [QueryDataKeys.NOTIFICATION_GROUPS],
+      (prev = []) => (prev.includes(e.group) ? prev : [...prev, e.group]),
     )
   }
 

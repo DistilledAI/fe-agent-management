@@ -13,32 +13,24 @@ const MarketplaceMobile = ({ categories }: Props) => {
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(0)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = sectionsRefs.current.indexOf(
-              entry.target as HTMLDivElement,
-            )
-            if (index !== -1) {
-              setActiveCategoryIndex(index)
-            }
-          }
-        })
-      },
-      {
-        threshold: 1,
-      },
-    )
+    const handleScroll = () => {
+      sectionsRefs.current.forEach((section, index) => {
+        if (section) {
+          const rect = section.getBoundingClientRect()
+          const inView =
+            rect.top >= 0 && rect.bottom <= window.innerHeight - 200
 
-    sectionsRefs.current.forEach((section) => {
-      if (section) observer.observe(section)
-    })
+          if (inView) {
+            setActiveCategoryIndex(index)
+          }
+        }
+      })
+    }
+
+    window.addEventListener("scroll", handleScroll)
 
     return () => {
-      sectionsRefs.current.forEach((section) => {
-        if (section) observer.unobserve(section)
-      })
+      window.removeEventListener("scroll", handleScroll)
     }
   }, [])
 
