@@ -12,11 +12,15 @@ const MainLayout = () => {
 
   const { screenWidth } = useWindowSize()
   const { pathname } = useLocation()
-  const { chatId } = useParams()
+  const { chatId, userId } = useParams()
+  const ignoreLayout = [
+    `${PATH_NAMES.CHAT}/${chatId}`,
+    `${PATH_NAMES.INVITE}/${userId}`,
+  ]
 
-  const hasLayout = pathname !== `${PATH_NAMES.CHAT}/${chatId}`
-  const isHeader = hasLayout
-  const isFooter = hasLayout
+  const isIgnoreLayout = ignoreLayout.includes(pathname)
+  const isHeader = !isIgnoreLayout
+  const isFooter = !isIgnoreLayout
 
   const hasHeader = screenWidth < 768 && isHeader
   const hasFooter = screenWidth < 768 && isFooter
