@@ -7,7 +7,7 @@ import { ExploreFilledIcon } from "@components/Icons/MetamaskIcon"
 import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
 import { PhotoPlusIcon } from "@components/Icons/PhotoPlusIcon"
 import { SocialLinkIcon, ThreeDotsIcon } from "@components/Icons/SocialLinkIcon"
-import { useAppSelector } from "@hooks/useAppRedux"
+import useAuthState from "@hooks/useAuthState"
 import { useHover } from "@hooks/useHover"
 import useWindowSize from "@hooks/useWindowSize"
 import { useState } from "react"
@@ -21,7 +21,9 @@ const CreatePrivateAgent: React.FC<{
   connectWallet: any
   setCreated: any
 }> = ({ connectWalletLoading, connectWallet, setCreated }) => {
-  const isLogin = useAppSelector((state) => state.user.isLogin)
+  const { isLogin, sessionAccessToken } = useAuthState()
+  console.log("🚀 ~ sessionAccessToken:", sessionAccessToken)
+  console.log("🚀 ~ isLogin:", isLogin)
   const [openPopup, setOpenPopup] = useState<boolean>(false)
   const [ref, isHovered] = useHover()
   const { isMobile } = useWindowSize()
@@ -182,11 +184,10 @@ const CreatePrivateAgent: React.FC<{
     )
   }
 
-  if (!isLogin) {
+  if (!isLogin || (isLogin && sessionAccessToken)) {
     return (
       <MainContainerCreate>
         {renderCreateAccountAction()}
-
         <UploadDataButton
           icon={<FilledBrainAIIcon />}
           label="Start your Private Agent"
