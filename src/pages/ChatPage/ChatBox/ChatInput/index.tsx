@@ -2,9 +2,9 @@ import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
 import { RoleUser } from "@constants/index"
 import { Button, Textarea } from "@nextui-org/react"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { makeId } from "@utils/index"
-import { useChatMessage } from "providers/MessageProvider"
+// import { useChatMessage } from "providers/MessageProvider"
 import { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import SpeechRecognition, {
@@ -12,15 +12,16 @@ import SpeechRecognition, {
 } from "react-speech-recognition"
 import { postChatToGroup } from "services/chat"
 import { twMerge } from "tailwind-merge"
-import { RoleChat } from "../ChatMessages/helpers"
+import { IMessageBox, RoleChat } from "../ChatMessages/helpers"
 // import { queryChatMessagesKey } from "../ChatMessages/useFetchMessages"
 import { useStyleBoxChat } from "../StyleProvider"
 import VoiceChat from "./Voice"
+import { queryChatMessagesKey } from "../ChatMessages/useFetchMessages"
 
 const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
   isDisabledInput,
 }) => {
-  const { setMessages: setMessageContext } = useChatMessage()
+  // const { setMessages: setMessageContext } = useChatMessage()
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const { chatId, privateChatId } = useParams()
   const [isFocus, setIsFocus] = useState(false)
@@ -28,17 +29,49 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
   const boxRef = useRef<HTMLDivElement>(null)
   const heightBoxRef = useRef(0)
   const { setStyle } = useStyleBoxChat()
-  // const queryClient = useQueryClient()
+  const queryClient = useQueryClient()
 
   const groupId = chatId ?? privateChatId
 
   const mutation = useMutation({
+    mutationKey: ["send-message"],
     mutationFn: (message: string) =>
       postChatToGroup({
         groupId: Number(groupId),
         messages: message,
       }),
-    onSuccess: () => {
+    onMutate(variables) {
+      const optimisticMessage = {
+        content: variables,
+        role: RoleChat.OWNER,
+        id: makeId(),
+        roleOwner: RoleUser.USER,
+        createdAt: new Date().toISOString(),
+      }
+
+      queryClient.setQueryData(
+        queryChatMessagesKey(groupId),
+        (cachedData: IMessageBox[]) => {
+          if (cachedData === undefined) return [optimisticMessage]
+          return [...cachedData, optimisticMessage]
+        },
+      )
+
+      return { optimisticMessage }
+    },
+    onSuccess: (_, __, { optimisticMessage }) => {
+      console.log({ optimisticMessage })
+      queryClient.setQueryData(
+        queryChatMessagesKey(groupId),
+        (cachedData: IMessageBox[]) => {
+          if (cachedData === undefined || cachedData === null)
+            return [optimisticMessage]
+          return cachedData.map((message) => {
+            if (message.id === optimisticMessage.id) return optimisticMessage
+            return message
+          })
+        },
+      )
       SpeechRecognition.stopListening()
     },
     onError: (error) => {
@@ -51,14 +84,14 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
 
     setMessages("")
 
-    const newMessage = {
-      content: messages,
-      role: RoleChat.OWNER,
-      id: makeId(),
-      roleOwner: RoleUser.USER,
-      createdAt: new Date().toISOString(),
-    }
-    setMessageContext((prev) => [...prev, newMessage])
+    // const newMessage = {
+    //   content: messages,
+    //   role: RoleChat.OWNER,
+    //   id: makeId(),
+    //   roleOwner: RoleUser.USER,
+    //   createdAt: new Date().toISOString(),
+    // }
+    // setMessageContext((prev) => [...prev, newMessage])
     // queryClient.setQueryData(
     //   queryChatMessagesKey(groupId),
     //   (oldData: IMessageBox[]) => {
