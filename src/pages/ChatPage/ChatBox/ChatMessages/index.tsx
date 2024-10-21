@@ -15,8 +15,8 @@ import useFetchMessages from "./useFetchMessages"
 const TIME_BREAK = 10
 
 const ChatMessages = () => {
-  const { isChatting, messages } = useChatMessage()
-  const { loading, onLoadPrevMessages } = useFetchMessages()
+  const { isChatting } = useChatMessage()
+  const { loading, onLoadPrevMessages, messages } = useFetchMessages()
   const { chatId } = useParams()
   const { style } = useStyleBoxChat()
   const bgColor = chatId
