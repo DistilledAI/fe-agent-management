@@ -5,9 +5,12 @@ import { checkGroupDirect, createGroupChat } from "services/chat"
 import useAuthState from "./useAuthState"
 import { postCreateAnonymous } from "services/auth"
 import { cachedSessionStorage, storageKey } from "@utils/storage"
+import { useDispatch } from "react-redux"
+import { loginSuccessByAnonymous } from "@reducers/userSlice"
 
 const useInviteUser = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const params = useParams()
   const { pathname } = useLocation()
   const { user, isLogin } = useAuthState()
@@ -43,14 +46,17 @@ const useInviteUser = () => {
   const handleInviteAnonymous = async () => {
     try {
       const res = await postCreateAnonymous()
-      const accessToken = res?.data?.accessToken
+      const accessToken = res.data?.accessToken
+      const userAnonymous = res.data?.user
       const expiry = Date.now() + 24 * 60 * 60 * 1000
 
-      if (accessToken) {
-        cachedSessionStorage.setWithExpiry(
-          storageKey.ACCESS_TOKEN,
-          accessToken,
-          expiry,
+      if (accessToken && userAnonymous) {
+        dispatch(
+          loginSuccessByAnonymous({
+            user: userAnonymous,
+            accessToken,
+            expiry,
+          }),
         )
         handleInviteUserLoggedIn(userId)
       } else {

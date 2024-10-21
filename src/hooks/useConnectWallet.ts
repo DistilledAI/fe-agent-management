@@ -18,7 +18,7 @@ const useConnectWallet = () => {
         loginSuccess({
           user: res.data.user,
           accessToken: res.data.accessToken,
-          expire: Date.now() + 24 * 60 * 60 * 1000,
+          expiry: Date.now() + 24 * 60 * 60 * 1000,
         }),
       )
     }

@@ -8,9 +8,8 @@ const useAuthState = () => {
   const sessionAccessToken = cachedSessionStorage.getWithExpiry(
     storageKey.ACCESS_TOKEN,
   )
-  const isLogin = sessionAccessToken ? true : isLoggedIn
 
-  return { user, isLogin, sessionAccessToken }
+  return { user, isLogin: isLoggedIn, sessionAccessToken }
 }
 
 export default useAuthState

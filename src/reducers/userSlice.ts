@@ -4,6 +4,7 @@ import {
   storageKey,
   cachedLocalStorage,
   cachedSessionStorage,
+  getAccessToken,
 } from "@utils/storage"
 
 export interface IUser {
@@ -24,7 +25,7 @@ export interface IUser {
 interface LoginSuccessPayload {
   user: IUser
   accessToken: string
-  expire: number
+  expiry: number
 }
 
 interface UpdateUserPayload {
@@ -51,7 +52,7 @@ const initStateValues = {
     typeBot: -1,
     configBot: "",
   },
-  isLogin: !!cachedLocalStorage.getWithExpiry(storageKey.ACCESS_TOKEN),
+  isLogin: !!getAccessToken(),
 }
 
 const initialState: IUserState = initStateValues
@@ -63,13 +64,26 @@ const userSlice = createSlice({
     loginSuccess: (state, action: { payload: LoginSuccessPayload }) => {
       cachedSessionStorage.removeItem(storageKey.ACCESS_TOKEN)
 
-      const { user, accessToken, expire } = action.payload
+      const { user, accessToken, expiry } = action.payload
       state.user = user
       state.isLogin = true
       cachedLocalStorage.setWithExpiry(
         storageKey.ACCESS_TOKEN,
         accessToken,
-        expire,
+        expiry,
+      )
+    },
+    loginSuccessByAnonymous: (
+      state,
+      action: { payload: LoginSuccessPayload },
+    ) => {
+      const { user, accessToken, expiry } = action.payload
+      state.user = user
+      state.isLogin = true
+      cachedSessionStorage.setWithExpiry(
+        storageKey.ACCESS_TOKEN,
+        accessToken,
+        expiry,
       )
     },
     logout: (state) => {
@@ -84,5 +98,6 @@ const userSlice = createSlice({
   },
 })
 
-export const { loginSuccess, logout, updateUser } = userSlice.actions
+export const { loginSuccess, logout, updateUser, loginSuccessByAnonymous } =
+  userSlice.actions
 export default userSlice.reducer
