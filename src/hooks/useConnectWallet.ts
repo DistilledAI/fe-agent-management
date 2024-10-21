@@ -5,11 +5,13 @@ import { useDispatch } from "react-redux"
 import { toast } from "react-toastify"
 import { IDataSignatureAuth, signatureAuth } from "services/auth"
 import { useAccount } from "wagmi"
+import useWindowSize from "./useWindowSize"
 
 const useConnectWallet = () => {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
   const { address } = useAccount()
+  const { isMobile } = useWindowSize()
 
   const login = async (input: IDataSignatureAuth) => {
     const res = await signatureAuth(input)
@@ -48,6 +50,10 @@ const useConnectWallet = () => {
 
   const connectWallet = async () => {
     if (!window.ethereum || !window.ethereum.isMetaMask) {
+      if (isMobile) {
+        toast.info("Please open the application in metamask's browser")
+        return
+      }
       toast.warning("Please install MetaMask to continue!")
       return
     }
