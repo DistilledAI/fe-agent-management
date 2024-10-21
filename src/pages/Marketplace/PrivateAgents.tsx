@@ -3,7 +3,6 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { MessageDots } from "@components/Icons/Message"
 import { PATH_NAMES, RoleUser, STATUS_AGENT } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
-import useInviteUser from "@hooks/useInviteUser"
 import { Button } from "@nextui-org/react"
 import { IUser } from "@reducers/userSlice"
 import { useEffect, useState } from "react"
@@ -18,7 +17,6 @@ const PrivateAgents = ({ onClose }: PrivateAgentsProps) => {
   const navigate = useNavigate()
   const { user } = useAuthState()
   const [agents, setAgents] = useState<IUser[]>([])
-  useInviteUser()
 
   const handleChatWithAgent = async (agent: IUser) => {
     if (user && user.id === agent.owner) {

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react"
-import MainLayout from "@components/Layout/MainLayout"
 import { twMerge } from "tailwind-merge"
 import { Button } from "@nextui-org/react"
 import ComingSoon from "@components/ComingSoon"
@@ -43,7 +42,7 @@ const MarketplaceMobile = ({ categories }: Props) => {
   }
 
   return (
-    <MainLayout>
+    <>
       <div
         className="fixed z-10 flex w-full items-center gap-3 overflow-hidden overflow-x-scroll whitespace-nowrap bg-white/85 px-3 py-2 backdrop-blur-[10px] scrollbar-hide"
         ref={containerRef}
@@ -104,7 +103,7 @@ const MarketplaceMobile = ({ categories }: Props) => {
           </div>
         ))}
       </div>
-    </MainLayout>
+    </>
   )
 }
 
