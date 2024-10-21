@@ -1,12 +1,11 @@
 import useWindowSize from "@hooks/useWindowSize"
-import { useLocation, useParams } from "react-router-dom"
 import ChatBox from "./ChatBox"
 import ChatHeader from "./ChatHeader"
 import ChatPageMobile from "./Mobile"
 
 const ChatPage = () => {
   const { isMobile } = useWindowSize()
-  
+
   return isMobile ? (
     <ChatPageMobile />
   ) : (
