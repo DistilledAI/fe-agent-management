@@ -95,8 +95,8 @@ const TranferDataContent: React.FC<{
 
     return (
       <div>
-        <div className="relative mb-4 max-w-[300px] text-base transition-all duration-500 ease-linear">
-          <span className="text-[24px] font-semibold text-mercury-950">
+        <div className="relative mb-4 max-w-[300px] text-base transition-all duration-500 ease-linear max-sm:mb-2">
+          <span className="text-[24px] font-semibold text-mercury-950 max-sm:text-18">
             {text2}
           </span>
         </div>
@@ -129,14 +129,14 @@ const TranferDataContent: React.FC<{
       </div>
       <div className="flex flex-col justify-between">
         {renderLeftContent()}
-        <div className="pb-8">
+        <div className="pb-8 max-sm:pb-0">
           {!isRequested && (
             <Input
               placeholder="Email address"
               labelPlacement="outside"
               classNames={{
                 inputWrapper:
-                  "!bg-mercury-200 rounded-full mt-8 !border !border-mercury-400",
+                  "!bg-mercury-200 rounded-full mt-8 !border !border-mercury-400 max-sm:mt-3",
                 innerWrapper: "!bg-mercury-200 rounded-full",
                 input: "text-18 !text-mercury-950 caret-[#363636]",
               }}
