@@ -42,6 +42,7 @@ const ProfileLinkForm: React.FC<{
   const { register, handleSubmit, watch, setValue, getValues } =
     useForm<Inputs>()
   const [selectedKey, setSelectedKey] = useState<string>(PROFILE_TYPE.LINKEDIN)
+  console.log("🚀 ~ selectedKey:", selectedKey)
   const inputValue = watch(selectedKey as any)
   const [loading, setLoading] = useState<boolean>(false)
   const selectedLabel = SOCIAL.find((item) => item.key == selectedKey)?.label
@@ -103,14 +104,16 @@ const ProfileLinkForm: React.FC<{
           selectionMode="single"
           selectedKeys={[selectedKey]}
         >
-          {SOCIAL.map((record) => (
-            <DropdownItem
-              key={record.key}
-              onClick={() => onChangeProfileType(record)}
-            >
-              <span className="text-16 text-mercury-950">{record.label}</span>
-            </DropdownItem>
-          ))}
+          {SOCIAL.map((record) => {
+            return (
+              <DropdownItem
+                key={record.key}
+                onPressChange={() => onChangeProfileType(record)}
+              >
+                <span className="text-16 text-mercury-950">{record.label}</span>
+              </DropdownItem>
+            )
+          })}
         </DropdownMenu>
       </Dropdown>
     )
