@@ -7,9 +7,7 @@ import { FilledUserIcon, FilledUsersPlusIcon } from "@components/Icons/UserIcon"
 import { ACTIVE_COLORS, RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { ActiveColorState } from "@reducers/activeColorSlice"
-
 import { IUser } from "@reducers/userSlice"
-import { useChatMessage } from "providers/MessageProvider"
 import { useNavigate, useParams } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
@@ -19,24 +17,22 @@ import {
   getColorGroupIcon,
   getNameGroup,
   getRoleUser,
-  isHasNotification,
 } from "./helpers"
 import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroups, { LIMIT, TypeGroup } from "./useFetchGroups"
+import { useQueryClient } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
+import DotNotification from "../DotNotification"
 
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
 }) => {
   const { groups, isLoading, setGroups, handleLoadMore } = useFetchGroups()
-  const {
-    groupsHaveNotification,
-    setGroupsHaveNotification,
-    setIsNewMsgOnCurrentWindow,
-  } = useChatMessage()
   const { user } = useAuthState()
   const navigate = useNavigate()
   const { chatId } = useParams()
+  const queryClient = useQueryClient()
 
   const getIconGroup = (ownerId: number, userA: IUser, userB: IUser) => {
     return getRoleUser(ownerId, userA, userB) === RoleUser.USER ? (
@@ -105,10 +101,11 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                 key={groupItem.id}
                 aria-selected={isActive}
                 onClick={() => {
-                  setGroupsHaveNotification((prev) =>
-                    prev.filter((id) => id !== groupItem.groupId),
+                  queryClient.setQueryData<number[]>(
+                    [QueryDataKeys.NOTIFICATION_GROUPS],
+                    (prev = []) =>
+                      prev.filter((id) => id !== groupItem.groupId),
                   )
-                  setIsNewMsgOnCurrentWindow(false)
                   navigate(`/chat/${groupItem.groupId}`)
                 }}
                 className={twMerge(
@@ -146,14 +143,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                   isActive={isActive}
                   className={groupItem.bgColor}
                 />
-                <div
-                  aria-checked={isHasNotification(
-                    groupsHaveNotification,
-                    groupItem.groupId,
-                    Number(chatId),
-                  )}
-                  className="absolute left-[10px] top-[10px] hidden h-2 w-2 rounded-full bg-red-600 aria-checked:block"
-                />
+                <DotNotification groupId={groupItem.groupId} />
                 <MoreChatAction
                   setGroups={setGroups}
                   groupId={groupItem.groupId}

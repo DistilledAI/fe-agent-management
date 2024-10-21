@@ -9,6 +9,7 @@ import { useChatMessage } from "providers/MessageProvider"
 import { TYPE_BOT } from "@constants/index"
 import { useQueryClient } from "@tanstack/react-query"
 import { messagesQueryKey } from "./ChatMessages/useFetchMessages"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 interface IDataListen {
   event: string
@@ -31,11 +32,7 @@ const useMessageSocket = () => {
   const { socket } = useSocket()
   const { user } = useAuthState()
   const indexResRef = useRef(-1)
-  const {
-    setGroupsHaveNotification,
-    setIsNewMsgOnCurrentWindow,
-    setIsChatting,
-  } = useChatMessage()
+  const { setIsNewMsgOnCurrentWindow, setIsChatting } = useChatMessage()
   const queryClient = useQueryClient()
   const groupChatId = chatId || privateChatId
 
@@ -153,8 +150,9 @@ const useMessageSocket = () => {
 
   const handleResponseForNotification = (e: IDataListen) => {
     if (!isPassRuleNotification(e)) return
-    setGroupsHaveNotification((prev) =>
-      prev.includes(e.group) ? [...prev] : [...prev, e.group],
+    queryClient.setQueryData<number[]>(
+      [QueryDataKeys.NOTIFICATION_GROUPS],
+      (prev = []) => (prev.includes(e.group) ? prev : [...prev, e.group]),
     )
   }
 
