@@ -5,7 +5,6 @@ import { IGroup } from "../LeftBar/useFetchGroups"
 import { IUser } from "@reducers/userSlice"
 import { convertDataFetchToMessage } from "./helpers"
 import useAuthState from "@hooks/useAuthState"
-// import { useChatMessage } from "providers/MessageProvider"
 import { PATH_NAMES } from "@constants/index"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 
@@ -20,13 +19,12 @@ export interface IMessage {
   user: IUser
 }
 
-export const queryChatMessagesKey = (chatId: string | undefined) => {
+export const messagesQueryKey = (chatId: string | undefined) => {
   if (!chatId) return []
   return [`chat-messages-${chatId}`]
 }
 
 const useFetchMessages = () => {
-  // const { setMessages } = useChatMessage()
   const { user } = useAuthState()
   const { chatId } = useParams()
   const navigate = useNavigate()
@@ -39,18 +37,12 @@ const useFetchMessages = () => {
   }
 
   const { data, error, isFetching } = useQuery({
-    queryKey: queryChatMessagesKey(chatId),
+    queryKey: messagesQueryKey(chatId),
     queryFn: fetchMessages,
     enabled: !!chatId && !!user?.id,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   })
-
-  // useEffect(() => {
-  //   if (data) {
-  //     setMessages(data)
-  //   }
-  // }, [data])
 
   useEffect(() => {
     if (error) {
@@ -78,12 +70,10 @@ const useFetchMessages = () => {
           res.data.items,
           user?.id ? user.id : 0,
         )
-        queryClient.setQueryData(
-          queryChatMessagesKey(chatId),
-          (oldData: any) => [...newMessages, ...oldData],
-        )
-
-        // setMessages((prevData) => [...newMessages, ...prevData])
+        queryClient.setQueryData(messagesQueryKey(chatId), (oldData: any) => [
+          ...newMessages,
+          ...oldData,
+        ])
       }
       return res.data.items.length || 0
     } catch (error) {

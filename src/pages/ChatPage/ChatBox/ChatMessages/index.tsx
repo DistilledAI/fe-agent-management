@@ -5,7 +5,6 @@ import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
 import { ACTIVE_COLORS, RoleUser } from "@constants/index"
-import { useChatMessage } from "providers/MessageProvider"
 import { useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { useStyleBoxChat } from "../StyleProvider"
@@ -15,7 +14,6 @@ import useFetchMessages from "./useFetchMessages"
 const TIME_BREAK = 10
 
 const ChatMessages = () => {
-  const { isChatting } = useChatMessage()
   const { loading, onLoadPrevMessages, messages } = useFetchMessages()
   const { chatId } = useParams()
   const { style } = useStyleBoxChat()
@@ -152,7 +150,6 @@ const ChatMessages = () => {
       style={style}
       msgBoxClassName="p-0"
       Footer={() => <MoreAction />}
-      isChatting={isChatting}
     />
   )
 }

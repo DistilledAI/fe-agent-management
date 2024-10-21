@@ -4,7 +4,6 @@ import { RoleUser } from "@constants/index"
 import { Button, Textarea } from "@nextui-org/react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { makeId } from "@utils/index"
-// import { useChatMessage } from "providers/MessageProvider"
 import { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import SpeechRecognition, {
@@ -13,15 +12,13 @@ import SpeechRecognition, {
 import { postChatToGroup } from "services/chat"
 import { twMerge } from "tailwind-merge"
 import { IMessageBox, RoleChat } from "../ChatMessages/helpers"
-// import { queryChatMessagesKey } from "../ChatMessages/useFetchMessages"
 import { useStyleBoxChat } from "../StyleProvider"
 import VoiceChat from "./Voice"
-import { queryChatMessagesKey } from "../ChatMessages/useFetchMessages"
+import { messagesQueryKey } from "../ChatMessages/useFetchMessages"
 
 const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
   isDisabledInput,
 }) => {
-  // const { setMessages: setMessageContext } = useChatMessage()
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const { chatId, privateChatId } = useParams()
   const [isFocus, setIsFocus] = useState(false)
@@ -50,7 +47,7 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
       }
 
       queryClient.setQueryData(
-        queryChatMessagesKey(groupId),
+        messagesQueryKey(groupId),
         (cachedData: IMessageBox[]) => {
           if (cachedData === undefined) return [optimisticMessage]
           return [...cachedData, optimisticMessage]
@@ -60,9 +57,8 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
       return { optimisticMessage }
     },
     onSuccess: (_, __, { optimisticMessage }) => {
-      console.log({ optimisticMessage })
       queryClient.setQueryData(
-        queryChatMessagesKey(groupId),
+        messagesQueryKey(groupId),
         (cachedData: IMessageBox[]) => {
           if (cachedData === undefined || cachedData === null)
             return [optimisticMessage]
@@ -83,22 +79,6 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
     if (!messages) return
 
     setMessages("")
-
-    // const newMessage = {
-    //   content: messages,
-    //   role: RoleChat.OWNER,
-    //   id: makeId(),
-    //   roleOwner: RoleUser.USER,
-    //   createdAt: new Date().toISOString(),
-    // }
-    // setMessageContext((prev) => [...prev, newMessage])
-    // queryClient.setQueryData(
-    //   queryChatMessagesKey(groupId),
-    //   (oldData: IMessageBox[]) => {
-    //     return [...oldData, newMessage]
-    //   },
-    // )
-
     mutation.mutate(messages)
   }
 
