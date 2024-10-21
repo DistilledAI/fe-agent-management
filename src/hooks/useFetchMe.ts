@@ -8,7 +8,6 @@ const useFetchMe = () => {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
   const { isLogin, sessionAccessToken } = useAuthState()
-  console.log("XXX", isLogin)
 
   const fetchData = async () => {
     try {
