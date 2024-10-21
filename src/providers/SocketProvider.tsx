@@ -1,8 +1,10 @@
 import { envConfig } from "@configs/env"
 import useAuthState from "@hooks/useAuthState"
+import { logout } from "@reducers/userSlice"
 import { getAccessToken } from "@utils/storage"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
+import { toast } from "react-toastify"
 import { io, Socket } from "socket.io-client"
 
 type SocketProviderProps = {
@@ -39,6 +41,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
           },
           reconnection: true,
           reconnectionDelay: 2000,
+          reconnectionAttempts: 3,
           autoConnect: true,
         })
 
@@ -62,9 +65,12 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         initSocket.on("distill-error", (reason) => {
           console.log(`Socket error distill: ${reason}`)
           initSocket = undefined
-          // const accessToken = getAccessToken()
+          const accessToken = getAccessToken()
           // if (reason?.status === 401 && accessToken) createSocketConnection()
-          // else if (reason?.status === 401 && !accessToken) dispatch(logout())
+          if (reason?.status === 401 && !accessToken) {
+            toast.info("Login session has expired!")
+            dispatch(logout())
+          }
         })
 
         initSocket.on("reconnect", (attempt) => {
