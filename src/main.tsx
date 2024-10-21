@@ -22,6 +22,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         hideProgressBar={true}
       />
     </Providers>
-    ,
   </React.StrictMode>,
 )
