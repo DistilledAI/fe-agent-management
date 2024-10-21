@@ -11,15 +11,16 @@ const MarketplaceMobile = ({ categories }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const sectionsRefs = useRef<(HTMLDivElement | null)[]>([])
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(0)
+  const [isNavAction, setIsNavAction] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
+      if (isNavAction) return
       sectionsRefs.current.forEach((section, index) => {
         if (section) {
           const rect = section.getBoundingClientRect()
           const inView =
             rect.top >= 0 && rect.bottom <= window.innerHeight - 200
-
           if (inView) {
             setActiveCategoryIndex(index)
           }
@@ -32,9 +33,14 @@ const MarketplaceMobile = ({ categories }: Props) => {
     return () => {
       window.removeEventListener("scroll", handleScroll)
     }
-  }, [])
+  }, [isNavAction])
 
   const scrollToSection = (index: number) => {
+    setIsNavAction(true)
+    setTimeout(() => {
+      setIsNavAction(false)
+    }, 2000)
+    setActiveCategoryIndex(index)
     sectionsRefs.current[index]?.scrollIntoView({
       behavior: "smooth",
       block: "center",
