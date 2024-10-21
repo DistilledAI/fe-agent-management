@@ -1,5 +1,5 @@
 import MainLayout from "@components/Layout/MainLayout"
-import LoadingMobile from "@components/LoadingMobile"
+import { ChatDetailLoadingPage } from "@components/LoadingMobile"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
 import ChatPage from "@pages/ChatPage"
@@ -17,7 +17,7 @@ const AppRouter = () => {
         <Route path={PATH_NAMES.CHAT_DETAIL} element={<ChatPage />} />
         <Route
           path={`${PATH_NAMES.INVITE}/:userId`}
-          element={isMobile ? <LoadingMobile /> : <ChatPage />}
+          element={isMobile ? <ChatDetailLoadingPage /> : <ChatPage />}
         />
         <Route
           path={`${PATH_NAMES.PRIVATE_AGENT}/:privateChatId`}
