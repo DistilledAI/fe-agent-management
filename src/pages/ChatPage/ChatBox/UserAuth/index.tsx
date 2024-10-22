@@ -14,7 +14,8 @@ interface UserAuthProps {
 const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const user = useSelector((state: RootState) => state.user.user)
   const { isOpen, onClose, onOpen } = useDisclosure()
-  const isShowInfo = user && user.role !== RoleUser.ANONYMOUS
+  const isShowInfo =
+    user && user.publicAddress && user.role !== RoleUser.ANONYMOUS
 
   return isShowInfo ? (
     <>

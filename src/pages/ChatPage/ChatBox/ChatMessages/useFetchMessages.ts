@@ -25,7 +25,7 @@ export const messagesQueryKey = (chatId: string | undefined) => {
 }
 
 const useFetchMessages = () => {
-  const { user } = useAuthState()
+  const { user, isLogin } = useAuthState()
   const { chatId, privateChatId } = useParams()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
@@ -33,14 +33,15 @@ const useFetchMessages = () => {
 
   const fetchMessages = async () => {
     if (!groupId) return
+
     const res = await getChatHistoryById({ id: Number(groupId) })
     return convertDataFetchToMessage(res.data.items, user?.id ? user.id : 0)
   }
 
-  const { data, error, isFetching } = useQuery({
+  const { data, error, isFetching, isFetched } = useQuery({
     queryKey: messagesQueryKey(groupId),
     queryFn: fetchMessages,
-    enabled: !!groupId && !!user?.id,
+    enabled: isLogin && !!groupId && !!user?.id,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   })
@@ -82,7 +83,12 @@ const useFetchMessages = () => {
     }
   }
 
-  return { loading: isFetching, onLoadPrevMessages, messages: data ?? [] }
+  return {
+    loading: isFetching,
+    onLoadPrevMessages,
+    messages: data || [],
+    isFetched,
+  }
 }
 
 export default useFetchMessages

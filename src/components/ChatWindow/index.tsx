@@ -34,6 +34,7 @@ interface ChatWindowProps {
       }>
     | undefined
   isChatting?: boolean
+  isFetched?: boolean
 }
 
 const LIMIT = 20
@@ -51,6 +52,7 @@ const ChatWindow = ({
   children,
   Footer,
   isChatting,
+  isFetched,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [offset, setOffset] = useState<number>(LIMIT)
@@ -61,6 +63,7 @@ const ChatWindow = ({
 
   useLayoutEffect(() => {
     if (chatId) {
+      setIsLoadMore(false)
       setIsScrollBottom(false)
       setHasMoreMessages(true)
       setOffset(LIMIT)
@@ -111,7 +114,7 @@ const ChatWindow = ({
       const scrollPosition = scrollHeight - clientHeight - scrollTop
       setIsScrollBottom(scrollPosition > AT_BOTTOM_THRESHOLD)
     },
-    [hasMoreMessages, offset, onLoadPrevMessages],
+    [hasMoreMessages, offset],
   )
 
   const onScrollToBottom = () => {
@@ -130,7 +133,7 @@ const ChatWindow = ({
 
   const renderLoadMore = () => {
     return (
-      <div className="my-4 flex items-center justify-center">
+      <div className="my-4 flex h-full items-center justify-center">
         <DotLoading />
       </div>
     )
@@ -144,8 +147,8 @@ const ChatWindow = ({
         className,
       )}
     >
-      {loading && <MessagesSkeleton />}
-      {!loading && !messages.length && (
+      {(loading || !isFetched) && <MessagesSkeleton />}
+      {!loading && isFetched && !messages.length && (
         <div className="flex h-full items-center justify-center">
           NO MESSAGE
         </div>
@@ -158,13 +161,15 @@ const ChatWindow = ({
           ref={virtuosoRef}
           data={messages}
           initialTopMostItemIndex={{
-            index: "LAST",
+            index: messages.length - 1,
             align: "end",
           }}
+          atTopThreshold={200}
           increaseViewportBy={600}
           onScroll={onScroll}
           components={{
-            Header: () => (isLoadMore ? renderLoadMore() : <></>),
+            Header: () =>
+              isLoadMore && messages.length >= LIMIT ? renderLoadMore() : <></>,
             Footer: memoizedFooter,
           }}
           followOutput={isAtBottom ? "smooth" : false}
