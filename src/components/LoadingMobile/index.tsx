@@ -1,3 +1,4 @@
+import MessagesSkeleton from "@components/ChatWindow/MessagesSkeleton"
 import DotLoading from "@components/DotLoading"
 import { Skeleton } from "@nextui-org/react"
 
@@ -11,7 +12,7 @@ const LoadingMobile = () => {
 
 export const ChatDetailLoadingPage = () => {
   return (
-    <div className="h-[100dvh]">
+    <div className="h-dvh">
       <div className="fixed left-0 top-0 z-[1] flex h-[55px] w-full items-center justify-between bg-white px-4">
         <div className="flex items-center gap-2">
           <Skeleton className="h-9 w-9 rounded-full" />
@@ -20,7 +21,7 @@ export const ChatDetailLoadingPage = () => {
         </div>
       </div>
       <div className="flex h-[calc(100%-10px)] w-full items-center justify-center">
-        <DotLoading />
+        <MessagesSkeleton />
       </div>
       <div className="fixed bottom-0 left-0 w-full bg-mercury-30 px-3 py-2">
         <Skeleton className="h-[53px] w-full rounded-full bg-mercury-200" />
