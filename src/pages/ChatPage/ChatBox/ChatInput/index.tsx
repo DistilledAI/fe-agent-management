@@ -15,6 +15,7 @@ import { IMessageBox, RoleChat } from "../ChatMessages/helpers"
 import { useStyleBoxChat } from "../StyleProvider"
 import VoiceChat from "./Voice"
 import { messagesQueryKey } from "../ChatMessages/useFetchMessages"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
   isDisabledInput,
@@ -22,7 +23,7 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const { chatId, privateChatId } = useParams()
   const [isFocus, setIsFocus] = useState(false)
-  const [messages, setMessages] = useState("")
+  const [message, setMessage] = useState("")
   const boxRef = useRef<HTMLDivElement>(null)
   const heightBoxRef = useRef(0)
   const { setStyle } = useStyleBoxChat()
@@ -31,7 +32,7 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
   const groupId = chatId ?? privateChatId
 
   const mutation = useMutation({
-    mutationKey: ["send-message"],
+    mutationKey: [QueryDataKeys.SEND_MESSAGE],
     mutationFn: (message: string) =>
       postChatToGroup({
         groupId: Number(groupId),
@@ -76,10 +77,10 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
   })
 
   const onSubmit = async () => {
-    if (!messages) return
+    if (!message) return
 
-    setMessages("")
-    mutation.mutate(messages)
+    setMessage("")
+    mutation.mutate(message)
   }
 
   const handleKeyDown = (e: any) => {
@@ -131,8 +132,8 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
         onKeyUp={handleCheckHeight}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
-        onValueChange={setMessages}
-        value={messages}
+        onValueChange={setMessage}
+        value={message}
         isDisabled={isDisabledInput}
       />
       <VoiceChat
@@ -140,12 +141,12 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
         isListening={listening}
         SpeechRecognition={SpeechRecognition}
         transcript={transcript}
-        setMessages={setMessages}
+        setMessages={setMessage}
         isDisabled={isDisabledInput}
       />
       <Button
         onClick={onSubmit}
-        isDisabled={!messages || mutation.isPending}
+        isDisabled={!message || mutation.isPending}
         type="submit"
         isIconOnly
         className="h-9 w-[52px] min-w-[52px] rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2"

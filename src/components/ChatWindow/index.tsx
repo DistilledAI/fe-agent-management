@@ -2,7 +2,6 @@ import DotLoading from "@components/DotLoading"
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { Button } from "@nextui-org/react"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
-import { useChatMessage } from "providers/MessageProvider"
 import {
   CSSProperties,
   useCallback,
@@ -58,8 +57,6 @@ const ChatWindow = ({
   const [isAtBottom, setIsAtBottom] = useState<boolean>(true)
   const [isLoadMore, setIsLoadMore] = useState<boolean>(false)
   const [isScrollBottom, setIsScrollBottom] = useState<boolean>(false)
-  const { isNewMsgOnCurrentWindow, setIsNewMsgOnCurrentWindow, setIsChatting } =
-    useChatMessage()
 
   useLayoutEffect(() => {
     if (chatId) {
@@ -67,7 +64,6 @@ const ChatWindow = ({
       setHasMoreMessages(true)
       setOffset(LIMIT)
       setIsAtBottom(true)
-      setIsChatting(false)
     }
   }, [chatId])
 
@@ -81,11 +77,11 @@ const ChatWindow = ({
     }
   }, [messages, isScrollBottom, isChatting])
 
-  useEffect(() => {
-    if (isAtBottom) {
-      setIsNewMsgOnCurrentWindow(false)
-    }
-  }, [isAtBottom])
+  // useEffect(() => {
+  //   if (isAtBottom) {
+  //     setIsNewMsgOnCurrentWindow(false)
+  //   }
+  // }, [isAtBottom])
 
   const onScroll = useCallback(
     async (e: React.UIEvent<HTMLDivElement>) => {
@@ -124,9 +120,9 @@ const ChatWindow = ({
       align: "end",
     })
 
-    if (isNewMsgOnCurrentWindow) {
-      setIsNewMsgOnCurrentWindow(false)
-    }
+    // if (isNewMsgOnCurrentWindow) {
+    //   setIsNewMsgOnCurrentWindow(false)
+    // }
   }
 
   const renderDotLoading = useCallback(
@@ -195,20 +191,20 @@ const ChatWindow = ({
             onClick={onScrollToBottom}
             className={twMerge(
               "w-10 min-w-10 rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2",
-              isNewMsgOnCurrentWindow && "w-fit",
+              // isNewMsgOnCurrentWindow && "w-fit",
             )}
           >
             <div className="rotate-180">
               <ArrowUpFilledIcon />
             </div>
-            <span
+            {/* <span
               className={twMerge(
                 "hidden",
                 isNewMsgOnCurrentWindow && "block text-mercury-30",
               )}
             >
               New message
-            </span>
+            </span> */}
           </Button>
         </div>
       )}

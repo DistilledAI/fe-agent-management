@@ -5,7 +5,6 @@ import { useEffect, useRef } from "react"
 import { useParams } from "react-router-dom"
 import { IMessageBox, RoleChat } from "./ChatMessages/helpers"
 import { makeId, textToVoice } from "@utils/index"
-import { useChatMessage } from "providers/MessageProvider"
 import { TYPE_BOT } from "@constants/index"
 import { useQueryClient } from "@tanstack/react-query"
 import { messagesQueryKey } from "./ChatMessages/useFetchMessages"
@@ -32,7 +31,6 @@ const useMessageSocket = () => {
   const { socket } = useSocket()
   const { user } = useAuthState()
   const indexResRef = useRef(-1)
-  const { setIsNewMsgOnCurrentWindow, setIsChatting } = useChatMessage()
   const queryClient = useQueryClient()
   const groupChatId = chatId || privateChatId
 
@@ -44,7 +42,6 @@ const useMessageSocket = () => {
   }
 
   const handleWithTyping = (e: IDataListen) => {
-    setIsChatting(true)
     const newMsg = {
       id: e.msgId,
       role: RoleChat.CUSTOMER,
@@ -131,7 +128,6 @@ const useMessageSocket = () => {
         },
       )
     }
-    setIsChatting(false)
   }
 
   const handleResponseForMessage = (e: IDataListen) => {
@@ -164,7 +160,6 @@ const useMessageSocket = () => {
 
   const handleResponseForNewMsg = (e: IDataListen) => {
     if (!isPassRuleNewMsg(e)) return
-    setIsNewMsgOnCurrentWindow(true)
   }
 
   useEffect(() => {
