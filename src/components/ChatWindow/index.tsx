@@ -151,7 +151,7 @@ const ChatWindow = ({
         className,
       )}
     >
-      {!loading && messages.length && renderDotLoading()}
+      {loading && renderDotLoading()}
       {!loading && !messages.length && (
         <div className="flex h-full items-center justify-center">
           NO MESSAGE
