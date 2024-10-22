@@ -26,20 +26,21 @@ export const messagesQueryKey = (chatId: string | undefined) => {
 
 const useFetchMessages = () => {
   const { user } = useAuthState()
-  const { chatId } = useParams()
+  const { chatId, privateChatId } = useParams()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const groupId = privateChatId || chatId
 
   const fetchMessages = async () => {
-    if (!chatId) return
-    const res = await getChatHistoryById({ id: Number(chatId) })
+    if (!groupId) return
+    const res = await getChatHistoryById({ id: Number(groupId) })
     return convertDataFetchToMessage(res.data.items, user?.id ? user.id : 0)
   }
 
   const { data, error, isFetching } = useQuery({
-    queryKey: messagesQueryKey(chatId),
+    queryKey: messagesQueryKey(groupId),
     queryFn: fetchMessages,
-    enabled: !!chatId && !!user?.id,
+    enabled: !!groupId && !!user?.id,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   })
@@ -59,9 +60,9 @@ const useFetchMessages = () => {
     limit?: number
   }) => {
     try {
-      if (!chatId) return
+      if (!groupId) return
       const res = await getChatHistoryById({
-        id: Number(chatId),
+        id: Number(groupId),
         offset,
         limit,
       })
@@ -70,7 +71,7 @@ const useFetchMessages = () => {
           res.data.items,
           user?.id ? user.id : 0,
         )
-        queryClient.setQueryData(messagesQueryKey(chatId), (oldData: any) => [
+        queryClient.setQueryData(messagesQueryKey(groupId), (oldData: any) => [
           ...newMessages,
           ...oldData,
         ])

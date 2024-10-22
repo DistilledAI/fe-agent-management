@@ -1,15 +1,13 @@
 import ChatWindow from "@components/ChatWindow"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
-import { useChatMessage } from "providers/MessageProvider"
 import { useParams } from "react-router-dom"
 import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
-import useFetchPrivateAgentMessages from "./useFetchPrivateAgentMessages"
 import { brainAIIcon } from "@assets/svg"
+import useFetchMessages from "../../ChatMessages/useFetchMessages"
 
 const PrivateAgentChatContent: React.FC = () => {
-  const { loading, onLoadPrevMessages } = useFetchPrivateAgentMessages()
-  const { messages } = useChatMessage()
+  const { loading, onLoadPrevMessages, messages } = useFetchMessages()
   const { privateChatId } = useParams()
 
   const renderMessage = (_: number, message: IMessageBox) => {
