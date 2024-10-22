@@ -28,7 +28,7 @@ import DotNotification from "../DotNotification"
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
 }) => {
-  const { groups, isLoading, setGroups, handleLoadMore } = useFetchGroups()
+  const { groups, isLoading, handleLoadMore } = useFetchGroups()
   const { user } = useAuthState()
   const navigate = useNavigate()
   const { chatId } = useParams()
@@ -144,10 +144,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                   className={groupItem.bgColor}
                 />
                 <DotNotification groupId={groupItem.groupId} />
-                <MoreChatAction
-                  setGroups={setGroups}
-                  groupId={groupItem.groupId}
-                />
+                <MoreChatAction groupId={groupItem.groupId} />
               </div>
             )
           }}

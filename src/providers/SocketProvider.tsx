@@ -1,9 +1,8 @@
 import { envConfig } from "@configs/env"
+import useAuthAction from "@hooks/useAuthAction"
 import useAuthState from "@hooks/useAuthState"
-import { logout } from "@reducers/userSlice"
 import { getAccessToken } from "@utils/storage"
 import React, { createContext, useContext, useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
 import { toast } from "react-toastify"
 import { io, Socket } from "socket.io-client"
 
@@ -24,7 +23,7 @@ const SocketProviderContext = createContext(initialState)
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const { isLogin, sessionAccessToken } = useAuthState()
   const [socket, setSocket] = useState<Socket>()
-  const dispatch = useDispatch()
+  const { logout } = useAuthAction()
 
   useEffect(() => {
     let initSocket: Socket | undefined
@@ -69,7 +68,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
           // if (reason?.status === 401 && accessToken) createSocketConnection()
           if (reason?.status === 401 && !accessToken) {
             toast.info("Login session has expired!")
-            dispatch(logout())
+            logout()
           }
         })
 
@@ -128,7 +127,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         }
       }
     }
-  }, [isLogin, sessionAccessToken, dispatch])
+  }, [isLogin, sessionAccessToken])
 
   return (
     <SocketProviderContext.Provider value={{ socket }}>

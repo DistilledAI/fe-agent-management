@@ -1,11 +1,10 @@
 import { useEffect } from "react"
 import useAuthState from "./useAuthState"
-import { useDispatch } from "react-redux"
-import { logout } from "@reducers/userSlice"
+import useAuthAction from "./useAuthAction"
 
 const useReconnectWallet = () => {
   const { isLogin, user } = useAuthState()
-  const dispatch = useDispatch()
+  const { logout } = useAuthAction()
 
   useEffect(() => {
     if (!window.ethereum || !isLogin) return
@@ -13,7 +12,7 @@ const useReconnectWallet = () => {
     const handleAccountsChanged = (accounts: Array<string>) => {
       const isReconnect = user && user.publicAddress !== accounts[0]
       if (isReconnect) {
-        dispatch(logout())
+        logout()
       }
     }
     window.ethereum.on("accountsChanged", handleAccountsChanged)
@@ -23,7 +22,7 @@ const useReconnectWallet = () => {
         window.ethereum.removeListener("accountsChanged", handleAccountsChanged)
       }
     }
-  }, [isLogin, user, dispatch])
+  }, [isLogin, user, logout])
 }
 
 export default useReconnectWallet

@@ -6,16 +6,21 @@ import { toast } from "react-toastify"
 import { IDataSignatureAuth, signatureAuth } from "services/auth"
 import { useAccount } from "wagmi"
 import useWindowSize from "./useWindowSize"
+import useAuthState from "./useAuthState"
+import useAuthAction from "./useAuthAction"
 
 const useConnectWallet = () => {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
   const { address } = useAccount()
   const { isMobile } = useWindowSize()
+  const { isLogin } = useAuthState()
+  const { logout } = useAuthAction()
 
   const login = async (input: IDataSignatureAuth) => {
     const res = await signatureAuth(input)
     if (res.data.accessToken && res.data.user) {
+      if (isLogin) logout()
       dispatch(
         loginSuccess({
           user: res.data.user,

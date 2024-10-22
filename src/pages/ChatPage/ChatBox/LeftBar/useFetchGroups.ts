@@ -1,8 +1,10 @@
 import useAuthState from "@hooks/useAuthState"
 import { IUser } from "@reducers/userSlice"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { getGroupList } from "services/chat"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 export enum TypeGroup {
   DIRECT = "DIRECT",
@@ -40,14 +42,13 @@ interface FetchConfig {
 export const LIMIT = 10
 
 const useFetchGroups = () => {
-  const [groups, setGroups] = useState<UserGroup[]>([])
-  const { isLogin, sessionAccessToken } = useAuthState()
+  const { isLogin } = useAuthState()
   const [hasMore, setHasMore] = useState(true)
-  const [isLoading, setIsLoading] = useState(false)
   const [searchParams, setSearchParams] = useSearchParams()
   const [offset, setOffset] = useState(LIMIT)
   const isInvited = searchParams.get("isInvited") === "true"
   const [isFetched, setIsFetched] = useState(false)
+  const queryClient = useQueryClient()
 
   const fetchGroups = async ({
     offset,
@@ -56,25 +57,32 @@ const useFetchGroups = () => {
   }: FetchConfig) => {
     try {
       setIsFetched(true)
-      setIsLoading(true)
       const res = await getGroupList(offset, limit)
-
       if (res.data.items && !isLoadMore) {
-        setGroups(res.data.items)
+        return res.data.items
       }
 
       // load more new groups
       if (res.data.items.length && isLoadMore) {
-        setGroups((prevGroups) => [...prevGroups, ...res.data.items])
+        queryClient.setQueryData(
+          [QueryDataKeys.MY_LIST_CHAT],
+          (oldData: UserGroup[]) => [...oldData, ...res.data.items],
+        )
       }
 
       return res.data.items ? res.data.items : []
     } catch (error) {
       console.error(error)
-    } finally {
-      setIsLoading(false)
     }
   }
+
+  const { data, refetch, isFetching } = useQuery({
+    queryKey: [QueryDataKeys.MY_LIST_CHAT],
+    queryFn: () => fetchGroups({}),
+    enabled: isLogin,
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  })
 
   const handleLoadMore = async () => {
     if (hasMore) {
@@ -89,7 +97,7 @@ const useFetchGroups = () => {
 
   useEffect(() => {
     if (isInvited) {
-      fetchGroups({})
+      refetch({})
       setSearchParams((params) => {
         params.delete("isInvited")
         return params
@@ -97,15 +105,10 @@ const useFetchGroups = () => {
     }
   }, [isInvited])
 
-  useEffect(() => {
-    if (isLogin) fetchGroups({})
-  }, [isLogin, sessionAccessToken])
-
   return {
-    isLoading,
-    groups,
-    fetchGroups,
-    setGroups,
+    isLoading: isFetching,
+    groups: data ?? [],
+    fetchGroups: refetch,
     handleLoadMore,
     isFetched,
   }
