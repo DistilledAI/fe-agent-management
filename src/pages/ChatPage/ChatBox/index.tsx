@@ -14,7 +14,7 @@ import useMessageSocket from "./useMessageSocket"
 
 const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
-  const { chatId } = useParams()
+  const { chatId, inviteUserId } = useParams()
   const { isLogin } = useAuthState()
   const { privateChatId } = useParams()
   const navigate = useNavigate()
@@ -41,7 +41,7 @@ const ChatBox = () => {
           <StyleBoxChatProvider>
             <LeftBar />
             <div className="relative space-y-4">
-              {isLogin && chatId ? (
+              {(isLogin && chatId) || inviteUserId ? (
                 <ChatMessages />
               ) : (
                 <MyPrivateAgentContent

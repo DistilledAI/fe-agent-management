@@ -20,7 +20,7 @@ const useInviteUser = () => {
   const params = useParams()
   const { pathname } = useLocation()
   const { user, isLogin } = useAuthState()
-  const userId = Number(params?.userId)
+  const userId = Number(params?.inviteUserId)
   const isInvitePathName = pathname === `${PATH_NAMES.INVITE}/${userId}`
   const sessionAccessToken = cachedSessionStorage.getWithExpiry(
     storageKey.ACCESS_TOKEN,
