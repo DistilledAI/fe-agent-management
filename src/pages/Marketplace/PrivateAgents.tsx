@@ -5,9 +5,10 @@ import { PATH_NAMES, RoleUser, STATUS_AGENT } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
 import { IUser } from "@reducers/userSlice"
-import { useEffect, useState } from "react"
+import { useQuery } from "@tanstack/react-query"
 import { useNavigate } from "react-router-dom"
 import { searchUsers } from "services/chat"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 interface PrivateAgentsProps {
   onClose: () => void
@@ -16,7 +17,6 @@ interface PrivateAgentsProps {
 const PrivateAgents = ({ onClose }: PrivateAgentsProps) => {
   const navigate = useNavigate()
   const { user } = useAuthState()
-  const [agents, setAgents] = useState<IUser[]>([])
 
   const handleChatWithAgent = async (agent: IUser) => {
     if (user && user.id === agent.owner) {
@@ -29,23 +29,26 @@ const PrivateAgents = ({ onClose }: PrivateAgentsProps) => {
     onClose()
   }
 
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const payloadData = {
-          username: "",
-          status: STATUS_AGENT.ACTIVE,
-          role: RoleUser.BOT,
-        }
-        const res = await searchUsers(JSON.stringify(payloadData))
-        if (res?.data?.items?.length) {
-          setAgents(res?.data?.items)
-        }
-      } catch (e) {
-        console.log("error", e)
-      }
-    })()
-  }, [])
+  const fetchPrivateAgents = async () => {
+    const payloadData = {
+      username: "",
+      status: STATUS_AGENT.ACTIVE,
+      role: RoleUser.BOT,
+    }
+    const res = await searchUsers(JSON.stringify(payloadData))
+    return res?.data?.items as IUser[]
+  }
+
+  const { data: agents = [], error } = useQuery({
+    queryKey: [QueryDataKeys.PRIVATE_AGENTS_MKL],
+    queryFn: fetchPrivateAgents,
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  })
+
+  if (error) {
+    console.log({ error })
+  }
 
   return agents.map((agent, index) => (
     <div
