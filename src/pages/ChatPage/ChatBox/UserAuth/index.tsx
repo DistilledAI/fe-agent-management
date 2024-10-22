@@ -27,6 +27,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
             className="h-full w-full object-cover"
             alt="user"
             src={user.avatar ?? userIcon}
+            disableAnimation={true}
           />
         </div>
         <span className="text-base max-sm:hidden">

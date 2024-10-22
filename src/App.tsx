@@ -1,15 +1,14 @@
 import mixpanel from "mixpanel-browser"
 import { useEffect } from "react"
 import { getAccessToken } from "@utils/storage"
-import { useDispatch } from "react-redux"
-import { logout } from "@reducers/userSlice"
 import AppRouter from "./routes/AppRouter"
+import useAuthAction from "@hooks/useAuthAction"
 
 const mixpanelToken = import.meta.env.VITE_APP_MIXPANEL_TOKEN
 const envMode = import.meta.env.VITE_APP_ENV_MODE
 
 function App() {
-  const dispatch = useDispatch()
+  const { logout } = useAuthAction()
 
   const initMixpanel = () => {
     mixpanel.init(mixpanelToken, {
@@ -28,11 +27,11 @@ function App() {
   useEffect(() => {
     const interval = setInterval(() => {
       const accessToken = getAccessToken()
-      if (!accessToken) dispatch(logout())
+      if (!accessToken) logout()
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [dispatch])
+  }, [logout])
 
   return <AppRouter />
 }

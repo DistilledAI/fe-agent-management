@@ -3,13 +3,12 @@ import { MetamaskIconSmall } from "@components/Icons/MetamaskIcon"
 import { LogoutIcon } from "@components/Icons/OutputIcon"
 import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
-import { logout } from "@reducers/userSlice"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
-import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import useWindowSize from "@hooks/useWindowSize"
 import MyWalletMobile from "./MyWalletMobile"
 import MyWalletDesktop from "./MyWalletDesktop"
+import useAuthAction from "@hooks/useAuthAction"
 
 interface MyWalletProps {
   onClose: () => void
@@ -17,15 +16,15 @@ interface MyWalletProps {
 
 const MyWallet = ({ onClose }: MyWalletProps) => {
   const { user } = useAuthState()
-  const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { logout } = useAuthAction()
   const { isMobile } = useWindowSize()
 
   const renderLogoutBtn = () => {
     return (
       <div
         onClick={() => {
-          dispatch(logout())
+          logout()
           navigate(PATH_NAMES.HOME)
           onClose()
         }}
