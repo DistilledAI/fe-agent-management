@@ -1,6 +1,5 @@
-import DotLoading from "@components/DotLoading"
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
-import { Button, Skeleton } from "@nextui-org/react"
+import { Button } from "@nextui-org/react"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import {
   CSSProperties,
@@ -13,7 +12,8 @@ import {
 } from "react"
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
-// import MessagesSkeleton from "./MessagesSkeleton"
+import MessagesSkeleton from "./MessagesSkeleton"
+import DotLoading from "@components/DotLoading"
 
 interface ChatWindowProps {
   messages: Array<IMessageBox>
@@ -126,22 +126,15 @@ const ChatWindow = ({
     // }
   }
 
-  const renderDotLoading = useCallback(
-    (className?: string) => (
-      <div
-        className={twMerge(
-          "flex h-full items-center justify-center",
-          className,
-        )}
-      >
+  const memoizedFooter = useMemo(() => Footer, [])
+
+  const renderLoadMore = () => {
+    return (
+      <div className="my-4 flex items-center justify-center">
         <DotLoading />
       </div>
-      // <MessagesSkeleton />
-    ),
-    [],
-  )
-
-  const memoizedFooter = useMemo(() => Footer, [])
+    )
+  }
 
   return (
     <div
@@ -151,7 +144,7 @@ const ChatWindow = ({
         className,
       )}
     >
-      {loading && renderDotLoading()}
+      {loading && <MessagesSkeleton />}
       {!loading && !messages.length && (
         <div className="flex h-full items-center justify-center">
           NO MESSAGE
@@ -171,21 +164,19 @@ const ChatWindow = ({
           increaseViewportBy={600}
           onScroll={onScroll}
           components={{
-            Header: () => (isLoadMore ? renderDotLoading("my-4") : <></>),
+            Header: () => (isLoadMore ? renderLoadMore() : <></>),
             Footer: memoizedFooter,
           }}
           followOutput={isAtBottom ? "smooth" : false}
           atBottomStateChange={setIsAtBottom}
           atBottomThreshold={AT_BOTTOM_THRESHOLD}
           itemContent={(index, message) => (
-            <Skeleton isLoaded>
-              <article
-                className={twMerge("px-3 pb-3", msgBoxClassName)}
-                key={index}
-              >
-                {itemContent(index, message)}
-              </article>
-            </Skeleton>
+            <article
+              className={twMerge("px-3 pb-3", msgBoxClassName)}
+              key={index}
+            >
+              {itemContent(index, message)}
+            </article>
           )}
         />
       ) : null}

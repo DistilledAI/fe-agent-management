@@ -1,11 +1,26 @@
 import { Skeleton } from "@nextui-org/react"
-import { divide } from "lodash"
 import React from "react"
 
 const MessagesSkeleton = () => {
   return (
-    <div>
-      <Skeleton className="h-9 w-9 rounded-full" />
+    <div className="-mt-10 h-full w-full space-y-4 px-4 md:h-0 md:px-0">
+      {Array.from({ length: 2 }).map((_, index) => (
+        <React.Fragment key={index}>
+          <Skeleton className="h-20 w-full max-w-[50%] rounded-[20px]" />
+          <div className="flex justify-end">
+            <Skeleton className="h-11 w-full max-w-[25%] rounded-[20px]" />
+          </div>
+          <Skeleton className="h-20 w-full max-w-[70%] rounded-[20px]" />
+          <div className="flex justify-end">
+            <Skeleton className="h-11 w-full max-w-[45%] rounded-[20px]" />
+          </div>
+          <Skeleton className="h-40 w-full max-w-[90%] rounded-[20px]" />
+          <div className="flex justify-end">
+            <Skeleton className="h-11 w-full max-w-[35%] rounded-[20px]" />
+          </div>
+          <Skeleton className="h-[120px] w-full max-w-[60%] rounded-[20px]" />
+        </React.Fragment>
+      ))}
     </div>
   )
 }

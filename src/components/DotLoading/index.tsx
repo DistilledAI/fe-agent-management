@@ -18,7 +18,7 @@ const DotLoading: React.FC<DotLoadingProps> = ({ dotColor, className }) => {
   }, [loading])
 
   return (
-    <div className={`flex-items-center relative w-8 ${className}`}>
+    <div className={twMerge("relative flex w-8 items-center", className)}>
       <div className="absolute left-1/2 -translate-x-1/2">
         <div
           className={twMerge(
