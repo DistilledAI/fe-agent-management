@@ -1,6 +1,6 @@
 import DotLoading from "@components/DotLoading"
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
-import { Button } from "@nextui-org/react"
+import { Button, Skeleton } from "@nextui-org/react"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import {
   CSSProperties,
@@ -13,6 +13,7 @@ import {
 } from "react"
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
+// import MessagesSkeleton from "./MessagesSkeleton"
 
 interface ChatWindowProps {
   messages: Array<IMessageBox>
@@ -135,6 +136,7 @@ const ChatWindow = ({
       >
         <DotLoading />
       </div>
+      // <MessagesSkeleton />
     ),
     [],
   )
@@ -149,7 +151,7 @@ const ChatWindow = ({
         className,
       )}
     >
-      {loading && renderDotLoading()}
+      {!loading && messages.length && renderDotLoading()}
       {!loading && !messages.length && (
         <div className="flex h-full items-center justify-center">
           NO MESSAGE
@@ -176,12 +178,14 @@ const ChatWindow = ({
           atBottomStateChange={setIsAtBottom}
           atBottomThreshold={AT_BOTTOM_THRESHOLD}
           itemContent={(index, message) => (
-            <article
-              className={twMerge("px-3 pb-3", msgBoxClassName)}
-              key={index}
-            >
-              {itemContent(index, message)}
-            </article>
+            <Skeleton isLoaded>
+              <article
+                className={twMerge("px-3 pb-3", msgBoxClassName)}
+                key={index}
+              >
+                {itemContent(index, message)}
+              </article>
+            </Skeleton>
           )}
         />
       ) : null}

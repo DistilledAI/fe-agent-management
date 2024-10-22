@@ -22,7 +22,7 @@ const useReconnectWallet = () => {
         window.ethereum.removeListener("accountsChanged", handleAccountsChanged)
       }
     }
-  }, [isLogin, user, logout])
+  }, [isLogin, user])
 }
 
 export default useReconnectWallet
