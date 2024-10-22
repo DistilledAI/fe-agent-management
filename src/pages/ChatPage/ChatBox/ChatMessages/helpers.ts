@@ -33,7 +33,7 @@ export const convertDataFetchToMessage = (
   return data
     .map((mess) => ({
       id: mess.id,
-      role: getRole(isOwner(currentUserId, mess.userId)),
+      role: getRole(isOwner(currentUserId, mess.user?.id)),
       content: mess.messages,
       avatar: mess.user?.avatar,
       roleOwner: mess.user.role,

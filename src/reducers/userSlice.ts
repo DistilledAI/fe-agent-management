@@ -39,7 +39,7 @@ export interface IUserState {
 
 const initStateValues = {
   user: {
-    id: -1,
+    id: 0,
     createdAt: "",
     publicAddress: "",
     role: -1,

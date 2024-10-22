@@ -39,7 +39,7 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
         messages: message,
       }),
     onMutate(variables) {
-      const optimisticMessage = {
+      const newMessage = {
         content: variables,
         role: RoleChat.OWNER,
         id: makeId(),
@@ -50,21 +50,21 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
       queryClient.setQueryData(
         messagesQueryKey(groupId),
         (cachedData: IMessageBox[]) => {
-          if (cachedData === undefined) return [optimisticMessage]
-          return [...cachedData, optimisticMessage]
+          if (cachedData === undefined) return [newMessage]
+          return [...cachedData, newMessage]
         },
       )
 
-      return { optimisticMessage }
+      return { newMessage }
     },
-    onSuccess: (_, __, { optimisticMessage }) => {
+    onSuccess: (_, __, { newMessage }) => {
       queryClient.setQueryData(
         messagesQueryKey(groupId),
         (cachedData: IMessageBox[]) => {
           if (cachedData === undefined || cachedData === null)
-            return [optimisticMessage]
+            return [newMessage]
           return cachedData.map((message) => {
-            if (message.id === optimisticMessage.id) return optimisticMessage
+            if (message.id === newMessage.id) return newMessage
             return message
           })
         },
