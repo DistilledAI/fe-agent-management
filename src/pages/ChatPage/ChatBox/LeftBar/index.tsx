@@ -6,7 +6,7 @@ import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
 
 const LeftBar = () => {
   return (
-    <div className="flex flex-col gap-4 overflow-hidden rounded-[32px] border border-mercury-100 bg-mercury-70 p-4">
+    <div className="m-6 mr-0 flex flex-col gap-4 overflow-hidden rounded-[32px] border border-mercury-100 bg-mercury-70 p-4">
       <div>
         <DistilledAIIcon
           baseClassName="w-fit h-fit rounded-none border-none flex-none"
