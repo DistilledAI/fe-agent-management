@@ -9,12 +9,15 @@ import GenAITools from "./GenAITools"
 import MarketplaceMobile from "./Mobile"
 import PrivateAgents from "./PrivateAgents"
 import Productivity from "./Productivity"
+import { useAppSelector } from "@hooks/useAppRedux"
+import { twMerge } from "tailwind-merge"
 
 const Marketplace = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { isMobile } = useWindowSize()
   const navigate = useNavigate()
   const location = useLocation()
+  const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
 
   useEffect(() => {
     if (!isMobile && location.pathname === PATH_NAMES.MARKETPLACE) {
@@ -89,11 +92,24 @@ const Marketplace = () => {
     <MarketplaceMobile categories={CATEGORIES} />
   ) : (
     <>
-      <Button onClick={onOpen} className="btn-primary min-h-[60px]">
+      <Button
+        onClick={onOpen}
+        className={twMerge(
+          "btn-primary min-h-[60px]",
+          sidebarCollapsed && "min-h-14 min-w-14",
+        )}
+      >
         <div>
           <FilledSquareCircleIcon />
         </div>
-        Marketplace
+        <span
+          className={twMerge(
+            "text-[16px] text-mercury-900",
+            sidebarCollapsed && "hidden",
+          )}
+        >
+          Marketplace
+        </span>
       </Button>
       <MarketplaceDesktop
         categories={CATEGORIES}

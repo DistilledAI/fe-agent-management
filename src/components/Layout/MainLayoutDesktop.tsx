@@ -15,11 +15,11 @@ const MainLayoutDesktop = () => {
 
   return (
     <div className="h-dvh w-dvw bg-white font-barlow">
-      <div className="grid h-full grid-cols-[313px_1fr]">
+      <div className="flex h-full w-full">
         <StyleBoxChatProvider>
           <LeftBar />
-          <div className="col-span-1 pt-6">
-            <div className="sticky top-0 pr-6 text-end">
+          <div className="col-span-1 w-full space-y-2 pt-[60px]">
+            <div className="fixed right-4 top-4 z-10 bg-white text-end">
               <UserAuth connectWallet={connectWallet} loading={loading} />
             </div>
             <Outlet />

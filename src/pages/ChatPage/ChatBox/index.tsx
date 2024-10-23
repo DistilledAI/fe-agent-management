@@ -22,7 +22,7 @@ const ChatBox = () => {
   }, [isLogin, chatId, navigate])
 
   return (
-    <div className="relative h-[calc(100%-44px)] w-full">
+    <div className="relative h-[calc(100%-24px)] w-full">
       <>
         {(isLogin && chatId) || inviteUserId ? (
           <ChatMessages />
