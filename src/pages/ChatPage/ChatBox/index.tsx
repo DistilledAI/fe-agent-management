@@ -22,19 +22,17 @@ const ChatBox = () => {
   }, [isLogin, chatId, navigate])
 
   return (
-    <div className="relative h-[calc(100%-24px)] w-full">
-      <>
-        {(isLogin && chatId) || inviteUserId ? (
-          <ChatMessages />
-        ) : (
-          <div className="mx-auto h-full w-full max-w-[768px]">
-            <MyPrivateAgentContent
-              connectWalletLoading={loading}
-              connectWallet={connectWallet}
-            />
-          </div>
-        )}
-      </>
+    <div className="relative h-full max-h-dvh w-full">
+      {(isLogin && chatId) || inviteUserId ? (
+        <ChatMessages />
+      ) : (
+        <div className="mx-auto h-full w-full max-w-[768px]">
+          <MyPrivateAgentContent
+            connectWalletLoading={loading}
+            connectWallet={connectWallet}
+          />
+        </div>
+      )}
       <ChatInput isDisabledInput={!isEnableTextInput} />
     </div>
   )
