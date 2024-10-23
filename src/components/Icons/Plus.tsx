@@ -1,6 +1,6 @@
 import { IconProps } from "types/icons"
 
-export const TablerPlusIcon = ({ size = 20, color = "#545454" }: IconProps) => {
+export const PlusIcon = ({ size = 20, color = "#A2845E" }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

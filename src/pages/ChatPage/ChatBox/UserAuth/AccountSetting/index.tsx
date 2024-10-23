@@ -1,8 +1,8 @@
 import DrawerBottom from "@components/DrawerBottom"
 import { defineElement } from "@utils/index"
 import React, { useState } from "react"
-import MyData from "./MyData"
 import MyWallet from "./MyWallet"
+import MyData from "@pages/MyData"
 
 export const TYPE_CONTENT = {
   MY_WALLET: "MY_WALLET",

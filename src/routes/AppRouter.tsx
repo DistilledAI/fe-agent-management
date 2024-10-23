@@ -8,6 +8,7 @@ import ChatBox from "@pages/ChatPage/ChatBox"
 import ChatPageMobile from "@pages/ChatPage/Mobile"
 import MyPrivateAgentContentMobile from "@pages/ChatPage/Mobile/MyPrivateAgentContentMobile"
 import Marketplace from "@pages/Marketplace"
+import MyData from "@pages/MyData"
 import { Route, Routes } from "react-router-dom"
 
 const AppRouter = () => {
@@ -36,7 +37,7 @@ const AppRouter = () => {
           element={isMobile ? <ChatPage /> : <ChatBox />}
         />
         <Route path={PATH_NAMES.MARKETPLACE} element={<Marketplace />} />
-
+        <Route path={PATH_NAMES.MY_DATA} element={<MyData />} />
         {isMobile && (
           <>
             <Route

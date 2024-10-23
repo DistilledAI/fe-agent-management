@@ -16,6 +16,7 @@ const MainLayout = () => {
   const ignoreLayout = [
     `${PATH_NAMES.CHAT}/${chatId}`,
     `${PATH_NAMES.INVITE}/${inviteUserId}`,
+    `${PATH_NAMES.MY_DATA}`,
   ]
 
   const isIgnoreLayout = ignoreLayout.includes(pathname)
