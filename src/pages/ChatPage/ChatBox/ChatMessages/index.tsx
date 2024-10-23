@@ -142,7 +142,7 @@ const ChatMessages = () => {
 
   return (
     <ChatWindow
-      className="max-sm:rounded-none max-sm:border-none max-sm:p-0"
+      className="w-full p-0 max-sm:rounded-none max-sm:border-none max-sm:p-0"
       messages={messages}
       itemContent={renderMessage}
       loading={loading}
