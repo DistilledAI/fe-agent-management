@@ -123,7 +123,7 @@ const ChatInput = ({ isDisabledInput, wrapperClassName }: ChatInputProps) => {
     <div
       ref={boxRef}
       className={twMerge(
-        "absolute bottom-4 left-1/2 z-[11] flex w-[calc(100%-32px)] max-w-[768px] -translate-x-1/2 items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 duration-500 max-sm:static max-sm:gap-2 sm:p-3 sm:py-[7.89px]",
+        "absolute bottom-4 z-[11] flex max-w-[768px] items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 duration-500 max-sm:static max-sm:gap-2 sm:p-3 sm:py-[7.89px]",
         isFocus ? "border-mercury-300" : "border-mercury-200",
         wrapperClassName,
       )}
