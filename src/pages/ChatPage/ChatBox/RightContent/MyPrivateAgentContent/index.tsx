@@ -40,7 +40,7 @@ const MyPrivateAgentContent: React.FC<{
         const createGroupResponse = await createGroupChat({
           members: [memberId],
         })
-        const newGroupId = createGroupResponse?.data?.id
+        const newGroupId = createGroupResponse?.data?.groupId
         if (newGroupId) {
           navigate(`${PATH_NAMES.PRIVATE_AGENT}/${newGroupId}`)
         }

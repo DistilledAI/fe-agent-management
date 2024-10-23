@@ -7,7 +7,8 @@ import { brainAIIcon } from "@assets/svg"
 import useFetchMessages from "../../ChatMessages/useFetchMessages"
 
 const PrivateAgentChatContent: React.FC = () => {
-  const { loading, onLoadPrevMessages, messages } = useFetchMessages()
+  const { loading, onLoadPrevMessages, messages, isFetched } =
+    useFetchMessages()
   const { privateChatId } = useParams()
 
   const renderMessage = (_: number, message: IMessageBox) => {
@@ -40,6 +41,7 @@ const PrivateAgentChatContent: React.FC = () => {
       loading={loading}
       onLoadPrevMessages={onLoadPrevMessages}
       chatId={privateChatId}
+      isFetched={isFetched}
     />
   )
 }
