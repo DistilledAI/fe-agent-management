@@ -3,7 +3,7 @@ import React from "react"
 
 const MessagesSkeleton = () => {
   return (
-    <div className="-mt-10 h-full w-full space-y-4 px-4 md:h-0 md:px-0">
+    <div className="mx-auto -mt-10 h-full w-full max-w-[768px] space-y-4 px-4 md:h-0 md:px-0">
       {Array.from({ length: 2 }).map((_, index) => (
         <React.Fragment key={index}>
           <div className="flex gap-4">
