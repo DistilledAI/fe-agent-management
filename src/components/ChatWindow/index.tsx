@@ -165,6 +165,7 @@ const ChatWindow = ({
             align: "end",
           }}
           increaseViewportBy={600}
+          atTopThreshold={60}
           onScroll={onScroll}
           components={{
             Header: () =>
