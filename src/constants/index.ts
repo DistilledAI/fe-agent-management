@@ -6,6 +6,7 @@ export const PATH_NAMES = {
   INVITE: "/invite",
   PRIVATE_AGENT: "/private-agent",
   MARKETPLACE: "/marketplace",
+  MY_DATA: "/my-data",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {
