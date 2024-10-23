@@ -79,7 +79,7 @@ const ChatWindow = ({
         align: "end",
       })
     }
-  }, [messages, isScrollBottom, isChatting])
+  }, [messages, isScrollBottom, isChatting, style?.paddingBottom])
 
   // useEffect(() => {
   //   if (isAtBottom) {
@@ -143,7 +143,8 @@ const ChatWindow = ({
     <div
       style={style}
       className={twMerge(
-        "relative h-full flex-1 overflow-hidden rounded-[22px] border-[2px] border-white p-3 transition-all duration-500 ease-in-out",
+        "relative h-full max-h-[calc(100%-84px)] overflow-hidden transition-all duration-500 ease-in-out",
+        (loading || !isFetched) && "max-h-[calc(100%-106px)]",
         className,
       )}
     >
@@ -164,7 +165,6 @@ const ChatWindow = ({
             index: messages.length - 1,
             align: "end",
           }}
-          atTopThreshold={200}
           increaseViewportBy={600}
           onScroll={onScroll}
           components={{

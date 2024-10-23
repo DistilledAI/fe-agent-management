@@ -19,7 +19,7 @@ const MainLayoutDesktop = () => {
         <StyleBoxChatProvider>
           <LeftBar />
           <div className="col-span-1 pt-6">
-            <div className="pr-6 text-end">
+            <div className="sticky top-0 pr-6 text-end">
               <UserAuth connectWallet={connectWallet} loading={loading} />
             </div>
             <Outlet />

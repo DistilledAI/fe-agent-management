@@ -17,9 +17,12 @@ import VoiceChat from "./Voice"
 import { messagesQueryKey } from "../ChatMessages/useFetchMessages"
 import { QueryDataKeys } from "types/queryDataKeys"
 
-const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
-  isDisabledInput,
-}) => {
+interface ChatInputProps {
+  isDisabledInput: boolean
+  wrapperClassName?: string
+}
+
+const ChatInput = ({ isDisabledInput, wrapperClassName }: ChatInputProps) => {
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const { chatId, privateChatId } = useParams()
   const [isFocus, setIsFocus] = useState(false)
@@ -120,8 +123,9 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
     <div
       ref={boxRef}
       className={twMerge(
-        "absolute bottom-6 left-0 z-[11] flex w-full items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 duration-500 max-sm:static max-sm:gap-2 sm:p-3 sm:py-[7.89px]",
+        "absolute bottom-6 left-1/2 z-[11] flex w-full max-w-[768px] -translate-x-1/2 items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 duration-500 max-sm:static max-sm:gap-2 sm:p-3 sm:py-[7.89px]",
         isFocus ? "border-mercury-300" : "border-mercury-200",
+        wrapperClassName,
       )}
     >
       <Button
