@@ -14,12 +14,12 @@ const MainLayoutDesktop = () => {
   useFetchMe()
 
   return (
-    <div className="h-dvh w-dvw bg-white font-barlow">
+    <div className="w-dvw bg-white font-barlow">
       <div className="flex h-full w-full">
         <StyleBoxChatProvider>
           <LeftBar />
           <div className="col-span-1 w-full space-y-2 pt-[60px]">
-            <div className="fixed right-4 top-4 z-10 bg-white text-end">
+            <div className="fixed right-0 top-0 z-[11] w-full bg-white px-4 pb-2 pt-4 text-end">
               <UserAuth connectWallet={connectWallet} loading={loading} />
             </div>
             <Outlet />
