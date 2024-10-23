@@ -1,6 +1,6 @@
+import { getAccessToken } from "@utils/storage"
 import axios, { AxiosError, AxiosResponse } from "axios"
 import TokenService from "./token"
-import { getAccessToken } from "@utils/storage"
 
 export const METHODS = {
   GET: "GET",

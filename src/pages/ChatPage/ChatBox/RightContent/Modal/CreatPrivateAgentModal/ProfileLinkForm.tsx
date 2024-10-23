@@ -42,7 +42,6 @@ const ProfileLinkForm: React.FC<{
   const { register, handleSubmit, watch, setValue, getValues } =
     useForm<Inputs>()
   const [selectedKey, setSelectedKey] = useState<string>(PROFILE_TYPE.LINKEDIN)
-  console.log("🚀 ~ selectedKey:", selectedKey)
   const inputValue = watch(selectedKey as any)
   const [loading, setLoading] = useState<boolean>(false)
   const selectedLabel = SOCIAL.find((item) => item.key == selectedKey)?.label
@@ -167,7 +166,7 @@ const ProfileLinkForm: React.FC<{
   return (
     <>
       <span className="text-[24px] font-semibold text-mercury-950">
-        Website links (including Social Media)
+        Website links/Social Media
       </span>
       <Input
         placeholder="Enter your profile link"

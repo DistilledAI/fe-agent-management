@@ -8,28 +8,33 @@ import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
 import { PhotoPlusIcon } from "@components/Icons/PhotoPlusIcon"
 import { SocialLinkIcon, ThreeDotsIcon } from "@components/Icons/SocialLinkIcon"
 import useAuthState from "@hooks/useAuthState"
-import { useHover } from "@hooks/useHover"
 import useWindowSize from "@hooks/useWindowSize"
 import { useState } from "react"
-import { twMerge } from "tailwind-merge"
-import CreatPrivateAgentModal from "../Modal/CreatPrivateAgentModal"
 import UploadDataButton from "../UploadDataButton"
 import MainContainerCreate from "./MainContainerCreate"
+import UploadCustom from "./UploadCustom"
+import UploadSocialLink from "./UploadSocialLink"
+
+export const TYPE_DATA_KEY = {
+  SOCIAL_MEDIA: "social-media",
+  CV_FILE: "cv-file",
+  PDF_FILE: "pdf-file",
+  PHOTO_VIDEO_FILE: "photo-video-file",
+}
 
 const CreatePrivateAgent: React.FC<{
   connectWalletLoading: boolean
   connectWallet: any
   setCreated: any
-}> = ({ connectWalletLoading, connectWallet, setCreated }) => {
+}> = ({ connectWalletLoading, connectWallet }) => {
   const { isLogin, sessionAccessToken } = useAuthState()
-  const [openPopup, setOpenPopup] = useState<boolean>(false)
-  const [ref, isHovered] = useHover()
   const { isMobile } = useWindowSize()
+  const [socialUrls, setSocialUrls] = useState<string[]>([])
 
   const renderCreateAccountAction = () => {
     if (connectWalletLoading)
       return (
-        <div className="absolute top-1/2 flex -translate-y-[230px] flex-col items-center gap-2">
+        <div className="absolute top-[15%] flex flex-col items-center gap-2">
           <ExploreFilledIcon />
           <div className="flex-items-center">
             <DotLoading />
@@ -39,7 +44,7 @@ const CreatePrivateAgent: React.FC<{
       )
 
     return (
-      <div className="flex-items-center absolute top-1/2 max-w-[390px] -translate-y-[230px] flex-col">
+      <div className="flex-items-center absolute top-[15%] max-w-[390px] flex-col">
         <FilledExclamationCircleIcon />
         <span
           className="cursor-pointer text-center text-24 text-mercury-800"
@@ -99,7 +104,6 @@ const CreatePrivateAgent: React.FC<{
               label="Website links/Social Media"
               textClassName="text-base-14-b"
               isDisable={false}
-              onClick={() => setOpenPopup(true)}
               customClassName="h-[50px]"
             />
           </div>
@@ -108,75 +112,50 @@ const CreatePrivateAgent: React.FC<{
     }
 
     return (
-      <div className="absolute h-full w-[80%]" ref={ref}>
-        <div className="absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2">
-          <UploadDataButton
-            icon={
-              <div className="flex-items-center gap-1">
-                <FilledBrainAIIcon color="#A2845E" size={24} />
-                <ThreeDotsIcon />
-                <DatabaseImportIcon />
-              </div>
-            }
-            label="Create your Private Agent"
-            isDisable={false}
-            radiusFull
-          />
+      <div className="absolute top-[50px] h-full">
+        <div className="mb-12 flex flex-col items-center justify-center text-center">
+          <div className="flex-items-center gap-1">
+            <FilledBrainAIIcon color="#A2845E" size={24} />
+            <ThreeDotsIcon />
+            <DatabaseImportIcon />
+          </div>
+          <span className="text-24">
+            <span className="font-semibold">Start your Private agent</span>
+            <br />
+            by connect your data:
+          </span>
         </div>
-        <div
-          className={twMerge(
-            "absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out",
-            isHovered && "top-1/4 -translate-x-[200px]",
-          )}
-        >
-          <UploadDataButton
-            icon={<PDFTypeIcon />}
-            label="PDFs"
-            isDisable={true}
-            radiusFull
-          />
-        </div>
-        <div
-          className={twMerge(
-            "absolute right-1/2 top-1/2 z-20 -translate-y-1/2 translate-x-1/2 transition-all duration-500 ease-out",
-            isHovered && "top-1/4 translate-x-[200px]",
-          )}
-        >
-          <UploadDataButton
-            icon={<EmailUpIcon />}
-            label="Emails"
-            isDisable={true}
-            radiusFull
-          />
-        </div>
-        <div
-          className={twMerge(
-            "absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out",
-            isHovered && "-translate-x-[280px] -translate-y-1/4",
-          )}
-        >
-          <UploadDataButton
-            icon={<PhotoPlusIcon />}
-            label="Photos & Videos"
-            isDisable={true}
-            radiusFull
-          />
-        </div>
-        <div
-          className={twMerge(
-            "absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out",
-            isHovered && "-translate-y-1/4 translate-x-[120px]",
-          )}
-          onClick={() => {
-            setOpenPopup(true)
-          }}
-        >
-          <UploadDataButton
-            icon={<SocialLinkIcon />}
-            label="Website links (including Social Media)"
-            isDisable={false}
-            radiusFull
-          />
+
+        <div className="">
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <UploadSocialLink
+                socialUrls={socialUrls}
+                setSocialUrls={setSocialUrls}
+              />
+              <UploadCustom
+                fieldkey="uploadCV"
+                fileKey={TYPE_DATA_KEY.CV_FILE}
+                icon={<PDFTypeIcon />}
+                label="CV"
+              />
+            </div>
+            <div className="flex flex-col gap-6">
+              <UploadCustom
+                fieldkey="uploadPDFs"
+                fileKey={TYPE_DATA_KEY.PDF_FILE}
+                icon={<PDFTypeIcon />}
+                label="PDFs"
+              />
+              <UploadCustom
+                fieldkey="photosVideos"
+                fileKey={TYPE_DATA_KEY.PHOTO_VIDEO_FILE}
+                icon={<PhotoPlusIcon />}
+                label="Photos & Videos"
+                accept="image/*,video/*"
+              />
+            </div>
+          </div>
         </div>
       </div>
     )
@@ -184,31 +163,12 @@ const CreatePrivateAgent: React.FC<{
 
   if (!isLogin || (isLogin && sessionAccessToken)) {
     return (
-      <MainContainerCreate>
-        {renderCreateAccountAction()}
-        <UploadDataButton
-          icon={<FilledBrainAIIcon />}
-          label="Start your Private Agent"
-          isDisable
-          radiusFull={true}
-          customClassName=" absolute top-1/2 -translate-y-1/2"
-        />
-      </MainContainerCreate>
+      <MainContainerCreate>{renderCreateAccountAction()}</MainContainerCreate>
     )
   }
 
   return (
-    <>
-      <MainContainerCreate>
-        {renderContainerCreateContent()}
-      </MainContainerCreate>
-
-      <CreatPrivateAgentModal
-        openPopup={openPopup}
-        setOpenPopup={setOpenPopup}
-        setCreated={setCreated}
-      />
-    </>
+    <MainContainerCreate>{renderContainerCreateContent()}</MainContainerCreate>
   )
 }
 
