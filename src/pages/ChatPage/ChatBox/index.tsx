@@ -33,7 +33,10 @@ const ChatBox = () => {
           />
         </div>
       )}
-      <ChatInput isDisabledInput={!isEnableTextInput} />
+      <ChatInput
+        isDisabledInput={!isEnableTextInput}
+        wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
+      />
     </div>
   )
 }
