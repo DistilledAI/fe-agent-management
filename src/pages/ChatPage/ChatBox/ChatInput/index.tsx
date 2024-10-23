@@ -25,6 +25,7 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
   const { chatId, privateChatId } = useParams()
   const [isFocus, setIsFocus] = useState(false)
   const [messages, setMessages] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
   const heightBoxRef = useRef(0)
   const { setStyle } = useStyleBoxChat()
@@ -72,7 +73,16 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
   const handleKeyDown = (e: any) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault()
-      onSubmit()
+      if (!isSubmitting) {
+        setIsSubmitting(true)
+        onSubmit()
+
+        setTimeout(() => {
+          setIsSubmitting(false)
+          setMessages("")
+          SpeechRecognition.stopListening()
+        }, 1)
+      }
     }
   }
 
