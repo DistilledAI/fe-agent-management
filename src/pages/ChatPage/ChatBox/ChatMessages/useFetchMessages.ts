@@ -42,7 +42,7 @@ const useFetchMessages = () => {
     queryKey: messagesQueryKey(groupId),
     queryFn: fetchMessages,
     enabled: isLogin && !!groupId && !!user?.id,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 1 * 60 * 60 * 1000,
     refetchOnWindowFocus: false,
   })
 

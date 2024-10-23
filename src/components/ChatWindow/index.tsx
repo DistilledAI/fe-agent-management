@@ -143,7 +143,7 @@ const ChatWindow = ({
     <div
       style={style}
       className={twMerge(
-        "relative h-full flex-1 overflow-hidden rounded-[22px] border-[2px] border-white bg-mercury-30 p-3 transition-all duration-500 ease-in-out",
+        "relative h-full flex-1 overflow-hidden rounded-[22px] border-[2px] border-white p-3 transition-all duration-500 ease-in-out",
         className,
       )}
     >
