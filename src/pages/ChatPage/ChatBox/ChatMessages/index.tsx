@@ -115,7 +115,7 @@ const ChatMessages = () => {
           className={twMerge(
             "mx-auto w-full max-w-[768px] px-3 pb-4 max-sm:px-4",
             message.role === RoleChat.OWNER && paddingBottomStyle,
-            messages.length - 1 === index && "pb-10",
+            // messages.length - 1 === index && "pb-10",
           )}
           key={index}
         >
@@ -149,7 +149,7 @@ const ChatMessages = () => {
       onLoadPrevMessages={onLoadPrevMessages}
       chatId={chatId}
       style={style}
-      msgBoxClassName="p-0"
+      msgBoxClassName="p-0 md:px-4"
       Footer={() => <MoreAction />}
       isFetched={isFetched}
     />

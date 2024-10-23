@@ -144,7 +144,6 @@ const ChatWindow = ({
       style={style}
       className={twMerge(
         "relative h-full max-h-[calc(100%-84px)] overflow-hidden transition-all duration-500 ease-in-out",
-        (loading || !isFetched) && "max-h-[calc(100%-106px)]",
         className,
       )}
     >
