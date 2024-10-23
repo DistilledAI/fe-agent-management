@@ -2,21 +2,21 @@ import HeadSectionData from "../Components/HeadSectionData"
 import { EditPenFilledIcon } from "@components/Icons/Edit"
 import { DeleteIcon } from "@components/Icons/Delete"
 import TableData from "../Components/TableData"
-import { EmailUpIcon } from "@components/Icons/EmailUpIcon"
+import { PhotoPlusIcon } from "@components/Icons/PhotoPlusIcon"
 import useWindowSize from "@hooks/useWindowSize"
 import TableDataMobile from "../Components/TableDataMobile"
 
 const rows = [
   {
     key: "1",
-    name: "byharryle@gmail.com",
-    type: "Gmail",
+    name: "me-cv.png",
+    type: "Image",
     date: "Oct 8, 2024",
   },
   {
     key: "2",
-    name: "me.harryle@gmail.com",
-    type: "Gmail",
+    name: "profile.mp4",
+    type: "Video",
     date: "Oct 8, 2024",
   },
 ]
@@ -47,7 +47,7 @@ const columns = [
   },
 ]
 
-const EmailData = () => {
+const MediaData = () => {
   const { isMobile } = useWindowSize()
 
   const renderCell = (item: Record<string, any>, columnKey: string) => {
@@ -83,9 +83,9 @@ const EmailData = () => {
   return (
     <div>
       <HeadSectionData
-        iconTitle={<EmailUpIcon color="#A2845E" size={24} />}
-        title="Emails"
-        addTitle="Add email"
+        iconTitle={<PhotoPlusIcon color="#A2845E" size={24} />}
+        title="Photos & Videos "
+        addTitle="Add media"
       />
       <div className="mt-4">
         {isMobile ? (
@@ -109,4 +109,4 @@ const EmailData = () => {
   )
 }
 
-export default EmailData
+export default MediaData

@@ -3,6 +3,8 @@ import { SocialLinkIcon } from "@components/Icons/SocialLinkIcon"
 import { EditPenFilledIcon } from "@components/Icons/Edit"
 import { DeleteIcon } from "@components/Icons/Delete"
 import TableData from "../Components/TableData"
+import useWindowSize from "@hooks/useWindowSize"
+import TableDataMobile from "../Components/TableDataMobile"
 
 const rows = [
   {
@@ -52,6 +54,8 @@ const columns = [
 ]
 
 const LinkData = () => {
+  const { isMobile } = useWindowSize()
+
   const renderCell = (item: Record<string, any>, columnKey: string) => {
     switch (columnKey) {
       case ColumnKey.Type:
@@ -90,12 +94,22 @@ const LinkData = () => {
         addTitle="Add link"
       />
       <div className="mt-4">
-        <TableData
-          tdClassName={getTdClassName}
-          columns={columns}
-          rows={rows}
-          renderCell={renderCell}
-        />
+        {isMobile ? (
+          <TableDataMobile
+            data={rows.map((item) => ({
+              type: item.type,
+              value: item.name,
+              createdAt: item.date,
+            }))}
+          />
+        ) : (
+          <TableData
+            tdClassName={getTdClassName}
+            columns={columns}
+            rows={rows}
+            renderCell={renderCell}
+          />
+        )}
       </div>
     </div>
   )

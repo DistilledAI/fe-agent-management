@@ -3,6 +3,8 @@ import { EditPenFilledIcon } from "@components/Icons/Edit"
 import { DeleteIcon } from "@components/Icons/Delete"
 import TableData from "../Components/TableData"
 import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
+import useWindowSize from "@hooks/useWindowSize"
+import TableDataMobile from "../Components/TableDataMobile"
 
 const rows = [
   {
@@ -46,6 +48,8 @@ const columns = [
 ]
 
 const FileData = () => {
+  const { isMobile } = useWindowSize()
+
   const renderCell = (item: Record<string, any>, columnKey: string) => {
     switch (columnKey) {
       case ColumnKey.Type:
@@ -84,12 +88,22 @@ const FileData = () => {
         addTitle="Add pdf"
       />
       <div className="mt-4">
-        <TableData
-          tdClassName={getTdClassName}
-          columns={columns}
-          rows={rows}
-          renderCell={renderCell}
-        />
+        {isMobile ? (
+          <TableDataMobile
+            data={rows.map((item) => ({
+              type: item.type,
+              value: item.name,
+              createdAt: item.date,
+            }))}
+          />
+        ) : (
+          <TableData
+            tdClassName={getTdClassName}
+            columns={columns}
+            rows={rows}
+            renderCell={renderCell}
+          />
+        )}
       </div>
     </div>
   )

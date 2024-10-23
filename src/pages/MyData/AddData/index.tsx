@@ -57,16 +57,16 @@ const AddData = () => {
       <Popover placement="bottom" isOpen={isOpen}>
         <PopoverTrigger>
           <Button
-            className="min-h-[44px] bg-mercury-950"
+            className="h-[44px] bg-mercury-950 max-sm:h-[38px]"
             radius="full"
             onClick={togglePopover}
           >
-            <div className="flex-items-center gap-1">
+            <div className="flex-items-center gap-1 max-sm:hidden">
               <FilledBrainAIIcon size={20} color="#FFFF" />
               <ThreeDotsIcon size={20} color="#FFFF" />
               <DatabaseImportIcon size={20} color="#FFFF" />
             </div>
-            <span className="ml-1 text-mercury-30">Add data</span>
+            <span className="ml-1 text-mercury-30 max-sm:ml-0">Add data</span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="p-0">
