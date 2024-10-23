@@ -12,8 +12,15 @@ import useWindowSize from "@hooks/useWindowSize"
 import { useState } from "react"
 import UploadDataButton from "../UploadDataButton"
 import MainContainerCreate from "./MainContainerCreate"
-import UploadCV from "./UploadCV"
+import UploadCustom from "./UploadCustom"
 import UploadSocialLink from "./UploadSocialLink"
+
+export const TYPE_DATA_KEY = {
+  SOCIAL_MEDIA: "social-media",
+  CV_FILE: "cv-file",
+  PDF_FILE: "pdf-file",
+  PHOTO_VIDEO_FILE: "photo-video-file",
+}
 
 const CreatePrivateAgent: React.FC<{
   connectWalletLoading: boolean
@@ -23,7 +30,6 @@ const CreatePrivateAgent: React.FC<{
   const { isLogin, sessionAccessToken } = useAuthState()
   const { isMobile } = useWindowSize()
   const [socialUrls, setSocialUrls] = useState<string[]>([])
-  const [cvFiles, setCVFiles] = useState<string[]>([])
 
   const renderCreateAccountAction = () => {
     if (connectWalletLoading)
@@ -127,19 +133,26 @@ const CreatePrivateAgent: React.FC<{
                 socialUrls={socialUrls}
                 setSocialUrls={setSocialUrls}
               />
-              <UploadCV cvFiles={cvFiles} setCVFiles={setCVFiles} />
+              <UploadCustom
+                fieldkey="uploadCV"
+                fileKey={TYPE_DATA_KEY.CV_FILE}
+                icon={<PDFTypeIcon />}
+                label="CV"
+              />
             </div>
-            <div>
-              <UploadDataButton
+            <div className="flex flex-col gap-6">
+              <UploadCustom
+                fieldkey="uploadPDFs"
+                fileKey={TYPE_DATA_KEY.PDF_FILE}
                 icon={<PDFTypeIcon />}
                 label="PDFs"
-                customClassName="mb-6"
-                textClassName="text-base-14-b"
               />
-              <UploadDataButton
+              <UploadCustom
+                fieldkey="photosVideos"
+                fileKey={TYPE_DATA_KEY.PHOTO_VIDEO_FILE}
                 icon={<PhotoPlusIcon />}
                 label="Photos & Videos"
-                textClassName="text-base-14-b"
+                accept="image/*,video/*"
               />
             </div>
           </div>
@@ -155,11 +168,7 @@ const CreatePrivateAgent: React.FC<{
   }
 
   return (
-    <>
-      <MainContainerCreate>
-        {renderContainerCreateContent()}
-      </MainContainerCreate>
-    </>
+    <MainContainerCreate>{renderContainerCreateContent()}</MainContainerCreate>
   )
 }
 

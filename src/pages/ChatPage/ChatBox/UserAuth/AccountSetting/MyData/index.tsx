@@ -12,7 +12,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@nextui-org/react"
-import CreatPrivateAgentModal from "@pages/ChatPage/ChatBox/RightContent/Modal/CreatPrivateAgentModal"
 import { useState } from "react"
 import { TYPE_CONTENT } from ".."
 
@@ -41,7 +40,7 @@ const DATA_METHOD_LIST = [
 const MyData: React.FC<{
   setTypeContent?: any
 }> = ({ setTypeContent }) => {
-  const [openPopup, setOpenPopup] = useState<boolean>(false)
+  const [_, setOpenPopup] = useState<boolean>(false)
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const handleSelectOption = async (record: any) => {
@@ -122,12 +121,6 @@ const MyData: React.FC<{
           </PopoverContent>
         </Popover>
       </div>
-
-      <CreatPrivateAgentModal
-        openPopup={openPopup}
-        setOpenPopup={setOpenPopup}
-        setCreated={() => {}}
-      />
     </>
   )
 }

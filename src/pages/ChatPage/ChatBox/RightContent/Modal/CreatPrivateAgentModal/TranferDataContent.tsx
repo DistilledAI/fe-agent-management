@@ -1,12 +1,12 @@
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
-import useTextCreeping from "@hooks/useTextCreeping"
 import { Button } from "@nextui-org/react"
+import { useFormContext } from "react-hook-form"
+import { toast } from "react-toastify"
+import { uploadMyData } from "services/user"
+import { TYPE_DATA_KEY } from "../../MyPrivateAgentContent/CreatePrivateAgent"
 import { PROFILE_TYPE } from "./ProfileLinkForm"
+import TextCreepingTranferData from "./TextCreepingTranferData"
 import WordCloundContent from "./WordCloundContent"
-
-const LIST_TEXT_DEFAULT_2 = [
-  "Your data is transferred to your own confidential pod.",
-]
 
 const TranferDataContent: React.FC<{
   setContentStep: any
@@ -19,8 +19,7 @@ const TranferDataContent: React.FC<{
   setOpenPopup,
   handlemSetSocialUrls,
 }) => {
-  const { text: text2 } = useTextCreeping({ listText: LIST_TEXT_DEFAULT_2 })
-
+  const { setValue, getValues } = useFormContext()
   const profileType = collectedData?.profileType
   const userName = collectedData?.userName
   const aboutValue = collectedData?.about || ""
@@ -35,14 +34,36 @@ const TranferDataContent: React.FC<{
       ? `https://linkedin.com/in/${userName}`
       : `https://x.com/${userName}`
 
+  const uploadSocialLinkValue = getValues("uploadSocialLink")
+
   const onCloseModal = () => {
     setContentStep(1)
     setOpenPopup(false)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     handlemSetSocialUrls(profileLink)
     onCloseModal()
+
+    try {
+      const payload = {
+        [profileType]: profileLink,
+        key: TYPE_DATA_KEY.SOCIAL_MEDIA,
+      }
+      const response = await uploadMyData(payload)
+      if (response) {
+        const data = response.data?.[0]
+        const newData =
+          uploadSocialLinkValue.length > 0
+            ? [...uploadSocialLinkValue, data?.id]
+            : [data?.id]
+        setValue("uploadSocialLink", newData)
+        toast.success(`${profileLink} uploaded successfully.`)
+      }
+    } catch (error) {
+      console.error(error)
+      toast.error(`${profileLink} failed to upload.`)
+    }
   }
 
   return (
@@ -63,12 +84,7 @@ const TranferDataContent: React.FC<{
       </div>
       <div className="flex flex-col justify-between">
         <div>
-          <div className="relative mb-4 max-w-[300px] text-base transition-all duration-500 ease-linear max-sm:mb-2">
-            <span className="text-[24px] font-semibold text-mercury-950 max-sm:text-18">
-              {text2}
-            </span>
-          </div>
-
+          <TextCreepingTranferData />
           <span className="text-base-14 text-mercury-800">
             Enter your email to{" "}
             <span className="font-bold">receive a notification</span> when your

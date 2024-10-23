@@ -115,7 +115,7 @@ interface CreateBot {
   name?: string
   publicAddress?: string
   linkedin?: string
-  email: string
+  email?: string
   webhook?: string
 }
 export const createBot = async (data: CreateBot) => {

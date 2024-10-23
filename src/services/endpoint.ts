@@ -31,6 +31,10 @@ const endpoint = {
     withBaseURL(`/chat/check-conversation/${userToId}`),
   GET_USER_PROFILE: (type: string, userName: string) =>
     withBaseURL(`/user/${type}-crawl/${userName}`),
+
+  //my data
+  UPLOAD_MY_DATA: withBaseURL("/my-data/upload"),
+  MAP_MY_DATA_TO_BOT: withBaseURL("/my-data/map-bot"),
 }
 
 export default endpoint
