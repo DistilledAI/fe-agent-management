@@ -1,9 +1,9 @@
-import { Outlet } from "react-router-dom"
-import useInviteUser from "@hooks/useInviteUser"
 import useFetchMe from "@hooks/useFetchMe"
-import { StyleBoxChatProvider } from "@pages/ChatPage/ChatBox/StyleProvider"
+import useInviteUser from "@hooks/useInviteUser"
 import LeftBar from "@pages/ChatPage/ChatBox/LeftBar"
+import { StyleBoxChatProvider } from "@pages/ChatPage/ChatBox/StyleProvider"
 import UserAuthWrapper from "@pages/ChatPage/ChatBox/UserAuth/UserAuthWrapper"
+import { Outlet } from "react-router-dom"
 
 const MainLayoutDesktop = () => {
   useInviteUser()
