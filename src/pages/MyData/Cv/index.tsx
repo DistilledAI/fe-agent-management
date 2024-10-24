@@ -1,8 +1,8 @@
 import HeadSectionData from "../Components/HeadSectionData"
-import { SocialLinkIcon } from "@components/Icons/SocialLinkIcon"
 import { EditPenFilledIcon } from "@components/Icons/Edit"
 import { DeleteIcon } from "@components/Icons/Delete"
 import TableData from "../Components/TableData"
+import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
 import useWindowSize from "@hooks/useWindowSize"
 import TableDataMobile from "../Components/TableDataMobile"
 import React from "react"
@@ -35,7 +35,7 @@ const columns = [
   },
 ]
 
-const LinkData: React.FC<{
+const CvData: React.FC<{
   data: IBotData[]
 }> = ({ data }) => {
   const { isMobile } = useWindowSize()
@@ -94,9 +94,9 @@ const LinkData: React.FC<{
   return (
     <div>
       <HeadSectionData
-        iconTitle={<SocialLinkIcon color="#A2845E" size={24} />}
-        title="Website Links/Social media"
-        addTitle="Add link"
+        iconTitle={<PDFTypeIcon color="#A2845E" size={24} />}
+        title="CV"
+        addTitle="Add cv"
       />
       <div className="mt-4">
         {isMobile ? (
@@ -120,4 +120,4 @@ const LinkData: React.FC<{
   )
 }
 
-export default LinkData
+export default CvData

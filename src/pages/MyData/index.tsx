@@ -1,16 +1,25 @@
 import useWindowSize from "@hooks/useWindowSize"
 import AddData from "./AddData"
-import EmailData from "./Email"
 import FileData from "./File"
 import LinkData from "./Link"
 import MediaData from "./Media"
 import { Button } from "@nextui-org/react"
 import { useNavigate } from "react-router-dom"
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
+import useFetchMyData from "./useFetch"
+import { getBotDataByKey, getTimeLastCollected } from "./helpers"
+import { BotDataTypeKey } from "@types"
+import CvData from "./Cv"
 
 const MyData: React.FC = () => {
   const { isMobile } = useWindowSize()
   const navigate = useNavigate()
+  const { list, isLoading, isFetched } = useFetchMyData()
+  const socialData = getBotDataByKey(BotDataTypeKey.SOCIAL_MEDIA, list)
+  const cvData = getBotDataByKey(BotDataTypeKey.CV_FILE, list)
+  const pdfData = getBotDataByKey(BotDataTypeKey.PDF_FILE, list)
+  const mediaData = getBotDataByKey(BotDataTypeKey.PHOTO_VIDEO_FILE, list)
+  const lastCollected = getTimeLastCollected(list)
 
   return (
     <div className="mx-auto max-w-[800px] px-4 py-5 max-sm:bg-mercury-70 max-sm:pt-[70px]">
@@ -33,21 +42,25 @@ const MyData: React.FC = () => {
             <h3 className="mb-1 text-24 font-semibold">My data</h3>
             <div className="inline-flex items-center text-mercury-800">
               <span>Last collected:</span>
-              <span className="ml-1 font-semibold">2 days ago</span>
+              <span className="ml-1 font-semibold">
+                {!isLoading && isFetched ? lastCollected : "..."}
+              </span>
             </div>
           </div>
           <AddData />
         </div>
       )}
-      <div className="mb-5 inline-flex items-center text-mercury-800 sm:hidden">
-        <span>Last collected:</span>
-        <span className="ml-1 font-semibold">2 days ago</span>
-      </div>
+      {list.length > 0 && (
+        <div className="mb-5 inline-flex items-center text-mercury-800 sm:hidden">
+          <span>Last collected:</span>
+          <span className="ml-1 font-semibold">{lastCollected}</span>
+        </div>
+      )}
       <div className="flex flex-col gap-6">
-        <LinkData />
-        <FileData />
-        <EmailData />
-        <MediaData />
+        <LinkData data={socialData} />
+        <FileData data={pdfData} />
+        <CvData data={cvData} />
+        <MediaData data={mediaData} />
       </div>
     </div>
   )

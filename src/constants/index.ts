@@ -7,6 +7,7 @@ export const PATH_NAMES = {
   PRIVATE_AGENT: "/private-agent",
   MARKETPLACE: "/marketplace",
   MY_DATA: "/my-data",
+  ADD_MY_DATA: "/add-my-data",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {
