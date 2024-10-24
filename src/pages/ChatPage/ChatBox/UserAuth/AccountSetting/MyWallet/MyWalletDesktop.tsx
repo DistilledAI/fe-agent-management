@@ -6,8 +6,11 @@ import VoiceChat from "../VoiceChat"
 import VoiceCharacter from "../VoiceCharacter"
 import PrivateAgent from "../Agent"
 import PrivateAgentPod from "../AgentPod"
+import React from "react"
 
-const MyWalletDesktop = () => {
+const MyWalletDesktop: React.FC<{
+  onClose: () => void
+}> = ({ onClose }) => {
   return (
     <>
       <div className="w-[calc(56%-12px)]">
@@ -34,7 +37,7 @@ const MyWalletDesktop = () => {
       </div>
       <div className="w-[calc(44%-12px)]">
         <div>
-          <PrivateAgent />
+          <PrivateAgent onClose={onClose} />
         </div>
         <div className="mt-4">
           <PrivateAgentPod />
