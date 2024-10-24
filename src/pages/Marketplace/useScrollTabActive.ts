@@ -8,10 +8,11 @@ interface Props {
 
 const useScrollTabActive = ({ items }: Props) => {
   const [activeId, setActiveId] = useState(items[0]?.id)
+  const [elementIndex, setElementIndex] = useState(0)
 
   useEffect(() => {
     const handleScroll = () => {
-      const viewportHeight = window.innerHeight // Chiều cao của viewport
+      const viewportHeight = window.innerHeight
       const scrollHeight = document.documentElement.scrollHeight
       const scrollPosition = window.scrollY + viewportHeight
 
@@ -22,11 +23,13 @@ const useScrollTabActive = ({ items }: Props) => {
           const threshold = viewportHeight * 0.3
           if (rect.top <= threshold) {
             setActiveId(item.id)
+            setElementIndex(index)
           }
 
           const isLastSection = index === items.length - 1
           if (isLastSection && scrollPosition >= scrollHeight - 100) {
             setActiveId(item.id)
+            setElementIndex(index)
           }
         }
       })
@@ -36,7 +39,7 @@ const useScrollTabActive = ({ items }: Props) => {
     return () => {
       window.removeEventListener("scroll", handleScroll)
     }
-  }, [items])
+  }, [])
 
   const handleTabClick = (id: string, scrollMarginTop = "200px") => {
     const element = document.getElementById(id)
@@ -60,6 +63,9 @@ const useScrollTabActive = ({ items }: Props) => {
   return {
     activeId,
     handleTabClick,
+    setElementIndex,
+    elementIndex,
+    setActiveId,
   }
 }
 
