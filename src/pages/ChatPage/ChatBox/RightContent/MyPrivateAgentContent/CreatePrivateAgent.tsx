@@ -27,8 +27,7 @@ const CreatePrivateAgent: React.FC<{
   connectWallet: any
   setCreated?: any
   botId?: string | number
-  callBack?: any
-}> = ({ connectWalletLoading, connectWallet, setCreated, botId, callBack }) => {
+}> = ({ connectWalletLoading, connectWallet, setCreated, botId }) => {
   const { isLogin, sessionAccessToken } = useAuthState()
   const { isMobile } = useWindowSize()
 
