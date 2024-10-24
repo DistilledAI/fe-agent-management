@@ -14,7 +14,7 @@ const LeftBar = () => {
     <div>
       <div
         className={twMerge(
-          "h-dvh w-[329px] transition-all duration-300 ease-in-out",
+          "min-h-dvh w-[329px] transition-all duration-300 ease-in-out",
           sidebarCollapsed && "w-[104px]",
         )}
       />
