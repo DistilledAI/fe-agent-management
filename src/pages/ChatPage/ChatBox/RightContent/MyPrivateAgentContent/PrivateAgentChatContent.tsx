@@ -14,7 +14,7 @@ const PrivateAgentChatContent: React.FC = () => {
 
   const renderMessage = (_: number, message: IMessageBox) => {
     return (
-      <>
+      <div className="mx-auto w-full max-w-[768px] px-3 pb-4 max-sm:px-4">
         {message.role === RoleChat.CUSTOMER ? (
           <ReceiverMessage
             avatar={{
@@ -31,7 +31,7 @@ const PrivateAgentChatContent: React.FC = () => {
             baseClassName="bg-lgd-code-agent-1 bg-mercury-950 text-white"
           />
         ) : null}
-      </>
+      </div>
     )
   }
 
