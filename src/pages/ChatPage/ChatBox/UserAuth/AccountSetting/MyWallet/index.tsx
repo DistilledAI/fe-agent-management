@@ -2,13 +2,13 @@ import { CopyIcon } from "@components/Icons/Copy"
 import { MetamaskIconSmall } from "@components/Icons/MetamaskIcon"
 import { LogoutIcon } from "@components/Icons/OutputIcon"
 import { PATH_NAMES } from "@constants/index"
+import useAuthAction from "@hooks/useAuthAction"
 import useAuthState from "@hooks/useAuthState"
+import useWindowSize from "@hooks/useWindowSize"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { useNavigate } from "react-router-dom"
-import useWindowSize from "@hooks/useWindowSize"
-import MyWalletMobile from "./MyWalletMobile"
 import MyWalletDesktop from "./MyWalletDesktop"
-import useAuthAction from "@hooks/useAuthAction"
+import MyWalletMobile from "./MyWalletMobile"
 
 interface MyWalletProps {
   onClose: () => void

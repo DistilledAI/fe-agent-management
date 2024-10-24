@@ -5,12 +5,15 @@ import { FormProvider, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { createBot } from "services/chat"
 import { mapMyDataToBot } from "services/user"
+import CollectingModal from "../Modal/CreatPrivateAgentModal/CollectingModal"
 import FYIModal from "../Modal/FYIModal"
 
 const MainContainerCreate: React.FC<{
   children: React.ReactNode
-}> = ({ children }) => {
+  setCreated?: any
+}> = ({ children, setCreated }) => {
   const [openFYIPopup, setOpenFYIPopupp] = useState<boolean>(false)
+  const [openCollectingPopup, setOpenCollectingPopup] = useState<boolean>(false)
   const methods = useForm<any>({
     defaultValues: {
       uploadCV: [],
@@ -19,17 +22,22 @@ const MainContainerCreate: React.FC<{
       photosVideos: [],
     },
   })
+  const values = methods.getValues()
+  const uploadCVValues = values.uploadCV.length > 0 ? values.uploadCV : []
+  const uploadSocialLinkValues =
+    values.uploadSocialLink.length > 0 ? values.uploadSocialLink : []
+  const uploadPDFsValues = values.uploadPDFs.length > 0 ? values.uploadPDFs : []
+  const photosVideosValues =
+    values.photosVideos.length > 0 ? values.photosVideos : []
+
+  const isDisabled =
+    uploadCVValues.length > 0 ||
+    uploadSocialLinkValues.length > 0 ||
+    uploadPDFsValues.length > 0 ||
+    photosVideosValues.length > 0
 
   const onSubmit = async () => {
-    const values = methods.getValues()
-    const uploadCVValues = values.uploadCV.length > 0 ? values.uploadCV : []
-    const uploadSocialLinkValues =
-      values.uploadSocialLink.length > 0 ? values.uploadSocialLink : []
-    const uploadPDFsValues =
-      values.uploadPDFs.length > 0 ? values.uploadPDFs : []
-    const photosVideosValues =
-      values.photosVideos.length > 0 ? values.photosVideos : []
-
+    setOpenCollectingPopup(true)
     const payloadData = [
       ...uploadCVValues,
       ...uploadSocialLinkValues,
@@ -45,12 +53,16 @@ const MainContainerCreate: React.FC<{
           botId,
           data: payloadData,
         }
-        const response = await mapMyDataToBot(payload)
-        console.log("🚀 ~ onSubmit ~ response:", response)
+        await mapMyDataToBot(payload)
         toast.success("created bot successfully")
+        setOpenCollectingPopup(false)
+        setCreated(true)
       }
     } catch (error) {
       console.log("error", error)
+      setOpenCollectingPopup(false)
+    } finally {
+      setOpenCollectingPopup(false)
     }
   }
 
@@ -80,6 +92,7 @@ const MainContainerCreate: React.FC<{
               <Button
                 className="h-[44px] rounded-full bg-mercury-950 text-white max-sm:h-[36px]"
                 onClick={() => onSubmit()}
+                isDisabled={!isDisabled}
               >
                 <span className="">Connect data</span>
               </Button>
@@ -88,6 +101,10 @@ const MainContainerCreate: React.FC<{
         </div>
       </FormProvider>
       <FYIModal openPopup={openFYIPopup} setOpenPopup={setOpenFYIPopupp} />
+      <CollectingModal
+        openPopup={openCollectingPopup}
+        setOpenPopup={setOpenCollectingPopup}
+      />
     </>
   )
 }

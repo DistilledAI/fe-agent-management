@@ -8,7 +8,6 @@ import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { useEffect, useState } from "react"
 import { getMyPrivateAgent } from "services/chat"
 // import AgentDescription from "./Description"
-import { brainAIIcon } from "@assets/svg"
 import { STATUS_AGENT } from "@constants/index"
 import ShareAgent from "./ShareAgent"
 
@@ -107,7 +106,7 @@ const PrivateAgent: React.FC = () => {
         </div>
       </div> */}
 
-      <div className="flex items-center justify-between gap-2 max-md:flex-col">
+      <div className="flex items-center justify-between gap-2">
         <ShareAgent agentData={firstBot} isDisabled={isPending || !firstBot} />
         <Button
           className="flex w-full rounded-full bg-mercury-100 max-md:min-h-14"

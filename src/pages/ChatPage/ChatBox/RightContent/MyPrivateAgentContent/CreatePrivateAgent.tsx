@@ -26,8 +26,8 @@ export const TYPE_DATA_KEY = {
 const CreatePrivateAgent: React.FC<{
   connectWalletLoading: boolean
   connectWallet: any
-  setCreated?: any
-}> = ({ connectWalletLoading, connectWallet }) => {
+  setCreated: any
+}> = ({ connectWalletLoading, connectWallet, setCreated }) => {
   const { isLogin, sessionAccessToken } = useAuthState()
   const { isMobile } = useWindowSize()
   const [socialUrls, setSocialUrls] = useState<string[]>([])
@@ -191,7 +191,9 @@ const CreatePrivateAgent: React.FC<{
   }
 
   return (
-    <MainContainerCreate>{renderContainerCreateContent()}</MainContainerCreate>
+    <MainContainerCreate setCreated={setCreated}>
+      {renderContainerCreateContent()}
+    </MainContainerCreate>
   )
 }
 

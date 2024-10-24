@@ -1,9 +1,10 @@
+import { brainAIIcon } from "@assets/svg"
 import ChatWindow from "@components/ChatWindow"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
 import { useParams } from "react-router-dom"
+import ChatInput from "../../ChatInput"
 import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
-import { brainAIIcon } from "@assets/svg"
 import useFetchMessages from "../../ChatMessages/useFetchMessages"
 
 const PrivateAgentChatContent: React.FC = () => {
@@ -35,14 +36,20 @@ const PrivateAgentChatContent: React.FC = () => {
   }
 
   return (
-    <ChatWindow
-      messages={messages}
-      itemContent={renderMessage}
-      loading={loading}
-      onLoadPrevMessages={onLoadPrevMessages}
-      chatId={privateChatId}
-      isFetched={isFetched}
-    />
+    <>
+      <ChatWindow
+        messages={messages}
+        itemContent={renderMessage}
+        loading={loading}
+        onLoadPrevMessages={onLoadPrevMessages}
+        chatId={privateChatId}
+        isFetched={isFetched}
+      />
+      <ChatInput
+        isDisabledInput={false}
+        wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
+      />
+    </>
   )
 }
 export default PrivateAgentChatContent

@@ -6,6 +6,7 @@ import { Upload } from "antd"
 import { UploadFileStatus } from "antd/es/upload/interface"
 import { useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
+import { Link } from "react-router-dom"
 import { toast } from "react-toastify"
 import { uploadMyData } from "services/user"
 import { styled } from "styled-components"
@@ -25,9 +26,9 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
   label,
   accept = ".doc,.docx,application/pdf",
 }) => {
-  const [fileList, setFileList] = useState<UploadFile[]>([])
   const { control, setValue, getValues } = useFormContext()
   const uploadCVValue = getValues(fieldkey)
+  const [fileList, setFileList] = useState<UploadFile[]>([])
 
   const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>
     setFileList(newFileList)
@@ -67,6 +68,10 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
     error: <TrashXIcon />,
   }
 
+  const handleRemoveFile = (record: any) => {
+    console.log("🚀 ~ handleRemoveFile ~ record:", record)
+  }
+
   return (
     <Controller
       name="uploadCV"
@@ -94,15 +99,33 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
           {fileList.length > 0 && (
             <div className="flex max-h-[150px] flex-col overflow-auto p-3">
               {fileList.map((item: any) => {
+                const isError = item?.status === "error"
+
                 return (
                   <div
                     className="mb-3 grid w-full grid-cols-8 items-center gap-3"
                     key={item.uid}
                   >
-                    <div className="col-span-7">
-                      <span className="text-base-14-sb">{item.name}</span>
-                    </div>
-                    <div className="cursor-pointer">
+                    {isError ? (
+                      <div className="group col-span-7">
+                        <span className="text-base-14-sb text-[#FF3B30]">
+                          {item.name}
+                        </span>
+                      </div>
+                    ) : (
+                      <Link
+                        target="_blank"
+                        to={item?.value}
+                        className="col-span-7 hover:underline"
+                      >
+                        <span className="text-base-14-sb">{item.name}</span>
+                      </Link>
+                    )}
+
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => handleRemoveFile(item)}
+                    >
                       {mapIconFromStatus?.[item?.status]}
                     </div>
                   </div>

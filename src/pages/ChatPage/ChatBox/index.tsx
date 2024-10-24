@@ -1,4 +1,3 @@
-import { desktopPrivateAgent } from "@assets/images"
 import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
 import { useEffect } from "react"
@@ -25,25 +24,19 @@ const ChatBox = () => {
   return (
     <div className="relative h-full max-h-dvh w-full">
       {(isLogin && chatId) || inviteUserId ? (
-        <ChatMessages />
-      ) : (
-        <div
-          className="relative mx-auto h-full w-full flex-1 rounded-[22px] border border-white bg-white bg-cover bg-center bg-no-repeat font-barlow"
-          style={{
-            backgroundImage: `url(${desktopPrivateAgent})`,
-          }}
-        >
-          <MyPrivateAgentContent
-            connectWalletLoading={loading}
-            connectWallet={connectWallet}
+        <>
+          <ChatMessages />
+          <ChatInput
+            isDisabledInput={!isEnableTextInput}
+            wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
           />
-        </div>
+        </>
+      ) : (
+        <MyPrivateAgentContent
+          connectWalletLoading={loading}
+          connectWallet={connectWallet}
+        />
       )}
-
-      <ChatInput
-        isDisabledInput={!isEnableTextInput}
-        wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
-      />
     </div>
   )
 }

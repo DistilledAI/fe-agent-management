@@ -1,3 +1,4 @@
+import { desktopPrivateAgent } from "@assets/images"
 import DotLoading from "@components/DotLoading"
 import { envConfig } from "@configs/env"
 import { PATH_NAMES } from "@constants/index"
@@ -73,11 +74,18 @@ const MyPrivateAgentContent: React.FC<{
   if (privateAgentData) return <PrivateAgentChatContent />
 
   return (
-    <CreatePrivateAgent
-      connectWalletLoading={connectWalletLoading}
-      connectWallet={connectWallet}
-      setCreated={setCreated}
-    />
+    <div
+      className="relative mx-auto h-full w-full flex-1 rounded-[22px] border border-white bg-white bg-cover bg-center bg-no-repeat font-barlow"
+      style={{
+        backgroundImage: `url(${desktopPrivateAgent})`,
+      }}
+    >
+      <CreatePrivateAgent
+        connectWalletLoading={connectWalletLoading}
+        connectWallet={connectWallet}
+        setCreated={setCreated}
+      />
+    </div>
   )
 }
 export default MyPrivateAgentContent
