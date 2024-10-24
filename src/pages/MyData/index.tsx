@@ -22,7 +22,7 @@ const MyData: React.FC = () => {
   const lastCollected = getTimeLastCollected(list)
 
   return (
-    <div className="mx-auto max-w-[800px] px-4 py-5 max-sm:bg-mercury-70 max-sm:pt-[70px]">
+    <div className="mx-auto max-w-[800px] px-4 py-5 max-sm:min-h-dvh max-sm:bg-mercury-70 max-sm:pt-[70px]">
       {isMobile ? (
         <div className="fixed left-0 top-0 z-[1] flex h-[55px] w-full items-center justify-between bg-white px-4">
           <Button
