@@ -1,4 +1,3 @@
-import Marketplace from "@pages/Marketplace"
 import MyEcho from "./MyEcho"
 import Playground from "./Playground"
 import PrivateAI from "./PrivateAI"
@@ -6,12 +5,13 @@ import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
 import SidebarCollapsed from "./SidebarCollapsed"
 import { useAppSelector } from "@hooks/useAppRedux"
 import { twMerge } from "tailwind-merge"
+import ButtonMarketplace from "@pages/Marketplace/ButtonMarketplace"
 
 const LeftBar = () => {
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
 
   return (
-    <>
+    <div>
       <div
         className={twMerge(
           "h-dvh w-[329px] transition-all duration-300 ease-in-out",
@@ -48,11 +48,11 @@ const LeftBar = () => {
             )}
           >
             <Playground />
-            <Marketplace />
+            <ButtonMarketplace />
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 export default LeftBar

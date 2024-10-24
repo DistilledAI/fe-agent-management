@@ -1,12 +1,19 @@
 import { ReactElement } from "react"
+import { twMerge } from "tailwind-merge"
 
 const ComingSoon: React.FC<{
   children?: ReactElement | string
   content?: ReactElement | string
   position?: "right" | "top"
-}> = ({ children, content = "Coming Soon", position = "top" }) => {
+  wrapperClassName?: string
+}> = ({
+  children,
+  content = "Coming Soon",
+  position = "top",
+  wrapperClassName,
+}) => {
   return (
-    <div className="group relative z-[1] w-full">
+    <div className={twMerge("group relative z-[1] w-full", wrapperClassName)}>
       {position === "top" ? (
         <div
           style={{ boxShadow: "2px 2px 7px rgba(0, 0, 0, 0.2)" }}

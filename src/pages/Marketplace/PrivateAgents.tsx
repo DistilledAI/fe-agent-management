@@ -10,11 +10,7 @@ import { useNavigate } from "react-router-dom"
 import { searchUsers } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 
-interface PrivateAgentsProps {
-  onClose: () => void
-}
-
-const PrivateAgents = ({ onClose }: PrivateAgentsProps) => {
+const PrivateAgents = () => {
   const navigate = useNavigate()
   const { user } = useAuthState()
 
@@ -26,7 +22,6 @@ const PrivateAgents = ({ onClose }: PrivateAgentsProps) => {
 
       navigate(inviteUrl)
     }
-    onClose()
   }
 
   const fetchPrivateAgents = async () => {
@@ -52,7 +47,7 @@ const PrivateAgents = ({ onClose }: PrivateAgentsProps) => {
 
   return agents.map((agent, index) => (
     <div
-      className="flex cursor-pointer justify-between gap-6 rounded-[22px] border-b border-b-mercury-70 p-2 last:border-none hover:bg-mercury-200"
+      className="flex cursor-pointer justify-between rounded-[22px] border-b border-b-mercury-70 p-2 last:border-none hover:bg-mercury-200 md:border-b-[0px]"
       key={index}
       onClick={() => handleChatWithAgent(agent)}
     >
