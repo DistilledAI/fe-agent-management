@@ -11,7 +11,8 @@ import FYIModal from "../Modal/FYIModal"
 const MainContainerCreate: React.FC<{
   children: React.ReactNode
   setCreated?: any
-}> = ({ children, setCreated }) => {
+  botId?: number | string
+}> = ({ children, setCreated, botId }) => {
   const [openFYIPopup, setOpenFYIPopupp] = useState<boolean>(false)
   const [openCollectingPopup, setOpenCollectingPopup] = useState<boolean>(false)
   const methods = useForm<any>({
@@ -46,11 +47,19 @@ const MainContainerCreate: React.FC<{
     ]
 
     try {
-      const createBotResponse = await createBot({ name: "Unnamed" })
-      if (createBotResponse) {
-        const botId = createBotResponse?.data?.id
+      if (botId) {
         const payload = {
           botId,
+          data: payloadData,
+        }
+        return await mapMyDataToBot(payload)
+      }
+
+      const createBotResponse = await createBot({ name: "Unnamed" })
+      if (createBotResponse) {
+        const botIdResponse = createBotResponse?.data?.id
+        const payload = {
+          botIdResponse,
           data: payloadData,
         }
         await mapMyDataToBot(payload)
@@ -58,7 +67,8 @@ const MainContainerCreate: React.FC<{
         setOpenCollectingPopup(false)
         setCreated(true)
       }
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message)
       console.log("error", error)
       setOpenCollectingPopup(false)
     } finally {
