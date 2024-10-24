@@ -8,7 +8,5 @@ export const getBotDataByKey = (key: BotDataTypeKey, data: IBotData[]) => {
 
 export const getTimeLastCollected = (data: IBotData[]) => {
   const time = data[0]?.createdAt
-  return time
-    ? moment(time).startOf("day").fromNow()
-    : "You have not collected any data yet"
+  return time ? moment(time).fromNow() : "You have not collected any data yet"
 }
