@@ -10,11 +10,10 @@ const useAuthAction = () => {
   const logout = () => {
     dispatch(logoutSlice())
     const ignoreKeys = [QueryDataKeys.PRIVATE_AGENTS_MKL]
-    queryClient.removeQueries({
-      queryKey: Object.values(QueryDataKeys).filter(
-        (key) => !ignoreKeys.includes(key),
-      ),
-    })
+    const removeList = Object.values(QueryDataKeys).filter(
+      (key) => !ignoreKeys.includes(key),
+    )
+    removeList.forEach((key) => queryClient.removeQueries({ queryKey: [key] }))
   }
 
   return { logout }
