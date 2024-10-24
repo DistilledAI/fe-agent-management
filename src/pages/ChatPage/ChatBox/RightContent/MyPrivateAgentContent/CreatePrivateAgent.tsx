@@ -9,7 +9,6 @@ import { PhotoPlusIcon } from "@components/Icons/PhotoPlusIcon"
 import { SocialLinkIcon, ThreeDotsIcon } from "@components/Icons/SocialLinkIcon"
 import useAuthState from "@hooks/useAuthState"
 import useWindowSize from "@hooks/useWindowSize"
-import { useState } from "react"
 import IntroVideo from "../Modal/CreatPrivateAgentModal/IntroVideo"
 import UploadDataButton from "../UploadDataButton"
 import MainContainerCreate from "./MainContainerCreate"
@@ -30,7 +29,6 @@ const CreatePrivateAgent: React.FC<{
 }> = ({ connectWalletLoading, connectWallet, setCreated }) => {
   const { isLogin, sessionAccessToken } = useAuthState()
   const { isMobile } = useWindowSize()
-  const [socialUrls, setSocialUrls] = useState<string[]>([])
 
   const renderCreateAccountAction = () => {
     if (connectWalletLoading)
@@ -152,10 +150,7 @@ const CreatePrivateAgent: React.FC<{
         <div className="">
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <UploadSocialLink
-                socialUrls={socialUrls}
-                setSocialUrls={setSocialUrls}
-              />
+              <UploadSocialLink />
               <UploadCustom
                 fieldkey="uploadCV"
                 fileKey={TYPE_DATA_KEY.CV_FILE}

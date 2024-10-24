@@ -1,8 +1,10 @@
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { Button } from "@nextui-org/react"
+import { useEffect } from "react"
 import { useFormContext } from "react-hook-form"
 import { toast } from "react-toastify"
 import { uploadMyData } from "services/user"
+import { v4 as uuidv4 } from "uuid"
 import { TYPE_DATA_KEY } from "../../MyPrivateAgentContent/CreatePrivateAgent"
 import { PROFILE_TYPE } from "./ProfileLinkForm"
 import TextCreepingTranferData from "./TextCreepingTranferData"
@@ -36,15 +38,8 @@ const TranferDataContent: React.FC<{
 
   const uploadSocialLinkValue = getValues("uploadSocialLink")
 
-  const onCloseModal = () => {
-    setContentStep(1)
-    setOpenPopup(false)
-  }
-
   const handleSubmit = async () => {
-    handlemSetSocialUrls(profileLink)
-    onCloseModal()
-
+    const uid = uuidv4()
     try {
       const payload = {
         [profileType]: profileLink,
@@ -58,13 +53,33 @@ const TranferDataContent: React.FC<{
             ? [...uploadSocialLinkValue, data?.id]
             : [data?.id]
         setValue("uploadSocialLink", newData)
+        handlemSetSocialUrls({
+          status: "done",
+          link: profileLink,
+          id: data?.id,
+          uid,
+        })
         toast.success(`${profileLink} uploaded successfully.`)
       }
     } catch (error) {
+      handlemSetSocialUrls({
+        status: "error",
+        link: profileLink,
+        uid,
+      })
       console.error(error)
       toast.error(`${profileLink} failed to upload.`)
     }
   }
+
+  const onCloseModal = () => {
+    setContentStep(1)
+    setOpenPopup(false)
+  }
+
+  useEffect(() => {
+    handleSubmit()
+  }, [])
 
   return (
     <div className="grid h-fit w-[800px] grid-cols-2 max-sm:w-full max-sm:grid-cols-none">
@@ -97,7 +112,7 @@ const TranferDataContent: React.FC<{
           <Button
             className="mt-4 w-full rounded-full bg-mercury-950"
             size="lg"
-            onClick={() => handleSubmit()}
+            onClick={() => onCloseModal()}
           >
             <span className="text-18 text-mercury-30">Got it!</span>
           </Button>
