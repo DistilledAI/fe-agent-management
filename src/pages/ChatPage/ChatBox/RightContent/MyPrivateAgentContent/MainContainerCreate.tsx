@@ -52,18 +52,21 @@ const MainContainerCreate: React.FC<{
           botId,
           data: payloadData,
         }
-        return await mapMyDataToBot(payload)
+        await mapMyDataToBot(payload)
+        toast.success("Created bot successfully")
+        setCreated(true)
+        return
       }
 
       const createBotResponse = await createBot({ name: "Unnamed" })
       if (createBotResponse) {
         const botIdResponse = createBotResponse?.data?.id
         const payload = {
-          botIdResponse,
+          botId: botIdResponse,
           data: payloadData,
         }
         await mapMyDataToBot(payload)
-        toast.success("created bot successfully")
+        toast.success("Created bot successfully")
         setOpenCollectingPopup(false)
         setCreated(true)
       }

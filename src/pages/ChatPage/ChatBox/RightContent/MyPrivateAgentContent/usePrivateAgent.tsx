@@ -11,7 +11,7 @@ export const PRIVATE_AGENT_STATUS = {
 const usePrivateAgent = () => {
   const [listBot, setListBot] = useState<any[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const firstBot = listBot?.[listBot?.length - 1]
+  const firstBot = listBot?.[0]
 
   const callGetMyPrivateAgent = async () => {
     try {

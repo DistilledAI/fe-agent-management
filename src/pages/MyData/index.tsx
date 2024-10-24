@@ -14,7 +14,7 @@ import CvData from "./Cv"
 const MyData: React.FC = () => {
   const { isMobile } = useWindowSize()
   const navigate = useNavigate()
-  const { list, isLoading, isFetched } = useFetchMyData()
+  const { list, isLoading, isFetched, botId } = useFetchMyData()
   const socialData = getBotDataByKey(BotDataTypeKey.SOCIAL_MEDIA, list)
   const cvData = getBotDataByKey(BotDataTypeKey.CV_FILE, list)
   const pdfData = getBotDataByKey(BotDataTypeKey.PDF_FILE, list)
@@ -34,7 +34,7 @@ const MyData: React.FC = () => {
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-base font-bold text-mercury-900">
             My Data
           </div>
-          <AddData />
+          <AddData botId={botId} />
         </div>
       ) : (
         <div className="mb-10 flex items-center justify-between">
@@ -47,7 +47,7 @@ const MyData: React.FC = () => {
               </span>
             </div>
           </div>
-          <AddData />
+          <AddData botId={botId} />
         </div>
       )}
       {list.length > 0 && (
