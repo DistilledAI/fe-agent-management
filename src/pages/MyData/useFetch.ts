@@ -12,10 +12,9 @@ const useFetchMyData = () => {
   const botId = privateAgentData?.id
 
   const { data, isLoading, isFetched, refetch } = useQuery({
-    queryKey: [`${QueryDataKeys.MY_BOT_DATA}-${botId}`, botId],
+    queryKey: [`${QueryDataKeys.MY_BOT_DATA}-${botId}`],
     queryFn: () => getMyBotData(botId),
     enabled: !!botId && isLogin,
-    staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   })
 
@@ -25,7 +24,7 @@ const useFetchMyData = () => {
     callGetMyPrivateAgent()
   }, [])
 
-  return { list, isLoading, isFetched, refetch }
+  return { list, isLoading, isFetched, refetch, botId }
 }
 
 export default useFetchMyData

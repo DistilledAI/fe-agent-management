@@ -51,6 +51,7 @@ const AppRouter = () => {
           path={`${PATH_NAMES.ADD_MY_DATA}/:botId`}
           element={<AddMyData />}
         />
+        <Route path={PATH_NAMES.ADD_MY_DATA} element={<AddMyData />} />
         {isMobile && (
           <>
             <Route

@@ -1,5 +1,5 @@
 import HeadSectionData from "../Components/HeadSectionData"
-import { EditPenFilledIcon } from "@components/Icons/Edit"
+// import { EditPenFilledIcon } from "@components/Icons/Edit"
 import { DeleteIcon } from "@components/Icons/Delete"
 import TableData from "../Components/TableData"
 import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
@@ -57,9 +57,9 @@ const FileData: React.FC<{
       case ColumnKey.Action:
         return (
           <div className="flex items-center gap-4">
-            <div className="cursor-pointer hover:opacity-70">
+            {/* <div className="cursor-pointer hover:opacity-70">
               <EditPenFilledIcon color="#545454" />
-            </div>
+            </div> */}
             <div className="cursor-pointer hover:opacity-70">
               <DeleteIcon />
             </div>
