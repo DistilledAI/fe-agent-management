@@ -30,8 +30,12 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
   const uploadCVValue = getValues(fieldkey)
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
-  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>
-    setFileList(newFileList)
+  const handleChange: UploadProps["onChange"] = ({ fileList }) => {
+    const fileListDone = fileList.filter((item) => item?.status === "done")
+    const newFileListDone = fileListDone.map((item) => item?.response?.id)
+    setValue(fieldkey, newFileListDone)
+    setFileList(fileList)
+  }
 
   const handleCustomRequest = async (options: any) => {
     const { onSuccess, onError, file } = options
@@ -41,11 +45,7 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
     try {
       const response = await uploadMyData(formData)
       if (response) {
-        const fileId = response?.data?.[0]?.id
         onSuccess(response?.data?.[0])
-        const newData =
-          uploadCVValue.length > 0 ? [...uploadCVValue, fileId] : [fileId]
-        setValue(fieldkey, newData)
         toast.success(`${file.name} uploaded successfully.`)
       }
     } catch (error) {
@@ -69,7 +69,17 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
   }
 
   const handleRemoveFile = (record: any) => {
-    console.log("🚀 ~ handleRemoveFile ~ record:", record)
+    //set submit value
+    const newUploadCVValue = uploadCVValue?.filter(
+      (item: number) => item !== record?.response?.id,
+    )
+    setValue(fieldkey, newUploadCVValue)
+
+    //set display value
+    const newFileList = fileList?.filter(
+      (item: any) => item.uid !== record?.uid,
+    )
+    setFileList(newFileList)
   }
 
   return (

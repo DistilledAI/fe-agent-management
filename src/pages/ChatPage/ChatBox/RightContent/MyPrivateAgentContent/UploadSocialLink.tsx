@@ -5,20 +5,29 @@ import { Controller, useFormContext } from "react-hook-form"
 import CreatPrivateAgentModal from "../Modal/CreatPrivateAgentModal"
 import UploadDataButton from "../UploadDataButton"
 
-interface UploadSocialLinkProps {
-  socialUrls: any
-  setSocialUrls: any
-}
-
-const UploadSocialLink: React.FC<UploadSocialLinkProps> = ({
-  socialUrls,
-  setSocialUrls,
-}) => {
+const UploadSocialLink = () => {
+  const [socialUrls, setSocialUrls] = useState<string[]>([])
   const [openPopup, setOpenPopup] = useState<boolean>(false)
-  const { control } = useFormContext()
+  const { control, getValues, setValue } = useFormContext()
+  const fieldkey = "uploadSocialLink"
 
   const handlemSetSocialUrls = (newUrl: string) => {
     setSocialUrls([...socialUrls, newUrl])
+  }
+
+  const handleRemoveLink = (record: any) => {
+    const uploadSocialLinkValue = getValues(fieldkey)
+    //set submit value
+    const newUploadSocialLinkValue = uploadSocialLinkValue?.filter(
+      (item: number) => item !== record?.id,
+    )
+    setValue(fieldkey, newUploadSocialLinkValue)
+
+    //set display value
+    const newFileList = socialUrls?.filter(
+      (item: any) => item.uid !== record?.uid,
+    )
+    setSocialUrls(newFileList)
   }
 
   return (
@@ -42,9 +51,12 @@ const UploadSocialLink: React.FC<UploadSocialLinkProps> = ({
                     key={index}
                   >
                     <div className="col-span-7">
-                      <span className="text-base-14-sb">{item}</span>
+                      <span className="text-base-14-sb">{item?.link}</span>
                     </div>
-                    <div className="cursor-pointer">
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => handleRemoveLink(item)}
+                    >
                       <TrashXIcon />
                     </div>
                   </div>
