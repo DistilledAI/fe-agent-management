@@ -8,6 +8,7 @@ import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { useEffect, useState } from "react"
 import { getMyPrivateAgent } from "services/chat"
 // import AgentDescription from "./Description"
+import { brainAIIcon } from "@assets/svg"
 import { STATUS_AGENT } from "@constants/index"
 import ShareAgent from "./ShareAgent"
 
