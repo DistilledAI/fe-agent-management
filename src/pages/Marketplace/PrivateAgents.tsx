@@ -47,7 +47,7 @@ const PrivateAgents = () => {
 
   return agents.map((agent, index) => (
     <div
-      className="flex cursor-pointer justify-between rounded-[22px] border-b border-b-mercury-70 p-2 last:border-none hover:bg-mercury-200 md:border-b-[0px]"
+      className="flex h-fit cursor-pointer justify-between rounded-[22px] border-b border-b-mercury-70 p-2 last:border-none hover:bg-mercury-200 md:border-b-[0px]"
       key={index}
       onClick={() => handleChatWithAgent(agent)}
     >

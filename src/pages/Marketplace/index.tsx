@@ -4,158 +4,145 @@ import PrivateAgents from "./PrivateAgents"
 import Productivity from "./Productivity"
 import { twMerge } from "tailwind-merge"
 import ComingSoon from "@components/ComingSoon"
+import { ScrollShadow } from "@nextui-org/react"
+import useScrollTabActive from "./useScrollTabActive"
 
 const Marketplace = () => {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const sectionsRefs = useRef<(HTMLDivElement | null)[]>([])
-  const [activeCategoryIndex, setActiveCategoryIndex] = useState(0)
-  const [isNavAction, setIsNavAction] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (isNavAction) return
-      sectionsRefs.current.forEach((section, index) => {
-        if (section) {
-          const rect = section.getBoundingClientRect()
-          const inView =
-            rect.top >= 0 && rect.bottom <= window.innerHeight - 200
-          if (inView) {
-            setActiveCategoryIndex(index)
-          }
-        }
-      })
-    }
-
-    window.addEventListener("scroll", handleScroll)
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [isNavAction])
-
-  const scrollToSection = (index: number) => {
-    setIsNavAction(true)
-    setTimeout(() => {
-      setIsNavAction(false)
-    }, 2000)
-    setActiveCategoryIndex(index)
-    sectionsRefs.current[index]?.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-    })
-  }
+  const [slider, setSlider] = useState(0)
 
   const CATEGORIES = [
     {
-      key: "private-agents",
+      id: "private-agents",
       name: "Private agents",
       component: <PrivateAgents />,
       isComing: false,
     },
     {
-      key: "productivity",
+      id: "productivity",
       name: "Productivity",
       component: <Productivity />,
       isComing: true,
     },
     {
-      key: "gen-ai-tools",
+      id: "gen-ai-tools",
       name: "GenAI Tools",
       component: <GenAITools />,
       isComing: true,
     },
     {
-      key: "learning",
+      id: "learning",
       name: "Learning",
-      component: <div className="text-base-md h-[300px]">Coming soon...</div>,
+      component: <div className="text-base-md">Coming soon...</div>,
       isComing: false,
     },
     {
-      key: "wellness",
+      id: "wellness",
       name: "Wellness",
-      component: <div className="text-base-md h-[300px]">Coming soon...</div>,
+      component: <div className="text-base-md">Coming soon...</div>,
       isComing: false,
     },
     {
-      key: "search-engine",
+      id: "search-engine",
       name: "Search engine",
-      component: <div className="text-base-md h-[300px]">Coming soon...</div>,
+      component: <div className="text-base-md">Coming soon...</div>,
       isComing: false,
     },
     {
-      key: "foundational-access",
+      id: "foundational-access",
       name: "Foundational access",
-      component: <div className="text-base-md h-[300px]">Coming soon...</div>,
+      component: <div className="text-base-md">Coming soon...</div>,
       isComing: false,
     },
     {
-      key: "sns",
+      id: "sns",
       name: "SNS",
-      component: <div className="text-base-md h-[300px]">Coming soon...</div>,
+      component: <div className="text-base-md">Coming soon...</div>,
       isComing: false,
     },
     {
-      key: "finance",
+      id: "finance",
       name: "Finance",
-      component: <div className="text-base-md h-[300px]">Coming soon...</div>,
+      component: <div className="text-base-md">Coming soon...</div>,
       isComing: false,
     },
     {
-      key: "characters-org",
+      id: "characters-org",
       name: "Characters & Org",
-      component: <div className="text-base-md h-[300px]">Coming soon...</div>,
+      component: <div className="text-base-md">Coming soon...</div>,
       isComing: false,
     },
   ]
 
+  const { activeId, handleTabClick } = useScrollTabActive({ items: CATEGORIES })
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (slider >= 3 && containerRef.current) {
+      containerRef.current.scrollTo({
+        left: containerRef.current.scrollLeft + 300,
+        behavior: "smooth",
+      })
+    }
+    if (slider <= 2 && containerRef.current) {
+      containerRef.current.scrollTo({
+        left: containerRef.current.scrollLeft - 300,
+        behavior: "smooth",
+      })
+    }
+  }, [slider])
+
   return (
     <>
-      <div className="sticky top-[68px] z-10 space-y-4 bg-white pb-4 pt-2">
-        <h3 className="text-center text-24 font-semibold text-mercury-950">
-          Marketplace
-        </h3>
-        <div
-          className="fixed z-10 flex items-center gap-3 overflow-hidden overflow-x-scroll whitespace-nowrap bg-white/85 px-4 backdrop-blur-[10px] scrollbar-hide md:static"
+      <div className="sticky top-[68px] z-10 flex flex-col items-center space-y-4 bg-white pb-4 pt-2">
+        <h3 className="text-24 font-semibold text-mercury-950">Marketplace</h3>
+        <ScrollShadow
+          hideScrollBar
+          size={80}
+          orientation="horizontal"
+          className="z-10 flex max-w-full items-center gap-3 overflow-x-auto whitespace-nowrap bg-white/85 px-4 backdrop-blur-[10px]"
           ref={containerRef}
         >
           {CATEGORIES.map((category, index) => (
             <button
               type="button"
-              key={category.key}
+              key={category.id}
               id={`category-button-${index}`}
+              onClick={() => {
+                setSlider(index)
+                handleTabClick(category.id)
+              }}
               className={twMerge(
-                "h-11 flex-shrink-0 rounded-full bg-white px-4 text-[16px] text-mercury-900 transition-all duration-500 ease-in-out",
-                activeCategoryIndex === index && "bg-mercury-900 text-white",
+                "h-11 flex-shrink-0 rounded-full bg-mercury-50 px-4 text-[18px] text-mercury-900 transition-all duration-500 ease-linear",
+                activeId === category.id && "bg-mercury-950 text-white",
               )}
-              onClick={() => scrollToSection(index)}
             >
               {category.name}
             </button>
           ))}
-        </div>
+        </ScrollShadow>
       </div>
 
       <div className="mx-auto flex h-full w-full max-w-[768px] flex-col gap-y-6 overflow-hidden px-4 max-md:pb-20 md:items-center">
         {CATEGORIES.map((category, index) => (
           <div
             className="w-full space-y-3 transition-all duration-500 ease-in-out"
-            id={`category-section-${index}`}
-            key={`${category.key}-${index}`}
-            ref={(el) => (sectionsRefs.current[index] = el)}
+            key={`${category.id}-${index}`}
           >
             <h5
               className={twMerge(
                 "text-[18px] text-mercury-900",
-                activeCategoryIndex === index && "font-medium text-mercury-950",
+                activeId === category.id && "font-semibold text-mercury-950",
               )}
+              id={category.id}
             >
               {category.name}
             </h5>
             <div
               className={twMerge(
-                "grid grid-cols-2 justify-between gap-x-20 gap-y-6 overflow-y-auto rounded-[22px] bg-mercury-30 px-1 py-3 md:px-2 md:py-4",
+                "grid min-h-[25dvh] grid-cols-2 justify-between gap-x-20 gap-y-6 overflow-y-auto rounded-[22px] bg-mercury-30 px-1 py-3 md:px-2 md:py-4",
                 category.isComing && "overflow-y-visible",
               )}
+              style={{ gridAutoRows: "max-content" }}
             >
               {category.isComing ? (
                 <ComingSoon wrapperClassName="col-span-2">

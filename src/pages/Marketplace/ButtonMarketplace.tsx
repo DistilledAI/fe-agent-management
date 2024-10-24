@@ -1,7 +1,7 @@
 import { FilledSquareCircleIcon } from "@components/Icons/FilledSquareCircleIcon"
 import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
-import { Button } from "antd"
+import { Button } from "@nextui-org/react"
 import { useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 
