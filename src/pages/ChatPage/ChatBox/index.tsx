@@ -20,7 +20,7 @@ const ChatBox = () => {
 
   useEffect(() => {
     if (chatId && !isLogin) navigate("/")
-  }, [isLogin, chatId, navigate])
+  }, [isLogin, chatId])
 
   return (
     <div className="relative h-full max-h-dvh w-full">

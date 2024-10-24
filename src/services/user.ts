@@ -38,3 +38,10 @@ export const mapMyDataToBot = async (data: any) => {
     data,
   })
 }
+
+export const getMyBotData = async (botId: number) => {
+  return fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_MY_BOT_DATA(botId),
+  })
+}

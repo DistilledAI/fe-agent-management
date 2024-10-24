@@ -14,7 +14,7 @@ const HeadSectionData: React.FC<{
           {title}
         </span>
       </div>
-      <div className="inline-flex cursor-pointer items-center gap-1 hover:opacity-70">
+      <div className="hidden cursor-pointer items-center gap-1 hover:opacity-70">
         <PlusIcon />
         <span className="text-base font-medium text-brown-10 max-sm:text-15">
           {addTitle}

@@ -26,7 +26,7 @@ export const TYPE_DATA_KEY = {
 const CreatePrivateAgent: React.FC<{
   connectWalletLoading: boolean
   connectWallet: any
-  setCreated: any
+  setCreated?: any
 }> = ({ connectWalletLoading, connectWallet }) => {
   const { isLogin, sessionAccessToken } = useAuthState()
   const { isMobile } = useWindowSize()

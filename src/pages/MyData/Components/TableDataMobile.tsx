@@ -1,4 +1,5 @@
 import { DotFilledIcon } from "@components/Icons/DotIcon"
+import moment from "moment"
 import React from "react"
 
 interface ITableData {
@@ -30,7 +31,7 @@ const TableDataMobile: React.FC<{
                 {item.value}
               </p>
               <p className="m-0 text-14 text-base text-mercury-600">
-                {item.createdAt}
+                {moment(item.createdAt).format("ll")}
               </p>
             </div>
             <div className="flex w-[50px] justify-end">

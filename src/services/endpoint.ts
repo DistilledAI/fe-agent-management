@@ -35,6 +35,7 @@ const endpoint = {
   //my data
   UPLOAD_MY_DATA: withBaseURL("/my-data/upload"),
   MAP_MY_DATA_TO_BOT: withBaseURL("/my-data/map-bot"),
+  GET_MY_BOT_DATA: (botId: number) => withBaseURL(`/my-data/list/${botId}`),
 }
 
 export default endpoint

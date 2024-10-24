@@ -5,26 +5,14 @@ import TableData from "../Components/TableData"
 import { EmailUpIcon } from "@components/Icons/EmailUpIcon"
 import useWindowSize from "@hooks/useWindowSize"
 import TableDataMobile from "../Components/TableDataMobile"
-
-const rows = [
-  {
-    key: "1",
-    name: "byharryle@gmail.com",
-    type: "Gmail",
-    date: "Oct 8, 2024",
-  },
-  {
-    key: "2",
-    name: "me.harryle@gmail.com",
-    type: "Gmail",
-    date: "Oct 8, 2024",
-  },
-]
+import React from "react"
+import { IBotData } from "types/user"
+import moment from "moment"
 
 enum ColumnKey {
   Name = "name",
   Type = "type",
-  Date = "date",
+  Date = "createdAt",
   Action = "action",
 }
 
@@ -47,15 +35,24 @@ const columns = [
   },
 ]
 
-const EmailData = () => {
+const EmailData: React.FC<{
+  data: IBotData[]
+}> = ({ data }) => {
   const { isMobile } = useWindowSize()
 
   const renderCell = (item: Record<string, any>, columnKey: string) => {
     switch (columnKey) {
       case ColumnKey.Type:
+        return (
+          <span className="line-clamp-1 text-base text-mercury-600">
+            {item[columnKey]}
+          </span>
+        )
       case ColumnKey.Date:
         return (
-          <span className="text-base text-mercury-600">{item[columnKey]}</span>
+          <span className="line-clamp-1 text-base text-mercury-600">
+            {moment(item[columnKey]).format("ll")}
+          </span>
         )
       case ColumnKey.Action:
         return (
@@ -71,13 +68,27 @@ const EmailData = () => {
 
       default:
         return (
-          <span className="text-base text-mercury-950">{item[columnKey]}</span>
+          <span className="line-clamp-1 text-base text-mercury-950">
+            {item[columnKey]}
+          </span>
         )
     }
   }
 
   const getTdClassName = (key: string) => {
-    return key === ColumnKey.Action ? "w-[100px]" : ""
+    switch (key) {
+      case ColumnKey.Action:
+        return "w-[100px]"
+      case ColumnKey.Name:
+        return "w-[200px]"
+      case ColumnKey.Type:
+        return "w-[200px]"
+      case ColumnKey.Date:
+        return "w-[150px]"
+
+      default:
+        return ""
+    }
   }
 
   return (
@@ -90,17 +101,17 @@ const EmailData = () => {
       <div className="mt-4">
         {isMobile ? (
           <TableDataMobile
-            data={rows.map((item) => ({
+            data={data.map((item) => ({
               type: item.type,
               value: item.name,
-              createdAt: item.date,
+              createdAt: item.createdAt,
             }))}
           />
         ) : (
           <TableData
             tdClassName={getTdClassName}
             columns={columns}
-            rows={rows}
+            rows={data}
             renderCell={renderCell}
           />
         )}

@@ -29,6 +29,7 @@ const TableData: React.FC<{
         td: "pl-0 pr-4 py-2",
         thead: "border-b-1 border-mercury-100",
         tbody: "[&>tr:first-child>td]:pt-4",
+        emptyWrapper: "h-10",
       }}
     >
       <TableHeader columns={columns}>
@@ -41,7 +42,10 @@ const TableData: React.FC<{
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={rows}>
+      <TableBody
+        items={rows}
+        emptyContent={<span className="text-base text-mercury-600">Empty</span>}
+      >
         {(item) => (
           <TableRow key={item.key}>
             {(columnKey) => (

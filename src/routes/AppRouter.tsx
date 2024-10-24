@@ -1,8 +1,10 @@
 import MainLayout from "@components/Layout/MainLayout"
 import MainLayoutDesktop from "@components/Layout/MainLayoutDesktop"
+import ProtectedByAuth from "@components/Layout/ProtectedByAuth"
 import { ChatDetailLoadingPage } from "@components/LoadingMobile"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
+import AddMyData from "@pages/AddMyData"
 import ChatPage from "@pages/ChatPage"
 import ChatBox from "@pages/ChatPage/ChatBox"
 import ChatPageMobile from "@pages/ChatPage/Mobile"
@@ -37,7 +39,15 @@ const AppRouter = () => {
           element={isMobile ? <ChatPage /> : <ChatBox />}
         />
         <Route path={PATH_NAMES.MARKETPLACE} element={<Marketplace />} />
-        <Route path={PATH_NAMES.MY_DATA} element={<MyData />} />
+        <Route
+          path={PATH_NAMES.MY_DATA}
+          element={
+            <ProtectedByAuth>
+              <MyData />
+            </ProtectedByAuth>
+          }
+        />
+        <Route path={PATH_NAMES.ADD_MY_DATA} element={<AddMyData />} />
         {isMobile && (
           <>
             <Route
