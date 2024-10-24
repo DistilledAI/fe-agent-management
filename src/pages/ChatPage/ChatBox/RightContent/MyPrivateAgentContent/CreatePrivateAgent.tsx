@@ -10,6 +10,7 @@ import { SocialLinkIcon, ThreeDotsIcon } from "@components/Icons/SocialLinkIcon"
 import useAuthState from "@hooks/useAuthState"
 import useWindowSize from "@hooks/useWindowSize"
 import { useState } from "react"
+import IntroVideo from "../Modal/CreatPrivateAgentModal/IntroVideo"
 import UploadDataButton from "../UploadDataButton"
 import MainContainerCreate from "./MainContainerCreate"
 import UploadCustom from "./UploadCustom"
@@ -44,17 +45,39 @@ const CreatePrivateAgent: React.FC<{
       )
 
     return (
-      <div className="flex-items-center absolute top-[15%] max-w-[390px] flex-col">
-        <FilledExclamationCircleIcon />
-        <span
-          className="cursor-pointer text-center text-24 text-mercury-800"
-          onClick={() => connectWallet()}
-        >
-          <span className="font-semibold text-mercury-950">Connect wallet</span>
-          <br />
-          to start your own Private agent.
-        </span>
-      </div>
+      <>
+        <div className="flex-items-center absolute top-[15%] max-w-[390px] flex-col">
+          <FilledExclamationCircleIcon />
+          <span
+            className="cursor-pointer text-center text-24 text-mercury-800"
+            onClick={() => connectWallet()}
+          >
+            <span className="font-semibold text-mercury-950">
+              Connect wallet
+            </span>
+            <br />
+            to start your own Private agent.
+          </span>
+        </div>
+
+        <UploadDataButton
+          icon={
+            <div className="flex-items-center mb-2 gap-1">
+              <FilledBrainAIIcon color="#A2845E" size={24} />
+              <ThreeDotsIcon />
+              <DatabaseImportIcon />
+            </div>
+          }
+          label="Drag & drop files here"
+          isDisable
+          radiusFull={true}
+          customClassName=" absolute top-[53%] -translate-y-1/2 w-[200px] h-[200px]"
+        />
+
+        <div className="absolute right-6 top-4 w-[240px]">
+          <IntroVideo />
+        </div>
+      </>
     )
   }
 

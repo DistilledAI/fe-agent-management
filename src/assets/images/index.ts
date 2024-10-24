@@ -1,4 +1,5 @@
 export { default as createPrivateAgentPopup } from "./create-private-agent-popup.png"
+export { default as desktopPrivateAgent } from "./desktop-private-agent.png"
 export { default as distilledAiLogo } from "./distilledai_logo.png"
 export { default as fluxAIEx } from "./flux-ai-ex.png"
 export { default as fyiPrivateDataBgMobile } from "./fyi-private-data-bg-mobile.png"

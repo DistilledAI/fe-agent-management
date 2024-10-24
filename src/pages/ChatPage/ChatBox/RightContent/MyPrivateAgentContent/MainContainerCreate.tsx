@@ -1,14 +1,11 @@
-import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
 import { Button } from "@nextui-org/react"
-import mainContentBg from "assets/images/main-content-bg.jpg"
 import { useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { createBot } from "services/chat"
 import { mapMyDataToBot } from "services/user"
 import FYIModal from "../Modal/FYIModal"
-import UploadDataButton from "../UploadDataButton"
 
 const MainContainerCreate: React.FC<{
   children: React.ReactNode
@@ -60,22 +57,10 @@ const MainContainerCreate: React.FC<{
   return (
     <>
       <FormProvider {...methods}>
-        <div
-          className="relative h-full w-full flex-1 rounded-[22px] border border-white bg-mercury-30 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url(${mainContentBg})`,
-          }}
-        >
+        <div className="relative h-full w-full flex-1">
           <div className="flex-items-center relative h-full w-full flex-col justify-between">
-            <UploadDataButton
-              icon={<FilledBrainAIIcon />}
-              label="Start your Private Agent"
-              isDisable
-              radiusFull={true}
-              customClassName=" absolute top-1/2 -translate-y-1/2"
-            />
             {children}
-            <div className="absolute bottom-[60px] flex items-center gap-2 rounded-[22px] border border-mercury-200 p-4 text-center max-sm:max-w-[320px]">
+            <div className="absolute bottom-[100px] flex items-center gap-2 rounded-[22px] border border-mercury-200 p-4 text-center max-sm:max-w-[320px]">
               <div>
                 <span className="text-base-14 text-mercury-800">
                   Your Private Agent is exclusively accessible to you unless you
