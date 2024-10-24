@@ -139,7 +139,7 @@ const Marketplace = () => {
             </h5>
             <div
               className={twMerge(
-                "grid min-h-[25dvh] grid-cols-2 justify-between gap-x-20 gap-y-6 overflow-y-auto rounded-[22px] bg-mercury-30 px-1 py-3 md:px-2 md:py-4",
+                "grid min-h-[50dvh] grid-cols-2 justify-between gap-x-20 gap-y-6 overflow-y-auto rounded-[22px] bg-mercury-30 px-1 py-3 md:px-2 md:py-4",
                 category.isComing && "overflow-y-visible",
               )}
               style={{ gridAutoRows: "max-content" }}

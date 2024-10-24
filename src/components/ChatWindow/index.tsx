@@ -52,7 +52,7 @@ const ChatWindow = ({
   children,
   Footer,
   isChatting,
-  isFetched,
+  isFetched = true,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [offset, setOffset] = useState<number>(LIMIT)

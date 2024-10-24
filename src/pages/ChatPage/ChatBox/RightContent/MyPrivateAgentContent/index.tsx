@@ -1,10 +1,9 @@
 import { desktopPrivateAgent } from "@assets/images"
-import DotLoading from "@components/DotLoading"
 import { envConfig } from "@configs/env"
 import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { checkGroupDirect, createGroupChat } from "services/chat"
 import CreatePrivateAgent from "./CreatePrivateAgent"
 import PrivateAgentChatContent from "./PrivateAgentChatContent"
@@ -20,6 +19,7 @@ const MyPrivateAgentContent: React.FC<{
   const navigate = useNavigate()
   const [isCreated, setCreated] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { pathname } = useLocation()
 
   const privateAgentStatus = privateAgentData?.status
   const privateAgentId = privateAgentData?.id
@@ -58,20 +58,11 @@ const MyPrivateAgentContent: React.FC<{
   useEffect(() => {
     callGetMyPrivateAgent()
     checkCreatedGroupAgent()
-  }, [isLogin, isCreated, privateAgentStatus])
+  }, [isLogin, isCreated, privateAgentStatus, pathname])
 
-  if (loading || isLoading)
-    return (
-      <div
-        className={
-          "flex h-full flex-1 items-center justify-center overflow-hidden rounded-[22px] border-[2px] border-white bg-mercury-30 p-3 transition-all duration-500 ease-in-out"
-        }
-      >
-        <DotLoading />
-      </div>
-    )
+  if (loading || isLoading) return
 
-  if (privateAgentData) return <PrivateAgentChatContent />
+  if (privateAgentData && !isLoading) return <PrivateAgentChatContent />
 
   return (
     <div
