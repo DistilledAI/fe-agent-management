@@ -22,7 +22,7 @@ const MainContainerCreate: React.FC<{
       photosVideos: [],
     },
   })
-  const values = methods.getValues()
+  const values = methods.watch()
   const uploadCVValues = values.uploadCV.length > 0 ? values.uploadCV : []
   const uploadSocialLinkValues =
     values.uploadSocialLink.length > 0 ? values.uploadSocialLink : []
