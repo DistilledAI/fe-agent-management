@@ -5,9 +5,10 @@ import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
 import useWindowSize from "@hooks/useWindowSize"
 import TableDataMobile from "../Components/TableDataMobile"
 import React from "react"
-import { IBotData } from "types/user"
 import moment from "moment"
 import DeleteData from "../DeleteData"
+import { BotDataTypeKey } from "@types"
+import useFetchByCategory from "../useFetchByCategory"
 
 enum ColumnKey {
   Name = "name",
@@ -36,9 +37,15 @@ const columns = [
 ]
 
 const CvData: React.FC<{
-  data: IBotData[]
-}> = ({ data }) => {
+  botId: number
+  category: BotDataTypeKey
+}> = ({ botId, category }) => {
   const { isMobile } = useWindowSize()
+  const {
+    list: data,
+    hasNextPage,
+    fetchNextPage,
+  } = useFetchByCategory(category, botId)
 
   const renderCell = (item: Record<string, any>, columnKey: string) => {
     switch (columnKey) {
@@ -60,7 +67,11 @@ const CvData: React.FC<{
             {/* <div className="cursor-pointer hover:opacity-70">
               <EditPenFilledIcon color="#545454" />
             </div> */}
-            <DeleteData botId={item.userId} ids={[item.id]} />
+            <DeleteData
+              botId={item.userId}
+              ids={[item.id]}
+              category={category}
+            />
           </div>
         )
 
@@ -111,6 +122,8 @@ const CvData: React.FC<{
             columns={columns}
             rows={data}
             renderCell={renderCell}
+            loadMore={{ onLoadMore: fetchNextPage, hasMore: hasNextPage }}
+            baseClassName="max-h-[400px]"
           />
         )}
       </div>

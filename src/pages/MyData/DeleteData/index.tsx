@@ -9,18 +9,31 @@ import { useQueryClient } from "@tanstack/react-query"
 import React, { useState } from "react"
 import { QueryDataKeys } from "types/queryDataKeys"
 import useDeleteData from "./useDelete"
+import { IBotData } from "types/user"
+import { BotDataTypeKey } from "@types"
 
 const DeleteData: React.FC<{
   botId: number
   ids: number[]
-}> = ({ botId, ids }) => {
+  category: BotDataTypeKey
+}> = ({ botId, ids, category }) => {
   const [isOpen, setIsOpen] = useState(false)
   const queryClient = useQueryClient()
+
   const callbackDone = () => {
-    queryClient.refetchQueries({
-      queryKey: [`${QueryDataKeys.MY_BOT_DATA}-${botId}`],
-    })
     setIsOpen(false)
+    queryClient.setQueryData(
+      [`${QueryDataKeys.MY_BOT_DATA}-${botId}-${category}`],
+      (oldData: { pagePrams: number[]; pages: IBotData[][] }) => {
+        const newData = oldData.pages.map((innerArray) =>
+          innerArray.filter((item) => item.id !== ids[0]),
+        )
+        return {
+          ...oldData,
+          pages: newData,
+        }
+      },
+    )
   }
 
   const { onDelete, loading } = useDeleteData(callbackDone)

@@ -7,7 +7,7 @@ import TableDataMobile from "../Components/TableDataMobile"
 import React from "react"
 import { IBotData } from "types/user"
 import moment from "moment"
-import DeleteData from "../DeleteData"
+// import DeleteData from "../DeleteData"
 
 enum ColumnKey {
   Name = "name",
@@ -60,7 +60,7 @@ const EmailData: React.FC<{
             {/* <div className="cursor-pointer hover:opacity-70">
               <EditPenFilledIcon color="#545454" />
             </div> */}
-            <DeleteData botId={item.userId} ids={[item.id]} />
+            {/* <DeleteData botId={item.userId} ids={[item.id]} /> */}
           </div>
         )
 

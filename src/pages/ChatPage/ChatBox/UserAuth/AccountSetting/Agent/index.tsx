@@ -21,7 +21,7 @@ const PrivateAgent: React.FC<{
   const firstBot = listBot?.[0]
   const status = firstBot?.status
   const MAP_LABEL_FROM_STATUS = {
-    [STATUS_AGENT.PENDING]: "Awaiting creation on pod",
+    [STATUS_AGENT.PENDING]: "Awaiting creation",
   }
   const isPending = status === STATUS_AGENT.PENDING
 

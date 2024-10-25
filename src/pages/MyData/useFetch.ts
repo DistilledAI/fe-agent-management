@@ -13,7 +13,7 @@ const useFetchMyData = () => {
 
   const { data, isLoading, isFetched, refetch } = useQuery({
     queryKey: [`${QueryDataKeys.MY_BOT_DATA}-${botId}`],
-    queryFn: () => getMyBotData(botId),
+    queryFn: () => getMyBotData(botId, { limit: 1, offset: 0 }),
     enabled: !!botId && isLogin,
     refetchOnWindowFocus: false,
   })
