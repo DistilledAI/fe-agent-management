@@ -7,7 +7,7 @@ import { Button } from "@nextui-org/react"
 import { useNavigate } from "react-router-dom"
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import useFetchMyData from "./useFetch"
-import { getBotDataByKey, getTimeLastCollected } from "./helpers"
+import { getTimeLastCollected } from "./helpers"
 import { BotDataTypeKey } from "@types"
 import CvData from "./Cv"
 
@@ -15,10 +15,6 @@ const MyData: React.FC = () => {
   const { isMobile } = useWindowSize()
   const navigate = useNavigate()
   const { list, isLoading, isFetched, botId } = useFetchMyData()
-  const socialData = getBotDataByKey(BotDataTypeKey.SOCIAL_MEDIA, list)
-  const cvData = getBotDataByKey(BotDataTypeKey.CV_FILE, list)
-  const pdfData = getBotDataByKey(BotDataTypeKey.PDF_FILE, list)
-  const mediaData = getBotDataByKey(BotDataTypeKey.PHOTO_VIDEO_FILE, list)
   const lastCollected = getTimeLastCollected(list)
 
   return (
@@ -57,10 +53,10 @@ const MyData: React.FC = () => {
         </div>
       )}
       <div className="flex flex-col gap-6">
-        <LinkData data={socialData} />
-        <FileData data={pdfData} />
-        <CvData data={cvData} />
-        <MediaData data={mediaData} />
+        <LinkData botId={botId} category={BotDataTypeKey.SOCIAL_MEDIA} />
+        <FileData botId={botId} category={BotDataTypeKey.PDF_FILE} />
+        <CvData botId={botId} category={BotDataTypeKey.CV_FILE} />
+        <MediaData botId={botId} category={BotDataTypeKey.PHOTO_VIDEO_FILE} />
       </div>
     </div>
   )

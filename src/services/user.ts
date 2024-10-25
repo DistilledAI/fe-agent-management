@@ -39,10 +39,14 @@ export const mapMyDataToBot = async (data: any) => {
   })
 }
 
-export const getMyBotData = async (botId: number) => {
+export const getMyBotData = async (
+  botId: number,
+  params: { limit: number; offset: number; filter?: string },
+) => {
   return fetchApiAuth({
     method: "GET",
     url: endpoint.GET_MY_BOT_DATA(botId),
+    params,
   })
 }
 
