@@ -33,7 +33,6 @@ interface ChatWindowProps {
         context?: any
       }>
     | undefined
-  isChatting?: boolean
   isFetched?: boolean
 }
 
@@ -51,7 +50,6 @@ const ChatWindow = ({
   msgBoxClassName,
   children,
   Footer,
-  isChatting,
   isFetched = true,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
@@ -75,17 +73,11 @@ const ChatWindow = ({
     if (!isScrollBottom) {
       virtuosoRef.current?.scrollToIndex({
         index: messages.length - 1,
-        behavior: isChatting ? "smooth" : "auto",
+        behavior: "auto",
         align: "end",
       })
     }
-  }, [messages, isScrollBottom, isChatting, style?.paddingBottom])
-
-  // useEffect(() => {
-  //   if (isAtBottom) {
-  //     setIsNewMsgOnCurrentWindow(false)
-  //   }
-  // }, [isAtBottom])
+  }, [messages, isScrollBottom, style?.paddingBottom])
 
   const onScroll = useCallback(
     async (e: React.UIEvent<HTMLDivElement>) => {
@@ -123,10 +115,6 @@ const ChatWindow = ({
       behavior: "smooth",
       align: "end",
     })
-
-    // if (isNewMsgOnCurrentWindow) {
-    //   setIsNewMsgOnCurrentWindow(false)
-    // }
   }
 
   const memoizedFooter = useMemo(() => Footer, [])
@@ -143,7 +131,7 @@ const ChatWindow = ({
     <div
       style={style}
       className={twMerge(
-        "relative h-full max-h-[calc(100%-84px)] overflow-hidden transition-all duration-500 ease-in-out",
+        "relative h-full overflow-hidden transition-all duration-500 ease-in-out md:max-h-[calc(100%-100px)]",
         className,
       )}
     >
@@ -165,7 +153,6 @@ const ChatWindow = ({
             align: "end",
           }}
           increaseViewportBy={600}
-          atTopThreshold={60}
           onScroll={onScroll}
           components={{
             Header: () =>
