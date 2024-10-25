@@ -45,3 +45,14 @@ export const getMyBotData = async (botId: number) => {
     url: endpoint.GET_MY_BOT_DATA(botId),
   })
 }
+
+export const deleteMyBotData = async (data: {
+  botId: number
+  ids: number[]
+}) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.DELETE_MY_BOT_DATA,
+    data,
+  })
+}
