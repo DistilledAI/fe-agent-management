@@ -14,8 +14,14 @@ import useFetchMessages from "./useFetchMessages"
 const TIME_BREAK = 10
 
 const ChatMessages = () => {
-  const { loading, onLoadPrevMessages, messages, isFetched } =
-    useFetchMessages()
+  const {
+    isLoading,
+    isFetched,
+    onLoadPrevMessages,
+    messages,
+    hasPreviousMore,
+    isFetchingPreviousPage,
+  } = useFetchMessages()
   const { chatId } = useParams()
   const { style } = useStyleBoxChat()
   const bgColor = chatId
@@ -139,18 +145,19 @@ const ChatMessages = () => {
       </>
     )
   }
-
   return (
     <ChatWindow
       messages={messages}
       itemContent={renderMessage}
-      loading={loading}
+      isLoading={isLoading}
+      isFetched={isFetched}
+      hasPreviousMore={hasPreviousMore}
+      isFetchingPreviousPage={isFetchingPreviousPage}
       onLoadPrevMessages={onLoadPrevMessages}
       chatId={chatId}
       style={style}
       msgBoxClassName="p-0 md:px-4"
       Footer={() => <MoreAction />}
-      isFetched={isFetched}
     />
   )
 }
