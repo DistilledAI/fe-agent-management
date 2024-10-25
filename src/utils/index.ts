@@ -51,6 +51,10 @@ export const makeId = (length = 8) => {
   return result
 }
 
+export const isImageUrl = (url: string) => {
+  return /\.(jpeg|jpg|gif|png|webp|svg)$/.test(url)
+}
+
 export const textToVoice = async (
   text: string,
   speaker: IUser["configBot"],

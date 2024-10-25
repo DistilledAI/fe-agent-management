@@ -33,7 +33,7 @@ const ChatInput = ({ isDisabledInput, wrapperClassName }: ChatInputProps) => {
   const { setStyle } = useStyleBoxChat()
   const queryClient = useQueryClient()
 
-  const groupId = chatId ?? privateChatId
+  const groupId = privateChatId || chatId
 
   const mutation = useMutation({
     mutationKey: [QueryDataKeys.SEND_MESSAGE],
