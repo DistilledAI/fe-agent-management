@@ -19,11 +19,8 @@ interface ChatWindowProps {
   messages: Array<IMessageBox>
   itemContent: (index: number, message: IMessageBox) => JSX.Element
   className?: string
-  loading?: boolean
-  onLoadPrevMessages: (params: {
-    offset: number
-    limit?: number
-  }) => Promise<number> // return index message on loaded or undefined when no more messages
+  isLoading?: boolean
+  onLoadPrevMessages: () => Promise<number | undefined>
   chatId: string | undefined
   style?: CSSProperties
   msgBoxClassName?: string
@@ -34,6 +31,8 @@ interface ChatWindowProps {
       }>
     | undefined
   isFetched?: boolean
+  hasPreviousMore?: boolean
+  isFetchingPreviousPage?: boolean
 }
 
 const LIMIT = 20
@@ -43,28 +42,24 @@ const ChatWindow = ({
   messages,
   itemContent,
   className,
-  loading,
+  isLoading,
   chatId,
   onLoadPrevMessages,
   style,
   msgBoxClassName,
   children,
   Footer,
-  isFetched = true,
+  isFetched = false,
+  hasPreviousMore,
+  isFetchingPreviousPage,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
-  const [offset, setOffset] = useState<number>(LIMIT)
-  const [hasMoreMessages, setHasMoreMessages] = useState<boolean>(true)
   const [isAtBottom, setIsAtBottom] = useState<boolean>(true)
-  const [isLoadMore, setIsLoadMore] = useState<boolean>(false)
   const [isScrollBottom, setIsScrollBottom] = useState<boolean>(false)
 
   useLayoutEffect(() => {
     if (chatId) {
-      setIsLoadMore(false)
       setIsScrollBottom(false)
-      setHasMoreMessages(true)
-      setOffset(LIMIT)
       setIsAtBottom(true)
     }
   }, [chatId])
@@ -77,36 +72,25 @@ const ChatWindow = ({
         align: "end",
       })
     }
-  }, [messages, isScrollBottom, style?.paddingBottom])
+  }, [messages, isScrollBottom, chatId])
 
   const onScroll = useCallback(
     async (e: React.UIEvent<HTMLDivElement>) => {
       const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
-      if (scrollTop === 0 && hasMoreMessages) {
-        setIsLoadMore(true)
+      if (scrollTop === 0 && hasPreviousMore) {
         setIsAtBottom(false)
+        const messagesIndex = await onLoadPrevMessages()
 
-        const prevMessageIndex = await onLoadPrevMessages({
-          offset,
-          limit: LIMIT,
+        virtuosoRef.current?.scrollToIndex({
+          index: messagesIndex || 0,
+          behavior: "auto",
         })
-
-        if (!prevMessageIndex) {
-          setHasMoreMessages(false)
-        } else {
-          setOffset((prev) => prev + LIMIT)
-          virtuosoRef.current?.scrollToIndex({
-            index: prevMessageIndex,
-            behavior: "auto",
-          })
-        }
-        setIsLoadMore(false)
       }
 
       const scrollPosition = scrollHeight - clientHeight - scrollTop
       setIsScrollBottom(scrollPosition > AT_BOTTOM_THRESHOLD)
     },
-    [hasMoreMessages, offset],
+    [hasPreviousMore],
   )
 
   const onScrollToBottom = () => {
@@ -135,13 +119,13 @@ const ChatWindow = ({
         className,
       )}
     >
-      {(loading || !isFetched) && <MessagesSkeleton />}
-      {!loading && isFetched && !messages.length && (
+      {isLoading && <MessagesSkeleton />}
+      {isFetched && !messages.length && (
         <div className="flex h-full items-center justify-center">
           NO MESSAGE
         </div>
       )}
-      {!loading && messages.length ? (
+      {!isLoading && messages.length ? (
         <Virtuoso
           style={{
             height: "100%",
@@ -156,7 +140,11 @@ const ChatWindow = ({
           onScroll={onScroll}
           components={{
             Header: () =>
-              isLoadMore && messages.length >= LIMIT ? renderLoadMore() : <></>,
+              isFetchingPreviousPage && messages.length >= LIMIT ? (
+                renderLoadMore()
+              ) : (
+                <></>
+              ),
             Footer: memoizedFooter,
           }}
           followOutput={isAtBottom ? "smooth" : false}

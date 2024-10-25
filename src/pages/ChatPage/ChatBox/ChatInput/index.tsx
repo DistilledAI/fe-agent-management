@@ -11,10 +11,13 @@ import SpeechRecognition, {
 } from "react-speech-recognition"
 import { postChatToGroup } from "services/chat"
 import { twMerge } from "tailwind-merge"
-import { IMessageBox, RoleChat } from "../ChatMessages/helpers"
+import { RoleChat } from "../ChatMessages/helpers"
 import { useStyleBoxChat } from "../StyleProvider"
 import VoiceChat from "./Voice"
-import { messagesQueryKey } from "../ChatMessages/useFetchMessages"
+import {
+  ICachedMessageData,
+  messagesQueryKey,
+} from "../ChatMessages/useFetchMessages"
 import { QueryDataKeys } from "types/queryDataKeys"
 
 interface ChatInputProps {
@@ -42,7 +45,7 @@ const ChatInput = ({ isDisabledInput, wrapperClassName }: ChatInputProps) => {
         groupId: Number(groupId),
         messages: message,
       }),
-    onMutate(variables) {
+    onMutate: (variables) => {
       const newMessage = {
         content: variables,
         role: RoleChat.OWNER,
@@ -53,28 +56,56 @@ const ChatInput = ({ isDisabledInput, wrapperClassName }: ChatInputProps) => {
 
       queryClient.setQueryData(
         messagesQueryKey(groupId),
-        (cachedData: IMessageBox[]) => {
-          if (cachedData === undefined) return [newMessage]
-          return [...cachedData, newMessage]
+        (cachedData: ICachedMessageData) => {
+          if (!cachedData)
+            return {
+              pageParams: [],
+              pages: [
+                {
+                  messages: [newMessage],
+                  nextOffset: 0,
+                },
+              ],
+            }
+
+          const lastPage = cachedData.pages[cachedData.pages.length - 1]
+
+          return {
+            ...cachedData,
+            pages: [
+              ...cachedData.pages.slice(0, -1),
+              {
+                ...lastPage,
+                messages: [...lastPage.messages, newMessage],
+              },
+            ],
+          }
         },
       )
 
       return { newMessage }
     },
-    onSuccess: (_, __, { newMessage }) => {
-      queryClient.setQueryData(
-        messagesQueryKey(groupId),
-        (cachedData: IMessageBox[]) => {
-          if (cachedData === undefined || cachedData === null)
-            return [newMessage]
-          return cachedData.map((message) => {
-            if (message.id === newMessage.id) return newMessage
-            return message
-          })
-        },
-      )
-      SpeechRecognition.stopListening()
-    },
+    //   queryClient.setQueryData<InfiniteData<IMessageBox[]>>(
+    //     messagesQueryKey(groupId),
+    //     (cachedData) => {
+    //       if (!cachedData) return { pageParams: [], pages: [[newMessage]] }
+
+    //       console.log({ cachedData })
+
+    //       return {
+    //         ...cachedData,
+    //         pages: cachedData.pages.map((page, index) =>
+    //           index === cachedData.pages.length - 1
+    //             ? page.map((message) =>
+    //                 message.id === newMessage.id ? newMessage : message,
+    //               )
+    //             : page,
+    //         ),
+    //       }
+    //     },
+    //   )
+    //   SpeechRecognition.stopListening()
+    // },
     onError: (error) => {
       console.error("Failed to send message", error)
     },

@@ -3,10 +3,10 @@ import { useNavigate, useParams } from "react-router-dom"
 import { getChatHistoryById } from "services/chat"
 import { IGroup } from "../LeftBar/useFetchGroups"
 import { IUser } from "@reducers/userSlice"
-import { convertDataFetchToMessage } from "./helpers"
+import { convertDataFetchToMessage, IMessageBox } from "./helpers"
 import useAuthState from "@hooks/useAuthState"
 import { PATH_NAMES } from "@constants/index"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query"
 
 export interface IMessage {
   id: number
@@ -19,6 +19,14 @@ export interface IMessage {
   user: IUser
 }
 
+export interface ICachedMessageData {
+  pageParams: Array<number>
+  pages: Array<{
+    messages: IMessageBox[]
+    nextOffset: number
+  }>
+}
+
 export const messagesQueryKey = (chatId: string | undefined) => {
   if (!chatId) return []
   return [`chat-messages-${chatId}`]
@@ -28,22 +36,42 @@ const useFetchMessages = () => {
   const { user, isLogin } = useAuthState()
   const { chatId, privateChatId } = useParams()
   const navigate = useNavigate()
-  const queryClient = useQueryClient()
   const groupId = privateChatId || chatId
 
-  const fetchMessages = async () => {
+  const fetchMessages = async ({ pageParam = 0 }) => {
     if (!groupId) return
 
-    const res = await getChatHistoryById({ id: Number(groupId) })
-    return convertDataFetchToMessage(res.data.items, user?.id ? user.id : 0)
+    const res = await getChatHistoryById({
+      id: Number(groupId),
+      offset: pageParam,
+    })
+
+    return {
+      messages: convertDataFetchToMessage(res.data.items, user?.id || 0),
+      nextOffset:
+        res.data.items.length > 0
+          ? pageParam + res.data.items.length
+          : undefined,
+    }
   }
 
-  const { data, error, isFetching, isFetched } = useQuery({
+  const {
+    data,
+    error,
+    fetchPreviousPage,
+    hasPreviousPage,
+    isFetched,
+    isLoading,
+    isFetchingPreviousPage,
+  } = useInfiniteQuery({
     queryKey: messagesQueryKey(groupId),
     queryFn: fetchMessages,
     enabled: isLogin && !!groupId && !!user?.id,
+    getNextPageParam: (lastPage) => lastPage?.nextOffset,
+    getPreviousPageParam: (firstPage) => firstPage?.nextOffset,
     staleTime: 1 * 60 * 60 * 1000,
     refetchOnWindowFocus: false,
+    initialPageParam: 0,
   })
 
   useEffect(() => {
@@ -51,43 +79,31 @@ const useFetchMessages = () => {
       console.error(error)
       navigate(PATH_NAMES.HOME)
     }
-  }, [error, navigate])
+  }, [error])
 
-  const onLoadPrevMessages = async ({
-    offset,
-    limit,
-  }: {
-    offset?: number
-    limit?: number
-  }) => {
+  const onLoadPrevMessages = async () => {
     try {
-      if (!groupId) return
-      const res = await getChatHistoryById({
-        id: Number(groupId),
-        offset,
-        limit,
-      })
-      if (res.data.items) {
-        const newMessages = convertDataFetchToMessage(
-          res.data.items,
-          user?.id ? user.id : 0,
-        )
-        queryClient.setQueryData(messagesQueryKey(groupId), (oldData: any) => [
-          ...newMessages,
-          ...oldData,
-        ])
+      const res = await fetchPreviousPage()
+      if (res.data?.pages[0]?.messages.length) {
+        return res.data?.pages[0].messages.length - 2
       }
-      return res.data.items.length || 0
     } catch (error) {
       console.error(error)
     }
   }
 
+  const messages =
+    (
+      data as InfiniteData<{ messages: IMessageBox[] }> | undefined
+    )?.pages.flatMap((page) => page.messages) || []
+
   return {
-    loading: isFetching,
     onLoadPrevMessages,
-    messages: data || [],
+    messages: messages,
+    hasPreviousMore: hasPreviousPage,
+    isLoading,
     isFetched,
+    isFetchingPreviousPage,
   }
 }
 

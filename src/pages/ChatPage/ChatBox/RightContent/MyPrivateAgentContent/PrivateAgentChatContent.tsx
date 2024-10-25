@@ -8,8 +8,14 @@ import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
 import useFetchMessages from "../../ChatMessages/useFetchMessages"
 
 const PrivateAgentChatContent: React.FC = () => {
-  const { loading, onLoadPrevMessages, messages, isFetched } =
-    useFetchMessages()
+  const {
+    isLoading,
+    onLoadPrevMessages,
+    messages,
+    isFetched,
+    isFetchingPreviousPage,
+    hasPreviousMore,
+  } = useFetchMessages()
   const { privateChatId } = useParams()
 
   const renderMessage = (_: number, message: IMessageBox) => {
@@ -40,10 +46,12 @@ const PrivateAgentChatContent: React.FC = () => {
       <ChatWindow
         messages={messages}
         itemContent={renderMessage}
-        loading={loading}
+        isLoading={isLoading}
         onLoadPrevMessages={onLoadPrevMessages}
         chatId={privateChatId}
         isFetched={isFetched}
+        hasPreviousMore={hasPreviousMore}
+        isFetchingPreviousPage={isFetchingPreviousPage}
       />
       <ChatInput
         isDisabledInput={false}

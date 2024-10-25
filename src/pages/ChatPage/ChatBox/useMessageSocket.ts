@@ -7,7 +7,10 @@ import { IMessageBox, RoleChat } from "./ChatMessages/helpers"
 import { makeId, textToVoice } from "@utils/index"
 import { TYPE_BOT } from "@constants/index"
 import { useQueryClient } from "@tanstack/react-query"
-import { messagesQueryKey } from "./ChatMessages/useFetchMessages"
+import {
+  ICachedMessageData,
+  messagesQueryKey,
+} from "./ChatMessages/useFetchMessages"
 import { QueryDataKeys } from "types/queryDataKeys"
 
 interface IDataListen {
@@ -41,6 +44,77 @@ const useMessageSocket = () => {
     return true
   }
 
+  const addNewMsg = (newMsg: IMessageBox) => {
+    queryClient.setQueryData(
+      messagesQueryKey(groupChatId),
+      (cachedData: ICachedMessageData) => {
+        if (!cachedData)
+          return {
+            pageParams: [],
+            pages: [
+              {
+                messages: [newMsg],
+                nextOffset: 0,
+              },
+            ],
+          }
+
+        const lastPage = cachedData.pages[cachedData.pages.length - 1]
+
+        return {
+          ...cachedData,
+          pages: [
+            ...cachedData.pages.slice(0, -1),
+            {
+              ...lastPage,
+              messages: [...lastPage.messages, newMsg],
+            },
+          ],
+        }
+      },
+    )
+  }
+
+  const updateNewMsg = (e: IDataListen, isPlusMsg: boolean = true) => {
+    queryClient.setQueryData(
+      messagesQueryKey(groupChatId),
+      (cachedData: ICachedMessageData) => {
+        if (!cachedData)
+          return {
+            pageParams: [],
+            pages: [
+              {
+                messages: [],
+                nextOffset: 0,
+              },
+            ],
+          }
+
+        const lastPage = cachedData.pages[cachedData.pages.length - 1]
+
+        return {
+          ...cachedData,
+          pages: [
+            ...cachedData.pages.slice(0, -1),
+            {
+              ...lastPage,
+              messages: lastPage.messages.map((item) => {
+                if (item.id === e.msgId) {
+                  return {
+                    ...item,
+                    content: isPlusMsg ? item.content + e.messages : e.messages,
+                    isTyping: false,
+                  }
+                }
+                return item
+              }),
+            },
+          ],
+        }
+      },
+    )
+  }
+
   const handleWithTyping = (e: IDataListen) => {
     const newMsg = {
       id: e.msgId,
@@ -51,12 +125,7 @@ const useMessageSocket = () => {
       roleOwner: e.user.role,
       createdAt: new Date().toISOString(),
     }
-    queryClient.setQueryData(
-      messagesQueryKey(groupChatId),
-      (oldData: IMessageBox[]) => {
-        return [...oldData, newMsg]
-      },
-    )
+    addNewMsg(newMsg)
   }
 
   const isReloadWhenResponse = (index: number) => {
@@ -70,23 +139,7 @@ const useMessageSocket = () => {
     if (isReloadWhenResponse(e.index)) return
     const isBotVoice = e.user.typeBot === TYPE_BOT.VOICE
     if (isBotVoice) return
-    queryClient.setQueryData(
-      messagesQueryKey(groupChatId),
-      (oldData: IMessageBox[] | undefined) => {
-        if (!oldData) return []
-
-        return oldData.map((item) => {
-          if (item.id === e.msgId) {
-            return {
-              ...item,
-              content: item.content + e.messages,
-              isTyping: false,
-            }
-          }
-          return item
-        })
-      },
-    )
+    updateNewMsg(e)
   }
 
   const handleWithGroup = (e: IDataListen) => {
@@ -99,12 +152,7 @@ const useMessageSocket = () => {
       roleOwner: e.user.role,
       createdAt: new Date().toISOString(),
     }
-    queryClient.setQueryData(
-      messagesQueryKey(groupChatId),
-      (oldData: IMessageBox[]) => {
-        return [...oldData, newMsg]
-      },
-    )
+    addNewMsg(newMsg)
   }
 
   const handleWithDone = (e: IDataListen) => {
@@ -112,21 +160,7 @@ const useMessageSocket = () => {
     const isBotVoice = e.user.typeBot === TYPE_BOT.VOICE
     if (isBotVoice) textToVoice(e.messages, e.user.configBot)
     if (isNeedAppendWhenDone) {
-      queryClient.setQueryData(
-        messagesQueryKey(groupChatId),
-        (oldData: IMessageBox[]) => {
-          return oldData.map((item) => {
-            if (item.id === e.msgId) {
-              return {
-                ...item,
-                content: e.messages,
-                isTyping: false,
-              }
-            }
-            return item
-          })
-        },
-      )
+      updateNewMsg(e, false)
     }
   }
 
