@@ -4,7 +4,7 @@ import { Spinner } from "@nextui-org/react"
 import type { UploadFile, UploadProps } from "antd"
 import { Upload } from "antd"
 import { UploadFileStatus } from "antd/es/upload/interface"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import { Link } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -19,6 +19,8 @@ interface UploadCustomProps {
   accept?: string
 }
 
+const maxSizeUpload = 50
+
 const UploadCustom: React.FC<UploadCustomProps> = ({
   fieldkey,
   fileKey,
@@ -26,15 +28,22 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
   label,
   accept = ".doc,.docx,application/pdf",
 }) => {
+  const messagesEndRef = useRef<any>()
   const { control, setValue, getValues } = useFormContext()
   const uploadCVValue = getValues(fieldkey)
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
   const handleChange: UploadProps["onChange"] = ({ fileList }) => {
-    const fileListDone = fileList.filter((item) => item?.status === "done")
+    scrollToBottom()
+    const newFileList = fileList.filter((item) => item.status !== undefined)
+    const fileListDone = newFileList.filter((item) => item?.status === "done")
     const newFileListDone = fileListDone.map((item) => item?.response?.id)
     setValue(fieldkey, newFileListDone)
-    setFileList(fileList)
+    setFileList(newFileList)
   }
 
   const handleCustomRequest = async (options: any) => {
@@ -55,11 +64,21 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
     }
   }
 
+  const beforeUpload = async (file: any) => {
+    const isLtSize = file.size / 1024 / 1024 < maxSizeUpload
+    if (!isLtSize) {
+      toast.error(`The file size must be smaller than ${maxSizeUpload}MB!`)
+    }
+
+    return isLtSize
+  }
+
   const props: UploadProps = {
     name: "file",
     onChange: handleChange,
     fileList: fileList,
     customRequest: handleCustomRequest,
+    beforeUpload,
   }
 
   const mapIconFromStatus: Record<UploadFileStatus | string, JSX.Element> = {
@@ -125,8 +144,8 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
                     ) : (
                       <Link
                         target="_blank"
-                        to={item?.value}
-                        className="col-span-7 hover:underline"
+                        to={item?.response?.value}
+                        className="col-span-7 max-w-[250px] truncate hover:underline"
                       >
                         <span className="text-base-14-sb">{item.name}</span>
                       </Link>
@@ -141,6 +160,8 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
                   </div>
                 )
               })}
+
+              <div ref={messagesEndRef} />
             </div>
           )}
         </div>

@@ -12,7 +12,8 @@ const MainContainerCreate: React.FC<{
   children: React.ReactNode
   setCreated?: any
   botId?: number | string
-}> = ({ children, setCreated, botId }) => {
+  onCallBack?: any
+}> = ({ children, setCreated, botId, onCallBack }) => {
   const [openFYIPopup, setOpenFYIPopupp] = useState<boolean>(false)
   const [openCollectingPopup, setOpenCollectingPopup] = useState<boolean>(false)
   const methods = useForm<any>({
@@ -53,8 +54,8 @@ const MainContainerCreate: React.FC<{
           data: payloadData,
         }
         await mapMyDataToBot(payload)
-        toast.success("Created bot successfully")
-        setCreated(true)
+        toast.success("Updated bot successfully")
+        onCallBack()
         return
       }
 
@@ -85,7 +86,7 @@ const MainContainerCreate: React.FC<{
         <div className="relative h-full w-full flex-1">
           <div className="flex-items-center relative h-full w-full flex-col justify-between">
             {children}
-            <div className="absolute bottom-[100px] flex items-center gap-2 rounded-[22px] border border-mercury-200 p-4 text-center max-sm:max-w-[320px]">
+            <div className="absolute bottom-[100px] flex items-center gap-2 rounded-[22px] border border-mercury-200 bg-white p-4 text-center max-sm:max-w-[320px]">
               <div>
                 <span className="text-base-14 text-mercury-800">
                   Your Private Agent is exclusively accessible to you unless you
