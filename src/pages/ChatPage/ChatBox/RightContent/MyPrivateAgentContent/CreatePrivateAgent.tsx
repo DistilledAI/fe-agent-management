@@ -185,6 +185,12 @@ const CreatePrivateAgent: React.FC<{
     )
   }
 
+  if (!isLogin || (isLogin && sessionAccessToken)) {
+    return (
+      <MainContainerCreate>{renderCreateAccountAction()}</MainContainerCreate>
+    )
+  }
+
   return (
     <MainContainerCreate
       setCreated={setCreated}
