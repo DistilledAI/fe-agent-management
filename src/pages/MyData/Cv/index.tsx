@@ -1,6 +1,5 @@
 import HeadSectionData from "../Components/HeadSectionData"
 // import { EditPenFilledIcon } from "@components/Icons/Edit"
-import { DeleteIcon } from "@components/Icons/Delete"
 import TableData from "../Components/TableData"
 import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
 import useWindowSize from "@hooks/useWindowSize"
@@ -8,6 +7,7 @@ import TableDataMobile from "../Components/TableDataMobile"
 import React from "react"
 import { IBotData } from "types/user"
 import moment from "moment"
+import DeleteData from "../DeleteData"
 
 enum ColumnKey {
   Name = "name",
@@ -60,9 +60,7 @@ const CvData: React.FC<{
             {/* <div className="cursor-pointer hover:opacity-70">
               <EditPenFilledIcon color="#545454" />
             </div> */}
-            <div className="cursor-pointer hover:opacity-70">
-              <DeleteIcon />
-            </div>
+            <DeleteData botId={item.userId} ids={[item.id]} />
           </div>
         )
 
