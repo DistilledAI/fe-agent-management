@@ -115,6 +115,8 @@ const CvData: React.FC<{
               value: item.name,
               createdAt: item.createdAt,
             }))}
+            loadMore={fetchNextPage}
+            hasMore={hasNextPage}
           />
         ) : (
           <TableData
