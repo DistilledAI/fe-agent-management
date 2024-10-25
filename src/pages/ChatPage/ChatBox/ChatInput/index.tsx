@@ -110,7 +110,7 @@ const ChatInput = ({ isDisabledInput, wrapperClassName }: ChatInputProps) => {
     if (!height) return
     setStyle({
       paddingBottom:
-        height === heightBoxRef.current ? 12 : height - heightBoxRef.current,
+        height === heightBoxRef.current ? 0 : height - heightBoxRef.current,
     })
   }
 
@@ -123,7 +123,7 @@ const ChatInput = ({ isDisabledInput, wrapperClassName }: ChatInputProps) => {
     <div
       ref={boxRef}
       className={twMerge(
-        "absolute bottom-4 z-[11] flex max-w-[768px] items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 duration-500 max-sm:static max-sm:gap-2 sm:p-3 sm:py-[7.89px]",
+        "absolute bottom-4 z-[11] flex max-w-[768px] items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 duration-500 max-sm:static max-sm:gap-2 sm:p-3 sm:py-[7.89px] md:bottom-8",
         isFocus ? "border-mercury-300" : "border-mercury-200",
         wrapperClassName,
       )}
