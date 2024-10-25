@@ -2,6 +2,7 @@ import { SocialLinkIcon } from "@components/Icons/SocialLinkIcon"
 import { TrashXIcon } from "@components/Icons/TrashXIcon"
 import { useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
+import { Link } from "react-router-dom"
 import CreatPrivateAgentModal from "../Modal/CreatPrivateAgentModal"
 import UploadDataButton from "../UploadDataButton"
 
@@ -45,22 +46,39 @@ const UploadSocialLink = () => {
           >
             {socialUrls.length > 0 && (
               <div className="max-h-[150px] overflow-auto p-3">
-                {socialUrls.map((item: any, index: number) => (
-                  <div
-                    className="mb-3 grid w-full grid-cols-8 items-center gap-3"
-                    key={index}
-                  >
-                    <div className="col-span-7">
-                      <span className="text-base-14-sb">{item?.link}</span>
-                    </div>
+                {socialUrls.map((item: any, index: number) => {
+                  const isError = item?.status === "error"
+
+                  return (
                     <div
-                      className="cursor-pointer"
-                      onClick={() => handleRemoveLink(item)}
+                      className="mb-3 grid w-full grid-cols-8 items-center gap-3"
+                      key={index}
                     >
-                      <TrashXIcon />
+                      {isError ? (
+                        <div className="group col-span-7">
+                          <span className="text-base-14-sb text-[#FF3B30]">
+                            {item?.link}
+                          </span>
+                        </div>
+                      ) : (
+                        <Link
+                          target="_blank"
+                          to={item?.link}
+                          className="col-span-7 max-w-[250px] truncate hover:underline"
+                        >
+                          <span className="text-base-14-sb">{item?.link}</span>
+                        </Link>
+                      )}
+
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => handleRemoveLink(item)}
+                      >
+                        <TrashXIcon />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             )}
           </UploadDataButton>
