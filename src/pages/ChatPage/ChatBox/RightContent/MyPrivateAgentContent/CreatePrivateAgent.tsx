@@ -1,12 +1,11 @@
 import DotLoading from "@components/DotLoading"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { DatabaseImportIcon } from "@components/Icons/DatabaseImportIcon"
-import { EmailUpIcon } from "@components/Icons/EmailUpIcon"
 import { FilledExclamationCircleIcon } from "@components/Icons/FilledExclamationCircleIcon"
 import { ExploreFilledIcon } from "@components/Icons/MetamaskIcon"
 import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
 import { PhotoPlusIcon } from "@components/Icons/PhotoPlusIcon"
-import { SocialLinkIcon, ThreeDotsIcon } from "@components/Icons/SocialLinkIcon"
+import { ThreeDotsIcon } from "@components/Icons/SocialLinkIcon"
 import useAuthState from "@hooks/useAuthState"
 import useWindowSize from "@hooks/useWindowSize"
 import IntroVideo from "../Modal/CreatPrivateAgentModal/IntroVideo"
@@ -104,36 +103,29 @@ const CreatePrivateAgent: React.FC<{
             by connect your data:
           </span>
 
-          <div className="absolute top-1/2 -translate-y-1/2">
-            <div className="mt-4 flex gap-3">
-              <UploadDataButton
+          <div className="mt-6">
+            <UploadSocialLink />
+
+            <UploadCustom
+              fieldkey="uploadCV"
+              fileKey={TYPE_DATA_KEY.CV_FILE}
+              icon={<PDFTypeIcon />}
+              label="CV"
+            />
+            <div className="my-4">
+              <UploadCustom
+                fieldkey="uploadPDFs"
+                fileKey={TYPE_DATA_KEY.PDF_FILE}
                 icon={<PDFTypeIcon />}
                 label="PDFs"
-                isDisable
-                textClassName="text-base-14-b"
-                customClassName="h-[50px]"
-              />
-              <UploadDataButton
-                icon={<EmailUpIcon />}
-                label="Emails"
-                isDisable
-                textClassName="text-base-14-b"
-                customClassName="h-[50px]"
               />
             </div>
-            <UploadDataButton
+            <UploadCustom
+              fieldkey="photosVideos"
+              fileKey={TYPE_DATA_KEY.PHOTO_VIDEO_FILE}
               icon={<PhotoPlusIcon />}
               label="Photos & Videos"
-              isDisable
-              textClassName="text-base-14-b"
-              customClassName="h-[50px] my-2"
-            />
-            <UploadDataButton
-              icon={<SocialLinkIcon />}
-              label="Website links/Social Media"
-              textClassName="text-base-14-b"
-              isDisable={false}
-              customClassName="h-[50px]"
+              accept="image/*,video/*"
             />
           </div>
         </div>
@@ -190,12 +182,6 @@ const CreatePrivateAgent: React.FC<{
           </div>
         </div>
       </>
-    )
-  }
-
-  if (!isLogin || (isLogin && sessionAccessToken)) {
-    return (
-      <MainContainerCreate>{renderCreateAccountAction()}</MainContainerCreate>
     )
   }
 

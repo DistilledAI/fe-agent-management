@@ -119,7 +119,7 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
             <div className="flex h-[50px] w-full min-w-[130px] cursor-pointer items-center justify-between gap-2 rounded-full border border-mercury-70 bg-mercury-30 p-4 shadow-6">
               <div className="flex items-center gap-2">
                 {icon}
-                <span className="text-base-b mr-2 text-center">{label}</span>
+                <span className="text-base-14-b mr-2 text-center">{label}</span>
               </div>
               <TablerPlusIcon />
             </div>

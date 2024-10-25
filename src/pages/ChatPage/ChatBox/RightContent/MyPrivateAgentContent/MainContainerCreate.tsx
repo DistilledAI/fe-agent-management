@@ -86,7 +86,7 @@ const MainContainerCreate: React.FC<{
         <div className="relative h-full w-full flex-1">
           <div className="flex-items-center relative h-full w-full flex-col justify-between">
             {children}
-            <div className="absolute bottom-[100px] flex items-center gap-2 rounded-[22px] border border-mercury-200 bg-white p-4 text-center max-sm:max-w-[320px]">
+            <div className="absolute bottom-[100px] flex items-center gap-2 rounded-[22px] border border-mercury-200 bg-white p-4 text-center max-sm:bottom-[40px] max-sm:w-full max-sm:max-w-[320px] max-sm:flex-col">
               <div>
                 <span className="text-base-14 text-mercury-800">
                   Your Private Agent is exclusively accessible to you unless you
@@ -104,7 +104,7 @@ const MainContainerCreate: React.FC<{
               </div>
 
               <Button
-                className="h-[44px] rounded-full bg-mercury-950 text-white max-sm:h-[36px]"
+                className="h-[44px] rounded-full bg-mercury-950 text-white max-sm:h-[52px] max-sm:w-full"
                 onClick={() => onSubmit()}
                 isDisabled={!isDisabled}
               >
