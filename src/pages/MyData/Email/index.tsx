@@ -2,6 +2,7 @@ import HeadSectionData from "../Components/HeadSectionData"
 // import { EditPenFilledIcon } from "@components/Icons/Edit"
 import { EmailUpIcon } from "@components/Icons/EmailUpIcon"
 import useWindowSize from "@hooks/useWindowSize"
+// import TableDataMobile from "../Components/TableDataMobile"
 import moment from "moment"
 import React from "react"
 import { IBotData } from "types/user"
@@ -98,15 +99,7 @@ const EmailData: React.FC<{
       />
       <div className="mt-4">
         {isMobile ? (
-          <TableDataMobile
-            data={data.map((item) => ({
-              type: item.type,
-              value: item.name,
-              createdAt: item.createdAt,
-            }))}
-            loadMore={() => {}}
-            hasMore={true}
-          />
+          <div>mobile</div>
         ) : (
           <TableData
             tdClassName={getTdClassName}

@@ -114,9 +114,12 @@ const CvData: React.FC<{
               type: item.type,
               value: item.name,
               createdAt: item.createdAt,
+              id: item.id,
             }))}
             loadMore={fetchNextPage}
             hasMore={hasNextPage}
+            category={category}
+            botId={botId}
           />
         ) : (
           <TableData

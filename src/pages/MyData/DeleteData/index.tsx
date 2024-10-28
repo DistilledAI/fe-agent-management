@@ -16,7 +16,8 @@ const DeleteData: React.FC<{
   botId: number
   ids: number[]
   category: BotDataTypeKey
-}> = ({ botId, ids, category }) => {
+  trigger?: React.ReactNode
+}> = ({ botId, ids, category, trigger = <DeleteIcon /> }) => {
   const [isOpen, setIsOpen] = useState(false)
   const queryClient = useQueryClient()
 
@@ -50,7 +51,7 @@ const DeleteData: React.FC<{
           onClick={() => setIsOpen(true)}
           className="cursor-pointer hover:opacity-70"
         >
-          <DeleteIcon />
+          {trigger}
         </div>
       </PopoverTrigger>
       <PopoverContent>
