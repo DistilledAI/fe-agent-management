@@ -74,6 +74,14 @@ const FileData: React.FC<{
             />
           </div>
         )
+      case ColumnKey.Name:
+        return (
+          <a className="hover:underline" href={item.value} target="_blank">
+            <span className="line-clamp-1 text-base text-mercury-950">
+              {item[columnKey]}
+            </span>
+          </a>
+        )
 
       default:
         return (
