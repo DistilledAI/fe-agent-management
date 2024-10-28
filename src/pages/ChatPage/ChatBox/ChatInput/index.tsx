@@ -11,21 +11,26 @@ import SpeechRecognition, {
 } from "react-speech-recognition"
 import { postChatToGroup } from "services/chat"
 import { twMerge } from "tailwind-merge"
+import { QueryDataKeys } from "types/queryDataKeys"
 import { RoleChat } from "../ChatMessages/helpers"
-import { useStyleBoxChat } from "../StyleProvider"
-import VoiceChat from "./Voice"
 import {
   ICachedMessageData,
   messagesQueryKey,
 } from "../ChatMessages/useFetchMessages"
-import { QueryDataKeys } from "types/queryDataKeys"
+import { useStyleBoxChat } from "../StyleProvider"
+import VoiceChat from "./Voice"
 
 interface ChatInputProps {
   isDisabledInput: boolean
   wrapperClassName?: string
+  isDarkTheme?: boolean
 }
 
-const ChatInput = ({ isDisabledInput, wrapperClassName }: ChatInputProps) => {
+const ChatInput = ({
+  isDisabledInput,
+  wrapperClassName,
+  isDarkTheme,
+}: ChatInputProps) => {
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const { chatId, privateChatId } = useParams()
   const [isFocus, setIsFocus] = useState(false)
@@ -157,21 +162,32 @@ const ChatInput = ({ isDisabledInput, wrapperClassName }: ChatInputProps) => {
         "absolute bottom-4 z-[11] flex max-w-[768px] items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 duration-500 max-sm:static max-sm:gap-2 sm:p-3 sm:py-[7.89px] md:bottom-8",
         isFocus ? "border-mercury-300" : "border-mercury-200",
         wrapperClassName,
+        isDarkTheme && "bg-mercury-950",
       )}
     >
       <Button
         isDisabled
-        className="h-9 w-[52px] min-w-[52px] rounded-full border border-white bg-mercury-30 px-4 py-2"
+        className={twMerge(
+          "h-9 w-[52px] min-w-[52px] rounded-full border border-white bg-mercury-30 px-4 py-2",
+          isDarkTheme && "bg-mercury-30",
+        )}
       >
-        <PaperClipFilledIcon />
+        <PaperClipFilledIcon
+          color={isDarkTheme ? "rgba(84, 84, 84, 1)" : "#545454"}
+        />
       </Button>
       <Textarea
         placeholder="Type your message"
         classNames={{
-          inputWrapper:
+          inputWrapper: twMerge(
             "bg-mercury-200 border-none focus-within:!bg-mercury-200 hover:!bg-mercury-200 shadow-none px-0",
-          input:
+            isDarkTheme &&
+              "bg-mercury-950 focus-within:!bg-mercury-950 hover:!bg-mercury-950",
+          ),
+          input: twMerge(
             "text-[18px] text-mercury-900 placeholder:text-mercury-700 font-barlow",
+            isDarkTheme && "!text-mercury-30 placeholder:text-mercury-400",
+          ),
         }}
         onKeyDown={handleKeyDown}
         minRows={1}
@@ -190,15 +206,19 @@ const ChatInput = ({ isDisabledInput, wrapperClassName }: ChatInputProps) => {
         transcript={transcript}
         setMessages={setMessage}
         isDisabled={isDisabledInput}
+        isDarkTheme={isDarkTheme}
       />
       <Button
         onClick={onSubmit}
         isDisabled={!message || mutation.isPending}
         type="submit"
         isIconOnly
-        className="h-9 w-[52px] min-w-[52px] rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2"
+        className={twMerge(
+          "h-9 w-[52px] min-w-[52px] rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2",
+          isDarkTheme && "bg-white",
+        )}
       >
-        <ArrowUpFilledIcon />
+        <ArrowUpFilledIcon bgColor={isDarkTheme ? "#363636" : "#FAFAFA"} />
       </Button>
     </div>
   )
