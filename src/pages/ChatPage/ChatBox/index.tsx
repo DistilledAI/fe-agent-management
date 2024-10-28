@@ -6,6 +6,7 @@ import ChatInput from "./ChatInput"
 import ChatMessages from "./ChatMessages"
 import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
 import useMessageSocket from "./useMessageSocket"
+import { StyleBoxChatProvider } from "./StyleProvider"
 
 const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
@@ -22,22 +23,24 @@ const ChatBox = () => {
   }, [isLogin, chatId])
 
   return (
-    <div className="relative h-full max-h-dvh w-full">
-      {(isLogin && chatId) || inviteUserId ? (
-        <>
-          <ChatMessages />
-          <ChatInput
-            isDisabledInput={!isEnableTextInput}
-            wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
+    <StyleBoxChatProvider>
+      <div className="relative h-full max-h-dvh w-full">
+        {(isLogin && chatId) || inviteUserId ? (
+          <>
+            <ChatMessages />
+            <ChatInput
+              isDisabledInput={!isEnableTextInput}
+              wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
+            />
+          </>
+        ) : (
+          <MyPrivateAgentContent
+            connectWalletLoading={loading}
+            connectWallet={connectWallet}
           />
-        </>
-      ) : (
-        <MyPrivateAgentContent
-          connectWalletLoading={loading}
-          connectWallet={connectWallet}
-        />
-      )}
-    </div>
+        )}
+      </div>
+    </StyleBoxChatProvider>
   )
 }
 

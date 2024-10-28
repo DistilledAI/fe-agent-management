@@ -90,27 +90,9 @@ const ChatInput = ({
 
       return { newMessage }
     },
-    //   queryClient.setQueryData<InfiniteData<IMessageBox[]>>(
-    //     messagesQueryKey(groupId),
-    //     (cachedData) => {
-    //       if (!cachedData) return { pageParams: [], pages: [[newMessage]] }
-
-    //       console.log({ cachedData })
-
-    //       return {
-    //         ...cachedData,
-    //         pages: cachedData.pages.map((page, index) =>
-    //           index === cachedData.pages.length - 1
-    //             ? page.map((message) =>
-    //                 message.id === newMessage.id ? newMessage : message,
-    //               )
-    //             : page,
-    //         ),
-    //       }
-    //     },
-    //   )
-    //   SpeechRecognition.stopListening()
-    // },
+    onSuccess: () => {
+      SpeechRecognition.stopListening()
+    },
     onError: (error) => {
       console.error("Failed to send message", error)
     },

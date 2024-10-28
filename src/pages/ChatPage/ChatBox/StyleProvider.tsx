@@ -19,7 +19,9 @@ const StyleBoxChatContext = createContext(initialState)
 export const StyleBoxChatProvider: React.FC<MessageProviderProps> = ({
   children,
 }) => {
-  const [style, setStyle] = useState<React.CSSProperties>({})
+  const [style, setStyle] = useState<React.CSSProperties>({
+    paddingBottom: 0,
+  })
 
   return (
     <StyleBoxChatContext.Provider value={{ style, setStyle }}>
