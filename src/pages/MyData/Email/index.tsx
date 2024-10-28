@@ -1,12 +1,13 @@
 import HeadSectionData from "../Components/HeadSectionData"
 // import { EditPenFilledIcon } from "@components/Icons/Edit"
-import TableData from "../Components/TableData"
 import { EmailUpIcon } from "@components/Icons/EmailUpIcon"
 import useWindowSize from "@hooks/useWindowSize"
 // import TableDataMobile from "../Components/TableDataMobile"
+import moment from "moment"
 import React from "react"
 import { IBotData } from "types/user"
-import moment from "moment"
+import TableData from "../Components/TableData"
+import TableDataMobile from "../Components/TableDataMobile"
 // import DeleteData from "../DeleteData"
 
 enum ColumnKey {

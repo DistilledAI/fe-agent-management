@@ -11,7 +11,7 @@ import React, { useRef, useState } from "react"
 import DeleteData from "../DeleteData"
 import { BotDataTypeKey } from "@types"
 
-interface ITableData {
+export interface ITableData {
   type?: string
   value: string
   createdAt: string
