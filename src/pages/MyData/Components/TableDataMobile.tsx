@@ -3,7 +3,7 @@ import useLoadMoreByScroll from "@hooks/useLoadMoreByScroll"
 import moment from "moment"
 import React, { useRef } from "react"
 
-interface ITableData {
+export interface ITableData {
   type?: string
   value: string
   createdAt: string
