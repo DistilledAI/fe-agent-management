@@ -3,6 +3,7 @@ import { Button } from "@nextui-org/react"
 import React, { useEffect } from "react"
 import type SpeechRecognition from "react-speech-recognition"
 import { toast } from "react-toastify"
+import { twMerge } from "tailwind-merge"
 
 const VoiceChat: React.FC<{
   setMessages: React.Dispatch<React.SetStateAction<string>>
@@ -11,6 +12,7 @@ const VoiceChat: React.FC<{
   isListening: boolean
   resetTranscript: () => void
   isDisabled: boolean
+  isDarkTheme?: boolean
 }> = ({
   setMessages,
   transcript,
@@ -18,6 +20,7 @@ const VoiceChat: React.FC<{
   isListening,
   resetTranscript,
   isDisabled,
+  isDarkTheme,
 }) => {
   const startVoice = () => {
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
@@ -55,9 +58,12 @@ const VoiceChat: React.FC<{
           onClick={startVoice}
           isIconOnly
           isDisabled={isDisabled}
-          className="rounded-full bg-mercury-200"
+          className={twMerge(
+            "rounded-full bg-mercury-200",
+            isDarkTheme && "bg-mercury-950",
+          )}
         >
-          <MicrophoneFilledIcon />
+          <MicrophoneFilledIcon color={isDarkTheme ? "#E6E6E6" : "#545454"} />
         </Button>
       )}
     </>
