@@ -7,7 +7,6 @@ import moment from "moment"
 import React from "react"
 import { IBotData } from "types/user"
 import TableData from "../Components/TableData"
-import TableDataMobile from "../Components/TableDataMobile"
 // import DeleteData from "../DeleteData"
 
 enum ColumnKey {
