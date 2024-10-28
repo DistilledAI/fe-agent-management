@@ -44,7 +44,7 @@ const useInviteUser = () => {
               return [newData].concat(oldData ?? [])
             },
           )
-        const newGroupId = newData?.groupId
+        const newGroupId = newData?.id
         if (newGroupId) {
           navigate(`${PATH_NAMES.CHAT}/${newGroupId}?isInvited=true`)
         }

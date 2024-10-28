@@ -85,8 +85,9 @@ const useFetchMessages = () => {
     try {
       const res = await fetchPreviousPage()
       if (res.data?.pages[0]?.messages.length) {
-        return res.data?.pages[0].messages.length - 2
+        return res.data?.pages[0].messages.length - 1
       }
+      return 0
     } catch (error) {
       console.error(error)
     }

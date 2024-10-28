@@ -1,7 +1,5 @@
-import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
-import { Button } from "@nextui-org/react"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
-import {
+import React, {
   CSSProperties,
   useCallback,
   useEffect,
@@ -14,6 +12,7 @@ import { Virtuoso, VirtuosoHandle } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
 import MessagesSkeleton from "./MessagesSkeleton"
 import DotLoading from "@components/DotLoading"
+import ScrollBottomChat from "./ScrollBottomChat"
 
 interface ChatWindowProps {
   messages: Array<IMessageBox>
@@ -24,12 +23,7 @@ interface ChatWindowProps {
   chatId: string | undefined
   style?: CSSProperties
   msgBoxClassName?: string
-  children?: React.ReactNode
-  Footer?:
-    | React.ComponentType<{
-        context?: any
-      }>
-    | undefined
+  Footer?: React.ReactNode
   isFetched?: boolean
   hasPreviousMore?: boolean
   isFetchingPreviousPage?: boolean
@@ -47,7 +41,6 @@ const ChatWindow = ({
   onLoadPrevMessages,
   style,
   msgBoxClassName,
-  children,
   Footer,
   isFetched = false,
   hasPreviousMore,
@@ -80,11 +73,12 @@ const ChatWindow = ({
       if (scrollTop === 0 && hasPreviousMore) {
         setIsAtBottom(false)
         const messagesIndex = await onLoadPrevMessages()
-
-        virtuosoRef.current?.scrollToIndex({
-          index: messagesIndex || 0,
-          behavior: "auto",
-        })
+        if (messagesIndex) {
+          virtuosoRef.current?.scrollToIndex({
+            index: messagesIndex || 0,
+            behavior: "auto",
+          })
+        }
       }
 
       const scrollPosition = scrollHeight - clientHeight - scrollTop
@@ -93,23 +87,26 @@ const ChatWindow = ({
     [hasPreviousMore],
   )
 
-  const onScrollToBottom = () => {
-    virtuosoRef.current?.scrollToIndex({
-      index: "LAST",
-      behavior: "smooth",
-      align: "end",
-    })
-  }
+  const memoizedHeader = useMemo(
+    () => () =>
+      isFetchingPreviousPage && messages.length >= LIMIT ? (
+        <div className="my-4 flex h-full items-center justify-center">
+          <DotLoading />
+        </div>
+      ) : (
+        <></>
+      ),
+    [isFetchingPreviousPage, messages.length],
+  )
 
-  const memoizedFooter = useMemo(() => Footer, [])
+  const memoizedFooter = useMemo(() => () => Footer, [])
 
-  const renderLoadMore = () => {
-    return (
-      <div className="my-4 flex h-full items-center justify-center">
-        <DotLoading />
-      </div>
+  const renderEmptyPlaceholder = () =>
+    isFetched && !messages.length ? (
+      <div className="flex h-full items-center justify-center">NO MESSAGE</div>
+    ) : (
+      <></>
     )
-  }
 
   return (
     <div
@@ -120,11 +117,6 @@ const ChatWindow = ({
       )}
     >
       {isLoading && <MessagesSkeleton />}
-      {isFetched && !messages.length && (
-        <div className="flex h-full items-center justify-center">
-          NO MESSAGE
-        </div>
-      )}
       {!isLoading && messages.length ? (
         <Virtuoso
           style={{
@@ -137,53 +129,31 @@ const ChatWindow = ({
             align: "end",
           }}
           increaseViewportBy={600}
-          onScroll={onScroll}
+          onScroll={messages.length >= LIMIT ? onScroll : undefined}
           components={{
-            Header: () =>
-              isFetchingPreviousPage && messages.length >= LIMIT ? (
-                renderLoadMore()
-              ) : (
-                <></>
-              ),
+            Header: memoizedHeader,
             Footer: memoizedFooter,
+            EmptyPlaceholder: () => renderEmptyPlaceholder(),
           }}
           followOutput={isAtBottom ? "smooth" : false}
           atBottomStateChange={setIsAtBottom}
           atBottomThreshold={AT_BOTTOM_THRESHOLD}
-          itemContent={(index, message) => (
-            <article
-              className={twMerge("px-3 pb-3", msgBoxClassName)}
-              key={index}
-            >
-              {itemContent(index, message)}
-            </article>
-          )}
+          itemContent={(index, message) => {
+            return (
+              <article
+                className={twMerge("px-3 pb-3", msgBoxClassName)}
+                key={index}
+              >
+                {itemContent(index, message)}
+              </article>
+            )
+          }}
         />
       ) : null}
-      {isScrollBottom && (
-        <div className="absolute inset-x-0 bottom-0 z-10 flex h-20 w-full items-center justify-center bg-fading-white bg-cover bg-no-repeat">
-          <Button
-            onClick={onScrollToBottom}
-            className={twMerge(
-              "w-10 min-w-10 rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2",
-              // isNewMsgOnCurrentWindow && "w-fit",
-            )}
-          >
-            <div className="rotate-180">
-              <ArrowUpFilledIcon />
-            </div>
-            {/* <span
-              className={twMerge(
-                "hidden",
-                isNewMsgOnCurrentWindow && "block text-mercury-30",
-              )}
-            >
-              New message
-            </span> */}
-          </Button>
-        </div>
-      )}
-      {children}
+      <ScrollBottomChat
+        isScrollBottom={isScrollBottom}
+        virtuosoRef={virtuosoRef}
+      />
     </div>
   )
 }
