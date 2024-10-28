@@ -92,7 +92,6 @@ const useMessageSocket = () => {
         messagesQueryKey(item.groupId),
         (cachedData: ICachedMessageData) => {
           if (item.groupId === e.group) {
-            console.log({ groupId: item.groupId, socketId: e.group })
             if (!cachedData)
               return {
                 pageParams: [],
