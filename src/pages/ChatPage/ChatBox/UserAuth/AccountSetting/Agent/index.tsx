@@ -111,17 +111,24 @@ const PrivateAgent: React.FC<{
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-2">
-        <ShareAgent agentData={firstBot} isDisabled={isPending || !firstBot} />
-        <Button
-          className="flex w-full rounded-full bg-mercury-100 max-md:min-h-14"
-          isDisabled
-        >
-          <ShareWithCloudIcon />
-          <span className="font-medium text-mercury-950">
-            Publish on Marketplace
-          </span>
-        </Button>
+      <div className="flex flex-col items-center justify-between gap-2 sm:flex-row">
+        <div className="w-full sm:w-[40%]">
+          <ShareAgent
+            agentData={firstBot}
+            isDisabled={isPending || !firstBot}
+          />
+        </div>
+        <div className="w-full sm:w-[60%]">
+          <Button
+            className="flex w-full rounded-full bg-mercury-100 max-md:min-h-14"
+            isDisabled
+          >
+            <ShareWithCloudIcon />
+            <span className="font-medium text-mercury-950">
+              Publish on Marketplace
+            </span>
+          </Button>
+        </div>
       </div>
     </div>
   )
