@@ -27,7 +27,7 @@ export interface ICachedMessageData {
   }>
 }
 
-export const messagesQueryKey = (chatId: string | undefined) => {
+export const messagesQueryKey = (chatId: string | number | undefined) => {
   if (!chatId) return []
   return [`chat-messages-${chatId}`]
 }
