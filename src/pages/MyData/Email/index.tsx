@@ -3,7 +3,7 @@ import HeadSectionData from "../Components/HeadSectionData"
 import TableData from "../Components/TableData"
 import { EmailUpIcon } from "@components/Icons/EmailUpIcon"
 import useWindowSize from "@hooks/useWindowSize"
-import TableDataMobile from "../Components/TableDataMobile"
+// import TableDataMobile from "../Components/TableDataMobile"
 import React from "react"
 import { IBotData } from "types/user"
 import moment from "moment"
@@ -98,13 +98,7 @@ const EmailData: React.FC<{
       />
       <div className="mt-4">
         {isMobile ? (
-          <TableDataMobile
-            data={data.map((item) => ({
-              type: item.type,
-              value: item.name,
-              createdAt: item.createdAt,
-            }))}
-          />
+          <div>mobile</div>
         ) : (
           <TableData
             tdClassName={getTdClassName}
