@@ -89,7 +89,7 @@ const CreatePrivateAgent: React.FC<{
   const renderContainerCreateContent = () => {
     if (isMobile) {
       return (
-        <div className="mt-[60px] flex flex-col items-center">
+        <div className="mt-[60px] flex w-full flex-col items-center">
           <div className="flex-items-center mb-2 gap-1">
             <FilledBrainAIIcon color="#A2845E" size={24} />
             <ThreeDotsIcon />
@@ -103,7 +103,7 @@ const CreatePrivateAgent: React.FC<{
             by connect your data:
           </span>
 
-          <div className="mt-6">
+          <div className="mt-6 max-h-[380px] w-full overflow-auto">
             <UploadSocialLink />
 
             <UploadCustom
