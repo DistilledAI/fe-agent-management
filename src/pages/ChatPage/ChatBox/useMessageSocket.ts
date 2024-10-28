@@ -12,6 +12,7 @@ import {
   messagesQueryKey,
 } from "./ChatMessages/useFetchMessages"
 import { QueryDataKeys } from "types/queryDataKeys"
+import { UserGroup } from "./LeftBar/useFetchGroups"
 
 interface IDataListen {
   event: string
@@ -39,80 +40,97 @@ const useMessageSocket = () => {
 
   const isPassRuleMessage = (e: IDataListen) => {
     if (e.user.id === user?.id) return false
-    if (e.group !== Number(groupChatId)) return false
+    // if (e.group !== Number(groupChatId)) return false
 
     return true
   }
 
-  const addNewMsg = (newMsg: IMessageBox) => {
-    queryClient.setQueryData(
-      messagesQueryKey(groupChatId),
-      (cachedData: ICachedMessageData) => {
-        if (!cachedData)
-          return {
-            pageParams: [],
-            pages: [
-              {
-                messages: [newMsg],
-                nextOffset: 0,
-              },
-            ],
+  const addNewMsg = (newMsg: IMessageBox, e: IDataListen) => {
+    const myChatList =
+      queryClient.getQueryData<UserGroup[]>([QueryDataKeys.MY_LIST_CHAT]) || []
+
+    myChatList.forEach((item) => {
+      queryClient.setQueryData(
+        messagesQueryKey(item.groupId),
+        (cachedData: ICachedMessageData) => {
+          if (item.groupId === e.group) {
+            if (!cachedData)
+              return {
+                pageParams: [],
+                pages: [
+                  {
+                    messages: [newMsg],
+                    nextOffset: 0,
+                  },
+                ],
+              }
+
+            const lastPage = cachedData.pages[cachedData.pages.length - 1]
+
+            return {
+              ...cachedData,
+              pages: [
+                ...cachedData.pages.slice(0, -1),
+                {
+                  ...lastPage,
+                  messages: [...lastPage.messages, newMsg],
+                },
+              ],
+            }
           }
-
-        const lastPage = cachedData.pages[cachedData.pages.length - 1]
-
-        return {
-          ...cachedData,
-          pages: [
-            ...cachedData.pages.slice(0, -1),
-            {
-              ...lastPage,
-              messages: [...lastPage.messages, newMsg],
-            },
-          ],
-        }
-      },
-    )
+        },
+      )
+    })
   }
 
   const updateNewMsg = (e: IDataListen, isPlusMsg: boolean = true) => {
-    queryClient.setQueryData(
-      messagesQueryKey(groupChatId),
-      (cachedData: ICachedMessageData) => {
-        if (!cachedData)
-          return {
-            pageParams: [],
-            pages: [
-              {
-                messages: [],
-                nextOffset: 0,
-              },
-            ],
+    const myChatList =
+      queryClient.getQueryData<UserGroup[]>([QueryDataKeys.MY_LIST_CHAT]) || []
+
+    myChatList.forEach((item) => {
+      queryClient.setQueryData(
+        messagesQueryKey(item.groupId),
+        (cachedData: ICachedMessageData) => {
+          if (item.groupId === e.group) {
+            console.log({ groupId: item.groupId, socketId: e.group })
+            if (!cachedData)
+              return {
+                pageParams: [],
+                pages: [
+                  {
+                    messages: [],
+                    nextOffset: 0,
+                  },
+                ],
+              }
+
+            const lastPage = cachedData.pages[cachedData.pages.length - 1]
+
+            return {
+              ...cachedData,
+              pages: [
+                ...cachedData.pages.slice(0, -1),
+                {
+                  ...lastPage,
+                  messages: lastPage.messages.map((item) => {
+                    if (item.id === e.msgId) {
+                      return {
+                        ...item,
+                        content: isPlusMsg
+                          ? item.content + e.messages
+                          : e.messages,
+                        isTyping: false,
+                      }
+                    }
+                    return item
+                  }),
+                },
+              ],
+            }
           }
-
-        const lastPage = cachedData.pages[cachedData.pages.length - 1]
-
-        return {
-          ...cachedData,
-          pages: [
-            ...cachedData.pages.slice(0, -1),
-            {
-              ...lastPage,
-              messages: lastPage.messages.map((item) => {
-                if (item.id === e.msgId) {
-                  return {
-                    ...item,
-                    content: isPlusMsg ? item.content + e.messages : e.messages,
-                    isTyping: false,
-                  }
-                }
-                return item
-              }),
-            },
-          ],
-        }
-      },
-    )
+        },
+      )
+    })
   }
 
   const handleWithTyping = (e: IDataListen) => {
@@ -125,7 +143,7 @@ const useMessageSocket = () => {
       roleOwner: e.user.role,
       createdAt: new Date().toISOString(),
     }
-    addNewMsg(newMsg)
+    addNewMsg(newMsg, e)
   }
 
   const isReloadWhenResponse = (index: number) => {
@@ -152,16 +170,14 @@ const useMessageSocket = () => {
       roleOwner: e.user.role,
       createdAt: new Date().toISOString(),
     }
-    addNewMsg(newMsg)
+    addNewMsg(newMsg, e)
   }
 
   const handleWithDone = (e: IDataListen) => {
-    const isNeedAppendWhenDone = indexResRef.current !== 0
+    // const isNeedAppendWhenDone = indexResRef.current !== 0
     const isBotVoice = e.user.typeBot === TYPE_BOT.VOICE
     if (isBotVoice) textToVoice(e.messages, e.user.configBot)
-    if (isNeedAppendWhenDone) {
-      updateNewMsg(e, false)
-    }
+    updateNewMsg(e, false)
   }
 
   const handleResponseForMessage = (e: IDataListen) => {
@@ -218,9 +234,9 @@ const useMessageSocket = () => {
     groupChatId,
   ])
 
-  useEffect(() => {
-    indexResRef.current = -1
-  }, [groupChatId])
+  // useEffect(() => {
+  //   indexResRef.current = -1
+  // }, [groupChatId])
 }
 
 export default useMessageSocket
