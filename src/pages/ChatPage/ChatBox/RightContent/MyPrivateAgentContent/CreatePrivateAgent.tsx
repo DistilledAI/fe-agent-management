@@ -139,7 +139,7 @@ const CreatePrivateAgent: React.FC<{
             Max file size: 50MB
           </span>
         </div>
-        <div className="absolute top-[50px] h-full">
+        <div className="absolute top-[50px] h-full w-[650px]">
           <div className="mb-12 flex flex-col items-center justify-center text-center">
             <div className="flex-items-center gap-1">
               <FilledBrainAIIcon color="#A2845E" size={24} />

@@ -136,7 +136,7 @@ const ProfileLinkForm: React.FC<{
       <>
         <IntroVideo />
         <span className="flex items-center justify-center text-center text-[24px] font-semibold text-mercury-950">
-          Website links/Social Media
+          Website Links/Social Media
         </span>
         <Input
           placeholder="Enter your profile link"
@@ -165,9 +165,9 @@ const ProfileLinkForm: React.FC<{
   }
 
   return (
-    <>
+    <div className="min-w-[400px]">
       <span className="text-[24px] font-semibold text-mercury-950">
-        Website links/Social Media
+        Website Links/Social Media
       </span>
       <Input
         placeholder="Enter your profile link"
@@ -191,7 +191,7 @@ const ProfileLinkForm: React.FC<{
       >
         <span className="text-18 text-mercury-30">Connect</span>
       </Button>
-    </>
+    </div>
   )
 }
 export default ProfileLinkForm

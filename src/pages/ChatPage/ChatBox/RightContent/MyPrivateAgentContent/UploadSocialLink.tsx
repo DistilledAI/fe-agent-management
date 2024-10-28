@@ -39,7 +39,7 @@ const UploadSocialLink = () => {
         render={() => (
           <UploadDataButton
             icon={<SocialLinkIcon />}
-            label="Website links/Social Media"
+            label="Website Links/Social Media"
             textClassName="text-base-14-b"
             onClick={() => setOpenPopup(true)}
             customClassName="mb-6 max-sm:mb-4"
