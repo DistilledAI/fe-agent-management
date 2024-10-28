@@ -27,6 +27,7 @@ interface ChatWindowProps {
   isFetched?: boolean
   hasPreviousMore?: boolean
   isFetchingPreviousPage?: boolean
+  calculatedPaddingBottom?: string
 }
 
 const LIMIT = 20
@@ -39,12 +40,12 @@ const ChatWindow = ({
   isLoading,
   chatId,
   onLoadPrevMessages,
-  style,
   msgBoxClassName,
   Footer,
   isFetched = false,
   hasPreviousMore,
   isFetchingPreviousPage,
+  calculatedPaddingBottom,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [isAtBottom, setIsAtBottom] = useState<boolean>(true)
@@ -65,7 +66,7 @@ const ChatWindow = ({
         align: "end",
       })
     }
-  }, [messages, isScrollBottom, chatId])
+  }, [messages, isScrollBottom, chatId, calculatedPaddingBottom])
 
   const onScroll = useCallback(
     async (e: React.UIEvent<HTMLDivElement>) => {
@@ -110,11 +111,13 @@ const ChatWindow = ({
 
   return (
     <div
-      style={style}
       className={twMerge(
-        "relative h-full overflow-hidden transition-all duration-500 ease-in-out md:max-h-[calc(100%-100px)]",
+        "relative h-full overflow-hidden transition-all duration-300 ease-linear md:max-h-[calc(100%-100px)]",
         className,
       )}
+      style={{
+        paddingBottom: calculatedPaddingBottom,
+      }}
     >
       {isLoading && <MessagesSkeleton />}
       {!isLoading && messages.length ? (
@@ -135,7 +138,9 @@ const ChatWindow = ({
             Footer: memoizedFooter,
             EmptyPlaceholder: () => renderEmptyPlaceholder(),
           }}
-          followOutput={isAtBottom ? "smooth" : false}
+          followOutput={
+            isAtBottom || calculatedPaddingBottom ? "smooth" : false
+          }
           atBottomStateChange={setIsAtBottom}
           atBottomThreshold={AT_BOTTOM_THRESHOLD}
           itemContent={(index, message) => {
