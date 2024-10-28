@@ -1,11 +1,11 @@
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { PATH_NAMES } from "@constants/index"
+import { useAppSelector } from "@hooks/useAppRedux"
 import { AGENT_TYPE, updateAgentType } from "@reducers/agentSlice"
 import { useDispatch } from "react-redux"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
-import ActiveEffect from "./ActiveEffect"
-import { useAppSelector } from "@hooks/useAppRedux"
 import { twMerge } from "tailwind-merge"
+import ActiveEffect from "./ActiveEffect"
 
 const MyEcho: React.FC = () => {
   const dispatch = useDispatch()
@@ -28,12 +28,14 @@ const MyEcho: React.FC = () => {
     <div
       className={twMerge(
         "hover-light-effect relative flex h-14 items-center gap-2 rounded-full border-white bg-mercury-30 px-2 py-4",
-        !!isActive && "border-mercury-100 bg-mercury-100",
+        !!isActive && "border-mercury-100 bg-mercury-950 text-mercury-30",
         sidebarCollapsed && "w-14 justify-center",
       )}
       onClick={() => handleChooseMyEcho()}
     >
-      <FilledBrainAIIcon />
+      <FilledBrainAIIcon
+        color={isActive ? "rgba(250, 250, 250, 1)" : "#545454"}
+      />
       <span
         className={twMerge(
           "whitespace-nowrap text-[16px] font-normal",

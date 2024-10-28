@@ -56,6 +56,7 @@ const PrivateAgentChatContent: React.FC = () => {
       <ChatInput
         isDisabledInput={false}
         wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
+        isDarkTheme
       />
     </>
   )
