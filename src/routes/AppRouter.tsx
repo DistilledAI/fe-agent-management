@@ -5,6 +5,7 @@ import { ChatDetailLoadingPage } from "@components/LoadingMobile"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
 import AddMyData from "@pages/AddMyData"
+import ChatMyAgent from "@pages/ChatMyAgent"
 import ChatPage from "@pages/ChatPage"
 import ChatBox from "@pages/ChatPage/ChatBox"
 import ChatPageMobile from "@pages/ChatPage/Mobile"
@@ -36,7 +37,7 @@ const AppRouter = () => {
         />
         <Route
           path={`${PATH_NAMES.PRIVATE_AGENT}/:privateChatId`}
-          element={isMobile ? <ChatPage /> : <ChatBox />}
+          element={isMobile ? <ChatPage /> : <ChatMyAgent />}
         />
         <Route path={PATH_NAMES.MARKETPLACE} element={<Marketplace />} />
         <Route

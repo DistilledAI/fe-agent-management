@@ -1,24 +1,24 @@
 import { desktopPrivateAgent } from "@assets/images"
 import { envConfig } from "@configs/env"
-import { PATH_NAMES } from "@constants/index"
+import { PATH_NAMES, RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { checkGroupDirect, createGroupChat } from "services/chat"
 import CreatePrivateAgent from "./CreatePrivateAgent"
-import PrivateAgentChatContent from "./PrivateAgentChatContent"
 import usePrivateAgent, { PRIVATE_AGENT_STATUS } from "./usePrivateAgent"
+import DotLoading from "@components/DotLoading"
 
 const MyPrivateAgentContent: React.FC<{
   connectWalletLoading: boolean
   connectWallet: any
 }> = ({ connectWalletLoading, connectWallet }) => {
   const groupDefaultForPrivateAgent = envConfig.groupDefaultForPrivateAgent
-  const { privateAgentData, callGetMyPrivateAgent, loading } = usePrivateAgent()
-  const { isLogin } = useAuthState()
+  const { privateAgentData, callGetMyPrivateAgent } = usePrivateAgent()
+  const { isLogin, user } = useAuthState()
   const navigate = useNavigate()
   const [isCreated, setCreated] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const { pathname } = useLocation()
 
   const privateAgentStatus = privateAgentData?.status
@@ -30,7 +30,10 @@ const MyPrivateAgentContent: React.FC<{
   const memberId = MAP_MEMBER_ID_FROM_STATUS[privateAgentStatus]
 
   const checkCreatedGroupAgent = async () => {
-    if (!memberId) return
+    if (!memberId) {
+      setIsLoading(false)
+      return
+    }
     setIsLoading(true)
     try {
       const res = await checkGroupDirect({
@@ -57,12 +60,27 @@ const MyPrivateAgentContent: React.FC<{
 
   useEffect(() => {
     callGetMyPrivateAgent()
-    checkCreatedGroupAgent()
-  }, [isLogin, isCreated, privateAgentStatus, pathname])
+  }, [isLogin, isCreated, pathname, user?.id])
 
-  if (loading || isLoading) return
+  useEffect(() => {
+    if (privateAgentStatus) checkCreatedGroupAgent()
 
-  if (privateAgentData && !isLoading) return <PrivateAgentChatContent />
+    setTimeout(() => {
+      const isRealUserAndHaveNoAgent =
+        !privateAgentData && isLogin && user?.role !== RoleUser.ANONYMOUS
+      if (isRealUserAndHaveNoAgent) setIsLoading(false)
+    }, 1000)
+  }, [privateAgentStatus, isLogin, user?.role])
+
+  const isLoadingDisplay =
+    isLoading && isLogin && user?.role !== RoleUser.ANONYMOUS
+
+  if (isLoadingDisplay)
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <DotLoading />
+      </div>
+    )
 
   return (
     <div
