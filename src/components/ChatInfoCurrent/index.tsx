@@ -33,11 +33,11 @@ const ChatInfoCurrent: React.FC<{
               groupDetail.group.userA,
               groupDetail.group.userB,
             )}
-            classNames={{ base: "w-9 h-9 sm:w-10 sm:h-10" }}
+            classNames={{ base: "w-9 h-9 md:w-10 md:h-10" }}
           />
           <span
             className={twMerge(
-              "line-clamp-1 max-w-[150px] text-[15px] font-semibold sm:max-w-[250px] sm:text-16",
+              "line-clamp-1 max-w-[150px] text-[15px] font-semibold md:max-w-[250px] md:text-16",
               textColor,
             )}
           >

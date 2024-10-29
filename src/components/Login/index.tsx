@@ -20,7 +20,7 @@ const Login = () => {
 
   return (
     <div
-      className="relative mx-auto flex h-full w-full flex-1 items-center justify-center rounded-[22px] border border-white bg-white bg-cover bg-center bg-no-repeat font-barlow max-sm:h-dvh"
+      className="relative mx-auto flex h-full w-full flex-1 items-center justify-center rounded-[22px] border border-white bg-white bg-cover bg-center bg-no-repeat font-barlow max-md:h-dvh"
       style={{
         backgroundImage: `url(${desktopPrivateAgent})`,
       }}
@@ -37,7 +37,7 @@ const Login = () => {
         <div className="flex-items-center max-w-[390px] flex-col">
           <FilledExclamationCircleIcon />
           <span
-            className="cursor-pointer text-center text-24 text-mercury-800 max-sm:text-20"
+            className="cursor-pointer text-center text-24 text-mercury-800 max-md:text-20"
             onClick={() => connectWallet()}
           >
             <span className="font-semibold text-mercury-950">
@@ -48,7 +48,7 @@ const Login = () => {
           </span>
         </div>
       )}
-      <div className="absolute right-6 top-4 hidden w-[240px] sm:block">
+      <div className="absolute right-6 top-4 hidden w-[240px] md:block">
         <IntroVideo />
       </div>
     </div>

@@ -83,17 +83,17 @@ const MainContainerCreate: React.FC<{
   return (
     <>
       <FormProvider {...methods}>
-        <div className="relative h-full w-full flex-1 max-sm:px-3">
+        <div className="relative h-full w-full flex-1 max-md:px-3">
           <div className="flex-items-center relative h-full w-full flex-col justify-between">
             {children}
-            <div className="absolute bottom-[100px] flex items-center gap-2 rounded-[22px] border border-mercury-200 bg-white p-4 text-center max-sm:bottom-[40px] max-sm:w-full max-sm:flex-col">
+            <div className="absolute bottom-[100px] flex items-center gap-2 rounded-[22px] border border-mercury-200 bg-white p-4 text-center max-md:bottom-[40px] max-md:w-full max-md:flex-col">
               <div>
                 <span className="text-base-14 text-mercury-800">
                   Your Private Agent is exclusively accessible to you unless you
                   choose to publish it on the Marketplace.
                 </span>
                 <div
-                  className="flex-items-center mt-2 cursor-pointer gap-2 max-sm:mb-2 max-sm:justify-center"
+                  className="flex-items-center mt-2 cursor-pointer gap-2 max-md:mb-2 max-md:justify-center"
                   onClick={() => setOpenFYIPopupp(true)}
                 >
                   <FilledShieldCheckedIcon color="#A2845E" />
@@ -104,7 +104,7 @@ const MainContainerCreate: React.FC<{
               </div>
 
               <Button
-                className="h-[44px] rounded-full bg-mercury-950 text-white max-sm:h-[52px] max-sm:w-full"
+                className="h-[44px] rounded-full bg-mercury-950 text-white max-md:h-[52px] max-md:w-full"
                 onClick={() => onSubmit()}
                 isDisabled={!isDisabled}
               >

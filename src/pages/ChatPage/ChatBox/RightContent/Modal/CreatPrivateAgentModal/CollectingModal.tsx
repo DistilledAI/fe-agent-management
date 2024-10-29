@@ -11,7 +11,7 @@ const CollectingModal: React.FC<{
     setOpenPopup(!openPopup)
   }
 
-  const baseClassName = "bg-white max-sm:!m-0 max-sm:h-[calc(100vh-100px)]"
+  const baseClassName = "bg-white max-md:!m-0 max-md:h-[calc(100vh-100px)]"
 
   return (
     <Modal

@@ -18,7 +18,7 @@ const MyData: React.FC = () => {
   const lastCollected = getTimeLastCollected(list)
 
   return (
-    <div className="mx-auto max-w-[800px] px-4 py-5 max-sm:min-h-dvh max-sm:bg-mercury-70 max-sm:pt-[70px]">
+    <div className="mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px]">
       {isMobile ? (
         <div className="fixed left-0 top-0 z-[1] flex h-[55px] w-full items-center justify-between bg-white px-4">
           <Button
@@ -47,7 +47,7 @@ const MyData: React.FC = () => {
         </div>
       )}
       {list.length > 0 && (
-        <div className="mb-5 inline-flex items-center text-mercury-800 sm:hidden">
+        <div className="mb-5 inline-flex items-center text-mercury-800 md:hidden">
           <span>Last collected:</span>
           <span className="ml-1 font-semibold">{lastCollected}</span>
         </div>

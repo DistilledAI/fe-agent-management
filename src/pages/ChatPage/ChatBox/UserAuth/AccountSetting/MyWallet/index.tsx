@@ -63,7 +63,7 @@ const MyWallet = ({ onClose }: MyWalletProps) => {
           {renderLogoutBtn()}
         </div>
       </div>
-      <div className="mt-4 flex max-h-[calc(100%-84px)] w-full flex-col gap-3 overflow-y-auto overflow-x-hidden pb-20 scrollbar-hide max-sm:max-h-[calc(100%-64px)] md:flex-row md:gap-6 md:pb-16">
+      <div className="mt-4 flex max-h-[calc(100%-84px)] w-full flex-col gap-3 overflow-y-auto overflow-x-hidden pb-20 scrollbar-hide max-md:max-h-[calc(100%-64px)] md:flex-row md:gap-6 md:pb-16">
         {isMobile ? (
           <MyWalletMobile onClose={onClose} />
         ) : (

@@ -82,7 +82,7 @@ const TranferDataContent: React.FC<{
   }, [])
 
   return (
-    <div className="grid h-fit w-[800px] grid-cols-2 max-sm:w-full max-sm:grid-cols-none">
+    <div className="grid h-fit w-[800px] grid-cols-2 max-md:w-full max-md:grid-cols-none">
       <div className="w-full">
         <div className="flex-items-center mb-2 w-full gap-4">
           <div className="flex-items-center h-9 w-9 justify-center rounded-full bg-yellow-10">
@@ -108,7 +108,7 @@ const TranferDataContent: React.FC<{
           </span>
         </div>
 
-        <div className="pb-8 max-sm:pb-0">
+        <div className="pb-8 max-md:pb-0">
           <Button
             className="mt-4 w-full rounded-full bg-mercury-950"
             size="lg"
