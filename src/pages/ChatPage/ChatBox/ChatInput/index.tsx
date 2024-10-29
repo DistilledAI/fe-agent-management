@@ -57,6 +57,7 @@ const ChatInput = ({
         id: makeId(),
         roleOwner: RoleUser.USER,
         createdAt: new Date().toISOString(),
+        isChatCleared: false,
       }
 
       queryClient.setQueryData(

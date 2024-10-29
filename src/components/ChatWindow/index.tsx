@@ -41,7 +41,6 @@ const ChatWindow = ({
   chatId,
   onLoadPrevMessages,
   msgBoxClassName,
-  Footer,
   isFetched = false,
   hasPreviousMore,
   isFetchingPreviousPage,
@@ -101,8 +100,6 @@ const ChatWindow = ({
     [isFetchingPreviousPage, messages.length],
   )
 
-  const memoizedFooter = useMemo(() => () => Footer, [])
-
   const renderEmptyPlaceholder = () =>
     isFetched && !messages.length ? (
       <div className="flex h-full items-center justify-center">NO MESSAGE</div>
@@ -118,7 +115,7 @@ const ChatWindow = ({
         </article>
       )
     },
-    [chatId, msgBoxClassName],
+    [chatId, msgBoxClassName, itemContent],
   )
 
   return (
@@ -148,7 +145,6 @@ const ChatWindow = ({
           onScroll={messages.length >= LIMIT ? onScroll : undefined}
           components={{
             Header: memoizedHeader,
-            Footer: memoizedFooter,
             EmptyPlaceholder: () => renderEmptyPlaceholder(),
           }}
           followOutput={isAtBottom ? "smooth" : false}
