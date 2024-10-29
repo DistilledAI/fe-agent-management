@@ -12,11 +12,12 @@ const MainLayout = () => {
 
   const { screenWidth } = useWindowSize()
   const { pathname } = useLocation()
-  const { chatId, inviteUserId } = useParams()
+  const { chatId, inviteUserId, privateChatId } = useParams()
   const ignoreLayout = [
     `${PATH_NAMES.CHAT}/${chatId}`,
     `${PATH_NAMES.INVITE}/${inviteUserId}`,
     `${PATH_NAMES.MY_DATA}`,
+    `${PATH_NAMES.PRIVATE_AGENT}/${privateChatId}`,
   ]
 
   const isIgnoreLayout = ignoreLayout.includes(pathname)
