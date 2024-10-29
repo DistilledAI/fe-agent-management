@@ -28,7 +28,7 @@ const MainLayout = () => {
   const hasFooter = screenWidth < 768 && isFooter
 
   return (
-    <div className="max-sm:bg-mercury-30">
+    <div className="max-md:bg-mercury-30">
       {hasHeader && <HeaderMobile />}
       <div
         aria-checked={hasHeader}

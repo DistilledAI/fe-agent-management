@@ -10,13 +10,13 @@ const HeadSectionData: React.FC<{
     <div className="flex w-full items-center justify-between">
       <div className="inline-flex items-center gap-2">
         {iconTitle}
-        <span className="text-base font-semibold text-mercury-900 max-sm:text-15">
+        <span className="text-base font-semibold text-mercury-900 max-md:text-15">
           {title}
         </span>
       </div>
       <div className="hidden cursor-pointer items-center gap-1 hover:opacity-70">
         <PlusIcon />
-        <span className="text-base font-medium text-brown-10 max-sm:text-15">
+        <span className="text-base font-medium text-brown-10 max-md:text-15">
           {addTitle}
         </span>
       </div>

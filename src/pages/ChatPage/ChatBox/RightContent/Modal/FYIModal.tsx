@@ -36,13 +36,13 @@ const FYIModal: React.FC<{ openPopup: boolean; setOpenPopup: any }> = ({
       onOpenChange={onOpenChange}
       hideCloseButton
       classNames={{
-        base: "bg-white max-sm:!m-0 max-sm:h-[100dvh]",
+        base: "bg-white max-md:!m-0 max-md:h-[100dvh]",
       }}
       size="2xl"
       placement="bottom-center"
     >
       <ModalContent>
-        <div className="relative mt-4 h-[600px] w-auto max-sm:h-full">
+        <div className="relative mt-4 h-[600px] w-auto max-md:h-full">
           <img
             className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out"
             src={isMobile ? fyiPrivateDataBgMobile : fyiPrivateDataBg}

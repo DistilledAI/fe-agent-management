@@ -13,7 +13,7 @@ const AddData: React.FC<{
 
   return (
     <Button
-      className="h-[44px] bg-mercury-950 max-sm:h-[38px]"
+      className="h-[44px] bg-mercury-950 max-md:h-[38px]"
       radius="full"
       onClick={() =>
         navigate(
@@ -21,12 +21,12 @@ const AddData: React.FC<{
         )
       }
     >
-      <div className="flex-items-center gap-1 max-sm:hidden">
+      <div className="flex-items-center gap-1 max-md:hidden">
         <FilledBrainAIIcon size={20} color="#FFFF" />
         <ThreeDotsIcon size={20} color="#FFFF" />
         <DatabaseImportIcon size={20} color="#FFFF" />
       </div>
-      <span className="ml-1 text-mercury-30 max-sm:ml-0">Add data</span>
+      <span className="ml-1 text-mercury-30 max-md:ml-0">Add data</span>
     </Button>
   )
 }
