@@ -146,7 +146,7 @@ const ChatMessages = () => {
       <>
         <div
           className={twMerge(
-            "mx-auto w-full max-w-[768px] scroll-smooth px-3 pb-4 max-sm:px-4",
+            "mx-auto w-full max-w-[768px] scroll-smooth px-3 pb-4 max-sm:px-3",
             message.role === RoleChat.OWNER && paddingBottomStyle,
           )}
           key={index}

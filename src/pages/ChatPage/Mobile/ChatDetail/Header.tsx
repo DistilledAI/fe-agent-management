@@ -13,7 +13,7 @@ const ChatDetailHeader = () => {
   const { textColor } = getActiveColorRandomById(chatId)
 
   return (
-    <div className="fixed left-0 top-0 z-[1] flex h-[55px] w-full items-center justify-between bg-white px-4">
+    <div className="fixed left-0 top-0 z-[1] flex h-[55px] w-full items-center justify-between bg-white px-3">
       <div className="flex items-center gap-2">
         <Button
           onClick={() => navigate("/")}
