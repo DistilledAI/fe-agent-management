@@ -95,7 +95,7 @@ const VoiceChat: React.FC<{
           isIconOnly
           isDisabled={isDisabled}
           className={twMerge(
-            "rounded-full bg-mercury-200",
+            "h-9 rounded-full bg-mercury-200",
             isDarkTheme && "bg-mercury-950",
           )}
         >

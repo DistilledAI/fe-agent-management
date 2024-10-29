@@ -78,6 +78,7 @@ const ChatWindow = ({
           virtuosoRef.current?.scrollToIndex({
             index: messagesIndex || 0,
             behavior: "auto",
+            align: "end",
           })
         }
       }
@@ -109,6 +110,17 @@ const ChatWindow = ({
       <></>
     )
 
+  const row = useMemo(
+    () => (index: number, message: IMessageBox) => {
+      return (
+        <article className={twMerge("px-3 pb-3", msgBoxClassName)} key={index}>
+          {itemContent(index, message)}
+        </article>
+      )
+    },
+    [chatId, msgBoxClassName],
+  )
+
   return (
     <div
       className={twMerge(
@@ -138,21 +150,10 @@ const ChatWindow = ({
             Footer: memoizedFooter,
             EmptyPlaceholder: () => renderEmptyPlaceholder(),
           }}
-          followOutput={
-            isAtBottom || calculatedPaddingBottom ? "smooth" : false
-          }
+          followOutput={isAtBottom ? "smooth" : false}
           atBottomStateChange={setIsAtBottom}
           atBottomThreshold={AT_BOTTOM_THRESHOLD}
-          itemContent={(index, message) => {
-            return (
-              <article
-                className={twMerge("px-3 pb-3", msgBoxClassName)}
-                key={index}
-              >
-                {itemContent(index, message)}
-              </article>
-            )
-          }}
+          itemContent={row}
         />
       ) : null}
       <ScrollBottomChat
