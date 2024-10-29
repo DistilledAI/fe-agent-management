@@ -78,6 +78,7 @@ const useMessageSocket = () => {
               ],
             }
           }
+          return cachedData
         },
       )
     })
@@ -127,6 +128,7 @@ const useMessageSocket = () => {
               ],
             }
           }
+          return cachedData
         },
       )
     })
@@ -173,7 +175,6 @@ const useMessageSocket = () => {
   }
 
   const handleWithDone = (e: IDataListen) => {
-    // const isNeedAppendWhenDone = indexResRef.current !== 0
     const isBotVoice = e.user.typeBot === TYPE_BOT.VOICE
     if (isBotVoice) textToVoice(e.messages, e.user.configBot)
     updateNewMsg(e, false)
@@ -201,23 +202,12 @@ const useMessageSocket = () => {
     )
   }
 
-  const isPassRuleNewMsg = (e: IDataListen) => {
-    if (e?.user?.id === user?.id) return false
-    if (Number(groupChatId) !== e.group) return false
-    return true
-  }
-
-  const handleResponseForNewMsg = (e: IDataListen) => {
-    if (!isPassRuleNewMsg(e)) return
-  }
-
   useEffect(() => {
     if (socket) {
       const event = "chat-group"
       socket.on(event, (e: IDataListen) => {
         handleResponseForMessage(e)
         handleResponseForNotification(e)
-        handleResponseForNewMsg(e)
       })
 
       return () => {
@@ -232,10 +222,6 @@ const useMessageSocket = () => {
     indexResRef.current,
     groupChatId,
   ])
-
-  // useEffect(() => {
-  //   indexResRef.current = -1
-  // }, [groupChatId])
 }
 
 export default useMessageSocket
