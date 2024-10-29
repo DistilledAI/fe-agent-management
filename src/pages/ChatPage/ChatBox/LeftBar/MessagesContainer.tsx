@@ -124,7 +124,8 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                 className={twMerge(
                   "hover-light-effect group/item group relative mx-4 mb-2 h-14 gap-2 rounded-full px-2 py-2",
                   isActive && "bg-mercury-100",
-                  sidebarCollapsed && "w-14",
+                  sidebarCollapsed &&
+                    "flex w-14 items-center justify-center p-0",
                 )}
               >
                 {groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP ? (
