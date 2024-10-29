@@ -11,7 +11,7 @@ import { IMessageBox, RoleChat } from "./helpers"
 import useFetchMessages from "./useFetchMessages"
 import { useMemo } from "react"
 import ChatActions from "./ChatActions"
-import { getChatColorRandomById } from "@utils/index"
+import { getActiveColorRandomById } from "@utils/index"
 
 const TIME_BREAK = 10
 
@@ -26,7 +26,7 @@ const ChatMessages = () => {
   } = useFetchMessages()
   const { chatId } = useParams()
   const { style } = useStyleBoxChat()
-  const bgColor = chatId ? getChatColorRandomById.background(chatId) : ""
+  const { bgColor, textColor } = getActiveColorRandomById(chatId)
 
   const calculatedPaddingBottom = useMemo(() => {
     return `${style.paddingBottom}px`
@@ -119,6 +119,29 @@ const ChatMessages = () => {
       message,
       messages,
     )
+    if (message.isChatCleared) {
+      return (
+        <div
+          className={twMerge(
+            "mx-auto flex max-w-[768px] justify-center pb-4 transition-all duration-300",
+          )}
+        >
+          <div className="flex h-fit w-full items-center justify-center gap-x-3">
+            <div className="h-[1px] flex-1 bg-mercury-100" />
+            <span
+              className={twMerge(
+                "text-14 font-bold text-mercury-950",
+                textColor,
+              )}
+            >
+              Context cleared
+            </span>
+            <div className="h-[1px] flex-1 bg-mercury-100" />
+          </div>
+        </div>
+      )
+    }
+
     return (
       <>
         <div

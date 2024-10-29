@@ -24,7 +24,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import DotNotification from "../DotNotification"
 import { useAppSelector } from "@hooks/useAppRedux"
-import { getChatColorRandomById } from "@utils/index"
+import { getActiveColorRandomById } from "@utils/index"
 
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
@@ -47,7 +47,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
   const mapColorsToGroups = (groups: any[]) => {
     return groups.map((group) => {
       const groupId = group.groupId
-      const bgColor = getChatColorRandomById.background(groupId)
+      const { bgColor } = getActiveColorRandomById(groupId)
       return {
         ...group,
         bgColor,

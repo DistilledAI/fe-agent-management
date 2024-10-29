@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom"
 import useFetchDetail from "./useFetch"
 import DelegatePrivateAgent from "@pages/ChatPage/ChatBox/ChatMessages/ChatActions/DelegatePrivateAgent"
 import ChatInfoCurrent from "@components/ChatInfoCurrent"
-import { getChatColorRandomById } from "@utils/index"
+import { getActiveColorRandomById } from "@utils/index"
 
 const ChatDetailHeader = () => {
   const navigate = useNavigate()
   const { groupDetail, chatId } = useFetchDetail()
 
-  const textColor = chatId ? getChatColorRandomById.text(chatId) : undefined
+  const { textColor } = getActiveColorRandomById(chatId)
 
   return (
     <div className="fixed left-0 top-0 z-[1] flex h-[55px] w-full items-center justify-between bg-white px-4">

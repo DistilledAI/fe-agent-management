@@ -123,20 +123,12 @@ export const textToVoice = async (
   }
 }
 
-export const getBgColorRandomById = (id: number | string) => {
-  return ACTIVE_COLORS[Number(id) % ACTIVE_COLORS.length].bgColor
-}
-
-export const getBorderColorRandomById = (id: number | string) => {
-  return ACTIVE_COLORS[Number(id) % ACTIVE_COLORS.length].borderColor
-}
-
-export const getTextColorRandomById = (id: number | string) => {
-  return ACTIVE_COLORS[Number(id) % ACTIVE_COLORS.length].textColor
-}
-
-export const getChatColorRandomById = {
-  background: (id: number | string) => getBgColorRandomById(id),
-  border: (id: number | string) => getBorderColorRandomById(id),
-  text: (id: number | string) => getTextColorRandomById(id),
+export const getActiveColorRandomById = (id: number | string | undefined) => {
+  if (!id)
+    return {
+      bgColor: "",
+      borderColor: "",
+      textColor: "",
+    }
+  return ACTIVE_COLORS[Number(id) % ACTIVE_COLORS.length]
 }

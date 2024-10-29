@@ -2,7 +2,7 @@ import { userIcon } from "@assets/svg"
 import { WalletIcon } from "@components/Icons/Wallet"
 import { RootState } from "@configs/store"
 import { Button, Image, useDisclosure } from "@nextui-org/react"
-import { centerTextEllipsis, getChatColorRandomById } from "@utils/index"
+import { centerTextEllipsis, getActiveColorRandomById } from "@utils/index"
 import { useSelector } from "react-redux"
 import AccountSetting from "./AccountSetting"
 import { PATH_NAMES, RoleUser } from "@constants/index"
@@ -23,7 +23,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const { pathname } = useLocation()
   const { isOpen, onClose, onOpen } = useDisclosure()
 
-  const textColor = chatId ? getChatColorRandomById.text(chatId) : undefined
+  const { textColor } = getActiveColorRandomById(chatId)
   const isHiddenMyData = pathname === PATH_NAMES.MY_DATA
   const isShowInfo =
     user && user.publicAddress && user.role !== RoleUser.ANONYMOUS
