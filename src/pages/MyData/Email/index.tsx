@@ -96,6 +96,7 @@ const EmailData: React.FC<{
         return ""
     }
   }
+  const getThClassName = getTdClassName
 
   return (
     <div>
@@ -110,6 +111,7 @@ const EmailData: React.FC<{
         ) : (
           <TableData
             tdClassName={getTdClassName}
+            thClassName={getThClassName}
             columns={columns}
             rows={data}
             renderCell={renderCell}
