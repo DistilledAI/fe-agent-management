@@ -63,9 +63,10 @@ const ProfileLinkForm: React.FC<{
     const userName = getUserName(profileLink) as any
 
     try {
-      const typeValue = selectedKey === PROFILE_TYPE.TWITTER ? "x" : selectedKey
+      const typePayload =
+        selectedKey === PROFILE_TYPE.TWITTER ? "x" : selectedKey
       const res = await getProfileInfo({
-        type: typeValue,
+        type: typePayload,
         userName,
       })
       if (res) {
