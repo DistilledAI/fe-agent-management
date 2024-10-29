@@ -1,3 +1,4 @@
+import { ACTIVE_COLORS } from "@constants/index"
 import FingerprintJS from "@fingerprintjs/fingerprintjs"
 import { IUser } from "@reducers/userSlice"
 import { cloneElement, createElement } from "react"
@@ -120,4 +121,22 @@ export const textToVoice = async (
   } catch (error) {
     console.error("Error fetching audio data:", error)
   }
+}
+
+export const getBgColorRandomById = (id: number | string) => {
+  return ACTIVE_COLORS[Number(id) % ACTIVE_COLORS.length].bgColor
+}
+
+export const getBorderColorRandomById = (id: number | string) => {
+  return ACTIVE_COLORS[Number(id) % ACTIVE_COLORS.length].borderColor
+}
+
+export const getTextColorRandomById = (id: number | string) => {
+  return ACTIVE_COLORS[Number(id) % ACTIVE_COLORS.length].textColor
+}
+
+export const getChatColorRandomById = {
+  background: (id: number | string) => getBgColorRandomById(id),
+  border: (id: number | string) => getBorderColorRandomById(id),
+  text: (id: number | string) => getTextColorRandomById(id),
 }

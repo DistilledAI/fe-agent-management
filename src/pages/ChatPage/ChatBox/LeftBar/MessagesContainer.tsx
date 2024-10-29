@@ -4,7 +4,7 @@ import DotLoading from "@components/DotLoading"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { FilledUserIcon, FilledUsersPlusIcon } from "@components/Icons/UserIcon"
-import { ACTIVE_COLORS, RoleUser } from "@constants/index"
+import { RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { IUser } from "@reducers/userSlice"
 import { useNavigate, useParams } from "react-router-dom"
@@ -24,6 +24,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import DotNotification from "../DotNotification"
 import { useAppSelector } from "@hooks/useAppRedux"
+import { getChatColorRandomById } from "@utils/index"
 
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
@@ -43,10 +44,10 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
     )
   }
 
-  const mapColorsToGroups = (colors: any[], groups: any[]) => {
+  const mapColorsToGroups = (groups: any[]) => {
     return groups.map((group) => {
       const groupId = group.groupId
-      const bgColor = colors[groupId % colors.length]?.bgColor
+      const bgColor = getChatColorRandomById.background(groupId)
       return {
         ...group,
         bgColor,
@@ -88,7 +89,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
       >
         <Virtuoso
           style={{ height: "100%" }}
-          data={mapColorsToGroups(ACTIVE_COLORS, groups)}
+          data={mapColorsToGroups(groups)}
           components={{
             Footer: () =>
               isLoading && groups.length > 0 ? (
