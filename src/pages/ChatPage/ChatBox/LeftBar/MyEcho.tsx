@@ -27,8 +27,9 @@ const MyEcho: React.FC = () => {
   return (
     <div
       className={twMerge(
-        "hover-light-effect relative flex h-14 items-center gap-2 rounded-full border-white bg-mercury-30 px-2 py-4",
+        "relative flex h-14 cursor-pointer items-center gap-2 rounded-full border-white bg-mercury-30 px-2 py-4",
         !!isActive && "border-mercury-100 bg-mercury-950 text-mercury-30",
+        !isActive && "hover-light-effect",
         sidebarCollapsed && "w-14 justify-center",
       )}
       onClick={() => handleChooseMyEcho()}

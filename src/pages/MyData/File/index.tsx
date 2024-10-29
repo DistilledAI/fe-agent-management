@@ -107,6 +107,7 @@ const FileData: React.FC<{
         return ""
     }
   }
+  const getThClassName = getTdClassName
 
   return (
     <div>
@@ -132,6 +133,7 @@ const FileData: React.FC<{
         ) : (
           <TableData
             tdClassName={getTdClassName}
+            thClassName={getThClassName}
             columns={columns}
             rows={data}
             renderCell={renderCell}
