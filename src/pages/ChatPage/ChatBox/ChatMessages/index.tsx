@@ -10,6 +10,7 @@ import { twMerge } from "tailwind-merge"
 import { useStyleBoxChat } from "../StyleProvider"
 import { IMessageBox, RoleChat } from "./helpers"
 import useFetchMessages from "./useFetchMessages"
+import { useMemo } from "react"
 
 const TIME_BREAK = 10
 
@@ -27,6 +28,10 @@ const ChatMessages = () => {
   const bgColor = chatId
     ? ACTIVE_COLORS[Number(chatId) % ACTIVE_COLORS.length]?.bgColor
     : ""
+
+  const calculatedPaddingBottom = useMemo(() => {
+    return `${style.paddingBottom}px`
+  }, [style.paddingBottom])
 
   const getBadgeIcon = (role: RoleUser) =>
     role === RoleUser.BOT ? (
@@ -119,7 +124,7 @@ const ChatMessages = () => {
       <>
         <div
           className={twMerge(
-            "mx-auto w-full max-w-[768px] px-3 pb-4 max-sm:px-4",
+            "mx-auto w-full max-w-[768px] scroll-smooth px-3 pb-4 max-sm:px-4",
             message.role === RoleChat.OWNER && paddingBottomStyle,
           )}
           key={index}
@@ -145,6 +150,7 @@ const ChatMessages = () => {
       </>
     )
   }
+
   return (
     <ChatWindow
       messages={messages}
@@ -155,7 +161,7 @@ const ChatMessages = () => {
       isFetchingPreviousPage={isFetchingPreviousPage}
       onLoadPrevMessages={onLoadPrevMessages}
       chatId={chatId}
-      style={style}
+      calculatedPaddingBottom={calculatedPaddingBottom}
       msgBoxClassName="p-0 md:px-4"
       Footer={<MoreAction />}
     />

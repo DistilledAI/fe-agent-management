@@ -38,7 +38,7 @@ const ChatInput = ({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
   const heightBoxRef = useRef(0)
-  const { setStyle } = useStyleBoxChat()
+  const { setStyle, style } = useStyleBoxChat()
   const queryClient = useQueryClient()
 
   const groupId = privateChatId || chatId
@@ -90,27 +90,9 @@ const ChatInput = ({
 
       return { newMessage }
     },
-    //   queryClient.setQueryData<InfiniteData<IMessageBox[]>>(
-    //     messagesQueryKey(groupId),
-    //     (cachedData) => {
-    //       if (!cachedData) return { pageParams: [], pages: [[newMessage]] }
-
-    //       console.log({ cachedData })
-
-    //       return {
-    //         ...cachedData,
-    //         pages: cachedData.pages.map((page, index) =>
-    //           index === cachedData.pages.length - 1
-    //             ? page.map((message) =>
-    //                 message.id === newMessage.id ? newMessage : message,
-    //               )
-    //             : page,
-    //         ),
-    //       }
-    //     },
-    //   )
-    //   SpeechRecognition.stopListening()
-    // },
+    onSuccess: () => {
+      SpeechRecognition.stopListening()
+    },
     onError: (error) => {
       console.error("Failed to send message", error)
     },
@@ -159,10 +141,11 @@ const ChatInput = ({
     <div
       ref={boxRef}
       className={twMerge(
-        "absolute bottom-4 z-[11] flex max-w-[768px] items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 duration-500 max-sm:static max-sm:gap-2 sm:p-3 sm:py-[7.89px] md:bottom-8",
+        "absolute bottom-4 z-[11] flex max-w-[768px] items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 transition-all duration-300 ease-linear max-sm:static max-sm:gap-2 sm:p-3 sm:py-[7.89px] md:bottom-8",
         isFocus ? "border-mercury-300" : "border-mercury-200",
-        wrapperClassName,
+        style.paddingBottom && "items-end",
         isDarkTheme && "bg-mercury-950",
+        wrapperClassName,
       )}
     >
       <Button
