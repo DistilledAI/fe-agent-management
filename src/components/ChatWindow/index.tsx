@@ -124,7 +124,8 @@ const ChatWindow = ({
   return (
     <div
       className={twMerge(
-        "relative h-full overflow-hidden transition-all duration-300 ease-linear md:max-h-[calc(100%-100px)]",
+        "relative h-full overflow-hidden transition-all duration-500 ease-linear",
+        "max-h-[calc(100%-56px)] md:max-h-[calc(100%-152px)]",
         className,
       )}
       style={{
@@ -143,7 +144,7 @@ const ChatWindow = ({
             index: messages.length - 1,
             align: "end",
           }}
-          increaseViewportBy={600}
+          increaseViewportBy={300}
           onScroll={messages.length >= LIMIT ? onScroll : undefined}
           components={{
             Header: memoizedHeader,

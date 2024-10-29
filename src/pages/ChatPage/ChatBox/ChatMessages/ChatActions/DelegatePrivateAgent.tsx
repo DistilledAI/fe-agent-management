@@ -11,7 +11,7 @@ const BOT_STATUS = {
   DISABLE: 0,
 }
 
-const MoreAction: React.FC = () => {
+const DelegatePrivateAgent: React.FC = () => {
   const { chatId, privateChatId } = useParams()
   const [botInfo, setBotInfo] = useState<any>(null)
   //   const [isShowNotification, setShowNotification] = useState<boolean>(false)
@@ -74,37 +74,32 @@ const MoreAction: React.FC = () => {
   //     return <div />
   //   }
 
-  if (!myBotData) return <div />
+  if (!myBotData) return <></>
 
   return (
     <>
       {/* {renderNotification()} */}
-      <div className="hidden w-full items-center justify-end pb-3 sm:flex">
-        <div
-          className="flex w-fit cursor-pointer items-center gap-2 rounded-3xl bg-mercury-70 p-3"
+      <div className="hidden w-fit items-center justify-end sm:flex">
+        <Button
+          className="flex h-11 w-fit cursor-pointer items-center gap-2 rounded-3xl bg-mercury-70 p-3"
           onClick={() => handleSetDelegate()}
         >
           {isBotEnabled ? (
-            <>
-              <FilledBrainAIIcon size={20} />
-              <span className="text-base text-mercury-900 transition-all duration-500 ease-in-out">
-                Take over this chat by yourself
-              </span>
-            </>
+            <FilledBrainAIIcon size={20} />
           ) : (
-            <>
-              <FilledUserIcon size={20} />
-              <span className="text-base text-mercury-900 transition-all duration-500 ease-in-out">
-                Delegate to your Private Agent
-              </span>
-            </>
+            <FilledUserIcon size={20} />
           )}
-        </div>
+          <span className="text-base text-mercury-900 transition-all duration-500 ease-in-out">
+            {isBotEnabled
+              ? " Take over this chat by yourself"
+              : " Delegate to your Private Agent"}
+          </span>
+        </Button>
       </div>
       <div className="block sm:hidden">
         <Button
           onClick={handleSetDelegate}
-          className="flex items-center rounded-full bg-mercury-950"
+          className="flex h-11 items-center rounded-full bg-mercury-950"
         >
           {isBotEnabled ? (
             <>
@@ -138,4 +133,4 @@ const MoreAction: React.FC = () => {
     </>
   )
 }
-export default MoreAction
+export default DelegatePrivateAgent

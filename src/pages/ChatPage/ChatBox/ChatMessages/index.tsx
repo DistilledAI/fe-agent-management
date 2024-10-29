@@ -1,5 +1,4 @@
 import ChatWindow from "@components/ChatWindow"
-import MoreAction from "@components/ChatWindow/MoreAction"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
@@ -11,6 +10,7 @@ import { useStyleBoxChat } from "../StyleProvider"
 import { IMessageBox, RoleChat } from "./helpers"
 import useFetchMessages from "./useFetchMessages"
 import { useMemo } from "react"
+import ChatActions from "./ChatActions"
 
 const TIME_BREAK = 10
 
@@ -152,19 +152,21 @@ const ChatMessages = () => {
   }
 
   return (
-    <ChatWindow
-      messages={messages}
-      itemContent={renderMessage}
-      isLoading={isLoading}
-      isFetched={isFetched}
-      hasPreviousMore={hasPreviousMore}
-      isFetchingPreviousPage={isFetchingPreviousPage}
-      onLoadPrevMessages={onLoadPrevMessages}
-      chatId={chatId}
-      calculatedPaddingBottom={calculatedPaddingBottom}
-      msgBoxClassName="p-0 md:px-4"
-      Footer={<MoreAction />}
-    />
+    <>
+      <ChatWindow
+        messages={messages}
+        itemContent={renderMessage}
+        isLoading={isLoading}
+        isFetched={isFetched}
+        hasPreviousMore={hasPreviousMore}
+        isFetchingPreviousPage={isFetchingPreviousPage}
+        onLoadPrevMessages={onLoadPrevMessages}
+        chatId={chatId}
+        calculatedPaddingBottom={calculatedPaddingBottom}
+        msgBoxClassName="p-0 md:px-4"
+      />
+      <ChatActions />
+    </>
   )
 }
 

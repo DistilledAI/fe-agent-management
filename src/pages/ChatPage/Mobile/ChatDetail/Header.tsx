@@ -1,6 +1,5 @@
 import AvatarCustom from "@components/AvatarCustom"
 import AvatarGroup from "@components/AvatarGroup"
-import MoreAction from "@components/ChatWindow/MoreAction"
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { Button } from "@nextui-org/react"
 import { TypeGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
@@ -11,6 +10,7 @@ import {
   getNameGroup,
 } from "@pages/ChatPage/ChatBox/LeftBar/helpers"
 import useAuthState from "@hooks/useAuthState"
+import DelegatePrivateAgent from "@pages/ChatPage/ChatBox/ChatMessages/ChatActions/DelegatePrivateAgent"
 
 const ChatDetailHeader = () => {
   const navigate = useNavigate()
@@ -54,7 +54,7 @@ const ChatDetailHeader = () => {
         )}
       </div>
       <div>
-        <MoreAction />
+        <DelegatePrivateAgent />
       </div>
     </div>
   )
