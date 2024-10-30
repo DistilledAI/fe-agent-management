@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useLayoutEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getChatHistoryById } from "services/chat"
 import { IGroup } from "../LeftBar/useFetchGroups"
@@ -6,7 +6,11 @@ import { IUser } from "@reducers/userSlice"
 import { convertDataFetchToMessage, IMessageBox } from "./helpers"
 import useAuthState from "@hooks/useAuthState"
 import { PATH_NAMES } from "@constants/index"
-import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query"
+import {
+  InfiniteData,
+  useInfiniteQuery,
+  useQueryClient,
+} from "@tanstack/react-query"
 
 export interface IMessage {
   id: number
@@ -32,11 +36,14 @@ export const messagesQueryKey = (chatId: string | number | undefined) => {
   return [`chat-messages-${chatId}`]
 }
 
+const STALE_TIME = 60 * 60 * 1000
+
 const useFetchMessages = () => {
   const { user, isLogin } = useAuthState()
   const { chatId, privateChatId } = useParams()
   const navigate = useNavigate()
   const groupId = privateChatId || chatId
+  const queryClient = useQueryClient()
 
   const fetchMessages = async ({ pageParam = 0 }) => {
     if (!groupId) return
@@ -55,6 +62,17 @@ const useFetchMessages = () => {
     }
   }
 
+  useLayoutEffect(() => {
+    if (groupId && user?.id) {
+      queryClient.prefetchInfiniteQuery({
+        queryKey: messagesQueryKey(groupId),
+        queryFn: fetchMessages,
+        staleTime: STALE_TIME,
+        initialPageParam: 0,
+      })
+    }
+  }, [groupId, user?.id])
+
   const {
     data,
     error,
@@ -69,7 +87,7 @@ const useFetchMessages = () => {
     enabled: isLogin && !!groupId && !!user?.id,
     getNextPageParam: (lastPage) => lastPage?.nextOffset,
     getPreviousPageParam: (firstPage) => firstPage?.nextOffset,
-    staleTime: 1 * 60 * 60 * 1000,
+    staleTime: STALE_TIME,
     refetchOnWindowFocus: false,
     initialPageParam: 0,
   })

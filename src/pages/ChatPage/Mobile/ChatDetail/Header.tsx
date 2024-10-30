@@ -9,7 +9,6 @@ import { getActiveColorRandomById } from "@utils/index"
 const ChatDetailHeader = () => {
   const navigate = useNavigate()
   const { groupDetail, chatId } = useFetchDetail()
-
   const { textColor } = getActiveColorRandomById(chatId)
 
   return (
