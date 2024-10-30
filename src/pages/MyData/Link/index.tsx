@@ -1,14 +1,16 @@
-import HeadSectionData from "../Components/HeadSectionData"
 import { SocialLinkIcon } from "@components/Icons/SocialLinkIcon"
+import HeadSectionData from "../Components/HeadSectionData"
 // import { EditPenFilledIcon } from "@components/Icons/Edit"
-import TableData from "../Components/TableData"
 import useWindowSize from "@hooks/useWindowSize"
-import TableDataMobile from "../Components/TableDataMobile"
-import React from "react"
+import { TYPE_DATA_KEY } from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/CreatePrivateAgent"
+import { BotDataTypeKey } from "@types"
+import { capitalizeFirstLetter } from "@utils/index"
 import moment from "moment"
+import React from "react"
+import TableData from "../Components/TableData"
+import TableDataMobile from "../Components/TableDataMobile"
 import DeleteData from "../DeleteData"
 import useFetchByCategory from "../useFetchByCategory"
-import { BotDataTypeKey } from "@types"
 
 enum ColumnKey {
   Name = "name",
@@ -48,11 +50,15 @@ const LinkData: React.FC<{
   } = useFetchByCategory(category, botId)
 
   const renderCell = (item: Record<string, any>, columnKey: string) => {
+    const isSocialMediaType = item?.key === TYPE_DATA_KEY.SOCIAL_MEDIA
+
     switch (columnKey) {
       case ColumnKey.Type:
         return (
           <span className="line-clamp-1 text-base text-mercury-600">
-            {item[columnKey]}
+            {isSocialMediaType
+              ? capitalizeFirstLetter(item?.name)
+              : item[columnKey]}
           </span>
         )
       case ColumnKey.Date:
@@ -78,7 +84,7 @@ const LinkData: React.FC<{
         return (
           <a className="hover:underline" href={item.value} target="_blank">
             <span className="line-clamp-1 text-base text-mercury-950">
-              {item[columnKey]}
+              {isSocialMediaType ? item?.value : item[columnKey]}
             </span>
           </a>
         )
@@ -121,7 +127,9 @@ const LinkData: React.FC<{
           <TableDataMobile
             data={data.map((item) => ({
               type: item.type,
-              value: item.name,
+              value: item.value,
+              name: item.name,
+              key: item.key,
               createdAt: item.createdAt,
               id: item.id,
             }))}
