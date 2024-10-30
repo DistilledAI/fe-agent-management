@@ -11,6 +11,9 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import ChatInfoCurrent from "@components/ChatInfoCurrent"
 import useFetchDetail from "@pages/ChatPage/Mobile/ChatDetail/useFetch"
+import { useQuery } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
+import { getMyPrivateAgent } from "services/chat"
 
 interface UserAuthProps {
   connectWallet: any
@@ -23,8 +26,15 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const { pathname } = useLocation()
   const { isOpen, onClose, onOpen } = useDisclosure()
 
+  const { data } = useQuery({
+    queryKey: [QueryDataKeys.MY_BOT_LIST],
+    queryFn: getMyPrivateAgent,
+    refetchOnWindowFocus: false,
+  })
+  const myBot = data ? data.data.items.length > 0 : false
+
   const { textColor } = getActiveColorRandomById(chatId)
-  const isHiddenMyData = pathname === PATH_NAMES.MY_DATA
+  const isHiddenMyData = pathname === PATH_NAMES.MY_DATA || !myBot
   const isShowInfo =
     user && user.publicAddress && user.role !== RoleUser.ANONYMOUS
 
