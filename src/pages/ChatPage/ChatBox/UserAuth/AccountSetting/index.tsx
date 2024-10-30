@@ -1,9 +1,9 @@
+import CloseButton from "@components/CloseButton"
+import DrawerBottom from "@components/DrawerBottom"
+import useWindowSize from "@hooks/useWindowSize"
+import { Modal, ModalContent } from "@nextui-org/react"
 import React from "react"
 import MyWallet from "./MyWallet"
-import { Modal, ModalContent } from "@nextui-org/react"
-import CloseButton from "@components/CloseButton"
-import useWindowSize from "@hooks/useWindowSize"
-import DrawerBottom from "@components/DrawerBottom"
 
 const AccountSetting: React.FC<{
   isOpen: boolean

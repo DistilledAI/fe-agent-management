@@ -1,17 +1,17 @@
 import AvatarCustom from "@components/AvatarCustom"
 import { CopyIcon } from "@components/Icons/Copy"
 // import { EditPenFilledIcon, EditPenOutlineIcon } from "@components/Icons/Edit"
+import { brainAIIcon } from "@assets/svg"
+import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
 import { MetamaskIconSmall } from "@components/Icons/MetamaskIcon"
 import { ShareWithCloudIcon } from "@components/Icons/Share"
+import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
 import { Button } from "@nextui-org/react"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { useEffect, useState } from "react"
-import { getMyPrivateAgent } from "services/chat"
-import { brainAIIcon } from "@assets/svg"
-import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
-import ShareAgent from "./ShareAgent"
 import { useNavigate } from "react-router-dom"
-import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
+import { getMyPrivateAgent } from "services/chat"
+import ShareAgent from "./ShareAgent"
 
 const PrivateAgent: React.FC<{
   onClose: () => void
@@ -98,16 +98,22 @@ const PrivateAgent: React.FC<{
       <div className="flex items-center justify-between">
         <span className="text-mercury-600">My data:</span>
         <div className="flex items-center gap-2">
-          <div
-            onClick={() => {
-              onClose()
-              navigate(PATH_NAMES.MY_DATA)
-            }}
-            className="flex cursor-pointer items-center gap-1 hover:opacity-70"
-          >
-            <DatabaseSearchIcon color="#A2845E" />
-            <span className="text-base font-medium text-[#A2845E]">Manage</span>
-          </div>
+          {!!firstBot ? (
+            <div
+              onClick={() => {
+                onClose()
+                navigate(PATH_NAMES.MY_DATA)
+              }}
+              className="flex cursor-pointer items-center gap-1 hover:opacity-70"
+            >
+              <DatabaseSearchIcon color="#A2845E" />
+              <span className="text-base font-medium text-[#A2845E]">
+                Manage
+              </span>
+            </div>
+          ) : (
+            "-"
+          )}
         </div>
       </div>
 
