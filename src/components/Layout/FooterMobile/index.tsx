@@ -33,7 +33,7 @@ const FooterMobile = () => {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 z-50 flex h-[60px] w-full items-center justify-around bg-white px-4">
+    <div className="fixed bottom-0 left-0 z-50 grid h-[60px] w-full grid-cols-3 items-center bg-white px-4">
       {NAV_MOBILE.map((menu) => (
         <div key={menu.key}>
           <Link

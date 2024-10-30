@@ -1,27 +1,47 @@
 import ChatWindow from "@components/ChatWindow"
-import MoreAction from "@components/ChatWindow/MoreAction"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
-import { ACTIVE_COLORS, RoleUser } from "@constants/index"
-import { useChatMessage } from "providers/MessageProvider"
+import { RoleUser } from "@constants/index"
 import { useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { useStyleBoxChat } from "../StyleProvider"
-import { IMessageBox, RoleChat } from "./helpers"
+import {
+  getBadgeColor,
+  groupedMessages,
+  IMessageBox,
+  RoleChat,
+} from "./helpers"
 import useFetchMessages from "./useFetchMessages"
-
-const TIME_BREAK = 10
+import { useMemo } from "react"
+import ChatActions from "./ChatActions"
+import { getActiveColorRandomById } from "@utils/index"
+import ContextCleared from "@components/ContextCleared"
+import { useQueryClient } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const ChatMessages = () => {
-  const { isChatting, messages } = useChatMessage()
-  const { loading, onLoadPrevMessages } = useFetchMessages()
+  const {
+    isLoading,
+    isFetched,
+    onLoadPrevMessages,
+    messages,
+    hasPreviousMore,
+    isFetchingPreviousPage,
+  } = useFetchMessages()
   const { chatId } = useParams()
   const { style } = useStyleBoxChat()
-  const bgColor = chatId
-    ? ACTIVE_COLORS[Number(chatId) % ACTIVE_COLORS.length]?.bgColor
-    : ""
+  const { bgColor, textColor } = getActiveColorRandomById(chatId)
+  const queryClient = useQueryClient()
+  const myPrivateAgent = queryClient.getQueryData([
+    QueryDataKeys.DELEGATE_PRIVATE_AGENT,
+    chatId,
+  ])
+
+  const calculatedPaddingBottom = useMemo(() => {
+    return `${style.paddingBottom}px`
+  }, [style.paddingBottom])
 
   const getBadgeIcon = (role: RoleUser) =>
     role === RoleUser.BOT ? (
@@ -30,130 +50,70 @@ const ChatMessages = () => {
       <FilledUserIcon size={14} />
     )
 
-  const getBadgeColor = (role: RoleUser) =>
-    role === RoleUser.BOT ? "bg-[#FC0]" : "bg-[#0FE9A4]"
-
-  const getTimeDiff = (date1: string, date2: string): number => {
-    const time1 = new Date(date1).getTime()
-    const time2 = new Date(date2).getTime()
-
-    return (time1 - time2) / 1000
-  }
-
-  const groupedMessages = (
-    index: number,
-    message: IMessageBox,
-    messages: IMessageBox[],
-  ) => {
-    let groupType = "none"
-    const prevMsg = messages[index - 1]
-    const nextMsg = messages[index + 1]
-
-    const prevTimeDiff = getTimeDiff(message?.createdAt, prevMsg?.createdAt)
-    const nextTimeDiff = getTimeDiff(nextMsg?.createdAt, message?.createdAt)
-
-    if (message.role === RoleChat.OWNER) {
-      if (prevMsg && prevMsg.role === RoleChat.OWNER) {
-        if (prevTimeDiff < TIME_BREAK) {
-          if (
-            nextMsg &&
-            nextMsg.role === RoleChat.OWNER &&
-            nextTimeDiff < TIME_BREAK
-          ) {
-            groupType = "middle"
-          } else {
-            groupType = "bottom"
-          }
-        } else {
-          groupType = "top"
-          if (
-            !nextMsg ||
-            nextMsg.role !== message.role ||
-            nextTimeDiff > TIME_BREAK
-          ) {
-            groupType = "none"
-          }
-        }
-      } else {
-        groupType =
-          nextMsg &&
-          nextMsg.role === RoleChat.OWNER &&
-          nextTimeDiff < TIME_BREAK
-            ? "top"
-            : "none"
-      }
-    }
-
-    const borderRadiusStyle = {
-      none: "",
-      top: "rounded-t-[20px] rounded-bl-[20px] rounded-br",
-      middle: "rounded-tr rounded-br rounded-tl-[20px] rounded-bl-[20px]",
-      bottom: "rounded-tr",
-    }[groupType]
-
-    const paddingBottomStyle = {
-      none: "pb-4",
-      top: "pb-[3px]",
-      middle: "pb-[3px]",
-      bottom: "pb-4",
-    }[groupType]
-
-    return {
-      borderRadiusStyle,
-      paddingBottomStyle,
-    }
-  }
-
   const renderMessage = (index: number, message: IMessageBox) => {
     const { paddingBottomStyle, borderRadiusStyle } = groupedMessages(
       index,
       message,
       messages,
     )
-    return (
-      <>
+
+    if (message.isChatCleared) {
+      return (
         <div
-          className={twMerge(
-            "px-3 pb-4 max-sm:px-4",
-            message.role === RoleChat.OWNER && paddingBottomStyle,
-          )}
           key={index}
+          className="mx-auto flex max-w-[768px] justify-center pb-4"
         >
-          {message.role === RoleChat.CUSTOMER ? (
-            <ReceiverMessage
-              avatar={{
-                src: message.avatar,
-                badgeIcon: getBadgeIcon(message.roleOwner),
-                badgeClassName: getBadgeColor(message.roleOwner),
-              }}
-              content={message.content}
-              isTyping={message.isTyping}
-            />
-          ) : null}
-          {message.role === RoleChat.OWNER ? (
-            <SenderMessage
-              content={message.content}
-              baseClassName={twMerge(bgColor, borderRadiusStyle)}
-            />
-          ) : null}
+          <ContextCleared textClassName={textColor} />
         </div>
-      </>
+      )
+    }
+
+    return (
+      <div
+        className={twMerge(
+          "mx-auto w-full max-w-[768px] scroll-smooth px-3 pb-4",
+          message.role === RoleChat.OWNER && paddingBottomStyle,
+        )}
+        key={index}
+      >
+        {message.role === RoleChat.CUSTOMER ? (
+          <ReceiverMessage
+            avatar={{
+              src: message.avatar,
+              badgeIcon: getBadgeIcon(message.roleOwner),
+              badgeClassName: getBadgeColor(message.roleOwner),
+            }}
+            content={message.content}
+            isTyping={message.isTyping}
+          />
+        ) : null}
+        {message.role === RoleChat.OWNER ? (
+          <SenderMessage
+            content={message.content}
+            baseClassName={twMerge(bgColor, borderRadiusStyle)}
+          />
+        ) : null}
+      </div>
     )
   }
 
   return (
-    <ChatWindow
-      className="max-sm:rounded-none max-sm:border-none max-sm:p-0"
-      messages={messages}
-      itemContent={renderMessage}
-      loading={loading}
-      onLoadPrevMessages={onLoadPrevMessages}
-      chatId={chatId}
-      style={style}
-      msgBoxClassName="p-0"
-      Footer={() => <MoreAction />}
-      isChatting={isChatting}
-    />
+    <>
+      <ChatWindow
+        messages={messages}
+        itemContent={renderMessage}
+        isLoading={isLoading}
+        isFetched={isFetched}
+        hasPreviousMore={hasPreviousMore}
+        isFetchingPreviousPage={isFetchingPreviousPage}
+        onLoadPrevMessages={onLoadPrevMessages}
+        chatId={chatId}
+        calculatedPaddingBottom={calculatedPaddingBottom}
+        msgBoxClassName="p-0 md:px-4"
+        isChatAction={!!myPrivateAgent}
+      />
+      <ChatActions />
+    </>
   )
 }
 

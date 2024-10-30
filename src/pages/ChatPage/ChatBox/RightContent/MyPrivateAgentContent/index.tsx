@@ -1,24 +1,25 @@
-import DotLoading from "@components/DotLoading"
+import { desktopPrivateAgent } from "@assets/images"
 import { envConfig } from "@configs/env"
-import { PATH_NAMES } from "@constants/index"
+import { PATH_NAMES, RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { checkGroupDirect, createGroupChat } from "services/chat"
 import CreatePrivateAgent from "./CreatePrivateAgent"
-import PrivateAgentChatContent from "./PrivateAgentChatContent"
 import usePrivateAgent, { PRIVATE_AGENT_STATUS } from "./usePrivateAgent"
+import DotLoading from "@components/DotLoading"
 
 const MyPrivateAgentContent: React.FC<{
   connectWalletLoading: boolean
   connectWallet: any
 }> = ({ connectWalletLoading, connectWallet }) => {
   const groupDefaultForPrivateAgent = envConfig.groupDefaultForPrivateAgent
-  const { privateAgentData, callGetMyPrivateAgent, loading } = usePrivateAgent()
-  const { isLogin } = useAuthState()
+  const { privateAgentData, callGetMyPrivateAgent } = usePrivateAgent()
+  const { isLogin, user } = useAuthState()
   const navigate = useNavigate()
   const [isCreated, setCreated] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const { pathname } = useLocation()
 
   const privateAgentStatus = privateAgentData?.status
   const privateAgentId = privateAgentData?.id
@@ -29,7 +30,10 @@ const MyPrivateAgentContent: React.FC<{
   const memberId = MAP_MEMBER_ID_FROM_STATUS[privateAgentStatus]
 
   const checkCreatedGroupAgent = async () => {
-    if (!memberId) return
+    if (!memberId) {
+      setIsLoading(false)
+      return
+    }
     setIsLoading(true)
     try {
       const res = await checkGroupDirect({
@@ -40,7 +44,7 @@ const MyPrivateAgentContent: React.FC<{
         const createGroupResponse = await createGroupChat({
           members: [memberId],
         })
-        const newGroupId = createGroupResponse?.data?.id
+        const newGroupId = createGroupResponse?.data?.groupId
         if (newGroupId) {
           navigate(`${PATH_NAMES.PRIVATE_AGENT}/${newGroupId}`)
         }
@@ -56,28 +60,41 @@ const MyPrivateAgentContent: React.FC<{
 
   useEffect(() => {
     callGetMyPrivateAgent()
-    checkCreatedGroupAgent()
-  }, [isLogin, isCreated, privateAgentStatus])
+  }, [isLogin, isCreated, pathname, user?.id])
 
-  if (loading || isLoading)
+  useEffect(() => {
+    if (privateAgentStatus) checkCreatedGroupAgent()
+
+    setTimeout(() => {
+      const isRealUserAndHaveNoAgent =
+        !privateAgentData && isLogin && user?.role !== RoleUser.ANONYMOUS
+      if (isRealUserAndHaveNoAgent) setIsLoading(false)
+    }, 1000)
+  }, [privateAgentStatus, isLogin, user?.role])
+
+  const isLoadingDisplay =
+    isLoading && isLogin && user?.role !== RoleUser.ANONYMOUS
+
+  if (isLoadingDisplay)
     return (
-      <div
-        className={
-          "flex h-full flex-1 items-center justify-center overflow-hidden rounded-[22px] border-[2px] border-white bg-mercury-30 p-3 transition-all duration-500 ease-in-out"
-        }
-      >
+      <div className="flex h-full w-full items-center justify-center">
         <DotLoading />
       </div>
     )
 
-  if (privateAgentData) return <PrivateAgentChatContent />
-
   return (
-    <CreatePrivateAgent
-      connectWalletLoading={connectWalletLoading}
-      connectWallet={connectWallet}
-      setCreated={setCreated}
-    />
+    <div
+      className="relative mx-auto h-full w-full flex-1 rounded-[22px] border border-white bg-white bg-cover bg-center bg-no-repeat font-barlow"
+      style={{
+        backgroundImage: `url(${desktopPrivateAgent})`,
+      }}
+    >
+      <CreatePrivateAgent
+        connectWalletLoading={connectWalletLoading}
+        connectWallet={connectWallet}
+        setCreated={setCreated}
+      />
+    </div>
   )
 }
 export default MyPrivateAgentContent

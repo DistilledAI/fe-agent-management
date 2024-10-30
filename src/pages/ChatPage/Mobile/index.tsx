@@ -14,7 +14,7 @@ import distilledAiPrivateAgent from "@assets/video/distilled-ai-private-agent-3d
 import { PATH_NAMES } from "@constants/index"
 
 const ChatPageMobile = () => {
-  const { chatId } = useParams()
+  const { chatId, privateChatId } = useParams()
   const { isLogin } = useAuthState()
   const [isSearch, setIsSearch] = useState(false)
   const inputRef = useRef<any>(null)
@@ -22,17 +22,18 @@ const ChatPageMobile = () => {
   useOutsideClick(searchRef, () => setIsSearch(false))
   const { data, setQuery, query, debounceSearch } = useSearch(inputRef, false)
   const navigate = useNavigate()
+  const groupChatId = chatId ?? privateChatId
 
   useReconnectWallet()
   useMessageSocket()
 
   useEffect(() => {
-    if (chatId && !isLogin) navigate("/")
-  }, [isLogin, chatId, navigate])
+    if (groupChatId && !isLogin) navigate("/")
+  }, [isLogin, groupChatId])
 
   if (!isLogin) return <StartNewChat />
 
-  return chatId ? (
+  return groupChatId ? (
     <ChatDetail />
   ) : (
     <div className="min-h-[calc(100dvh-110px)] bg-mercury-30 font-barlow">

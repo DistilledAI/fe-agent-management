@@ -2,14 +2,13 @@ import { CopyIcon } from "@components/Icons/Copy"
 import { MetamaskIconSmall } from "@components/Icons/MetamaskIcon"
 import { LogoutIcon } from "@components/Icons/OutputIcon"
 import { PATH_NAMES } from "@constants/index"
+import useAuthAction from "@hooks/useAuthAction"
 import useAuthState from "@hooks/useAuthState"
-import { logout } from "@reducers/userSlice"
-import { centerTextEllipsis, copyClipboard } from "@utils/index"
-import { useDispatch } from "react-redux"
-import { useNavigate } from "react-router-dom"
 import useWindowSize from "@hooks/useWindowSize"
-import MyWalletMobile from "./MyWalletMobile"
+import { centerTextEllipsis, copyClipboard } from "@utils/index"
+import { useNavigate } from "react-router-dom"
 import MyWalletDesktop from "./MyWalletDesktop"
+import MyWalletMobile from "./MyWalletMobile"
 
 interface MyWalletProps {
   onClose: () => void
@@ -17,15 +16,15 @@ interface MyWalletProps {
 
 const MyWallet = ({ onClose }: MyWalletProps) => {
   const { user } = useAuthState()
-  const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { logout } = useAuthAction()
   const { isMobile } = useWindowSize()
 
   const renderLogoutBtn = () => {
     return (
       <div
         onClick={() => {
-          dispatch(logout())
+          logout()
           navigate(PATH_NAMES.HOME)
           onClose()
         }}
@@ -64,8 +63,12 @@ const MyWallet = ({ onClose }: MyWalletProps) => {
           {renderLogoutBtn()}
         </div>
       </div>
-      <div className="mt-4 flex max-h-[calc(100%-64px)] w-full flex-col gap-3 overflow-y-auto overflow-x-hidden pb-20 scrollbar-hide md:flex-row md:gap-6 md:pb-16">
-        {isMobile ? <MyWalletMobile /> : <MyWalletDesktop />}
+      <div className="mt-4 flex max-h-[calc(100%-84px)] w-full flex-col gap-3 overflow-y-auto overflow-x-hidden pb-20 scrollbar-hide max-md:max-h-[calc(100%-64px)] md:flex-row md:gap-6 md:pb-16">
+        {isMobile ? (
+          <MyWalletMobile onClose={onClose} />
+        ) : (
+          <MyWalletDesktop onClose={onClose} />
+        )}
       </div>
     </>
   )

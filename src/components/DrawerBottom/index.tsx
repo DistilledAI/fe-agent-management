@@ -48,7 +48,7 @@ const DrawerBottom = ({
           />
           <div
             className={twMerge(
-              "h-full w-full translate-y-[100px] px-3 py-4 delay-100 duration-500 md:px-[100px] md:py-10",
+              "h-full w-full translate-y-[100px] px-3 py-4 delay-100 duration-500 md:px-20 md:py-10",
               isOpen && "translate-y-0",
               classNames?.body,
             )}

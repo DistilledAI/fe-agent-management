@@ -24,7 +24,7 @@ const GenAITools = () => {
     >
       <div className="flex gap-4">
         <AvatarCustom badgeClassName="bg-yellow-10" src={item.icon} />
-        <div>
+        <div className="flex-1">
           <div className="flex items-center gap-2">
             <span className="text-base-b line-clamp-1 text-mercury-800">
               {item.name}

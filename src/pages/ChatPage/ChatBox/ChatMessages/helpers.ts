@@ -17,6 +17,7 @@ export interface IMessageBox {
   index?: number
   typeGroup?: TypeGroup
   createdAt: string
+  isChatCleared?: boolean
 }
 
 const isOwner = (currentUserId: number, userId: number) => {
@@ -33,12 +34,87 @@ export const convertDataFetchToMessage = (
   return data
     .map((mess) => ({
       id: mess.id,
-      role: getRole(isOwner(currentUserId, mess.userId)),
+      role: getRole(isOwner(currentUserId, mess.user?.id)),
       content: mess.messages,
       avatar: mess.user?.avatar,
       roleOwner: mess.user.role,
       typeGroup: mess.group.typeGroup,
       createdAt: mess.createdAt,
+      isChatCleared: false,
     }))
     .reverse()
+}
+
+export const getBadgeColor = (role: RoleUser) =>
+  role === RoleUser.BOT ? "bg-[#FC0]" : "bg-[#0FE9A4]"
+
+export const getTimeDiff = (date1: string, date2: string): number => {
+  const time1 = new Date(date1).getTime()
+  const time2 = new Date(date2).getTime()
+
+  return (time1 - time2) / 1000
+}
+
+const TIME_BREAK = 10
+
+export const groupedMessages = (
+  index: number,
+  message: IMessageBox,
+  messages: IMessageBox[],
+) => {
+  let groupType = "none"
+  const prevMsg = messages[index - 1]
+  const nextMsg = messages[index + 1]
+
+  const prevTimeDiff = getTimeDiff(message?.createdAt, prevMsg?.createdAt)
+  const nextTimeDiff = getTimeDiff(nextMsg?.createdAt, message?.createdAt)
+
+  if (message.role === RoleChat.OWNER) {
+    if (prevMsg && prevMsg.role === RoleChat.OWNER) {
+      if (prevTimeDiff < TIME_BREAK) {
+        if (
+          nextMsg &&
+          nextMsg.role === RoleChat.OWNER &&
+          nextTimeDiff < TIME_BREAK
+        ) {
+          groupType = "middle"
+        } else {
+          groupType = "bottom"
+        }
+      } else {
+        groupType = "top"
+        if (
+          !nextMsg ||
+          nextMsg.role !== message.role ||
+          nextTimeDiff > TIME_BREAK
+        ) {
+          groupType = "none"
+        }
+      }
+    } else {
+      groupType =
+        nextMsg && nextMsg.role === RoleChat.OWNER && nextTimeDiff < TIME_BREAK
+          ? "top"
+          : "none"
+    }
+  }
+
+  const borderRadiusStyle = {
+    none: "",
+    top: "rounded-t-[20px] rounded-bl-[20px] rounded-br",
+    middle: "rounded-tr rounded-br rounded-tl-[20px] rounded-bl-[20px]",
+    bottom: "rounded-tr",
+  }[groupType]
+
+  const paddingBottomStyle = {
+    none: "pb-4",
+    top: "pb-[3px]",
+    middle: "pb-[3px]",
+    bottom: "pb-4",
+  }[groupType]
+
+  return {
+    borderRadiusStyle,
+    paddingBottomStyle,
+  }
 }

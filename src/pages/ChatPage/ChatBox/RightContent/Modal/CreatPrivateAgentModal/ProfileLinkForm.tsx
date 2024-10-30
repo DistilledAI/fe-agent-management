@@ -63,10 +63,9 @@ const ProfileLinkForm: React.FC<{
     const userName = getUserName(profileLink) as any
 
     try {
-      const typePayload =
-        selectedKey === PROFILE_TYPE.TWITTER ? "x" : selectedKey
+      const typeValue = selectedKey === PROFILE_TYPE.TWITTER ? "x" : selectedKey
       const res = await getProfileInfo({
-        type: typePayload,
+        type: typeValue,
         userName,
       })
       if (res) {
@@ -105,14 +104,16 @@ const ProfileLinkForm: React.FC<{
           selectionMode="single"
           selectedKeys={[selectedKey]}
         >
-          {SOCIAL.map((record) => (
-            <DropdownItem
-              key={record.key}
-              onClick={() => onChangeProfileType(record)}
-            >
-              <span className="text-16 text-mercury-950">{record.label}</span>
-            </DropdownItem>
-          ))}
+          {SOCIAL.map((record) => {
+            return (
+              <DropdownItem
+                key={record.key}
+                onPressChange={() => onChangeProfileType(record)}
+              >
+                <span className="text-16 text-mercury-950">{record.label}</span>
+              </DropdownItem>
+            )
+          })}
         </DropdownMenu>
       </Dropdown>
     )
@@ -123,11 +124,11 @@ const ProfileLinkForm: React.FC<{
       return (
         <div>
           <IntroVideo />
-          <CollectingContent setContentStep={setContentStep} />
+          <CollectingContent />
         </div>
       )
 
-    return <CollectingContent setContentStep={setContentStep} />
+    return <CollectingContent />
   }
 
   if (isMobile) {
@@ -135,7 +136,7 @@ const ProfileLinkForm: React.FC<{
       <>
         <IntroVideo />
         <span className="flex items-center justify-center text-center text-[24px] font-semibold text-mercury-950">
-          Website links/Social Media
+          Website Links/Social Media
         </span>
         <Input
           placeholder="Enter your profile link"
@@ -164,9 +165,9 @@ const ProfileLinkForm: React.FC<{
   }
 
   return (
-    <>
+    <div className="min-w-[400px]">
       <span className="text-[24px] font-semibold text-mercury-950">
-        Website links (including Social Media)
+        Website Links/Social Media
       </span>
       <Input
         placeholder="Enter your profile link"
@@ -190,7 +191,7 @@ const ProfileLinkForm: React.FC<{
       >
         <span className="text-18 text-mercury-30">Connect</span>
       </Button>
-    </>
+    </div>
   )
 }
 export default ProfileLinkForm

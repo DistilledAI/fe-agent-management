@@ -6,6 +6,8 @@ export const PATH_NAMES = {
   INVITE: "/invite",
   PRIVATE_AGENT: "/private-agent",
   MARKETPLACE: "/marketplace",
+  MY_DATA: "/my-data",
+  ADD_MY_DATA: "/add-my-data",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {
@@ -46,29 +48,36 @@ export const ACTIVE_COLORS = [
   {
     bgColor: "bg-lgd-code-agent-1",
     borderColor: "border-code-agent-1",
+    textColor: "text-code-agent-1",
   },
   {
     bgColor: "bg-lgd-code-agent-2",
     borderColor: "border-code-agent-2",
+    textColor: "text-code-agent-2",
   },
   {
     bgColor: "bg-lgd-code-agent-3",
     borderColor: "border-code-agent-3",
+    textColor: "text-code-agent-3",
   },
   {
     bgColor: "bg-lgd-code-agent-4",
     borderColor: "border-code-agent-4",
+    textColor: "text-code-agent-4",
   },
   {
     bgColor: "bg-lgd-code-agent-5",
     borderColor: "border-code-agent-5",
+    textColor: "text-code-agent-5",
   },
   {
     bgColor: "bg-lgd-code-agent-6",
     borderColor: "border-code-agent-6",
+    textColor: "text-code-agent-6",
   },
   {
     bgColor: "bg-lgd-code-agent-7",
     borderColor: "border-code-agent-7",
+    textColor: "text-code-agent-7",
   },
 ]

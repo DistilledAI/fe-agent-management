@@ -12,9 +12,9 @@ export const TablerPlusIcon = ({ size = 20, color = "#545454" }: IconProps) => {
       <path
         d="M10.0003 4.16675V15.8334M4.16699 10.0001H15.8337"
         stroke={color}
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   )

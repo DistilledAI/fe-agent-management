@@ -36,3 +36,26 @@ export const MessageIcon = ({ size = 20, color = "#ADADAD" }: IconProps) => {
     </svg>
   )
 }
+
+export const MessagePlusIcon = ({
+  size = 20,
+  color = "#545454",
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 21 20"
+      fill="none"
+    >
+      <path
+        d="M7.16667 7.49992H13.8333M7.16667 10.8333H12.1667M10.9167 17.0833L10.5 17.4999L8 14.9999H5.5C4.83696 14.9999 4.20107 14.7365 3.73223 14.2677C3.26339 13.7988 3 13.163 3 12.4999V5.83325C3 5.17021 3.26339 4.53433 3.73223 4.06549C4.20107 3.59664 4.83696 3.33325 5.5 3.33325H15.5C16.163 3.33325 16.7989 3.59664 17.2678 4.06549C17.7366 4.53433 18 5.17021 18 5.83325V10.4166M13.8333 15.8333H18.8333M16.3333 13.3333V18.3333"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}

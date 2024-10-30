@@ -1,23 +1,27 @@
 import AvatarCustom from "@components/AvatarCustom"
 import { CopyIcon } from "@components/Icons/Copy"
 // import { EditPenFilledIcon, EditPenOutlineIcon } from "@components/Icons/Edit"
+import { brainAIIcon } from "@assets/svg"
+import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
 import { MetamaskIconSmall } from "@components/Icons/MetamaskIcon"
 import { ShareWithCloudIcon } from "@components/Icons/Share"
+import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
 import { Button } from "@nextui-org/react"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { getMyPrivateAgent } from "services/chat"
-// import AgentDescription from "./Description"
-import { brainAIIcon } from "@assets/svg"
-import { STATUS_AGENT } from "@constants/index"
 import ShareAgent from "./ShareAgent"
 
-const PrivateAgent: React.FC = () => {
+const PrivateAgent: React.FC<{
+  onClose: () => void
+}> = ({ onClose }) => {
   const [listBot, setListBot] = useState<any[]>([])
+  const navigate = useNavigate()
   const firstBot = listBot?.[0]
   const status = firstBot?.status
   const MAP_LABEL_FROM_STATUS = {
-    [STATUS_AGENT.PENDING]: "Awaiting creation on pod",
+    [STATUS_AGENT.PENDING]: "Awaiting creation",
   }
   const isPending = status === STATUS_AGENT.PENDING
 
@@ -71,7 +75,6 @@ const PrivateAgent: React.FC = () => {
           </span>
         </div>
       </div>
-      {/* <AgentDescription /> */}
       <div className="flex items-center justify-between">
         <span className="text-mercury-600">Address:</span>
         <div className="flex items-center gap-2">
@@ -92,33 +95,46 @@ const PrivateAgent: React.FC = () => {
         </div>
       </div>
 
-      {/* <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <span className="text-mercury-600">My data:</span>
         <div className="flex items-center gap-2">
-          <span className="line-clamp-1 whitespace-nowrap text-mercury-900">
-            2 days ago
-          </span>
+          {!!firstBot ? (
+            <div
+              onClick={() => {
+                onClose()
+                navigate(PATH_NAMES.MY_DATA)
+              }}
+              className="flex cursor-pointer items-center gap-1 hover:opacity-70"
+            >
+              <DatabaseSearchIcon color="#A2845E" />
+              <span className="text-base font-medium text-[#A2845E]">
+                Manage
+              </span>
+            </div>
+          ) : (
+            "-"
+          )}
+        </div>
+      </div>
+
+      <div className="flex flex-col items-center justify-between gap-2 md:flex-row">
+        <div className="w-full md:w-[40%]">
+          <ShareAgent
+            agentData={firstBot}
+            isDisabled={isPending || !firstBot}
+          />
+        </div>
+        <div className="w-full md:w-[60%]">
           <Button
-            className="h-auto w-auto min-w-0 bg-transparent p-0"
-            onClick={() => setTypeContent(TYPE_CONTENT.MY_DATA)}
+            className="flex w-full rounded-full bg-mercury-100 max-md:min-h-14"
+            isDisabled
           >
-            <span className="text-base-md text-[#A2845E]">Manage</span>
+            <ShareWithCloudIcon />
+            <span className="font-medium text-mercury-950">
+              Publish on Marketplace
+            </span>
           </Button>
         </div>
-      </div> */}
-
-      <div className="flex items-center justify-between gap-2 max-md:flex-col">
-        <ShareAgent agentData={firstBot} isDisabled={isPending || !firstBot} />
-        <Button
-          className="flex w-full rounded-full bg-mercury-100 max-md:min-h-14"
-          // isDisabled={isPending || !firstBot}
-          isDisabled
-        >
-          <ShareWithCloudIcon />
-          <span className="font-medium text-mercury-950">
-            Publish on Marketplace
-          </span>
-        </Button>
       </div>
     </div>
   )

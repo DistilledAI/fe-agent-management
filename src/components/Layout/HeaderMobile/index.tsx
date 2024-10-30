@@ -1,14 +1,23 @@
 import { BarIcon } from "@components/Icons/Bar"
 import { DistilledIconNoText } from "@components/Icons/DistilledAIIcon"
+import { DISTILLED_AI_URL, PATH_NAMES } from "@constants/index"
 import useConnectWallet from "@hooks/useConnectWallet"
 import { useDisclosure } from "@nextui-org/react"
 import UserAuth from "@pages/ChatPage/ChatBox/UserAuth"
 import React from "react"
+import { Link, useLocation } from "react-router-dom"
 import DrawerLeft from "./DrawerLeft"
+
+const MAP_PAGE_TITLE_FROM_PATH_NAME = {
+  [PATH_NAMES.PRIVATE_AGENT]: "Private Agent",
+  [PATH_NAMES.MARKETPLACE]: "Marketplace",
+}
 
 const HeaderMobile: React.FC = () => {
   const { loading, connectWallet } = useConnectWallet()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { pathname } = useLocation()
+  const pageTitle = MAP_PAGE_TITLE_FROM_PATH_NAME[pathname]
 
   return (
     <>
@@ -17,7 +26,13 @@ const HeaderMobile: React.FC = () => {
           <BarIcon />
         </div>
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-          <DistilledIconNoText />
+          {pageTitle ? (
+            <span className="text-base-sb">{pageTitle}</span>
+          ) : (
+            <Link target="_blank" to={DISTILLED_AI_URL}>
+              <DistilledIconNoText />
+            </Link>
+          )}
         </div>
         <UserAuth loading={loading} connectWallet={connectWallet} />
       </div>

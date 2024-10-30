@@ -1,32 +1,41 @@
 import useWindowSize from "@hooks/useWindowSize"
-import React from "react"
 import FooterMobile from "./FooterMobile"
 import HeaderMobile from "./HeaderMobile"
+import { Outlet, useLocation, useParams } from "react-router-dom"
+import { PATH_NAMES } from "@constants/index"
+import useInviteUser from "@hooks/useInviteUser"
 import useFetchMe from "@hooks/useFetchMe"
 
-const MainLayout: React.FC<{
-  children:
-    | React.ReactElement
-    | React.ReactElement[]
-    | React.ReactNode
-    | React.ReactNode[]
-  isHeader?: boolean
-  isFooter?: boolean
-}> = ({ children, isHeader = true, isFooter = true }) => {
-  const { screenWidth } = useWindowSize()
+const MainLayout = () => {
+  useInviteUser()
   useFetchMe()
+
+  const { screenWidth } = useWindowSize()
+  const { pathname } = useLocation()
+  const { chatId, inviteUserId, privateChatId } = useParams()
+  const ignoreLayout = [
+    `${PATH_NAMES.CHAT}/${chatId}`,
+    `${PATH_NAMES.INVITE}/${inviteUserId}`,
+    `${PATH_NAMES.MY_DATA}`,
+    `${PATH_NAMES.PRIVATE_AGENT}/${privateChatId}`,
+  ]
+
+  const isIgnoreLayout = ignoreLayout.includes(pathname)
+  const isHeader = !isIgnoreLayout
+  const isFooter = !isIgnoreLayout
+
   const hasHeader = screenWidth < 768 && isHeader
   const hasFooter = screenWidth < 768 && isFooter
 
   return (
-    <div className="max-sm:bg-mercury-30">
+    <div className="max-md:bg-mercury-30">
       {hasHeader && <HeaderMobile />}
       <div
         aria-checked={hasHeader}
         aria-current={hasFooter}
         className="aria-current:pb-[60px] aria-checked:pt-[50px]"
       >
-        {children}
+        <Outlet />
       </div>
       {hasFooter && <FooterMobile />}
     </div>

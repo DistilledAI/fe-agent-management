@@ -42,7 +42,7 @@ const MarketplaceDesktop = ({ categories, isOpen, onClose }: Props) => {
         onClose={onClose}
         classNames={{
           base: "h-[calc(100dvh-72px)] rounded-t-[32px]",
-          body: "px-0",
+          body: "px-0 md:px-0",
         }}
       >
         <h3 className="mb-6 text-center text-24 font-semibold">Marketplace</h3>
