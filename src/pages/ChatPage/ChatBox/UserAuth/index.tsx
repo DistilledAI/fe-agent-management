@@ -31,10 +31,10 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
     queryFn: getMyPrivateAgent,
     refetchOnWindowFocus: false,
   })
-  const myBot = data ? data.data.items.length > 0 : false
+  const hasBot = data ? data.data.items.length > 0 : false
 
   const { textColor } = getActiveColorRandomById(chatId)
-  const isHiddenMyData = pathname === PATH_NAMES.MY_DATA || !myBot
+  const isHiddenMyData = pathname === PATH_NAMES.MY_DATA || !hasBot
   const isShowInfo =
     user && user.publicAddress && user.role !== RoleUser.ANONYMOUS
 

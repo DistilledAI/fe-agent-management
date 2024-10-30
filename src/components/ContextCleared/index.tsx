@@ -20,7 +20,10 @@ const ContextCleared = ({
     >
       <div className="h-[1px] flex-1 bg-mercury-100" />
       <span
-        className={twMerge("text-14 font-bold text-mercury-950", textClassName)}
+        className={twMerge(
+          "text-[14px] font-bold text-mercury-950",
+          textClassName,
+        )}
       >
         {content}
       </span>

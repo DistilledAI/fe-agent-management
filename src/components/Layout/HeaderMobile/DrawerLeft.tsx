@@ -6,29 +6,41 @@ import CloseButton from "@components/CloseButton"
 import ComingSoon from "@components/ComingSoon"
 import { PATH_NAMES } from "@constants/index"
 import { useNavigate } from "react-router-dom"
+import { useQuery } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
+import { getMyPrivateAgent } from "services/chat"
 
 interface Props {
   isOpen: boolean
   onClose: () => void
 }
 
-const MENU = [
-  {
-    name: "Playground",
-    icon: <FilledWindowIcon />,
-    isComingSoon: true,
-    url: "",
-  },
-  {
-    name: "My data",
-    icon: <DatabaseSearchIcon />,
-    isComingSoon: false,
-    url: PATH_NAMES.MY_DATA,
-  },
-]
-
 const DrawerLeft: React.FC<Props> = ({ isOpen, onClose }) => {
   const navigate = useNavigate()
+  const { data } = useQuery({
+    queryKey: [QueryDataKeys.MY_BOT_LIST],
+    queryFn: getMyPrivateAgent,
+    refetchOnWindowFocus: false,
+  })
+  const hasBot = data ? data.data.items.length > 0 : false
+  const isHiddenMyData = !hasBot
+
+  const MENU = [
+    {
+      name: "Playground",
+      icon: <FilledWindowIcon />,
+      isComingSoon: true,
+      url: "",
+      hidden: false,
+    },
+    {
+      name: "My data",
+      icon: <DatabaseSearchIcon />,
+      isComingSoon: false,
+      url: PATH_NAMES.MY_DATA,
+      hidden: isHiddenMyData,
+    },
+  ]
 
   return (
     <Modal
@@ -66,18 +78,21 @@ const DrawerLeft: React.FC<Props> = ({ isOpen, onClose }) => {
       <ModalContent className="w-[80%] !rounded-br-[32px] !rounded-tr-[32px] border-r border-r-mercury-100 bg-mercury-70">
         <ModalBody className="gap-4 px-3 pt-10">
           <CloseButton onClose={onClose} />
-          {MENU.map((item, index) => (
-            <ComingSoon isOffComing={!item.isComingSoon}>
-              <Button
-                key={index}
-                className="btn-primary min-h-[60px] w-full justify-start"
-                onClick={() => navigate(item.url)}
-              >
-                <div>{item.icon}</div>
-                {item.name}
-              </Button>
-            </ComingSoon>
-          ))}
+          {MENU.map(
+            (item, index) =>
+              !item.hidden && (
+                <ComingSoon isOffComing={!item.isComingSoon}>
+                  <Button
+                    key={index}
+                    className="btn-primary min-h-[60px] w-full justify-start"
+                    onClick={() => navigate(item.url)}
+                  >
+                    <div>{item.icon}</div>
+                    {item.name}
+                  </Button>
+                </ComingSoon>
+              ),
+          )}
         </ModalBody>
       </ModalContent>
     </Modal>
