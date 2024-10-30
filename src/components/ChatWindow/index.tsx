@@ -1,6 +1,5 @@
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import React, {
-  CSSProperties,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -21,9 +20,7 @@ interface ChatWindowProps {
   isLoading?: boolean
   onLoadPrevMessages: () => Promise<number | undefined>
   chatId: string | undefined
-  style?: CSSProperties
   msgBoxClassName?: string
-  Footer?: React.ReactNode
   isFetched?: boolean
   hasPreviousMore?: boolean
   isFetchingPreviousPage?: boolean
@@ -88,7 +85,7 @@ const ChatWindow = ({
     [hasPreviousMore],
   )
 
-  const memoizedHeader = useMemo(
+  const renderHeader = useMemo(
     () => () =>
       isFetchingPreviousPage && messages.length >= LIMIT ? (
         <div className="my-4 flex h-full items-center justify-center">
@@ -107,7 +104,7 @@ const ChatWindow = ({
       <></>
     )
 
-  const row = useMemo(
+  const renderRow = useMemo(
     () => (index: number, message: IMessageBox) => {
       return (
         <article className={twMerge("px-3 pb-3", msgBoxClassName)} key={index}>
@@ -115,14 +112,15 @@ const ChatWindow = ({
         </article>
       )
     },
-    [chatId, msgBoxClassName, itemContent],
+    [msgBoxClassName, chatId, itemContent],
   )
 
   return (
     <div
       className={twMerge(
         "relative h-full overflow-hidden transition-all duration-500 ease-linear",
-        "max-h-[calc(100%-56px)] md:max-h-[calc(100%-152px)]",
+        // "max-h-[calc(100%-56px)]"
+        "md:max-h-[calc(100%-152px)]",
         className,
       )}
       style={{
@@ -144,13 +142,13 @@ const ChatWindow = ({
           increaseViewportBy={300}
           onScroll={messages.length >= LIMIT ? onScroll : undefined}
           components={{
-            Header: memoizedHeader,
+            Header: renderHeader,
             EmptyPlaceholder: () => renderEmptyPlaceholder(),
           }}
           followOutput={isAtBottom ? "smooth" : false}
           atBottomStateChange={setIsAtBottom}
           atBottomThreshold={AT_BOTTOM_THRESHOLD}
-          itemContent={row}
+          itemContent={renderRow}
         />
       ) : null}
       <ScrollBottomChat
