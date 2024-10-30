@@ -4,7 +4,7 @@ import DotLoading from "@components/DotLoading"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { FilledUserIcon, FilledUsersPlusIcon } from "@components/Icons/UserIcon"
-import { RoleUser } from "@constants/index"
+import { PATH_NAMES, RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { IUser } from "@reducers/userSlice"
 import { useNavigate, useParams } from "react-router-dom"
@@ -19,7 +19,7 @@ import {
 } from "./helpers"
 import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
-import useFetchGroups, { LIMIT, TypeGroup } from "./useFetchGroups"
+import useFetchGroups, { LIMIT, TypeGroup, UserGroup } from "./useFetchGroups"
 import { useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import DotNotification from "../DotNotification"
@@ -44,7 +44,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
     )
   }
 
-  const mapColorsToGroups = (groups: any[]) => {
+  const mapColorsToGroups = (groups: UserGroup[]) => {
     return groups.map((group) => {
       const groupId = group.groupId
       const { bgColor } = getActiveColorRandomById(groupId)
@@ -81,12 +81,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
         </div>
       </div>
 
-      <div
-        className={twMerge(
-          "-mx-4 h-full max-h-[calc(100%-143px)]",
-          // sidebarCollapsed && "max-h-[calc(100%-400px)]",
-        )}
-      >
+      <div className="-mx-4 h-full max-h-[calc(100%-143px)]">
         <Virtuoso
           style={{ height: "100%" }}
           data={mapColorsToGroups(groups)}
@@ -119,7 +114,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                     (prev = []) =>
                       prev.filter((id) => id !== groupItem.groupId),
                   )
-                  navigate(`/chat/${groupItem.groupId}`)
+                  navigate(`${PATH_NAMES.CHAT}/${groupItem.groupId}`)
                 }}
                 className={twMerge(
                   "hover-light-effect group/item group relative mx-4 mb-2 h-14 gap-2 rounded-full px-2 py-2",
