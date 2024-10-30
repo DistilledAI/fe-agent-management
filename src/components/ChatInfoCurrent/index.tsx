@@ -37,7 +37,7 @@ const ChatInfoCurrent: React.FC<{
           />
           <span
             className={twMerge(
-              "line-clamp-1 max-w-[150px] text-[15px] font-semibold md:max-w-[250px] md:text-16",
+              "line-clamp-1 max-w-[150px] text-[14px] font-semibold md:max-w-[250px] md:text-[16px]",
               textColor,
             )}
           >

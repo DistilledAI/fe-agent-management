@@ -3,7 +3,6 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import { Button } from "@nextui-org/react"
 import { useQuery } from "@tanstack/react-query"
-// import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { changeStatusBotInGroup, checkStatusBotInGroup } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
@@ -15,36 +14,28 @@ const BOT_STATUS = {
 
 const DelegatePrivateAgent: React.FC = () => {
   const { chatId, privateChatId } = useParams()
-  // const [botInfo, setBotInfo] = useState<any>(null)
   //   const [isShowNotification, setShowNotification] = useState<boolean>(false)
   const groupId = chatId || privateChatId
+
   const callCheckStatusBotInGroup = async () => {
-    try {
-      const response = await checkStatusBotInGroup(groupId)
-      if (response?.data) {
-        // const botStatusData = response?.data
-        // setBotInfo(botStatusData)
-        return response?.data
-      }
-    } catch (error) {
-      console.error("error", error)
+    const response = await checkStatusBotInGroup(groupId)
+    if (response?.data) {
+      console.log({ response })
+      return response?.data
     }
   }
 
   const { data: botInfo, refetch } = useQuery({
     queryKey: [QueryDataKeys.DELEGATE_PRIVATE_AGENT, groupId],
-    queryFn: () => callCheckStatusBotInGroup(),
+    queryFn: callCheckStatusBotInGroup,
     enabled: !!groupId,
+    retry: false,
   })
 
   const botStatus = botInfo?.status
   const myBotData = botInfo?.myBot
   const botId = myBotData?.id
   const isBotEnabled = botStatus === BOT_STATUS.ENABLE
-
-  // useEffect(() => {
-  //   callCheckStatusBotInGroup()
-  // }, [])
 
   //   useEffect(() => {
   //     setTimeout(() => {
@@ -63,7 +54,6 @@ const DelegatePrivateAgent: React.FC = () => {
       const response = await changeStatusBotInGroup(payloadData)
       if (response) {
         refetch()
-        // callCheckStatusBotInGroup()
         // setShowNotification(true)
       }
     } catch (error) {
