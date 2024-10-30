@@ -2,9 +2,11 @@ import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import { Button } from "@nextui-org/react"
-import { useEffect, useState } from "react"
+import { useQuery } from "@tanstack/react-query"
+// import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { changeStatusBotInGroup, checkStatusBotInGroup } from "services/chat"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const BOT_STATUS = {
   ENABLE: 1,
@@ -13,29 +15,36 @@ const BOT_STATUS = {
 
 const DelegatePrivateAgent: React.FC = () => {
   const { chatId, privateChatId } = useParams()
-  const [botInfo, setBotInfo] = useState<any>(null)
+  // const [botInfo, setBotInfo] = useState<any>(null)
   //   const [isShowNotification, setShowNotification] = useState<boolean>(false)
-  const groupId = chatId ?? privateChatId
-  const botStatus = botInfo?.status
-  const myBotData = botInfo?.myBot
-  const botId = myBotData?.id
-  const isBotEnabled = botStatus === BOT_STATUS.ENABLE
-
+  const groupId = chatId || privateChatId
   const callCheckStatusBotInGroup = async () => {
     try {
       const response = await checkStatusBotInGroup(groupId)
-      if (response) {
-        const botStatusData = response?.data
-        setBotInfo(botStatusData)
+      if (response?.data) {
+        // const botStatusData = response?.data
+        // setBotInfo(botStatusData)
+        return response?.data
       }
     } catch (error) {
       console.error("error", error)
     }
   }
 
-  useEffect(() => {
-    callCheckStatusBotInGroup()
-  }, [])
+  const { data: botInfo, refetch } = useQuery({
+    queryKey: [QueryDataKeys.DELEGATE_PRIVATE_AGENT, groupId],
+    queryFn: () => callCheckStatusBotInGroup(),
+    enabled: !!groupId,
+  })
+
+  const botStatus = botInfo?.status
+  const myBotData = botInfo?.myBot
+  const botId = myBotData?.id
+  const isBotEnabled = botStatus === BOT_STATUS.ENABLE
+
+  // useEffect(() => {
+  //   callCheckStatusBotInGroup()
+  // }, [])
 
   //   useEffect(() => {
   //     setTimeout(() => {
@@ -53,11 +62,12 @@ const DelegatePrivateAgent: React.FC = () => {
       }
       const response = await changeStatusBotInGroup(payloadData)
       if (response) {
-        callCheckStatusBotInGroup()
+        refetch()
+        // callCheckStatusBotInGroup()
         // setShowNotification(true)
       }
     } catch (error) {
-      console.error("errorr", error)
+      console.error("error", error)
     }
   }
 
@@ -82,7 +92,7 @@ const DelegatePrivateAgent: React.FC = () => {
       <div className="hidden w-fit items-center justify-end md:flex">
         <Button
           className="flex h-11 w-fit cursor-pointer items-center gap-2 rounded-3xl bg-mercury-70 p-3"
-          onClick={() => handleSetDelegate()}
+          onClick={handleSetDelegate}
         >
           {isBotEnabled ? (
             <FilledBrainAIIcon size={20} />
