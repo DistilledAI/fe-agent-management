@@ -44,7 +44,7 @@ const Login = () => {
               Connect wallet
             </span>
             <br />
-            to start your own Private agent.
+            to start your own Private Agent.
           </span>
         </div>
       )}

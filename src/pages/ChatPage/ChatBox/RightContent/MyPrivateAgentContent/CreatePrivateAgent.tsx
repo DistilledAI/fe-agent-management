@@ -61,7 +61,7 @@ const CreatePrivateAgent: React.FC<{
               Connect wallet
             </span>
             <br />
-            to start your own Private agent.
+            to start your own Private Agent.
           </span>
         </div>
 
@@ -97,7 +97,7 @@ const CreatePrivateAgent: React.FC<{
           </div>
           <span className="cursor-pointer text-center text-20 text-mercury-800">
             <span className="font-semibold text-mercury-950">
-              Start your Private agent
+              Start your Private Agent
             </span>
             <br />
             by connect your data:
@@ -147,7 +147,7 @@ const CreatePrivateAgent: React.FC<{
               <DatabaseImportIcon />
             </div>
             <span className="text-24">
-              <span className="font-semibold">Start your Private agent</span>
+              <span className="font-semibold">Start your Private Agent</span>
               <br />
               by connect your data:
             </span>

@@ -7,6 +7,8 @@ import { createBot } from "services/chat"
 import { mapMyDataToBot } from "services/user"
 import CollectingModal from "../Modal/CreatPrivateAgentModal/CollectingModal"
 import FYIModal from "../Modal/FYIModal"
+import { useQueryClient } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const MainContainerCreate: React.FC<{
   children: React.ReactNode
@@ -16,6 +18,7 @@ const MainContainerCreate: React.FC<{
 }> = ({ children, setCreated, botId, onCallBack }) => {
   const [openFYIPopup, setOpenFYIPopupp] = useState<boolean>(false)
   const [openCollectingPopup, setOpenCollectingPopup] = useState<boolean>(false)
+  const queryClient = useQueryClient()
   const methods = useForm<any>({
     defaultValues: {
       uploadCV: [],
@@ -70,6 +73,9 @@ const MainContainerCreate: React.FC<{
         toast.success("Created bot successfully")
         setOpenCollectingPopup(false)
         setCreated(true)
+        queryClient.setQueryData([QueryDataKeys.MY_BOT_LIST], () => ({
+          data: { items: [{ id: 1 }] },
+        }))
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message)
