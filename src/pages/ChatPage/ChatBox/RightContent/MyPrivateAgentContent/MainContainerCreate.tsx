@@ -73,9 +73,7 @@ const MainContainerCreate: React.FC<{
         toast.success("Created bot successfully")
         setOpenCollectingPopup(false)
         setCreated(true)
-        queryClient.setQueryData([QueryDataKeys.MY_BOT_LIST], () => ({
-          data: { items: [{ id: 1 }] },
-        }))
+        queryClient.refetchQueries({ queryKey: [QueryDataKeys.MY_BOT_LIST] })
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message)
@@ -89,10 +87,10 @@ const MainContainerCreate: React.FC<{
   return (
     <>
       <FormProvider {...methods}>
-        <div className="relative h-full w-full flex-1 max-md:px-3">
+        <div className="relative h-full w-full flex-1 max-md:h-auto max-md:px-3 max-md:pb-[80px]">
           <div className="flex-items-center relative h-full w-full flex-col justify-between">
             {children}
-            <div className="absolute bottom-[100px] flex items-center gap-2 rounded-[22px] border border-mercury-200 bg-white p-4 text-center max-md:bottom-[40px] max-md:w-full max-md:flex-col">
+            <div className="absolute bottom-[100px] flex items-center gap-2 rounded-[22px] border border-mercury-200 bg-white p-4 text-center max-md:static max-md:bottom-[40px] max-md:mt-6 max-md:w-full max-md:flex-col">
               <div>
                 <span className="text-base-14 text-mercury-800">
                   Your Private Agent is exclusively accessible to you unless you
