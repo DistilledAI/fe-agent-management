@@ -5,4 +5,5 @@ export enum QueryDataKeys {
   PRIVATE_AGENTS_MKL = "private-agents-marketplace",
   MY_BOT_DATA = "my-bot-data",
   MY_BOT_LIST = "my-bot-list",
+  DELEGATE_PRIVATE_AGENT = "delegate-private-agent",
 }

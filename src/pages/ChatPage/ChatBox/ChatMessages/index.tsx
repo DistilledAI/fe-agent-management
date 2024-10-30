@@ -18,6 +18,8 @@ import { useMemo } from "react"
 import ChatActions from "./ChatActions"
 import { getActiveColorRandomById } from "@utils/index"
 import ContextCleared from "@components/ContextCleared"
+import { useQueryClient } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const ChatMessages = () => {
   const {
@@ -31,6 +33,11 @@ const ChatMessages = () => {
   const { chatId } = useParams()
   const { style } = useStyleBoxChat()
   const { bgColor, textColor } = getActiveColorRandomById(chatId)
+  const queryClient = useQueryClient()
+  const myPrivateAgent = queryClient.getQueryData([
+    QueryDataKeys.DELEGATE_PRIVATE_AGENT,
+    chatId,
+  ])
 
   const calculatedPaddingBottom = useMemo(() => {
     return `${style.paddingBottom}px`
@@ -103,6 +110,7 @@ const ChatMessages = () => {
         chatId={chatId}
         calculatedPaddingBottom={calculatedPaddingBottom}
         msgBoxClassName="p-0 md:px-4"
+        isChatAction={!!myPrivateAgent}
       />
       <ChatActions />
     </>

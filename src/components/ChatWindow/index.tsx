@@ -25,6 +25,7 @@ interface ChatWindowProps {
   hasPreviousMore?: boolean
   isFetchingPreviousPage?: boolean
   calculatedPaddingBottom?: string
+  isChatAction?: boolean
 }
 
 const LIMIT = 20
@@ -42,6 +43,7 @@ const ChatWindow = ({
   hasPreviousMore,
   isFetchingPreviousPage,
   calculatedPaddingBottom,
+  isChatAction = false,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [isAtBottom, setIsAtBottom] = useState<boolean>(true)
@@ -118,9 +120,9 @@ const ChatWindow = ({
   return (
     <div
       className={twMerge(
-        "relative h-full overflow-hidden transition-all duration-500 ease-linear",
+        "relative h-full overflow-hidden transition-all duration-500 ease-linear md:max-h-[calc(100%-100px)]",
         // "max-h-[calc(100%-56px)]"
-        "md:max-h-[calc(100%-152px)]",
+        isChatAction && "md:max-h-[calc(100%-152px)]",
         className,
       )}
       style={{
