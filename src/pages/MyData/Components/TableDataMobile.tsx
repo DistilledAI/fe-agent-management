@@ -1,17 +1,10 @@
-import { DotFilledIcon } from "@components/Icons/DotIcon"
 import useLoadMoreByScroll from "@hooks/useLoadMoreByScroll"
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from "@nextui-org/react"
 import { TYPE_DATA_KEY } from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/CreatePrivateAgent"
 import { BotDataTypeKey } from "@types"
 import { capitalizeFirstLetter } from "@utils/index"
 import moment from "moment"
-import React, { useRef, useState } from "react"
-import DeleteData from "../DeleteData"
+import React, { useRef } from "react"
+import ActionMoreTableMobile from "./ActionMoreTableMobile"
 
 export interface ITableData {
   type?: string
@@ -29,7 +22,6 @@ const TableDataMobile: React.FC<{
 }> = ({ data, loadMore, hasMore, botId, category }) => {
   const isEmpty = data.length === 0
   const tableRef = useRef<any>(null)
-  const [isOpen, setIsOpen] = useState(false)
   useLoadMoreByScroll(tableRef, loadMore, hasMore)
 
   return (
@@ -68,29 +60,11 @@ const TableDataMobile: React.FC<{
                 </p>
               </div>
               <div className="flex w-[50px] justify-end">
-                <Dropdown isOpen={isOpen} onOpenChange={(e) => setIsOpen(e)}>
-                  <DropdownTrigger>
-                    <div
-                      onClick={() => setIsOpen(true)}
-                      className="cursor-pointer hover:opacity-70"
-                    >
-                      <DotFilledIcon size={20} />
-                    </div>
-                  </DropdownTrigger>
-                  <DropdownMenu
-                    closeOnSelect={false}
-                    aria-label="Static Actions"
-                  >
-                    <DropdownItem key="delete">
-                      <DeleteData
-                        botId={botId}
-                        ids={[item.id]}
-                        category={category}
-                        trigger="Delete"
-                      />
-                    </DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
+                <ActionMoreTableMobile
+                  data={item}
+                  botId={botId}
+                  category={category}
+                />
               </div>
             </div>
           )
