@@ -73,9 +73,7 @@ const MainContainerCreate: React.FC<{
         toast.success("Created bot successfully")
         setOpenCollectingPopup(false)
         setCreated(true)
-        queryClient.setQueryData([QueryDataKeys.MY_BOT_LIST], () => ({
-          data: { items: [{ id: 1 }] },
-        }))
+        queryClient.refetchQueries({ queryKey: [QueryDataKeys.MY_BOT_LIST] })
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message)
