@@ -5,13 +5,22 @@ import { checkGroupDirect, createGroupChat } from "services/chat"
 import useAuthState from "./useAuthState"
 import { postCreateAnonymous } from "services/auth"
 import { cachedSessionStorage, storageKey } from "@utils/storage"
+import { useDispatch } from "react-redux"
+import { loginSuccessByAnonymous } from "@reducers/userSlice"
+import { useQueryClient } from "@tanstack/react-query"
+import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import useWindowSize from "./useWindowSize"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const useInviteUser = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const queryClient = useQueryClient()
+  const { isMobile } = useWindowSize()
   const params = useParams()
   const { pathname } = useLocation()
   const { user, isLogin } = useAuthState()
-  const userId = Number(params?.userId)
+  const userId = Number(params?.inviteUserId)
   const isInvitePathName = pathname === `${PATH_NAMES.INVITE}/${userId}`
   const sessionAccessToken = cachedSessionStorage.getWithExpiry(
     storageKey.ACCESS_TOKEN,
@@ -27,7 +36,15 @@ const useInviteUser = () => {
         const createGroupResponse = await createGroupChat({
           members: [userId],
         })
-        const newGroupId = createGroupResponse?.data?.id
+        const newData = createGroupResponse.data
+        if (newData && isMobile)
+          queryClient.setQueryData(
+            [QueryDataKeys.MY_LIST_CHAT],
+            (oldData: UserGroup[]) => {
+              return [newData].concat(oldData ?? [])
+            },
+          )
+        const newGroupId = newData?.groupId
         if (newGroupId) {
           navigate(`${PATH_NAMES.CHAT}/${newGroupId}?isInvited=true`)
         }
@@ -36,23 +53,25 @@ const useInviteUser = () => {
       navigate(`${PATH_NAMES.CHAT}/${groupId}`)
     } catch (error) {
       console.log("error", error)
-      navigate(`/${PATH_NAMES.CHAT}`)
+      navigate(PATH_NAMES.HOME)
     }
   }
 
   const handleInviteAnonymous = async () => {
     try {
       const res = await postCreateAnonymous()
-      const accessToken = res?.data?.accessToken
+      const accessToken = res.data?.accessToken
+      const userAnonymous = res.data?.user
       const expiry = Date.now() + 24 * 60 * 60 * 1000
 
-      if (accessToken) {
-        cachedSessionStorage.setWithExpiry(
-          storageKey.ACCESS_TOKEN,
-          accessToken,
-          expiry,
+      if (accessToken && userAnonymous) {
+        dispatch(
+          loginSuccessByAnonymous({
+            user: userAnonymous,
+            accessToken,
+            expiry,
+          }),
         )
-        handleInviteUserLoggedIn(userId)
       } else {
         console.log("Access token not found in response")
       }
@@ -62,16 +81,25 @@ const useInviteUser = () => {
   }
 
   useEffect(() => {
-    if (isInvitePathName && !isLogin && !sessionAccessToken) {
+    const isAnonymous = isInvitePathName && !isLogin && !sessionAccessToken
+    if (isAnonymous) {
       handleInviteAnonymous()
     }
   }, [isInvitePathName, isLogin, sessionAccessToken])
 
   useEffect(() => {
-    if (isInvitePathName && user?.id !== userId && isLogin) {
+    const isRealUser =
+      isInvitePathName && user?.id !== userId && isLogin && !sessionAccessToken
+    if (isRealUser) {
       handleInviteUserLoggedIn(userId)
     }
-  }, [pathname, userId, user?.id, isLogin])
+  }, [isInvitePathName, userId, user?.id, isLogin, sessionAccessToken])
+
+  useEffect(() => {
+    const isAnonymousLogged =
+      sessionAccessToken && isLogin && isInvitePathName && userId
+    if (isAnonymousLogged) handleInviteUserLoggedIn(userId)
+  }, [userId, sessionAccessToken, isLogin, isInvitePathName])
 
   return { handleInviteUserLoggedIn }
 }

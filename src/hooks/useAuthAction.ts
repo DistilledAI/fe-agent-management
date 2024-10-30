@@ -1,0 +1,22 @@
+import { useAppDispatch } from "./useAppRedux"
+import { logout as logoutSlice } from "@reducers/userSlice"
+import { useQueryClient } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
+
+const useAuthAction = () => {
+  const dispatch = useAppDispatch()
+  const queryClient = useQueryClient()
+
+  const logout = () => {
+    dispatch(logoutSlice())
+    const ignoreKeys = [QueryDataKeys.PRIVATE_AGENTS_MKL]
+    const removeList = Object.values(QueryDataKeys).filter(
+      (key) => !ignoreKeys.includes(key),
+    )
+    removeList.forEach((key) => queryClient.removeQueries({ queryKey: [key] }))
+  }
+
+  return { logout }
+}
+
+export default useAuthAction

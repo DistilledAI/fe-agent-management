@@ -1,3 +1,4 @@
+import { ACTIVE_COLORS } from "@constants/index"
 import FingerprintJS from "@fingerprintjs/fingerprintjs"
 import { IUser } from "@reducers/userSlice"
 import { cloneElement, createElement } from "react"
@@ -49,6 +50,10 @@ export const makeId = (length = 8) => {
     result += characters.charAt(Math.floor(Math.random() * charactersLength))
   }
   return result
+}
+
+export const isImageUrl = (url: string) => {
+  return /\.(jpeg|jpg|gif|png|webp|svg)$/.test(url)
 }
 
 export const textToVoice = async (
@@ -116,4 +121,14 @@ export const textToVoice = async (
   } catch (error) {
     console.error("Error fetching audio data:", error)
   }
+}
+
+export const getActiveColorRandomById = (id: number | string | undefined) => {
+  if (!id)
+    return {
+      bgColor: "",
+      borderColor: "",
+      textColor: "",
+    }
+  return ACTIVE_COLORS[Number(id) % ACTIVE_COLORS.length]
 }

@@ -9,11 +9,12 @@ const useFetchDetail = () => {
   const { data } = useQuery({
     queryKey: ["chat-detail", chatId],
     queryFn: () => getGroupChatDetail(Number(chatId)),
+    staleTime: 60 * 60 * 1000,
     enabled: !!chatId,
   })
   const result: UserGroup | null = data?.data || null
 
-  return { groupDetail: result }
+  return { groupDetail: result, chatId }
 }
 
 export default useFetchDetail

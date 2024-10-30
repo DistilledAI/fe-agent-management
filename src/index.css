@@ -75,3 +75,7 @@
     transform: scale(1.25);
   }
 }
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}

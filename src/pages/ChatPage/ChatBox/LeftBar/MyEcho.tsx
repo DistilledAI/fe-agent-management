@@ -1,8 +1,10 @@
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { PATH_NAMES } from "@constants/index"
+import { useAppSelector } from "@hooks/useAppRedux"
 import { AGENT_TYPE, updateAgentType } from "@reducers/agentSlice"
 import { useDispatch } from "react-redux"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
+import { twMerge } from "tailwind-merge"
 import ActiveEffect from "./ActiveEffect"
 
 const MyEcho: React.FC = () => {
@@ -10,6 +12,8 @@ const MyEcho: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const { privateChatId } = useParams()
+  const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
+
   const isActive = [
     PATH_NAMES.HOME,
     PATH_NAMES.PRIVATE_AGENT + "/" + privateChatId,
@@ -22,12 +26,24 @@ const MyEcho: React.FC = () => {
 
   return (
     <div
-      className="flex-items-center hover-light-effect group/item group relative gap-2 rounded-full border-white bg-mercury-30 px-2 py-4 aria-selected:border-mercury-100 aria-selected:bg-mercury-100"
+      className={twMerge(
+        "relative flex h-14 cursor-pointer items-center gap-2 rounded-full border-white bg-mercury-30 px-2 py-4",
+        !!isActive && "border-mercury-100 bg-mercury-950 text-mercury-30",
+        !isActive && "hover-light-effect",
+        sidebarCollapsed && "w-14 justify-center",
+      )}
       onClick={() => handleChooseMyEcho()}
-      aria-selected={!!isActive}
     >
-      <FilledBrainAIIcon />
-      <span className="text-base font-normal group-aria-selected:font-semibold">
+      <FilledBrainAIIcon
+        color={isActive ? "rgba(250, 250, 250, 1)" : "#545454"}
+      />
+      <span
+        className={twMerge(
+          "whitespace-nowrap text-[16px] font-normal",
+          !!isActive && "font-semibold",
+          sidebarCollapsed && "hidden",
+        )}
+      >
         My Private Agent
       </span>
 

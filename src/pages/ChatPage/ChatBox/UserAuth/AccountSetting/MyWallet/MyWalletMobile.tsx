@@ -6,12 +6,15 @@ import VoiceChat from "../VoiceChat"
 import VoiceCharacter from "../VoiceCharacter"
 import PrivateAgent from "../Agent"
 import PrivateAgentPod from "../AgentPod"
+import React from "react"
 
-const MyWalletMobile = () => {
+const MyWalletMobile: React.FC<{
+  onClose: () => void
+}> = ({ onClose }) => {
   return (
     <>
       <MyCredits />
-      <PrivateAgent />
+      <PrivateAgent onClose={onClose} />
       <PrivateAgentPod />
       <div className="flex gap-3">
         <Language />

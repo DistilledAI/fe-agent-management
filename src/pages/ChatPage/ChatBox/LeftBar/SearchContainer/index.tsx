@@ -17,14 +17,10 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
     onChangeDisplayMode(DISPLAY_MODES.MESSAGES)
   }
 
-  const handleOnChangeValue = useCallback(
-    (e: any) => {
-      const value = e.currentTarget.value
-      setQuery(value)
-      debounceSearch(value)
-    },
-    [setQuery, debounceSearch],
-  )
+  const handleOnChangeValue = useCallback((value: string) => {
+    setQuery(value)
+    debounceSearch(value)
+  }, [])
 
   const onClearInputValue = () => {
     setQuery("")
@@ -59,7 +55,7 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
             input:
               "text-18 !text-mercury-950 caret-[#363636] focus-visible:ring-opacity-0 font-medium",
           }}
-          onChange={handleOnChangeValue}
+          onValueChange={handleOnChangeValue}
           value={query}
           ref={inputRef}
         />

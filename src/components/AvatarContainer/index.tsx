@@ -14,15 +14,17 @@ const AvatarContainer: React.FC<AvatarContainerProps> = ({
   badgeClassName,
 }) => {
   return (
-    <div className="flex-items-center gap-3">
+    <div className="flex items-center gap-x-3">
       <AvatarCustom
         badgeIcon={badgeIcon}
         src={avatarUrl}
         badgeClassName={badgeClassName}
       />
-      <span className="text-base-md line-clamp-1 text-ellipsis text-mercury-950">
-        {userName}
-      </span>
+      {userName && (
+        <span className="text-base-md line-clamp-1 text-ellipsis text-mercury-950">
+          {userName}
+        </span>
+      )}
     </div>
   )
 }

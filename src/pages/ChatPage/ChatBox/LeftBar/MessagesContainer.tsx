@@ -4,12 +4,9 @@ import DotLoading from "@components/DotLoading"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { FilledUserIcon, FilledUsersPlusIcon } from "@components/Icons/UserIcon"
-import { ACTIVE_COLORS, RoleUser } from "@constants/index"
+import { RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
-import { ActiveColorState } from "@reducers/activeColorSlice"
-
 import { IUser } from "@reducers/userSlice"
-import { useChatMessage } from "providers/MessageProvider"
 import { useNavigate, useParams } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
@@ -19,24 +16,25 @@ import {
   getColorGroupIcon,
   getNameGroup,
   getRoleUser,
-  isHasNotification,
 } from "./helpers"
 import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroups, { LIMIT, TypeGroup } from "./useFetchGroups"
+import { useQueryClient } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
+import DotNotification from "../DotNotification"
+import { useAppSelector } from "@hooks/useAppRedux"
+import { getActiveColorRandomById } from "@utils/index"
 
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
 }) => {
-  const { groups, isLoading, setGroups, handleLoadMore } = useFetchGroups()
-  const {
-    groupsHaveNotification,
-    setGroupsHaveNotification,
-    setIsNewMsgOnCurrentWindow,
-  } = useChatMessage()
+  const { groups, isLoading, handleLoadMore } = useFetchGroups()
   const { user } = useAuthState()
   const navigate = useNavigate()
   const { chatId } = useParams()
+  const queryClient = useQueryClient()
+  const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
 
   const getIconGroup = (ownerId: number, userA: IUser, userB: IUser) => {
     return getRoleUser(ownerId, userA, userB) === RoleUser.USER ? (
@@ -46,13 +44,10 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
     )
   }
 
-  const mapColorsToGroups = (
-    colors: Array<ActiveColorState>,
-    groups: any[],
-  ) => {
+  const mapColorsToGroups = (groups: any[]) => {
     return groups.map((group) => {
       const groupId = group.groupId
-      const bgColor = colors[groupId % colors.length]?.bgColor
+      const { bgColor } = getActiveColorRandomById(groupId)
       return {
         ...group,
         bgColor,
@@ -62,14 +57,23 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
 
   return (
     <>
-      <div className="flex-items-center mb-4 justify-between px-2">
-        <span className="text-base-14">Messages</span>
-        <div className="flex-items-center gap-4">
-          <div className="opacity-30">
+      <div
+        className={twMerge(
+          "mb-4 flex items-center justify-between px-2",
+          sidebarCollapsed && "justify-center",
+        )}
+      >
+        <h6 className={twMerge("text-[14px]", sidebarCollapsed && "hidden")}>
+          Messages
+        </h6>
+        <div className="flex items-center gap-4">
+          <div className={twMerge("opacity-30", sidebarCollapsed && "hidden")}>
             <FilledUsersPlusIcon />
           </div>
           <div
-            onClick={() => onChangeDisplayMode(DISPLAY_MODES.SEARCH)}
+            onClick={() => {
+              onChangeDisplayMode(DISPLAY_MODES.SEARCH)
+            }}
             className="cursor-pointer"
           >
             <FilledSearchIcon />
@@ -77,10 +81,15 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
         </div>
       </div>
 
-      <div className="-mx-4 h-full max-h-[calc(100%-143px)]">
+      <div
+        className={twMerge(
+          "-mx-4 h-full max-h-[calc(100%-143px)]",
+          // sidebarCollapsed && "max-h-[calc(100%-400px)]",
+        )}
+      >
         <Virtuoso
           style={{ height: "100%" }}
-          data={mapColorsToGroups(ACTIVE_COLORS, groups)}
+          data={mapColorsToGroups(groups)}
           components={{
             Footer: () =>
               isLoading && groups.length > 0 ? (
@@ -105,15 +114,18 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                 key={groupItem.id}
                 aria-selected={isActive}
                 onClick={() => {
-                  setGroupsHaveNotification((prev) =>
-                    prev.filter((id) => id !== groupItem.groupId),
+                  queryClient.setQueryData<number[]>(
+                    [QueryDataKeys.NOTIFICATION_GROUPS],
+                    (prev = []) =>
+                      prev.filter((id) => id !== groupItem.groupId),
                   )
-                  setIsNewMsgOnCurrentWindow(false)
                   navigate(`/chat/${groupItem.groupId}`)
                 }}
                 className={twMerge(
-                  "hover-light-effect group/item group relative mx-4 mb-2 gap-2 rounded-full px-2 py-2",
+                  "hover-light-effect group/item group relative mx-4 mb-2 h-14 gap-2 rounded-full px-2 py-2",
                   isActive && "bg-mercury-100",
+                  sidebarCollapsed &&
+                    "flex w-14 items-center justify-center p-0",
                 )}
               >
                 {groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP ? (
@@ -130,11 +142,15 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                       groupItem.group.userA,
                       groupItem.group.userB,
                     )}
-                    userName={getNameGroup(
-                      user,
-                      groupItem.group.userA,
-                      groupItem.group.userB,
-                    )}
+                    userName={
+                      sidebarCollapsed
+                        ? ""
+                        : getNameGroup(
+                            user,
+                            groupItem.group.userA,
+                            groupItem.group.userB,
+                          )
+                    }
                     badgeClassName={getColorGroupIcon(
                       groupItem.userId,
                       groupItem.group.userA,
@@ -146,18 +162,12 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                   isActive={isActive}
                   className={groupItem.bgColor}
                 />
-                <div
-                  aria-checked={isHasNotification(
-                    groupsHaveNotification,
-                    groupItem.groupId,
-                    Number(chatId),
-                  )}
-                  className="absolute left-[10px] top-[10px] hidden h-2 w-2 rounded-full bg-red-600 aria-checked:block"
-                />
-                <MoreChatAction
-                  setGroups={setGroups}
-                  groupId={groupItem.groupId}
-                />
+                <DotNotification groupId={groupItem.groupId} />
+                {sidebarCollapsed ? (
+                  <></>
+                ) : (
+                  <MoreChatAction groupId={groupItem.groupId} />
+                )}
               </div>
             )
           }}

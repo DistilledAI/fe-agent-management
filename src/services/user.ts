@@ -19,3 +19,44 @@ export const updateUser = async (data: IUserUpdate) => {
     data,
   })
 }
+
+export const uploadMyData = async (file: any) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.UPLOAD_MY_DATA,
+    data: file,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  })
+}
+
+export const mapMyDataToBot = async (data: any) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.MAP_MY_DATA_TO_BOT,
+    data,
+  })
+}
+
+export const getMyBotData = async (
+  botId: number,
+  params: { limit: number; offset: number; filter?: string },
+) => {
+  return fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_MY_BOT_DATA(botId),
+    params,
+  })
+}
+
+export const deleteMyBotData = async (data: {
+  botId: number
+  ids: number[]
+}) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.DELETE_MY_BOT_DATA,
+    data,
+  })
+}

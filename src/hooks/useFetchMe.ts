@@ -1,13 +1,14 @@
-import { logout, updateUser } from "@reducers/userSlice"
+import { updateUser } from "@reducers/userSlice"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { getUser } from "services/user"
 import useAuthState from "./useAuthState"
-import { RoleUser } from "@constants/index"
+import useAuthAction from "./useAuthAction"
 
 const useFetchMe = () => {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
+  const { logout } = useAuthAction()
   const { isLogin, sessionAccessToken } = useAuthState()
 
   const fetchData = async () => {
@@ -15,31 +16,14 @@ const useFetchMe = () => {
       setLoading(true)
       const res = await getUser()
       if (res.data) {
-        if (sessionAccessToken) {
-          dispatch(
-            updateUser({
-              user: {
-                id: res?.data?.id,
-                createdAt: "",
-                publicAddress: "",
-                role: RoleUser.ANONYMOUS,
-                status: 0,
-                typeLogin: "",
-                username: "",
-                avatar: "",
-              },
-            }),
-          )
-        } else {
-          dispatch(updateUser({ user: res.data }))
-        }
+        dispatch(updateUser({ user: res.data }))
       } else {
-        dispatch(logout())
+        logout()
       }
     } catch (error: any) {
       console.error(error)
       if (error.response.data.message === "Unauthorized") {
-        dispatch(logout())
+        logout()
       }
     } finally {
       setLoading(false)

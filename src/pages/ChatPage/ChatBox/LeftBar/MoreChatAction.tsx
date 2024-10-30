@@ -14,20 +14,26 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { leaveGroup } from "services/chat"
 import { UserGroup } from "./useFetchGroups"
+import { useQueryClient } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const MoreChatAction: React.FC<{
   groupId: number
-  setGroups: React.Dispatch<React.SetStateAction<UserGroup[]>>
-}> = ({ groupId, setGroups }) => {
+}> = ({ groupId }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const { isOpen: openPopup, onOpen, onOpenChange, onClose } = useDisclosure()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const handleLeaveGroup = async () => {
     try {
       const response = await leaveGroup(groupId)
       if (response?.data?.message) {
-        setGroups((prev) => prev.filter((item) => item.groupId !== groupId))
+        queryClient.setQueryData(
+          [QueryDataKeys.MY_LIST_CHAT],
+          (oldData: UserGroup[]) =>
+            oldData.filter((item) => item.groupId !== groupId),
+        )
         onOpenChange()
         navigate("/")
       }

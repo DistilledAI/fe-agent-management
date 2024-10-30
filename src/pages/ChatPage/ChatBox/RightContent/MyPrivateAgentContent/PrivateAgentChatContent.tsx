@@ -1,20 +1,26 @@
+import { brainAIIcon } from "@assets/svg"
 import ChatWindow from "@components/ChatWindow"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
-import { useChatMessage } from "providers/MessageProvider"
 import { useParams } from "react-router-dom"
+import ChatInput from "../../ChatInput"
 import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
-import useFetchPrivateAgentMessages from "./useFetchPrivateAgentMessages"
-import { brainAIIcon } from "@assets/svg"
+import useFetchMessages from "../../ChatMessages/useFetchMessages"
 
 const PrivateAgentChatContent: React.FC = () => {
-  const { loading, onLoadPrevMessages } = useFetchPrivateAgentMessages()
-  const { messages } = useChatMessage()
+  const {
+    isLoading,
+    onLoadPrevMessages,
+    messages,
+    isFetched,
+    isFetchingPreviousPage,
+    hasPreviousMore,
+  } = useFetchMessages()
   const { privateChatId } = useParams()
 
   const renderMessage = (_: number, message: IMessageBox) => {
     return (
-      <>
+      <div className="mx-auto w-full max-w-[768px] px-3 pb-4 max-md:px-4">
         {message.role === RoleChat.CUSTOMER ? (
           <ReceiverMessage
             avatar={{
@@ -31,18 +37,28 @@ const PrivateAgentChatContent: React.FC = () => {
             baseClassName="bg-lgd-code-agent-1 bg-mercury-950 text-white"
           />
         ) : null}
-      </>
+      </div>
     )
   }
 
   return (
-    <ChatWindow
-      messages={messages}
-      itemContent={renderMessage}
-      loading={loading}
-      onLoadPrevMessages={onLoadPrevMessages}
-      chatId={privateChatId}
-    />
+    <>
+      <ChatWindow
+        messages={messages}
+        itemContent={renderMessage}
+        isLoading={isLoading}
+        onLoadPrevMessages={onLoadPrevMessages}
+        chatId={privateChatId}
+        isFetched={isFetched}
+        hasPreviousMore={hasPreviousMore}
+        isFetchingPreviousPage={isFetchingPreviousPage}
+      />
+      <ChatInput
+        isDisabledInput={false}
+        wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
+        isDarkTheme
+      />
+    </>
   )
 }
 export default PrivateAgentChatContent

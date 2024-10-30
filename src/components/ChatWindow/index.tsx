@@ -1,10 +1,5 @@
-import DotLoading from "@components/DotLoading"
-import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
-import { Button } from "@nextui-org/react"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
-import { useChatMessage } from "providers/MessageProvider"
-import {
-  CSSProperties,
+import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -14,26 +9,23 @@ import {
 } from "react"
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
+import MessagesSkeleton from "./MessagesSkeleton"
+import DotLoading from "@components/DotLoading"
+import ScrollBottomChat from "./ScrollBottomChat"
 
 interface ChatWindowProps {
   messages: Array<IMessageBox>
   itemContent: (index: number, message: IMessageBox) => JSX.Element
   className?: string
-  loading?: boolean
-  onLoadPrevMessages: (params: {
-    offset: number
-    limit?: number
-  }) => Promise<number> // return index message on loaded or undefined when no more messages
+  isLoading?: boolean
+  onLoadPrevMessages: () => Promise<number | undefined>
   chatId: string | undefined
-  style?: CSSProperties
   msgBoxClassName?: string
-  children?: React.ReactNode
-  Footer?:
-    | React.ComponentType<{
-        context?: any
-      }>
-    | undefined
-  isChatting?: boolean
+  isFetched?: boolean
+  hasPreviousMore?: boolean
+  isFetchingPreviousPage?: boolean
+  calculatedPaddingBottom?: string
+  isChatAction?: boolean
 }
 
 const LIMIT = 20
@@ -43,31 +35,24 @@ const ChatWindow = ({
   messages,
   itemContent,
   className,
-  loading,
+  isLoading,
   chatId,
   onLoadPrevMessages,
-  style,
   msgBoxClassName,
-  children,
-  Footer,
-  isChatting,
+  isFetched = false,
+  hasPreviousMore,
+  isFetchingPreviousPage,
+  calculatedPaddingBottom,
+  isChatAction = false,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
-  const [offset, setOffset] = useState<number>(LIMIT)
-  const [hasMoreMessages, setHasMoreMessages] = useState<boolean>(true)
   const [isAtBottom, setIsAtBottom] = useState<boolean>(true)
-  const [isLoadMore, setIsLoadMore] = useState<boolean>(false)
   const [isScrollBottom, setIsScrollBottom] = useState<boolean>(false)
-  const { isNewMsgOnCurrentWindow, setIsNewMsgOnCurrentWindow, setIsChatting } =
-    useChatMessage()
 
   useLayoutEffect(() => {
     if (chatId) {
       setIsScrollBottom(false)
-      setHasMoreMessages(true)
-      setOffset(LIMIT)
       setIsAtBottom(true)
-      setIsChatting(false)
     }
   }, [chatId])
 
@@ -75,91 +60,77 @@ const ChatWindow = ({
     if (!isScrollBottom) {
       virtuosoRef.current?.scrollToIndex({
         index: messages.length - 1,
-        behavior: isChatting ? "smooth" : "auto",
+        behavior: "auto",
         align: "end",
       })
     }
-  }, [messages, isScrollBottom, isChatting])
-
-  useEffect(() => {
-    if (isAtBottom) {
-      setIsNewMsgOnCurrentWindow(false)
-    }
-  }, [isAtBottom])
+  }, [messages, isScrollBottom, chatId, calculatedPaddingBottom])
 
   const onScroll = useCallback(
     async (e: React.UIEvent<HTMLDivElement>) => {
       const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
-      if (scrollTop === 0 && hasMoreMessages) {
-        setIsLoadMore(true)
+      if (scrollTop === 0 && hasPreviousMore) {
         setIsAtBottom(false)
-
-        const prevMessageIndex = await onLoadPrevMessages({
-          offset,
-          limit: LIMIT,
-        })
-
-        if (!prevMessageIndex) {
-          setHasMoreMessages(false)
-        } else {
-          setOffset((prev) => prev + LIMIT)
+        const messagesIndex = await onLoadPrevMessages()
+        if (messagesIndex) {
           virtuosoRef.current?.scrollToIndex({
-            index: prevMessageIndex,
+            index: messagesIndex || 0,
             behavior: "auto",
+            align: "end",
           })
         }
-        setIsLoadMore(false)
       }
 
       const scrollPosition = scrollHeight - clientHeight - scrollTop
       setIsScrollBottom(scrollPosition > AT_BOTTOM_THRESHOLD)
     },
-    [hasMoreMessages, offset, onLoadPrevMessages],
+    [hasPreviousMore],
   )
 
-  const onScrollToBottom = () => {
-    virtuosoRef.current?.scrollToIndex({
-      index: "LAST",
-      behavior: "smooth",
-      align: "end",
-    })
-
-    if (isNewMsgOnCurrentWindow) {
-      setIsNewMsgOnCurrentWindow(false)
-    }
-  }
-
-  const renderDotLoading = useCallback(
-    (className?: string) => (
-      <div
-        className={twMerge(
-          "flex h-full items-center justify-center",
-          className,
-        )}
-      >
-        <DotLoading />
-      </div>
-    ),
-    [],
+  const renderHeader = useMemo(
+    () => () =>
+      isFetchingPreviousPage && messages.length >= LIMIT ? (
+        <div className="my-4 flex h-full items-center justify-center">
+          <DotLoading />
+        </div>
+      ) : (
+        <></>
+      ),
+    [isFetchingPreviousPage, messages.length],
   )
 
-  const memoizedFooter = useMemo(() => Footer, [])
+  const renderEmptyPlaceholder = () =>
+    isFetched && !messages.length ? (
+      <div className="flex h-full items-center justify-center">NO MESSAGE</div>
+    ) : (
+      <></>
+    )
+
+  const renderRow = useMemo(
+    () => (index: number, message: IMessageBox) => {
+      return (
+        <article className={twMerge("px-3 pb-3", msgBoxClassName)} key={index}>
+          {itemContent(index, message)}
+        </article>
+      )
+    },
+    [msgBoxClassName, chatId, itemContent],
+  )
 
   return (
     <div
-      style={style}
       className={twMerge(
-        "relative h-full flex-1 overflow-hidden rounded-[22px] border-[2px] border-white bg-mercury-30 p-3 transition-all duration-500 ease-in-out",
+        "relative h-full overflow-hidden transition-all duration-500 ease-linear md:max-h-[calc(100%-100px)]",
+        // "max-h-[calc(100%-56px)]"
+        isChatAction && "md:max-h-[calc(100%-152px)]",
         className,
       )}
+      style={{
+        paddingBottom: calculatedPaddingBottom,
+      }}
     >
-      {loading && renderDotLoading()}
-      {!loading && !messages.length && (
-        <div className="flex h-full items-center justify-center">
-          NO MESSAGE
-        </div>
-      )}
-      {!loading && messages.length ? (
+      {isLoading && <MessagesSkeleton />}
+      {!isLoading && messages.length ? (
         <Virtuoso
           style={{
             height: "100%",
@@ -167,52 +138,25 @@ const ChatWindow = ({
           ref={virtuosoRef}
           data={messages}
           initialTopMostItemIndex={{
-            index: "LAST",
+            index: messages.length - 1,
             align: "end",
           }}
-          increaseViewportBy={600}
-          onScroll={onScroll}
+          increaseViewportBy={300}
+          onScroll={messages.length >= LIMIT ? onScroll : undefined}
           components={{
-            Header: () => (isLoadMore ? renderDotLoading("my-4") : <></>),
-            Footer: memoizedFooter,
+            Header: renderHeader,
+            EmptyPlaceholder: () => renderEmptyPlaceholder(),
           }}
           followOutput={isAtBottom ? "smooth" : false}
           atBottomStateChange={setIsAtBottom}
           atBottomThreshold={AT_BOTTOM_THRESHOLD}
-          itemContent={(index, message) => (
-            <article
-              className={twMerge("px-3 pb-3", msgBoxClassName)}
-              key={index}
-            >
-              {itemContent(index, message)}
-            </article>
-          )}
+          itemContent={renderRow}
         />
       ) : null}
-      {isScrollBottom && (
-        <div className="absolute inset-x-0 bottom-0 z-10 flex h-20 w-full items-center justify-center bg-fading-white bg-cover bg-no-repeat">
-          <Button
-            onClick={onScrollToBottom}
-            className={twMerge(
-              "w-10 min-w-10 rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2",
-              isNewMsgOnCurrentWindow && "w-fit",
-            )}
-          >
-            <div className="rotate-180">
-              <ArrowUpFilledIcon />
-            </div>
-            <span
-              className={twMerge(
-                "hidden",
-                isNewMsgOnCurrentWindow && "block text-mercury-30",
-              )}
-            >
-              New message
-            </span>
-          </Button>
-        </div>
-      )}
-      {children}
+      <ScrollBottomChat
+        isScrollBottom={isScrollBottom}
+        virtuosoRef={virtuosoRef}
+      />
     </div>
   )
 }

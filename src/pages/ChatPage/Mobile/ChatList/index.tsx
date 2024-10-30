@@ -10,29 +10,25 @@ import {
   getColorGroupIcon,
   getNameGroup,
   getRoleUser,
-  isHasNotification,
 } from "@pages/ChatPage/ChatBox/LeftBar/helpers"
 import useFetchGroups, {
   LIMIT,
   TypeGroup,
 } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { IUser } from "@reducers/userSlice"
-
-import { useChatMessage } from "providers/MessageProvider"
 import { useNavigate, useParams } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
 import { StartNewChat } from ".."
+import { useQueryClient } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
+import DotNotification from "@pages/ChatPage/ChatBox/DotNotification"
 
 const ChatList = () => {
-  const {
-    groupsHaveNotification,
-    setGroupsHaveNotification,
-    setIsNewMsgOnCurrentWindow,
-  } = useChatMessage()
   const { user } = useAuthState()
   const navigate = useNavigate()
   const { chatId } = useParams()
   const { groups, isLoading, handleLoadMore, isFetched } = useFetchGroups()
+  const queryClient = useQueryClient()
 
   const getIconGroup = (ownerId: number, userA: IUser, userB: IUser) => {
     return getRoleUser(ownerId, userA, userB) === RoleUser.USER ? (
@@ -71,10 +67,10 @@ const ChatList = () => {
             key={groupItem.id}
             aria-selected={isActive}
             onClick={() => {
-              setGroupsHaveNotification((prev) =>
-                prev.filter((id) => id !== groupItem.groupId),
+              queryClient.setQueryData<number[]>(
+                [QueryDataKeys.NOTIFICATION_GROUPS],
+                (prev = []) => prev.filter((id) => id !== groupItem.groupId),
               )
-              setIsNewMsgOnCurrentWindow(false)
               navigate(`/chat/${groupItem.groupId}`)
             }}
             className="relative mb-2 gap-2 px-4 py-2"
@@ -105,14 +101,7 @@ const ChatList = () => {
                 )}
               />
             )}
-            <div
-              aria-checked={isHasNotification(
-                groupsHaveNotification,
-                groupItem.groupId,
-                Number(chatId),
-              )}
-              className="absolute left-[10px] top-[10px] hidden h-2 w-2 rounded-full bg-red-600 aria-checked:block"
-            ></div>
+            <DotNotification groupId={groupItem.groupId} />
           </div>
         )
       }}

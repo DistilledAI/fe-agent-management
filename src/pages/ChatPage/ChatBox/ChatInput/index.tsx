@@ -2,9 +2,8 @@ import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
 import { RoleUser } from "@constants/index"
 import { Button, Textarea } from "@nextui-org/react"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { makeId } from "@utils/index"
-import { useChatMessage } from "providers/MessageProvider"
 import { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import SpeechRecognition, {
@@ -12,33 +11,86 @@ import SpeechRecognition, {
 } from "react-speech-recognition"
 import { postChatToGroup } from "services/chat"
 import { twMerge } from "tailwind-merge"
+import { QueryDataKeys } from "types/queryDataKeys"
 import { RoleChat } from "../ChatMessages/helpers"
-// import { queryChatMessagesKey } from "../ChatMessages/useFetchMessages"
+import {
+  ICachedMessageData,
+  messagesQueryKey,
+} from "../ChatMessages/useFetchMessages"
 import { useStyleBoxChat } from "../StyleProvider"
 import VoiceChat from "./Voice"
 
-const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
+interface ChatInputProps {
+  isDisabledInput: boolean
+  wrapperClassName?: string
+  isDarkTheme?: boolean
+}
+
+const ChatInput = ({
   isDisabledInput,
-}) => {
-  const { setMessages: setMessageContext } = useChatMessage()
+  wrapperClassName,
+  isDarkTheme,
+}: ChatInputProps) => {
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const { chatId, privateChatId } = useParams()
   const [isFocus, setIsFocus] = useState(false)
-  const [messages, setMessages] = useState("")
+  const [message, setMessage] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
   const heightBoxRef = useRef(0)
-  const { setStyle } = useStyleBoxChat()
-  // const queryClient = useQueryClient()
+  const { setStyle, style } = useStyleBoxChat()
+  const queryClient = useQueryClient()
 
-  const groupId = chatId ?? privateChatId
+  const groupId = privateChatId || chatId
 
   const mutation = useMutation({
+    mutationKey: [QueryDataKeys.SEND_MESSAGE],
     mutationFn: (message: string) =>
       postChatToGroup({
         groupId: Number(groupId),
         messages: message,
       }),
+    onMutate: (variables) => {
+      const newMessage = {
+        content: variables,
+        role: RoleChat.OWNER,
+        id: makeId(),
+        roleOwner: RoleUser.USER,
+        createdAt: new Date().toISOString(),
+        isChatCleared: false,
+      }
+
+      queryClient.setQueryData(
+        messagesQueryKey(groupId),
+        (cachedData: ICachedMessageData) => {
+          if (!cachedData)
+            return {
+              pageParams: [],
+              pages: [
+                {
+                  messages: [newMessage],
+                  nextOffset: 0,
+                },
+              ],
+            }
+
+          const lastPage = cachedData.pages[cachedData.pages.length - 1]
+
+          return {
+            ...cachedData,
+            pages: [
+              ...cachedData.pages.slice(0, -1),
+              {
+                ...lastPage,
+                messages: [...lastPage.messages, newMessage],
+              },
+            ],
+          }
+        },
+      )
+
+      return { newMessage }
+    },
     onSuccess: () => {
       SpeechRecognition.stopListening()
     },
@@ -48,38 +100,24 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
   })
 
   const onSubmit = async () => {
-    if (!messages) return
+    if (!message) return
 
-    setMessages("")
-
-    const newMessage = {
-      content: messages,
-      role: RoleChat.OWNER,
-      id: makeId(),
-      roleOwner: RoleUser.USER,
-      createdAt: new Date().toISOString(),
-    }
-    setMessageContext((prev) => [...prev, newMessage])
-    // queryClient.setQueryData(
-    //   queryChatMessagesKey(groupId),
-    //   (oldData: IMessageBox[]) => {
-    //     return [...oldData, newMessage]
-    //   },
-    // )
-
-    mutation.mutate(messages)
+    setMessage("")
+    mutation.mutate(message)
   }
 
   const handleKeyDown = (e: any) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    const isSubmit = e.key === "Enter" && !e.shiftKey
+    if (isSubmit) {
       e.preventDefault()
+      //handle vi key double submit
       if (!isSubmitting) {
         setIsSubmitting(true)
         onSubmit()
 
         setTimeout(() => {
           setIsSubmitting(false)
-          setMessages("")
+          setMessage("")
           SpeechRecognition.stopListening()
         }, 1)
       }
@@ -91,7 +129,7 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
     if (!height) return
     setStyle({
       paddingBottom:
-        height === heightBoxRef.current ? 12 : height - heightBoxRef.current,
+        height === heightBoxRef.current ? 0 : height - heightBoxRef.current,
     })
   }
 
@@ -104,23 +142,36 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
     <div
       ref={boxRef}
       className={twMerge(
-        "absolute -bottom-[79px] left-0 z-[11] flex w-full items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 duration-500 max-sm:static max-sm:gap-2 sm:p-3 sm:py-[7.89px]",
+        "absolute bottom-4 z-[11] flex max-w-[768px] items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 transition-all duration-300 ease-linear max-md:static max-md:gap-2 md:bottom-8 md:p-3 md:py-[7.89px]",
         isFocus ? "border-mercury-300" : "border-mercury-200",
+        style.paddingBottom && "items-end",
+        isDarkTheme && "bg-mercury-950",
+        wrapperClassName,
       )}
     >
       <Button
         isDisabled
-        className="h-9 w-[52px] min-w-[52px] rounded-full border border-white bg-mercury-30 px-4 py-2"
+        className={twMerge(
+          "h-9 w-[52px] min-w-[52px] rounded-full border border-white bg-mercury-30 px-4 py-2",
+          isDarkTheme && "bg-mercury-30",
+        )}
       >
-        <PaperClipFilledIcon />
+        <PaperClipFilledIcon
+          color={isDarkTheme ? "rgba(84, 84, 84, 1)" : "#545454"}
+        />
       </Button>
       <Textarea
         placeholder="Type your message"
         classNames={{
-          inputWrapper:
+          inputWrapper: twMerge(
             "bg-mercury-200 border-none focus-within:!bg-mercury-200 hover:!bg-mercury-200 shadow-none px-0",
-          input:
+            isDarkTheme &&
+              "bg-mercury-950 focus-within:!bg-mercury-950 hover:!bg-mercury-950",
+          ),
+          input: twMerge(
             "text-[18px] text-mercury-900 placeholder:text-mercury-700 font-barlow",
+            isDarkTheme && "!text-mercury-30 placeholder:text-mercury-400",
+          ),
         }}
         onKeyDown={handleKeyDown}
         minRows={1}
@@ -128,8 +179,8 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
         onKeyUp={handleCheckHeight}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
-        onValueChange={setMessages}
-        value={messages}
+        onValueChange={setMessage}
+        value={message}
         isDisabled={isDisabledInput}
       />
       <VoiceChat
@@ -137,17 +188,21 @@ const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
         isListening={listening}
         SpeechRecognition={SpeechRecognition}
         transcript={transcript}
-        setMessages={setMessages}
+        setMessages={setMessage}
         isDisabled={isDisabledInput}
+        isDarkTheme={isDarkTheme}
       />
       <Button
         onClick={onSubmit}
-        isDisabled={!messages || mutation.isPending}
+        isDisabled={!message || mutation.isPending}
         type="submit"
         isIconOnly
-        className="h-9 w-[52px] min-w-[52px] rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2"
+        className={twMerge(
+          "h-9 w-[52px] min-w-[52px] rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2",
+          isDarkTheme && "bg-white",
+        )}
       >
-        <ArrowUpFilledIcon />
+        <ArrowUpFilledIcon bgColor={isDarkTheme ? "#363636" : "#FAFAFA"} />
       </Button>
     </div>
   )

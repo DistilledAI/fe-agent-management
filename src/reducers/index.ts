@@ -1,18 +1,18 @@
 import { combineReducers, Reducer } from "@reduxjs/toolkit"
-import activeColorReducer, { ActiveColorState } from "./activeColorSlice"
+import sidebarCollapsedReducer from "./sidebarCollapsedSlice"
 import agentReducer, { AgentState } from "./agentSlice"
 import userReducer, { IUserState } from "./userSlice"
 
 type TReducer = {
   agents: AgentState
   user: IUserState
-  activeColor: ActiveColorState
+  sidebarCollapsed: boolean
 }
 
 const rootReducer: Reducer<TReducer> = combineReducers({
   agents: agentReducer,
   user: userReducer,
-  activeColor: activeColorReducer,
+  sidebarCollapsed: sidebarCollapsedReducer,
 })
 
 export default rootReducer

@@ -10,7 +10,7 @@ type Props = {
 const DistilledAILogo = ({ logoClassName }: Props) => {
   return (
     <div className="max-w-[200px]">
-      <Link to={DISTILLED_AI_URL}>
+      <Link target="_blank" to={DISTILLED_AI_URL}>
         <img
           src={distilledAiLogo}
           className={twMerge(
