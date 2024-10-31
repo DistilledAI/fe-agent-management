@@ -10,14 +10,12 @@ const MessageLive: React.FC<MessageLiveProps> = ({ message }) => {
       <div>
         <AvatarCustom
           src={message?.avatar}
-          publicAddress="asdasdasdadaadasdas"
+          publicAddress={message?.publicAddress}
         />
       </div>
       <div className="flex flex-col">
         <span className="text-base-b">{message?.username}</span>
-        <span className="text-base italic text-mercury-900">
-          {message?.content}
-        </span>
+        <span className="text-base text-mercury-900">{message?.content}</span>
       </div>
     </div>
   )

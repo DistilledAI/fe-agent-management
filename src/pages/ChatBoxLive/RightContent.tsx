@@ -5,9 +5,17 @@ import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import useFetchMessages from "@pages/ChatPage/ChatBox/ChatMessages/useFetchMessages"
 import { twMerge } from "tailwind-merge"
 import MessageLive from "./MessageLive"
+import useSubmitChat from "@hooks/useSubmitChat"
+import { useParams } from "react-router-dom"
+import SpeechRecognition from "react-speech-recognition"
+import useAuthState from "@hooks/useAuthState"
 
 const RightContent: React.FC = () => {
+  const { isLogin } = useAuthState()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
+  const { chatId } = useParams()
+  const { mutation } = useSubmitChat(chatId, SpeechRecognition.stopListening)
+  const isEnableTextInput = isLogin && chatId
 
   const {
     isLoading,
@@ -26,8 +34,6 @@ const RightContent: React.FC = () => {
     )
   }
 
-  const onSubmit = () => {}
-
   return (
     <div className="flex-1 px-10 max-2xl:px-0 max-lg:h-[300px] max-lg:flex-none max-md:h-[250px]">
       <ChatWindow
@@ -38,7 +44,7 @@ const RightContent: React.FC = () => {
         hasPreviousMore={hasPreviousMore}
         isFetchingPreviousPage={isFetchingPreviousPage}
         onLoadPrevMessages={onLoadPrevMessages}
-        chatId={"1"}
+        chatId={chatId}
         msgBoxClassName="p-0 md:px-4"
         isChatAction={false}
         className="max-lg:!max-h-full md:max-h-[calc(100%-80px)]"
@@ -51,9 +57,9 @@ const RightContent: React.FC = () => {
       >
         <div className="absolute bottom-[calc(100%-5px)] h-6 w-full bg-fading-white"></div>
         <ChatInput
-          onSubmit={onSubmit}
-          isPending={false}
-          isDisabledInput={false}
+          onSubmit={mutation.mutate}
+          isPending={mutation.isPending}
+          isDisabledInput={!isEnableTextInput}
           wrapperClassName="w-full static max-w-full"
         />
       </div>
