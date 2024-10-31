@@ -19,7 +19,6 @@ const PrivateAgents = () => {
       navigate(`${PATH_NAMES.PRIVATE_AGENT}/${agent.id}`)
     } else {
       const inviteUrl = `${PATH_NAMES.INVITE}/${agent?.id}`
-
       navigate(inviteUrl)
     }
   }
