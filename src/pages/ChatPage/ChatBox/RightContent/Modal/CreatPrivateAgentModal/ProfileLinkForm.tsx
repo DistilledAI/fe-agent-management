@@ -21,7 +21,7 @@ type Inputs = {
 
 export const PROFILE_TYPE = {
   LINKEDIN: "linkedin",
-  TWITTER: "twitter",
+  TWITTER: "x",
 }
 
 const SOCIAL = [
@@ -63,9 +63,8 @@ const ProfileLinkForm: React.FC<{
     const userName = getUserName(profileLink) as any
 
     try {
-      const typeValue = selectedKey === PROFILE_TYPE.TWITTER ? "x" : selectedKey
       const res = await getProfileInfo({
-        type: typeValue,
+        type: selectedKey,
         userName,
       })
       if (res) {
