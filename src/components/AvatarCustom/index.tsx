@@ -67,6 +67,7 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
             className,
           )}
         >
+          <canvas ref={canvasRef} style={{ display: "none" }} />
           {icon ? (
             <div className="flex h-full w-full items-center justify-center">
               {icon}

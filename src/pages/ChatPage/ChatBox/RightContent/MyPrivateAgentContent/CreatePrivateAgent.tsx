@@ -51,10 +51,10 @@ const CreatePrivateAgent: React.FC<{
 
     return (
       <>
-        <div className="flex-items-center absolute top-[15%] max-w-[390px] flex-col">
+        <div className="flex-items-center absolute top-[15%] max-w-[390px] flex-col max-md:static">
           <FilledExclamationCircleIcon />
           <span
-            className="cursor-pointer text-center text-24 text-mercury-800"
+            className="cursor-pointer text-center text-24 text-mercury-800 max-md:text-18"
             onClick={() => connectWallet()}
           >
             <span className="font-semibold text-mercury-950">
@@ -76,10 +76,10 @@ const CreatePrivateAgent: React.FC<{
           label="Drag & drop files here"
           isDisable
           radiusFull={true}
-          customClassName=" absolute top-[53%] -translate-y-1/2 w-[200px] h-[200px]"
+          customClassName="absolute max-md:static max-md:translate-y-0 top-[53%] -translate-y-1/2 w-[200px] h-[200px]"
         />
 
-        <div className="absolute right-6 top-4 w-[240px]">
+        <div className="absolute right-6 top-4 w-[240px] max-md:hidden">
           <IntroVideo />
         </div>
       </>
