@@ -32,10 +32,10 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
-    if (!src && publicAddress) {
+    if (!src && publicAddress && canvasRef.current) {
       const canvas = canvasRef.current
       renderIcon(
-        { seed: publicAddress?.toLowerCase(), scale: scalePoint },
+        { seed: publicAddress?.toLowerCase(), scale: scalePoint, size: 10 },
         canvas,
       )
       const dataUrl = canvas?.toDataURL()
