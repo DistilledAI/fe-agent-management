@@ -25,7 +25,7 @@ const PrivateAgentChatContent: React.FC = () => {
           <ReceiverMessage
             avatar={{
               src: brainAIIcon,
-              classNames: { base: "bg-white p-1" },
+              className: "bg-white p-1",
             }}
             content={message.content}
             isTyping={message.isTyping}

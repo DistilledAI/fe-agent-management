@@ -17,6 +17,7 @@ export interface IMessageBox {
   index?: number
   typeGroup?: TypeGroup
   createdAt: string
+  publicAddress?: string
   isChatCleared?: boolean
 }
 
@@ -40,6 +41,7 @@ export const convertDataFetchToMessage = (
       roleOwner: mess.user.role,
       typeGroup: mess.group.typeGroup,
       createdAt: mess.createdAt,
+      publicAddress: mess.user?.publicAddress,
       isChatCleared: false,
     }))
     .reverse()

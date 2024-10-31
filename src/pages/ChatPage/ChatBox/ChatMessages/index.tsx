@@ -82,6 +82,7 @@ const ChatMessages = () => {
               src: message.avatar,
               badgeIcon: getBadgeIcon(message.roleOwner),
               badgeClassName: getBadgeColor(message.roleOwner),
+              publicAddress: message.publicAddress,
             }}
             content={message.content}
             isTyping={message.isTyping}

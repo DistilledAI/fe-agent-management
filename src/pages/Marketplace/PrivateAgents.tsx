@@ -55,6 +55,7 @@ const PrivateAgents = () => {
         <AvatarCustom
           badgeClassName="bg-yellow-10"
           src={agent.avatar}
+          publicAddress={agent.publicAddress}
           badgeIcon={<FilledBrainAIIcon size={14} />}
         />
         <div>
