@@ -5,11 +5,16 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { FilledUserIcon, FilledUsersPlusIcon } from "@components/Icons/UserIcon"
 import { PATH_NAMES, RoleUser } from "@constants/index"
+import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import { IUser } from "@reducers/userSlice"
+import { useQueryClient } from "@tanstack/react-query"
+import { getActiveColorRandomById } from "@utils/index"
 import { useNavigate, useParams } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
+import { QueryDataKeys } from "types/queryDataKeys"
+import DotNotification from "../DotNotification"
 import ActiveEffect from "./ActiveEffect"
 import {
   getAvatarGroupChat,
@@ -21,11 +26,10 @@ import {
 import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroups, { LIMIT, TypeGroup, UserGroup } from "./useFetchGroups"
-import { useQueryClient } from "@tanstack/react-query"
-import { QueryDataKeys } from "types/queryDataKeys"
-import DotNotification from "../DotNotification"
-import { useAppSelector } from "@hooks/useAppRedux"
-import { getActiveColorRandomById } from "@utils/index"
+
+const CONFIG_BOT_TYPE = {
+  LIVE: "live",
+}
 
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
@@ -115,6 +119,13 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                     (prev = []) =>
                       prev.filter((id) => id !== groupItem.groupId),
                   )
+
+                  const configBot = groupItem?.group?.userB?.configBot
+                  if (configBot === CONFIG_BOT_TYPE.LIVE) {
+                    return navigate(
+                      `${PATH_NAMES.CHAT_LIVE}/${groupItem.groupId}`,
+                    )
+                  }
                   navigate(`${PATH_NAMES.CHAT}/${groupItem.groupId}`)
                 }}
                 className={twMerge(

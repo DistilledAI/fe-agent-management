@@ -5,7 +5,7 @@ import { ChatDetailLoadingPage } from "@components/LoadingMobile"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
 import AddMyData from "@pages/AddMyData"
-import BitcoinMaxi from "@pages/BitcoinMaxi"
+import ChatBoxLive from "@pages/ChatBoxLive"
 import ChatMyAgent from "@pages/ChatMyAgent"
 import ChatBox from "@pages/ChatPage/ChatBox"
 import ChatPageMobile from "@pages/ChatPage/Mobile"
@@ -31,6 +31,7 @@ const AppRouter = () => {
           path={PATH_NAMES.CHAT_DETAIL}
           element={isMobile ? <ChatPageMobile /> : <ChatBox />}
         />
+        <Route path={PATH_NAMES.CHAT_LIVE_DETAIL} element={<ChatBoxLive />} />
         <Route
           path={`${PATH_NAMES.INVITE}/:inviteUserId`}
           element={isMobile ? <ChatDetailLoadingPage /> : <ChatBox />}
@@ -61,8 +62,6 @@ const AppRouter = () => {
             />
           </>
         )}
-
-        <Route path={"bitcoin-maxi"} element={<BitcoinMaxi />} />
       </Route>
     </Routes>
   )

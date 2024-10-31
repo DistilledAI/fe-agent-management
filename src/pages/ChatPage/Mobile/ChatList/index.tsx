@@ -5,6 +5,7 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import { RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
+import DotNotification from "@pages/ChatPage/ChatBox/DotNotification"
 import {
   getAvatarGroupChat,
   getColorGroupIcon,
@@ -17,12 +18,11 @@ import useFetchGroups, {
   TypeGroup,
 } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { IUser } from "@reducers/userSlice"
+import { useQueryClient } from "@tanstack/react-query"
 import { useNavigate, useParams } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
-import { StartNewChat } from ".."
-import { useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
-import DotNotification from "@pages/ChatPage/ChatBox/DotNotification"
+import { StartNewChat } from ".."
 
 const ChatList = () => {
   const { user } = useAuthState()
