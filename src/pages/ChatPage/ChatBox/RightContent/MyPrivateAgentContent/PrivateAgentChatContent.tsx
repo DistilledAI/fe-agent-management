@@ -7,6 +7,8 @@ import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
 import useFetchMessages from "../../ChatMessages/useFetchMessages"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import ChatInput from "../../ChatInput"
+import useSubmitChat from "@hooks/useSubmitChat"
+import SpeechRecognition from "react-speech-recognition"
 
 const PrivateAgentChatContent: React.FC = () => {
   const {
@@ -17,8 +19,10 @@ const PrivateAgentChatContent: React.FC = () => {
     isFetchingPreviousPage,
     hasPreviousMore,
   } = useFetchMessages()
-  const { privateChatId } = useParams()
   const { spacing } = useStyleSpacing()
+  const { privateChatId, chatId } = useParams()
+  const groupId = privateChatId || chatId
+  const { mutation } = useSubmitChat(groupId, SpeechRecognition.stopListening)
 
   const renderMessage = (_: number, message: IMessageBox) => {
     return (
@@ -59,6 +63,8 @@ const PrivateAgentChatContent: React.FC = () => {
         }}
       />
       <ChatInput
+        onSubmit={mutation.mutate}
+        isPending={mutation.isPending}
         isDisabledInput={false}
         wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
         isDarkTheme
