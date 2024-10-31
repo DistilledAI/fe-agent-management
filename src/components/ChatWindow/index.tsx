@@ -1,5 +1,6 @@
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import React, {
+  CSSProperties,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -24,8 +25,8 @@ interface ChatWindowProps {
   isFetched?: boolean
   hasPreviousMore?: boolean
   isFetchingPreviousPage?: boolean
-  calculatedPaddingBottom?: string
   isChatAction?: boolean
+  style?: CSSProperties
 }
 
 const LIMIT = 20
@@ -42,8 +43,8 @@ const ChatWindow = ({
   isFetched = false,
   hasPreviousMore,
   isFetchingPreviousPage,
-  calculatedPaddingBottom,
   isChatAction = false,
+  style,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [isAtBottom, setIsAtBottom] = useState<boolean>(true)
@@ -61,10 +62,10 @@ const ChatWindow = ({
       virtuosoRef.current?.scrollToIndex({
         index: messages.length - 1,
         behavior: "auto",
-        align: "end",
+        align: style?.paddingBottom === "0px" ? "end" : "center",
       })
     }
-  }, [messages, isScrollBottom, chatId, calculatedPaddingBottom])
+  }, [messages, isScrollBottom, chatId, style?.paddingBottom])
 
   const onScroll = useCallback(
     async (e: React.UIEvent<HTMLDivElement>) => {
@@ -120,14 +121,12 @@ const ChatWindow = ({
   return (
     <div
       className={twMerge(
-        "relative h-full overflow-hidden transition-all duration-500 ease-linear md:max-h-[calc(100%-100px)]",
+        "relative h-full overflow-hidden md:max-h-[calc(100%-100px)]",
         // "max-h-[calc(100%-56px)]"
         isChatAction && "md:max-h-[calc(100%-152px)]",
         className,
       )}
-      style={{
-        paddingBottom: calculatedPaddingBottom,
-      }}
+      style={style}
     >
       {isLoading && <MessagesSkeleton />}
       {!isLoading && messages.length ? (

@@ -5,8 +5,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import ChatInput from "./ChatInput"
 import ChatMessages from "./ChatMessages"
 import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
-import useMessageSocket from "./useMessageSocket"
-import { StyleBoxChatProvider } from "./StyleProvider"
+import { StyleSpacingProvider } from "providers/StyleSpacingProvider"
 
 const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
@@ -15,7 +14,6 @@ const ChatBox = () => {
   const { privateChatId } = useParams()
   const navigate = useNavigate()
 
-  useMessageSocket()
   const isEnableTextInput = isLogin && (privateChatId || chatId)
 
   useEffect(() => {
@@ -23,7 +21,7 @@ const ChatBox = () => {
   }, [isLogin, chatId])
 
   return (
-    <StyleBoxChatProvider>
+    <StyleSpacingProvider>
       <div className="relative h-full max-h-dvh w-full">
         {(isLogin && chatId) || inviteUserId ? (
           <>
@@ -40,7 +38,7 @@ const ChatBox = () => {
           />
         )}
       </div>
-    </StyleBoxChatProvider>
+    </StyleSpacingProvider>
   )
 }
 

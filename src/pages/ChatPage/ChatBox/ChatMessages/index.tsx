@@ -6,7 +6,6 @@ import SenderMessage from "@components/SenderMessage"
 import { RoleUser } from "@constants/index"
 import { useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
-import { useStyleBoxChat } from "../StyleProvider"
 import {
   getBadgeColor,
   groupedMessages,
@@ -14,12 +13,12 @@ import {
   RoleChat,
 } from "./helpers"
 import useFetchMessages from "./useFetchMessages"
-import { useMemo } from "react"
 import ChatActions from "./ChatActions"
 import { getActiveColorRandomById } from "@utils/index"
 import ContextCleared from "@components/ContextCleared"
 import { useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
+import { useStyleSpacing } from "providers/StyleSpacingProvider"
 
 const ChatMessages = () => {
   const {
@@ -31,17 +30,13 @@ const ChatMessages = () => {
     isFetchingPreviousPage,
   } = useFetchMessages()
   const { chatId } = useParams()
-  const { style } = useStyleBoxChat()
   const { bgColor, textColor } = getActiveColorRandomById(chatId)
   const queryClient = useQueryClient()
   const myPrivateAgent = queryClient.getQueryData([
     QueryDataKeys.DELEGATE_PRIVATE_AGENT,
     chatId,
   ])
-
-  const calculatedPaddingBottom = useMemo(() => {
-    return `${style.paddingBottom}px`
-  }, [style.paddingBottom])
+  const { spacing } = useStyleSpacing()
 
   const getBadgeIcon = (role: RoleUser) =>
     role === RoleUser.BOT ? (
@@ -109,9 +104,11 @@ const ChatMessages = () => {
         isFetchingPreviousPage={isFetchingPreviousPage}
         onLoadPrevMessages={onLoadPrevMessages}
         chatId={chatId}
-        calculatedPaddingBottom={calculatedPaddingBottom}
         msgBoxClassName="p-0 md:px-4"
         isChatAction={!!myPrivateAgent}
+        style={{
+          paddingBottom: `${spacing}px`,
+        }}
       />
       <ChatActions />
     </>

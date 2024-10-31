@@ -3,7 +3,7 @@ import ChatInput from "@pages/ChatPage/ChatBox/ChatInput"
 import ChatMessages from "@pages/ChatPage/ChatBox/ChatMessages"
 import { useParams } from "react-router-dom"
 import ChatDetailHeader from "./Header"
-import { StyleBoxChatProvider } from "@pages/ChatPage/ChatBox/StyleProvider"
+import { StyleSpacingProvider } from "providers/StyleSpacingProvider"
 
 const ChatDetail = () => {
   const { chatId, privateChatId } = useParams()
@@ -12,7 +12,7 @@ const ChatDetail = () => {
   const isEnableTextInput = isLogin && (privateChatId || chatId)
 
   return (
-    <StyleBoxChatProvider>
+    <StyleSpacingProvider>
       <div className="h-[100dvh] pt-[60px]">
         <ChatDetailHeader />
         <div className="h-[calc(100dvh-130px)]">
@@ -22,7 +22,7 @@ const ChatDetail = () => {
           <ChatInput isDisabledInput={!isEnableTextInput} />
         </div>
       </div>
-    </StyleBoxChatProvider>
+    </StyleSpacingProvider>
   )
 }
 
