@@ -1,11 +1,17 @@
 import ChatWindow from "@components/ChatWindow"
+import ContextCleared from "@components/ContextCleared"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
 import { RoleUser } from "@constants/index"
+import { useQueryClient } from "@tanstack/react-query"
+import { getActiveColorRandomById } from "@utils/index"
+import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import { useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
+import { QueryDataKeys } from "types/queryDataKeys"
+import ChatActions from "./ChatActions"
 import {
   getBadgeColor,
   groupedMessages,
@@ -13,12 +19,6 @@ import {
   RoleChat,
 } from "./helpers"
 import useFetchMessages from "./useFetchMessages"
-import ChatActions from "./ChatActions"
-import { getActiveColorRandomById } from "@utils/index"
-import ContextCleared from "@components/ContextCleared"
-import { useQueryClient } from "@tanstack/react-query"
-import { QueryDataKeys } from "types/queryDataKeys"
-import { useStyleSpacing } from "providers/StyleSpacingProvider"
 
 const ChatMessages = () => {
   const {
