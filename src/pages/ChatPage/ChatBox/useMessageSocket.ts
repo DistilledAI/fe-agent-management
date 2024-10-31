@@ -12,7 +12,7 @@ import {
   chatMessagesKey,
 } from "./ChatMessages/useFetchMessages"
 import { QueryDataKeys } from "types/queryDataKeys"
-import { getTextToVoice } from "services/chat"
+import { getVoiceToText } from "services/chat"
 
 interface IDataListen {
   event: string
@@ -167,7 +167,7 @@ const useMessageSocket = () => {
 
   const handleWithDone = (e: IDataListen) => {
     const isBotVoice = e.user.typeBot === TYPE_BOT.VOICE
-    if (isBotVoice) getTextToVoice(e.messages, e.user.configBot)
+    if (isBotVoice) getVoiceToText(e.messages, e.user.configBot)
     updateNewMsg(e, false)
   }
 

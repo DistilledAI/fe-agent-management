@@ -1,13 +1,14 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
 import { Button, Textarea } from "@nextui-org/react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition"
 import { twMerge } from "tailwind-merge"
 import VoiceChat from "./Voice"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
+import { useParams } from "react-router-dom"
 
 interface ChatInputProps {
   isDisabledInput: boolean
@@ -31,6 +32,8 @@ const ChatInput = ({
   const boxRef = useRef<HTMLDivElement>(null)
   const heightBoxRef = useRef(0)
   const { setSpacing, spacing } = useStyleSpacing()
+  const { chatId, privateChatId } = useParams()
+  const groupId = chatId || privateChatId
 
   const handleSubmit = async () => {
     if (!message) return
@@ -57,6 +60,18 @@ const ChatInput = ({
     }
   }
 
+  useLayoutEffect(() => {
+    if (groupId) {
+      setSpacing(0)
+      setMessage("")
+    }
+  }, [groupId])
+
+  useEffect(() => {
+    const height = boxRef.current?.clientHeight
+    if (height) heightBoxRef.current = height
+  }, [])
+
   const handleCheckHeight = () => {
     const height = boxRef.current?.clientHeight
     if (!height) return
@@ -64,11 +79,6 @@ const ChatInput = ({
       height === heightBoxRef.current ? 0 : height - heightBoxRef.current,
     )
   }
-
-  useEffect(() => {
-    const height = boxRef.current?.clientHeight
-    if (height) heightBoxRef.current = height
-  }, [])
 
   return (
     <div
