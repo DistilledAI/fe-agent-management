@@ -50,7 +50,7 @@ const PrivateAgent: React.FC<{
           <span className="text-base font-medium text-[#FF9500]">
             {MAP_LABEL_FROM_STATUS[status]}
           </span>
-          <AvatarCustom src={firstBot?.avatar || brainAIIcon} />
+          <AvatarCustom src={firstBot?.avatar || brainAIIcon} className="p-1" />
           {/* <Button className="absolute -bottom-2 -right-1 flex h-6 w-6 min-w-0 items-center justify-center rounded-full bg-white p-0">
             <EditPenOutlineIcon />
           </Button> */}
@@ -98,7 +98,7 @@ const PrivateAgent: React.FC<{
       <div className="flex items-center justify-between">
         <span className="text-mercury-600">My data:</span>
         <div className="flex items-center gap-2">
-          {!!firstBot ? (
+          {firstBot ? (
             <div
               onClick={() => {
                 onClose()

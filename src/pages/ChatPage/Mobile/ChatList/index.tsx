@@ -9,6 +9,7 @@ import {
   getAvatarGroupChat,
   getColorGroupIcon,
   getNameGroup,
+  getPublicAddressGroupChat,
   getRoleUser,
 } from "@pages/ChatPage/ChatBox/LeftBar/helpers"
 import useFetchGroups, {
@@ -85,6 +86,11 @@ const ChatList = () => {
                   groupItem.group.userB,
                 )}
                 avatarUrl={getAvatarGroupChat(
+                  groupItem.userId,
+                  groupItem.group.userA,
+                  groupItem.group.userB,
+                )}
+                publicAddress={getPublicAddressGroupChat(
                   groupItem.userId,
                   groupItem.group.userA,
                   groupItem.group.userB,
