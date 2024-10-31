@@ -4,3 +4,7 @@ export enum BotDataTypeKey {
   PDF_FILE = "pdf-file",
   PHOTO_VIDEO_FILE = "photo-video-file",
 }
+
+export enum ConfigBotType {
+  LIVE = "live",
+}

@@ -17,7 +17,6 @@ const RightContent: React.FC = () => {
     hasPreviousMore,
     isFetchingPreviousPage,
   } = useFetchMessages()
-  console.log("🚀 ~ messages:", messages)
 
   const renderMessage = (index: number, message: IMessageBox) => {
     return (

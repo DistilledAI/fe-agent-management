@@ -1,7 +1,7 @@
 import { PATH_NAMES } from "@constants/index"
 import { useEffect } from "react"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
-import { checkGroupDirect, createGroupChat } from "services/chat"
+import { createGroupChat } from "services/chat"
 import useAuthState from "./useAuthState"
 import { postCreateAnonymous } from "services/auth"
 import { cachedSessionStorage, storageKey } from "@utils/storage"
@@ -11,6 +11,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import useWindowSize from "./useWindowSize"
 import { QueryDataKeys } from "types/queryDataKeys"
+import { ConfigBotType } from "@types"
 
 const useInviteUser = () => {
   const navigate = useNavigate()
@@ -28,29 +29,37 @@ const useInviteUser = () => {
 
   const handleInviteUserLoggedIn = async (userId: number) => {
     try {
-      const checkGroupDirectResponse = await checkGroupDirect({
+      // const checkGroupDirectResponse = await checkGroupDirect({
+      //   members: [userId],
+      // })
+      // const groupId = checkGroupDirectResponse?.data?.group?.id
+      // if (!groupId) {
+      const createGroupResponse = await createGroupChat({
         members: [userId],
       })
-      const groupId = checkGroupDirectResponse?.data?.group?.id
-      if (!groupId) {
-        const createGroupResponse = await createGroupChat({
-          members: [userId],
-        })
-        const newData = createGroupResponse.data
-        if (newData && isMobile)
-          queryClient.setQueryData(
-            [QueryDataKeys.MY_LIST_CHAT],
-            (oldData: UserGroup[]) => {
-              return [newData].concat(oldData ?? [])
-            },
+      const newData = createGroupResponse.data
+      if (newData && isMobile)
+        queryClient.setQueryData(
+          [QueryDataKeys.MY_LIST_CHAT],
+          (oldData: UserGroup[]) => {
+            return [newData].concat(oldData ?? [])
+          },
+        )
+      const newGroupId = newData?.groupId
+      if (newGroupId) {
+        const configBot = newData?.group?.userB?.configBot
+        if (configBot === ConfigBotType.LIVE) {
+          return navigate(
+            `${PATH_NAMES.CHAT_LIVE}/${newGroupId}?isInvited=true`,
           )
-        const newGroupId = newData?.groupId
-        if (newGroupId) {
-          navigate(`${PATH_NAMES.CHAT}/${newGroupId}?isInvited=true`)
         }
-        return
+        return navigate(`${PATH_NAMES.CHAT}/${newGroupId}?isInvited=true`)
+      } else {
+        navigate(PATH_NAMES.HOME)
       }
-      navigate(`${PATH_NAMES.CHAT}/${groupId}`)
+      // }
+
+      // navigate(`${PATH_NAMES.CHAT}/${groupId}`)
     } catch (error) {
       console.log("error", error)
       navigate(PATH_NAMES.HOME)

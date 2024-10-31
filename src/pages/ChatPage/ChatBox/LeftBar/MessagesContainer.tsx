@@ -26,10 +26,7 @@ import {
 import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroups, { LIMIT, TypeGroup, UserGroup } from "./useFetchGroups"
-
-const CONFIG_BOT_TYPE = {
-  LIVE: "live",
-}
+import { ConfigBotType } from "@types"
 
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
@@ -121,7 +118,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                   )
 
                   const configBot = groupItem?.group?.userB?.configBot
-                  if (configBot === CONFIG_BOT_TYPE.LIVE) {
+                  if (configBot === ConfigBotType.LIVE) {
                     return navigate(
                       `${PATH_NAMES.CHAT_LIVE}/${groupItem.groupId}`,
                     )
