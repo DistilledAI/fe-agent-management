@@ -1,10 +1,9 @@
-import { userIcon } from "@assets/svg"
 import ChatInfoCurrent from "@components/ChatInfoCurrent"
 import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
 import { WalletIcon } from "@components/Icons/Wallet"
 import { RootState } from "@configs/store"
 import { PATH_NAMES, RoleUser } from "@constants/index"
-import { Button, Image, useDisclosure } from "@nextui-org/react"
+import { Button, useDisclosure } from "@nextui-org/react"
 import useFetchDetail from "@pages/ChatPage/Mobile/ChatDetail/useFetch"
 import { useQuery } from "@tanstack/react-query"
 import { centerTextEllipsis, getActiveColorRandomById } from "@utils/index"
@@ -14,6 +13,7 @@ import { getMyPrivateAgent } from "services/chat"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import AccountSetting from "./AccountSetting"
+import AvatarCustom from "@components/AvatarCustom"
 
 interface UserAuthProps {
   connectWallet: any
@@ -61,14 +61,11 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
             onClick={onOpen}
             className="btn-primary h-11 w-fit max-md:!h-auto max-md:!w-auto max-md:min-w-0 max-md:gap-0 max-md:p-0"
           >
-            <div className="h-8 w-8 rounded-full border-1 border-mercury-400">
-              <Image
-                className="h-full w-full object-cover"
-                alt="user"
-                src={user.avatar ?? userIcon}
-                disableAnimation={true}
-              />
-            </div>
+            <AvatarCustom
+              publicAddress={user.publicAddress}
+              src={user.avatar}
+              className="h-8 w-8"
+            />
             <span className="text-base max-md:hidden">
               {centerTextEllipsis(user.publicAddress, 6)}
             </span>

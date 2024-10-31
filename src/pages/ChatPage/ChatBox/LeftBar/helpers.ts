@@ -9,6 +9,14 @@ export const getAvatarGroupChat = (
   return ownerId === userA?.id ? userB?.avatar : userA?.avatar
 }
 
+export const getPublicAddressGroupChat = (
+  ownerId: number,
+  userA: IUser,
+  userB: IUser,
+) => {
+  return ownerId === userA?.id ? userB?.publicAddress : userA?.publicAddress
+}
+
 export const getRoleUser = (ownerId: number, userA: IUser, userB: IUser) => {
   const info = ownerId === userA?.id ? userB : userA
   if (info?.role === RoleUser.ANONYMOUS) return RoleUser.USER

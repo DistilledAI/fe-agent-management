@@ -5,6 +5,7 @@ import { ChatDetailLoadingPage } from "@components/LoadingMobile"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
 import AddMyData from "@pages/AddMyData"
+import BitcoinMaxi from "@pages/BitcoinMaxi"
 import ChatMyAgent from "@pages/ChatMyAgent"
 import ChatPage from "@pages/ChatPage"
 import ChatBox from "@pages/ChatPage/ChatBox"
@@ -61,6 +62,8 @@ const AppRouter = () => {
             />
           </>
         )}
+
+        <Route path={"bitcoin-maxi"} element={<BitcoinMaxi />} />
       </Route>
     </Routes>
   )

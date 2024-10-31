@@ -11,6 +11,7 @@ import {
   useInfiniteQuery,
   useQueryClient,
 } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 export interface IMessage {
   id: number
@@ -31,9 +32,9 @@ export interface ICachedMessageData {
   }>
 }
 
-export const messagesQueryKey = (chatId: string | number | undefined) => {
+export const chatMessagesKey = (chatId: string | undefined) => {
   if (!chatId) return []
-  return [`chat-messages-${chatId}`]
+  return [QueryDataKeys.CHAT_MESSAGES, chatId]
 }
 
 const STALE_TIME = 60 * 60 * 1000
@@ -52,7 +53,6 @@ const useFetchMessages = () => {
       id: Number(groupId),
       offset: pageParam,
     })
-
     return {
       messages: convertDataFetchToMessage(res.data.items, user?.id || 0),
       nextOffset:
@@ -65,7 +65,7 @@ const useFetchMessages = () => {
   useLayoutEffect(() => {
     if (groupId && user?.id) {
       queryClient.prefetchInfiniteQuery({
-        queryKey: messagesQueryKey(groupId),
+        queryKey: chatMessagesKey(groupId),
         queryFn: fetchMessages,
         staleTime: STALE_TIME,
         initialPageParam: 0,
@@ -82,7 +82,7 @@ const useFetchMessages = () => {
     isLoading,
     isFetchingPreviousPage,
   } = useInfiniteQuery({
-    queryKey: messagesQueryKey(groupId),
+    queryKey: chatMessagesKey(groupId),
     queryFn: fetchMessages,
     enabled: isLogin && !!groupId && !!user?.id,
     getNextPageParam: (lastPage) => lastPage?.nextOffset,
@@ -118,7 +118,7 @@ const useFetchMessages = () => {
 
   return {
     onLoadPrevMessages,
-    messages: messages,
+    messages,
     hasPreviousMore: hasPreviousPage,
     isLoading,
     isFetched,

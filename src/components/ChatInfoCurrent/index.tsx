@@ -4,6 +4,7 @@ import useAuthState from "@hooks/useAuthState"
 import {
   getAvatarGroupChat,
   getNameGroup,
+  getPublicAddressGroupChat,
 } from "@pages/ChatPage/ChatBox/LeftBar/helpers"
 import {
   TypeGroup,
@@ -33,7 +34,12 @@ const ChatInfoCurrent: React.FC<{
               groupDetail.group.userA,
               groupDetail.group.userB,
             )}
-            classNames={{ base: "w-9 h-9 md:w-10 md:h-10" }}
+            publicAddress={getPublicAddressGroupChat(
+              groupDetail.userId,
+              groupDetail.group.userA,
+              groupDetail.group.userB,
+            )}
+            className="h-9 w-9 md:h-10 md:w-10"
           />
           <span
             className={twMerge(

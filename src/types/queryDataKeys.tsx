@@ -1,4 +1,5 @@
 export enum QueryDataKeys {
+  CHAT_MESSAGES = "chat-messages",
   SEND_MESSAGE = "send-message",
   NOTIFICATION_GROUPS = "notification-groups",
   MY_LIST_CHAT = "my-list-chat",

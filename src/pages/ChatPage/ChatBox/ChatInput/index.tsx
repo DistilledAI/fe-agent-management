@@ -15,7 +15,7 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import { RoleChat } from "../ChatMessages/helpers"
 import {
   ICachedMessageData,
-  messagesQueryKey,
+  chatMessagesKey,
 } from "../ChatMessages/useFetchMessages"
 import { useStyleBoxChat } from "../StyleProvider"
 import VoiceChat from "./Voice"
@@ -61,7 +61,7 @@ const ChatInput = ({
       }
 
       queryClient.setQueryData(
-        messagesQueryKey(groupId),
+        chatMessagesKey(groupId),
         (cachedData: ICachedMessageData) => {
           if (!cachedData)
             return {
