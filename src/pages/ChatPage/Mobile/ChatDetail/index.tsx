@@ -4,10 +4,14 @@ import ChatMessages from "@pages/ChatPage/ChatBox/ChatMessages"
 import { useParams } from "react-router-dom"
 import ChatDetailHeader from "./Header"
 import { StyleSpacingProvider } from "providers/StyleSpacingProvider"
+import useSubmitChat from "@hooks/useSubmitChat"
+import SpeechRecognition from "react-speech-recognition"
 
 const ChatDetail = () => {
   const { chatId, privateChatId } = useParams()
   const { isLogin } = useAuthState()
+  const groupId = chatId || privateChatId
+  const { mutation } = useSubmitChat(groupId, SpeechRecognition.stopListening)
 
   const isEnableTextInput = isLogin && (privateChatId || chatId)
 
@@ -19,7 +23,11 @@ const ChatDetail = () => {
           <ChatMessages />
         </div>
         <div className="fixed bottom-0 left-0 z-[11] w-full bg-mercury-30 px-3 py-2">
-          <ChatInput isDisabledInput={!isEnableTextInput} />
+          <ChatInput
+            onSubmit={mutation.mutate}
+            isPending={mutation.isPending}
+            isDisabledInput={!isEnableTextInput}
+          />
         </div>
       </div>
     </StyleSpacingProvider>
