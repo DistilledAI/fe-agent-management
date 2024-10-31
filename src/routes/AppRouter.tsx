@@ -31,7 +31,10 @@ const AppRouter = () => {
           path={PATH_NAMES.CHAT_DETAIL}
           element={isMobile ? <ChatPageMobile /> : <ChatBox />}
         />
-        <Route path={PATH_NAMES.CHAT_LIVE_DETAIL} element={<ChatBoxLive />} />
+        <Route
+          path={`${PATH_NAMES.CHAT_LIVE_DETAIL}/:chatId`}
+          element={<ChatBoxLive />}
+        />
         <Route
           path={`${PATH_NAMES.INVITE}/:inviteUserId`}
           element={isMobile ? <ChatDetailLoadingPage /> : <ChatBox />}

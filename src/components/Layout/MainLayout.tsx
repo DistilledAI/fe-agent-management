@@ -18,7 +18,7 @@ const MainLayout = () => {
     `${PATH_NAMES.INVITE}/${inviteUserId}`,
     `${PATH_NAMES.MY_DATA}`,
     `${PATH_NAMES.PRIVATE_AGENT}/${privateChatId}`,
-    `/bitcoin-maxi`,
+    `${PATH_NAMES.CHAT_LIVE_DETAIL}/${chatId}`,
   ]
 
   const isIgnoreLayout = ignoreLayout.includes(pathname)

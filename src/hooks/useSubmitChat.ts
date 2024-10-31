@@ -1,5 +1,8 @@
 import { RoleUser } from "@constants/index"
-import { RoleChat } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
+import {
+  IMessageBox,
+  RoleChat,
+} from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import {
   chatMessagesKey,
   ICachedMessageData,
@@ -8,11 +11,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { makeId } from "@utils/index"
 import { postChatToGroup } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
+import useAuthState from "./useAuthState"
 
 const useSubmitChat = (
   groupId: string | undefined,
   callbackDone?: () => void,
 ) => {
+  const { user } = useAuthState()
   const queryClient = useQueryClient()
 
   const mutation = useMutation({
@@ -23,13 +28,16 @@ const useSubmitChat = (
         messages: message,
       }),
     onMutate: (variables) => {
-      const newMessage = {
+      const newMessage: IMessageBox = {
         content: variables,
         role: RoleChat.OWNER,
         id: makeId(),
         roleOwner: RoleUser.USER,
         createdAt: new Date().toISOString(),
         isChatCleared: false,
+        publicAddress: user?.publicAddress,
+        avatar: user?.avatar,
+        username: user?.username ?? "Anonymous",
       }
 
       queryClient.setQueryData(

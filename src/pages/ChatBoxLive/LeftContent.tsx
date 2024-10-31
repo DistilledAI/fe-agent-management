@@ -7,9 +7,9 @@ import { Button, ScrollShadow } from "@nextui-org/react"
 const LeftContent: React.FC = () => {
   return (
     <div className="flex w-full max-w-full flex-col lg:h-full lg:max-w-[320px]">
-      <div className="max-h-full flex-1 max-lg:h-auto max-lg:flex-none">
+      <div className="max-h-[668px] flex-1 max-lg:h-auto max-lg:flex-none">
         <div className="flex h-full flex-col max-lg:h-auto">
-          <div className="relative max-h-[568px] w-full flex-1 overflow-hidden rounded-[32px] max-lg:h-[400px] max-lg:flex-none">
+          <div className="relative w-full flex-1 overflow-hidden rounded-[32px] max-lg:h-[400px] max-lg:flex-none">
             <img
               src={streamingContainerBg}
               className="absolute left-0 top-0 h-full w-full object-cover"
