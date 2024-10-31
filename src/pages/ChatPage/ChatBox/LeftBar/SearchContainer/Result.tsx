@@ -56,6 +56,7 @@ const SearchResult: React.FC<{
           badgeIcon={getBadgeIcon(chat?.role)}
           avatarUrl={chat?.avatar}
           userName={chat?.username}
+          publicAddress={chat?.publicAddress}
           badgeClassName={
             chat?.role === RoleUser.USER ? "bg-[#0FE9A4]" : "bg-yellow-10"
           }

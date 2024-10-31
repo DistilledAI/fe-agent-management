@@ -15,6 +15,7 @@ import {
   getAvatarGroupChat,
   getColorGroupIcon,
   getNameGroup,
+  getPublicAddressGroupChat,
   getRoleUser,
 } from "./helpers"
 import MoreChatAction from "./MoreChatAction"
@@ -133,6 +134,11 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                       groupItem.group.userB,
                     )}
                     avatarUrl={getAvatarGroupChat(
+                      groupItem.userId,
+                      groupItem.group.userA,
+                      groupItem.group.userB,
+                    )}
+                    publicAddress={getPublicAddressGroupChat(
                       groupItem.userId,
                       groupItem.group.userA,
                       groupItem.group.userB,
