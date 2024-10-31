@@ -98,3 +98,23 @@ export const ArrowBottomSquareOutlineIcon = ({
     </svg>
   )
 }
+
+export const ArrowsSort = ({ size = 21, color = "#545454" }: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 21 20"
+      fill="none"
+    >
+      <path
+        d="M3 7.49984L6.33333 4.1665M6.33333 4.1665L9.66667 7.49984M6.33333 4.1665V15.8332M18 12.4998L14.6667 15.8332M14.6667 15.8332L11.3333 12.4998M14.6667 15.8332V4.1665"
+        stroke={color}
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  )
+}
