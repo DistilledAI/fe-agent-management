@@ -2,7 +2,7 @@
 import { MessagePlusIcon } from "@components/Icons/Message"
 import { Button } from "@nextui-org/react"
 import { useQueryClient } from "@tanstack/react-query"
-import { ICachedMessageData, messagesQueryKey } from "../useFetchMessages"
+import { ICachedMessageData, chatMessagesKey } from "../useFetchMessages"
 import { useParams } from "react-router-dom"
 
 const ClearChat = () => {
@@ -12,7 +12,7 @@ const ClearChat = () => {
 
   const handleClearChat = () => {
     const cachedData = queryClient.getQueryData<ICachedMessageData>(
-      messagesQueryKey(groupId),
+      chatMessagesKey(groupId),
     ) || {
       pageParams: [],
       pages: [
@@ -35,7 +35,7 @@ const ClearChat = () => {
     }
 
     queryClient.setQueryData(
-      messagesQueryKey(groupId),
+      chatMessagesKey(groupId),
       (cachedData: ICachedMessageData) => {
         if (!cachedData)
           return {
