@@ -17,8 +17,8 @@ import {
   ICachedMessageData,
   chatMessagesKey,
 } from "../ChatMessages/useFetchMessages"
-import { useStyleBoxChat } from "../StyleProvider"
 import VoiceChat from "./Voice"
+import { useStyleSpacing } from "providers/StyleSpacingProvider"
 
 interface ChatInputProps {
   isDisabledInput: boolean
@@ -38,8 +38,8 @@ const ChatInput = ({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
   const heightBoxRef = useRef(0)
-  const { setStyle, style } = useStyleBoxChat()
   const queryClient = useQueryClient()
+  const { setSpacing, spacing } = useStyleSpacing()
 
   const groupId = privateChatId || chatId
 
@@ -127,10 +127,9 @@ const ChatInput = ({
   const handleCheckHeight = () => {
     const height = boxRef.current?.clientHeight
     if (!height) return
-    setStyle({
-      paddingBottom:
-        height === heightBoxRef.current ? 0 : height - heightBoxRef.current,
-    })
+    setSpacing(
+      height === heightBoxRef.current ? 0 : height - heightBoxRef.current,
+    )
   }
 
   useEffect(() => {
@@ -144,7 +143,7 @@ const ChatInput = ({
       className={twMerge(
         "absolute bottom-4 z-[11] flex max-w-[768px] items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 transition-all duration-300 ease-linear max-md:static max-md:gap-2 md:bottom-8 md:p-3 md:py-[7.89px]",
         isFocus ? "border-mercury-300" : "border-mercury-200",
-        style.paddingBottom && "items-end",
+        spacing && "items-end",
         isDarkTheme && "bg-mercury-950",
         wrapperClassName,
       )}

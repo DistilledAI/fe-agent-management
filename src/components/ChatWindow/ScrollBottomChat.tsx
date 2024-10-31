@@ -1,5 +1,6 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { Button } from "@nextui-org/react"
+import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import { RefObject } from "react"
 import { VirtuosoHandle } from "react-virtuoso"
 
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const ScrollBottomChat = ({ isScrollBottom, virtuosoRef }: Props) => {
+  const { spacing } = useStyleSpacing()
+
   const onScrollToBottom = () => {
     virtuosoRef.current?.scrollToIndex({
       index: "LAST",
@@ -22,7 +25,12 @@ const ScrollBottomChat = ({ isScrollBottom, virtuosoRef }: Props) => {
   }
 
   return (
-    <div className="absolute inset-x-0 bottom-0 z-10 flex h-20 w-full items-center justify-center bg-fading-white bg-cover bg-no-repeat">
+    <div
+      className="absolute inset-x-0 bottom-0 z-10 flex h-20 w-full items-center justify-center bg-fading-white bg-cover bg-no-repeat"
+      style={{
+        bottom: `${spacing}px`,
+      }}
+    >
       <Button
         onClick={onScrollToBottom}
         className="w-10 min-w-10 rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2"
