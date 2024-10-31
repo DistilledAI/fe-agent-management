@@ -3,9 +3,10 @@ import ChatWindow from "@components/ChatWindow"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
 import { useParams } from "react-router-dom"
-import ChatInput from "../../ChatInput"
 import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
 import useFetchMessages from "../../ChatMessages/useFetchMessages"
+import { useStyleSpacing } from "providers/StyleSpacingProvider"
+import ChatInput from "../../ChatInput"
 
 const PrivateAgentChatContent: React.FC = () => {
   const {
@@ -17,6 +18,7 @@ const PrivateAgentChatContent: React.FC = () => {
     hasPreviousMore,
   } = useFetchMessages()
   const { privateChatId } = useParams()
+  const { spacing } = useStyleSpacing()
 
   const renderMessage = (_: number, message: IMessageBox) => {
     return (
@@ -52,6 +54,9 @@ const PrivateAgentChatContent: React.FC = () => {
         isFetched={isFetched}
         hasPreviousMore={hasPreviousMore}
         isFetchingPreviousPage={isFetchingPreviousPage}
+        style={{
+          paddingBottom: `${spacing}px`,
+        }}
       />
       <ChatInput
         isDisabledInput={false}

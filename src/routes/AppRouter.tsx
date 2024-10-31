@@ -7,7 +7,6 @@ import useWindowSize from "@hooks/useWindowSize"
 import AddMyData from "@pages/AddMyData"
 import BitcoinMaxi from "@pages/BitcoinMaxi"
 import ChatMyAgent from "@pages/ChatMyAgent"
-import ChatPage from "@pages/ChatPage"
 import ChatBox from "@pages/ChatPage/ChatBox"
 import ChatPageMobile from "@pages/ChatPage/Mobile"
 import MyPrivateAgentContentMobile from "@pages/ChatPage/Mobile/MyPrivateAgentContentMobile"
@@ -38,7 +37,7 @@ const AppRouter = () => {
         />
         <Route
           path={`${PATH_NAMES.PRIVATE_AGENT}/:privateChatId`}
-          element={isMobile ? <ChatPage /> : <ChatMyAgent />}
+          element={isMobile ? <ChatPageMobile /> : <ChatMyAgent />}
         />
         <Route path={PATH_NAMES.MARKETPLACE} element={<Marketplace />} />
         <Route
