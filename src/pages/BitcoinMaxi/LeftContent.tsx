@@ -17,8 +17,8 @@ const LeftContent: React.FC = () => {
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <StreamingContainer />
             </div>
-            <div className="absolute bottom-[10%] left-0 flex w-full items-center justify-center">
-              <span className="text-center text-[20px] font-semibold text-white">
+            <div className="absolute bottom-[10%] left-0 flex w-full items-center justify-center px-2">
+              <span className="text-center text-[20px] font-semibold text-white max-md:text-[16px]">
                 Go all in on Bitcoin, broked101. Nothing else comes close. It’s
                 <br />
                 the future—plain and simple.
