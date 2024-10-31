@@ -1,40 +1,28 @@
 import ChatWindow from "@components/ChatWindow"
-import MessageLive from "./MessageLive"
-import ChatInput from "@pages/ChatPage/ChatBox/ChatInput"
-import { twMerge } from "tailwind-merge"
 import { useAppSelector } from "@hooks/useAppRedux"
+import ChatInput from "@pages/ChatPage/ChatBox/ChatInput"
+import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
+import useFetchMessages from "@pages/ChatPage/ChatBox/ChatMessages/useFetchMessages"
+import { twMerge } from "tailwind-merge"
+import MessageLive from "./MessageLive"
 
 const RightContent: React.FC = () => {
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
 
-  const messages: any = [
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-  ]
+  const {
+    isLoading,
+    isFetched,
+    onLoadPrevMessages,
+    messages,
+    hasPreviousMore,
+    isFetchingPreviousPage,
+  } = useFetchMessages()
+  console.log("🚀 ~ messages:", messages)
 
-  const onLoadPrevMessages = async () => {
-    return undefined
-  }
-
-  const renderMessage = (index: number) => {
+  const renderMessage = (index: number, message: IMessageBox) => {
     return (
       <div className={twMerge("mb-5", index === messages.length - 1 && "pb-4")}>
-        <MessageLive />
+        <MessageLive message={message} />
       </div>
     )
   }
@@ -46,10 +34,10 @@ const RightContent: React.FC = () => {
       <ChatWindow
         messages={messages}
         itemContent={renderMessage}
-        isLoading={false}
-        isFetched={true}
-        hasPreviousMore={false}
-        isFetchingPreviousPage={false}
+        isLoading={isLoading}
+        isFetched={isFetched}
+        hasPreviousMore={hasPreviousMore}
+        isFetchingPreviousPage={isFetchingPreviousPage}
         onLoadPrevMessages={onLoadPrevMessages}
         chatId={"1"}
         msgBoxClassName="p-0 md:px-4"
