@@ -35,7 +35,7 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
     if (!src && publicAddress && canvasRef.current) {
       const canvas = canvasRef.current
       renderIcon(
-        { seed: publicAddress?.toLowerCase(), scale: scalePoint },
+        { seed: publicAddress?.toLowerCase(), scale: scalePoint, size: 10 },
         canvas,
       )
       const dataUrl = canvas?.toDataURL()

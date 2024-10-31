@@ -12,7 +12,7 @@ import {
   chatMessagesKey,
 } from "./ChatMessages/useFetchMessages"
 import { QueryDataKeys } from "types/queryDataKeys"
-import { getTextToVoice } from "services/chat"
+import { getVoiceToText } from "services/chat"
 
 interface IDataListen {
   event: string
@@ -109,6 +109,30 @@ const useMessageSocket = () => {
 
         const lastPage = cachedData.pages[cachedData.pages.length - 1]
 
+        const isBotLive = e.user.configBot === "live"
+        if (isBotLive) {
+          const newMsg: IMessageBox = {
+            id: e.msgId,
+            role: RoleChat.CUSTOMER,
+            roleOwner: e.user.role,
+            content: e.messages,
+            isTyping: false,
+            avatar: e.user.avatar,
+            username: e.user.username,
+            createdAt: "",
+          }
+          return {
+            ...cachedData,
+            pages: [
+              ...cachedData.pages.slice(0, -1),
+              {
+                ...lastPage,
+                messages: [...lastPage.messages, newMsg],
+              },
+            ],
+          }
+        }
+
         return {
           ...cachedData,
           pages: [
@@ -133,6 +157,8 @@ const useMessageSocket = () => {
   }
 
   const handleWithTyping = (e: IDataListen) => {
+    const isBotLive = e.user.configBot === "live"
+    if (isBotLive) return
     const newMsg = {
       id: e.msgId,
       role: RoleChat.CUSTOMER,
@@ -148,7 +174,9 @@ const useMessageSocket = () => {
   const handleWithUpdate = (e: IDataListen) => {
     if (isReloadWhenResponse(e.index)) return
     const isBotVoice = e.user.typeBot === TYPE_BOT.VOICE
-    if (isBotVoice) return
+    const isBotLive = e.user.configBot === "live"
+    const isStop = isBotLive || isBotVoice
+    if (isStop) return
     updateNewMsg(e)
   }
 
@@ -167,7 +195,7 @@ const useMessageSocket = () => {
 
   const handleWithDone = (e: IDataListen) => {
     const isBotVoice = e.user.typeBot === TYPE_BOT.VOICE
-    if (isBotVoice) getTextToVoice(e.messages, e.user.configBot)
+    if (isBotVoice) getVoiceToText(e.messages, e.user.configBot)
     updateNewMsg(e, false)
   }
 

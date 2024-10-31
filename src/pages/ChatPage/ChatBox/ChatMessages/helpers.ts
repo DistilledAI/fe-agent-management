@@ -1,6 +1,6 @@
 import { RoleUser } from "@constants/index"
-import { IMessage } from "./useFetchMessages"
 import { TypeGroup } from "../LeftBar/useFetchGroups"
+import { IMessage } from "./useFetchMessages"
 
 export enum RoleChat {
   OWNER = "owner",
@@ -19,6 +19,7 @@ export interface IMessageBox {
   createdAt: string
   publicAddress?: string
   isChatCleared?: boolean
+  username?: string
 }
 
 const isOwner = (currentUserId: number, userId: number) => {
@@ -43,6 +44,7 @@ export const convertDataFetchToMessage = (
       createdAt: mess.createdAt,
       publicAddress: mess.user?.publicAddress,
       isChatCleared: false,
+      username: mess?.user?.username,
     }))
     .reverse()
 }

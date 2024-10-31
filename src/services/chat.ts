@@ -165,10 +165,10 @@ export const getGroupChatDetail = async (groupId: number) => {
 let audioSource: AudioBufferSourceNode | null = null
 let audioContext: AudioContext | null = null
 
-export const getTextToVoice = async (
+export const getVoiceToText = async (
   text: string,
   speaker: IUser["configBot"],
-): Promise<void> => {
+) => {
   if (!window.speechSynthesis) {
     console.error("Speech Synthesis is not supported.")
     return

@@ -1,109 +1,45 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
-import { RoleUser } from "@constants/index"
 import { Button, Textarea } from "@nextui-org/react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { makeId } from "@utils/index"
-import { useEffect, useRef, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition"
-import { postChatToGroup } from "services/chat"
 import { twMerge } from "tailwind-merge"
-import { QueryDataKeys } from "types/queryDataKeys"
-import { RoleChat } from "../ChatMessages/helpers"
-import {
-  ICachedMessageData,
-  chatMessagesKey,
-} from "../ChatMessages/useFetchMessages"
 import VoiceChat from "./Voice"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
+import { useParams } from "react-router-dom"
 
 interface ChatInputProps {
   isDisabledInput: boolean
+  onSubmit: (value: string) => void
+  isPending: boolean
   wrapperClassName?: string
   isDarkTheme?: boolean
 }
 
 const ChatInput = ({
   isDisabledInput,
+  onSubmit,
   wrapperClassName,
   isDarkTheme,
+  isPending,
 }: ChatInputProps) => {
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
-  const { chatId, privateChatId } = useParams()
   const [isFocus, setIsFocus] = useState(false)
   const [message, setMessage] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
   const heightBoxRef = useRef(0)
-  const queryClient = useQueryClient()
   const { setSpacing, spacing } = useStyleSpacing()
+  const { chatId, privateChatId } = useParams()
+  const groupId = chatId || privateChatId
 
-  const groupId = privateChatId || chatId
-
-  const mutation = useMutation({
-    mutationKey: [QueryDataKeys.SEND_MESSAGE],
-    mutationFn: (message: string) =>
-      postChatToGroup({
-        groupId: Number(groupId),
-        messages: message,
-      }),
-    onMutate: (variables) => {
-      const newMessage = {
-        content: variables,
-        role: RoleChat.OWNER,
-        id: makeId(),
-        roleOwner: RoleUser.USER,
-        createdAt: new Date().toISOString(),
-        isChatCleared: false,
-      }
-
-      queryClient.setQueryData(
-        chatMessagesKey(groupId),
-        (cachedData: ICachedMessageData) => {
-          if (!cachedData)
-            return {
-              pageParams: [],
-              pages: [
-                {
-                  messages: [newMessage],
-                  nextOffset: 0,
-                },
-              ],
-            }
-
-          const lastPage = cachedData.pages[cachedData.pages.length - 1]
-
-          return {
-            ...cachedData,
-            pages: [
-              ...cachedData.pages.slice(0, -1),
-              {
-                ...lastPage,
-                messages: [...lastPage.messages, newMessage],
-              },
-            ],
-          }
-        },
-      )
-
-      return { newMessage }
-    },
-    onSuccess: () => {
-      SpeechRecognition.stopListening()
-    },
-    onError: (error) => {
-      console.error("Failed to send message", error)
-    },
-  })
-
-  const onSubmit = async () => {
+  const handleSubmit = async () => {
     if (!message) return
 
     setMessage("")
-    mutation.mutate(message)
+    onSubmit(message)
   }
 
   const handleKeyDown = (e: any) => {
@@ -113,7 +49,7 @@ const ChatInput = ({
       //handle vi key double submit
       if (!isSubmitting) {
         setIsSubmitting(true)
-        onSubmit()
+        handleSubmit()
 
         setTimeout(() => {
           setIsSubmitting(false)
@@ -124,6 +60,18 @@ const ChatInput = ({
     }
   }
 
+  useLayoutEffect(() => {
+    if (groupId) {
+      setSpacing(0)
+      setMessage("")
+    }
+  }, [groupId])
+
+  useEffect(() => {
+    const height = boxRef.current?.clientHeight
+    if (height) heightBoxRef.current = height
+  }, [])
+
   const handleCheckHeight = () => {
     const height = boxRef.current?.clientHeight
     if (!height) return
@@ -131,11 +79,6 @@ const ChatInput = ({
       height === heightBoxRef.current ? 0 : height - heightBoxRef.current,
     )
   }
-
-  useEffect(() => {
-    const height = boxRef.current?.clientHeight
-    if (height) heightBoxRef.current = height
-  }, [])
 
   return (
     <div
@@ -192,8 +135,8 @@ const ChatInput = ({
         isDarkTheme={isDarkTheme}
       />
       <Button
-        onClick={onSubmit}
-        isDisabled={!message || mutation.isPending}
+        onClick={handleSubmit}
+        isDisabled={!message || isPending}
         type="submit"
         isIconOnly
         className={twMerge(
