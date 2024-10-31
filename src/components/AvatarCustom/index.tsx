@@ -32,7 +32,7 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
-    if (!src && publicAddress) {
+    if (!src && publicAddress && canvasRef.current) {
       const canvas = canvasRef.current
       renderIcon(
         { seed: publicAddress?.toLowerCase(), scale: scalePoint },
@@ -67,6 +67,7 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
             className,
           )}
         >
+          <canvas ref={canvasRef} style={{ display: "none" }} />
           {icon ? (
             <div className="flex h-full w-full items-center justify-center">
               {icon}
