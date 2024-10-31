@@ -4,7 +4,7 @@ import { useSocket } from "providers/SocketProvider"
 import { useEffect, useRef } from "react"
 import { useParams } from "react-router-dom"
 import { IMessageBox, RoleChat } from "./ChatMessages/helpers"
-import { makeId, textToVoice } from "@utils/index"
+import { makeId } from "@utils/index"
 import { TYPE_BOT } from "@constants/index"
 import { useQueryClient } from "@tanstack/react-query"
 import {
@@ -12,6 +12,7 @@ import {
   chatMessagesKey,
 } from "./ChatMessages/useFetchMessages"
 import { QueryDataKeys } from "types/queryDataKeys"
+import { getTextToVoice } from "services/chat"
 
 interface IDataListen {
   event: string
@@ -166,7 +167,7 @@ const useMessageSocket = () => {
 
   const handleWithDone = (e: IDataListen) => {
     const isBotVoice = e.user.typeBot === TYPE_BOT.VOICE
-    if (isBotVoice) textToVoice(e.messages, e.user.configBot)
+    if (isBotVoice) getTextToVoice(e.messages, e.user.configBot)
     updateNewMsg(e, false)
   }
 

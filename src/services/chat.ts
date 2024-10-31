@@ -1,3 +1,4 @@
+import { IUser } from "@reducers/userSlice"
 import endpoint from "./endpoint"
 import { fetchApiAuth } from "./fetchApi"
 
@@ -159,4 +160,85 @@ export const getGroupChatDetail = async (groupId: number) => {
     method: "get",
     url: endpoint.GET_GROUP_CHAT_DETAIL(groupId),
   })
+}
+
+let audioSource: AudioBufferSourceNode | null = null
+let audioContext: AudioContext | null = null
+
+export const getTextToVoice = async (
+  text: string,
+  speaker: IUser["configBot"],
+): Promise<void> => {
+  if (!window.speechSynthesis) {
+    console.error("Speech Synthesis is not supported.")
+    return
+  }
+
+  try {
+    if (audioSource) {
+      audioSource.stop()
+    }
+
+    if (!audioContext) {
+      audioContext = new AudioContext()
+    }
+
+    const response = await fetch(
+      "https://ai-dev.cupiee.com/voice/text_to_speech",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text,
+          lang: "en",
+          speaker,
+          pitch: 1,
+          ref_voice: "",
+        }),
+      },
+    )
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok")
+    }
+
+    const blob = await response.blob()
+
+    if (blob) {
+      const reader = new FileReader()
+
+      reader.onload = () => {
+        if (reader.result instanceof ArrayBuffer) {
+          audioContext!.decodeAudioData(
+            reader.result,
+            (buffer) => {
+              audioSource = audioContext!.createBufferSource()
+              audioSource.buffer = buffer
+              audioSource.connect(audioContext!.destination)
+              audioSource.start(0)
+
+              audioSource.onended = () => {
+                audioSource = null
+              }
+            },
+            (error) => {
+              console.error("Error decoding audio data:", error)
+            },
+          )
+        }
+      }
+
+      reader.onerror = (error) => {
+        console.error("Error reading audio blob:", error)
+      }
+
+      reader.readAsArrayBuffer(blob)
+    } else {
+      console.error("Response is not a Blob.")
+    }
+  } catch (error) {
+    console.error("Error fetching audio data:", error)
+  }
 }
