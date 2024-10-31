@@ -6,13 +6,16 @@ import ChatInput from "./ChatInput"
 import ChatMessages from "./ChatMessages"
 import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
 import { StyleSpacingProvider } from "providers/StyleSpacingProvider"
+import useSubmitChat from "@hooks/useSubmitChat"
+import SpeechRecognition from "react-speech-recognition"
 
 const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
-  const { chatId, inviteUserId } = useParams()
+  const { chatId, inviteUserId, privateChatId } = useParams()
   const { isLogin } = useAuthState()
-  const { privateChatId } = useParams()
   const navigate = useNavigate()
+  const groupId = privateChatId || chatId
+  const { mutation } = useSubmitChat(groupId, SpeechRecognition.stopListening)
 
   const isEnableTextInput = isLogin && (privateChatId || chatId)
 
@@ -27,6 +30,8 @@ const ChatBox = () => {
           <>
             <ChatMessages />
             <ChatInput
+              onSubmit={mutation.mutate}
+              isPending={mutation.isPending}
               isDisabledInput={!isEnableTextInput}
               wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
             />
