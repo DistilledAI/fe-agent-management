@@ -1,6 +1,7 @@
 import AvatarContainer from "@components/AvatarContainer"
 import AvatarGroup from "@components/AvatarGroup"
 import DotLoading from "@components/DotLoading"
+import { LiveIcon } from "@components/Icons"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { FilledUserIcon, FilledUsersPlusIcon } from "@components/Icons/UserIcon"
@@ -13,6 +14,7 @@ import { getActiveColorRandomById } from "@utils/index"
 import { useNavigate, useParams } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
+import { match } from "ts-pattern"
 import { QueryDataKeys } from "types/queryDataKeys"
 import DotNotification from "../DotNotification"
 import ActiveEffect from "./ActiveEffect"
@@ -26,8 +28,6 @@ import {
 import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroups, { LIMIT, TypeGroup, UserGroup } from "./useFetchGroups"
-import { match } from "ts-pattern"
-import { LiveIcon } from "@components/Icons"
 
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
