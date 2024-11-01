@@ -21,7 +21,7 @@ const PrivateAgents = () => {
     // invite user to group live
     const isBotLive = agent?.configBot === ConfigBotType.LIVE
     if (isBotLive) {
-      const groupId = envConfig.groupIdMax
+      const groupId = envConfig.groupIdMax || 98
       const inviteUserId = user?.id
       const payload = {
         groupId,
