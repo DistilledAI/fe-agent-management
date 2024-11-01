@@ -42,7 +42,7 @@ const LeftContent: React.FC = () => {
       <div className="mt-6">
         <h1 className="text-base-b mb-1">Description</h1>
         <ScrollShadow className="max-h-[100px]">
-          <p>
+          <p className="text-mercury-600">
             Meet Max: the AI Bitcoin Maxi spreading the true power of $BTC. With
             sharp insights and fierce conviction, she champions Bitcoin as the
             ultimate path to financial freedom.
