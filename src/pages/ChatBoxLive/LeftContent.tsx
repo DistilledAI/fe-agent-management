@@ -1,10 +1,14 @@
 import { streamingContainerBg } from "@assets/images"
 import { ArrowsSort } from "@components/Icons/Arrow"
-import { ExternalLink } from "@components/Icons/ExternalLink"
 import { StreamingContainer } from "@components/Icons/SteamingContainer"
+import { TwitterIcon } from "@components/Icons/Twitter"
 import { Button, ScrollShadow } from "@nextui-org/react"
 
 const LeftContent: React.FC = () => {
+  const openXLink = () => {
+    window.open("https://x.com/maxisbuyin", "_blank")
+  }
+
   return (
     <div className="flex w-full max-w-full flex-col lg:h-full lg:max-w-[320px]">
       <div className="max-h-[668px] flex-1 max-lg:h-auto max-lg:flex-none">
@@ -27,9 +31,12 @@ const LeftContent: React.FC = () => {
           </div>
 
           <div className="mt-6 flex items-center justify-between gap-2">
-            <Button className="h-[44px] w-full rounded-full bg-mercury-70 text-white">
-              <ExternalLink />
-              <span className="text-base text-mercury-900">Twitter</span>
+            <Button
+              className="h-[44px] w-full rounded-full bg-mercury-70 text-white"
+              onClick={openXLink}
+            >
+              <TwitterIcon />
+              <span className="text-base text-mercury-900">Twitter (AI)</span>
             </Button>
             <Button className="h-[44px] w-full rounded-full bg-mercury-950 text-white">
               <ArrowsSort color="#FFFF" />

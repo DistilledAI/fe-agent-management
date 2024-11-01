@@ -7,7 +7,6 @@ interface MessageLiveProps {
   message: IMessageBox
 }
 const MessageLive: React.FC<MessageLiveProps> = ({ message }) => {
-  console.log("🚀 ~ message:", message)
   const isBot = message?.roleOwner === RoleUser.BOT
 
   return (
