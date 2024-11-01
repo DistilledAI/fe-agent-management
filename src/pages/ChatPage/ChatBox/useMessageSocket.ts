@@ -119,7 +119,7 @@ const useMessageSocket = () => {
             isTyping: false,
             avatar: e.user.avatar,
             username: e.user.username,
-            createdAt: "",
+            createdAt: new Date().toISOString(),
           }
           return {
             ...cachedData,
@@ -189,6 +189,8 @@ const useMessageSocket = () => {
       avatar: e.user.avatar,
       roleOwner: e.user.role,
       createdAt: new Date().toISOString(),
+      username: e.user.username,
+      publicAddress: e.user.publicAddress,
     }
     addNewMsg(newMsg, e)
   }

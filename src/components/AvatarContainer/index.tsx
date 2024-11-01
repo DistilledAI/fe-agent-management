@@ -1,5 +1,6 @@
 import AvatarCustom from "@components/AvatarCustom"
 import { ReactNode } from "react"
+import { twMerge } from "tailwind-merge"
 
 interface AvatarContainerProps {
   badgeIcon: ReactNode
@@ -8,6 +9,8 @@ interface AvatarContainerProps {
   badgeClassName: string
   publicAddress?: string
   avatarClassName?: string
+  isLive?: boolean
+  usernameClassName?: string
 }
 const AvatarContainer: React.FC<AvatarContainerProps> = ({
   badgeIcon,
@@ -16,6 +19,8 @@ const AvatarContainer: React.FC<AvatarContainerProps> = ({
   badgeClassName,
   publicAddress,
   avatarClassName,
+  isLive = false,
+  usernameClassName,
 }) => {
   return (
     <div className="flex items-center gap-x-3">
@@ -25,9 +30,15 @@ const AvatarContainer: React.FC<AvatarContainerProps> = ({
         publicAddress={publicAddress}
         badgeClassName={badgeClassName}
         className={avatarClassName}
+        isLive={isLive}
       />
       {userName && (
-        <span className="text-base-md line-clamp-1 text-ellipsis text-mercury-950">
+        <span
+          className={twMerge(
+            "line-clamp-1 text-ellipsis text-16 font-medium text-mercury-950",
+            usernameClassName,
+          )}
+        >
           {userName}
         </span>
       )}

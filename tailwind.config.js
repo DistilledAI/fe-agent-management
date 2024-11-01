@@ -88,6 +88,9 @@ export default {
           "linear-gradient(53deg, #4C8898 -2.17%, #5B99AD 134.29%)",
         "lgd-code-agent-7":
           "linear-gradient(53deg, #7E7150 -2.17%, #8D7C4D 134.29%)",
+        "lgd-code-hot-ramp": "linear-gradient(46deg, #FF075A 0%, #FF9035 100%)",
+        "fading-orange":
+          "linear-gradient(65deg, #F5DCE2 16.01%, #F4E7DC 83.99%)",
         "fading-white":
           "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #FFF 100%)",
       },

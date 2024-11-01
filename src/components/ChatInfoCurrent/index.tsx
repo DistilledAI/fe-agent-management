@@ -1,5 +1,7 @@
+import AvatarContainer from "@components/AvatarContainer"
 import AvatarCustom from "@components/AvatarCustom"
 import AvatarGroup from "@components/AvatarGroup"
+import { LiveIcon } from "@components/Icons"
 import useAuthState from "@hooks/useAuthState"
 import {
   getAvatarGroupChat,
@@ -19,8 +21,23 @@ const ChatInfoCurrent: React.FC<{
 }> = ({ groupDetail, textColor = "text-mercury-900" }) => {
   const { user } = useAuthState()
   const isGroup = groupDetail?.group?.typeGroup === TypeGroup.PRIVATE_GROUP
+  const isGroupPublic = groupDetail?.group?.typeGroup === TypeGroup.PUBLIC_GROUP
+  const isLive = isGroupPublic && groupDetail?.group?.live === 1
 
   if (!groupDetail) return null
+
+  if (isGroupPublic)
+    return (
+      <AvatarContainer
+        badgeIcon={<LiveIcon />}
+        avatarUrl={groupDetail.group.image}
+        publicAddress={groupDetail.group.name}
+        userName={groupDetail.group.name}
+        badgeClassName={isLive ? "bg-[#FF075A]" : ""}
+        isLive={isLive}
+        usernameClassName={isLive ? "font-semibold" : ""}
+      />
+    )
 
   return (
     <div>
