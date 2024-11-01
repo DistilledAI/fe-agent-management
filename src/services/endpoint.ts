@@ -23,6 +23,7 @@ const endpoint = {
   CREATE_GROUP_CHAT: withBaseURL("/group/create-group"),
   CHAT_TO_GROUP: withBaseURL("/group/chat-to-group"),
   CHAT_GROUP_DIRECT: withBaseURL("/group/check-group-direct"),
+  INVITE_USER_JOIN_GROUP: withBaseURL("/group/invite-user"),
   LEAVE_GROUP: (groupId: number) => withBaseURL(`/group/delete/${groupId}`),
   GET_GROUP_CHAT_DETAIL: (groupId: number) =>
     withBaseURL(`/group/detail/${groupId}`),

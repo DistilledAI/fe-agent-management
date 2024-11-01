@@ -22,6 +22,7 @@ export interface IGroup {
   status: number
   createdAt: string
   typeGroup: TypeGroup
+  live?: number
 }
 
 export interface UserGroup {
