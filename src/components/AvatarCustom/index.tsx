@@ -15,6 +15,7 @@ export interface AvatarCustomProps
   icon?: React.ReactNode
   publicAddress?: string
   scalePoint?: number
+  isLive?: boolean
 }
 
 const AvatarCustom: React.FC<AvatarCustomProps> = ({
@@ -26,6 +27,7 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
   src,
   icon,
   publicAddress = "",
+  isLive = false,
   ...props
 }) => {
   const imageRef = useRef<HTMLImageElement>(null)
@@ -65,6 +67,7 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
           className={twMerge(
             "h-10 w-10 overflow-hidden rounded-full border-1 border-mercury-400 bg-mercury-100",
             className,
+            isLive && "border-2 border-[#FF075A]",
           )}
         >
           <canvas ref={canvasRef} style={{ display: "none" }} />
@@ -91,6 +94,7 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
       className={twMerge(
         "h-10 w-10 overflow-hidden rounded-full border-1 border-mercury-400 bg-mercury-100",
         className,
+        isLive && "border-2 border-[#FF075A]",
       )}
     >
       <canvas ref={canvasRef} style={{ display: "none" }} />
