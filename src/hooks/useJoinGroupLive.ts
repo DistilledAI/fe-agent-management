@@ -1,5 +1,5 @@
 import { PATH_NAMES } from "@constants/index"
-import { useLocation, useParams } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { envConfig } from "@configs/env"
 import { inviteUserJoinGroup } from "services/chat"
@@ -15,6 +15,7 @@ const useJoinGroupLive = () => {
   const { isLogin, user } = useAuthState()
   const dispatch = useAppDispatch()
   const [isAnonymous, setIsAnonymous] = useState(false)
+  const navigate = useNavigate()
 
   const joinGroupLive = async (user: IUser, accessToken: string = "") => {
     const groupId = chatId || envConfig.groupIdMax
@@ -28,6 +29,7 @@ const useJoinGroupLive = () => {
         }
       : {}
     const res = await inviteUserJoinGroup(payload, headers)
+    navigate(`${PATH_NAMES.CHAT_LIVE}/${chatId}?isInvited=true`)
     return !!res.data
   }
 
