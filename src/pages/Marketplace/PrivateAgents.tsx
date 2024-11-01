@@ -1,4 +1,5 @@
 import AvatarCustom from "@components/AvatarCustom"
+import { LiveIcon } from "@components/Icons"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { MessageDots } from "@components/Icons/Message"
 import { envConfig } from "@configs/env"
@@ -68,10 +69,19 @@ const PrivateAgents = () => {
     >
       <div className="flex gap-4">
         <AvatarCustom
-          badgeClassName="bg-yellow-10"
+          badgeClassName={
+            agent.configBot === "live" ? "bg-[#FF075A]" : "bg-yellow-10"
+          }
           src={agent.avatar}
           publicAddress={agent.publicAddress}
-          badgeIcon={<FilledBrainAIIcon size={14} />}
+          badgeIcon={
+            agent.configBot === "live" ? (
+              <LiveIcon />
+            ) : (
+              <FilledBrainAIIcon size={14} />
+            )
+          }
+          isLive={agent.configBot === "live"}
         />
         <div>
           <div className="flex items-center gap-2">
