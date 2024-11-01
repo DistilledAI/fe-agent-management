@@ -17,7 +17,7 @@ const LeftContent: React.FC = () => {
               autoPlay
               playsInline
               loop
-              className="h-[430px] object-contain"
+              className="h-[430px] object-contain max-md:w-full max-md:object-cover"
             >
               <source src={bitcoinMaxIntro} type="video/mp4" />
               <track kind="captions"></track>
