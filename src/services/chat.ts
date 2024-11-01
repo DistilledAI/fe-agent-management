@@ -248,9 +248,10 @@ interface InviteUser {
   member: (number | undefined)[]
 }
 
-export const inviteUserJoinGroup = async (data: InviteUser) => {
+export const inviteUserJoinGroup = async (data: InviteUser, headers = {}) => {
   return fetchApiAuth({
     method: "post",
+    headers,
     url: endpoint.INVITE_USER_JOIN_GROUP,
     data,
   })

@@ -86,14 +86,11 @@ const useInviteUser = () => {
   }
 
   useEffect(() => {
-    const isAnonymous =
-      (isInvitePathName || isMarketplacePathName) &&
-      !isLogin &&
-      !sessionAccessToken
+    const isAnonymous = isInvitePathName && !isLogin && !sessionAccessToken
     if (isAnonymous) {
       handleInviteAnonymous()
     }
-  }, [isInvitePathName, isMarketplacePathName, isLogin, sessionAccessToken])
+  }, [isInvitePathName, isLogin, sessionAccessToken])
 
   useEffect(() => {
     const isRealUser =
@@ -109,7 +106,7 @@ const useInviteUser = () => {
     if (isAnonymousLogged) handleInviteUserLoggedIn(userId)
   }, [userId, sessionAccessToken, isLogin, isInvitePathName])
 
-  return { handleInviteUserLoggedIn }
+  return { handleInviteUserLoggedIn, handleInviteAnonymous }
 }
 
 export default useInviteUser

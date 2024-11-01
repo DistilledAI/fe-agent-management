@@ -10,7 +10,7 @@ import { IUser } from "@reducers/userSlice"
 import { useQuery } from "@tanstack/react-query"
 import { ConfigBotType } from "@types"
 import { useNavigate } from "react-router-dom"
-import { inviteUserJoinGroup, searchUsers } from "services/chat"
+import { searchUsers } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 
 const PrivateAgents = () => {
@@ -21,15 +21,17 @@ const PrivateAgents = () => {
     // invite user to group live
     const isBotLive = agent?.configBot === ConfigBotType.LIVE
     if (isBotLive) {
-      const groupId = envConfig.groupIdMax || 98
-      const inviteUserId = user?.id
-      const payload = {
-        groupId,
-        member: [inviteUserId],
-      }
-      const res = await inviteUserJoinGroup(payload)
-      if (res) navigate(`${PATH_NAMES.CHAT_LIVE_DETAIL}/${groupId}`)
-      return
+      const groupId = envConfig.groupIdMax
+      return navigate(`${PATH_NAMES.CHAT_LIVE_DETAIL}/${groupId}`)
+      // const inviteUserId = user?.id
+      // const payload = {
+      //   groupId,
+      //   member: [inviteUserId],
+      // }
+      // const res = await inviteUserJoinGroup(payload)
+      // if (res)
+      //   navigate(`${PATH_NAMES.CHAT_LIVE_DETAIL}/${groupId}?isInvited=true`)
+      // return
     }
 
     if (user && user.id === agent.owner) {

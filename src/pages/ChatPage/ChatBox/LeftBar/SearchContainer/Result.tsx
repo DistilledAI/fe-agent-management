@@ -1,9 +1,11 @@
 import AvatarContainer from "@components/AvatarContainer"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
+import { envConfig } from "@configs/env"
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { IUser } from "@reducers/userSlice"
+import { ConfigBotType } from "@types"
 import React from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -41,6 +43,14 @@ const SearchResult: React.FC<{
   // }
 
   const handleChatWithAgent = async (agent: IUser) => {
+    const isBotLive = agent?.configBot === ConfigBotType.LIVE
+    if (isBotLive) {
+      const groupId = envConfig.groupIdMax
+      navigate(`${PATH_NAMES.CHAT_LIVE_DETAIL}/${groupId}`)
+      if (selectedCallback) selectedCallback()
+      return
+    }
+
     if (user && user.id === agent.owner) {
       navigate(`${PATH_NAMES.PRIVATE_AGENT}/${agent.id}`)
     } else {
