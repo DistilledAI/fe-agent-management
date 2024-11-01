@@ -5,10 +5,14 @@ import { Outlet, useLocation, useParams } from "react-router-dom"
 import { PATH_NAMES } from "@constants/index"
 import useInviteUser from "@hooks/useInviteUser"
 import useFetchMe from "@hooks/useFetchMe"
+import useReconnectWallet from "@hooks/useReconnectWallet"
+import useMessageSocket from "@pages/ChatPage/ChatBox/useMessageSocket"
 
 const MainLayout = () => {
   useInviteUser()
   useFetchMe()
+  useReconnectWallet()
+  useMessageSocket()
 
   const { screenWidth } = useWindowSize()
   const { pathname } = useLocation()
