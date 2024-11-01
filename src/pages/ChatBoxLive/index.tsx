@@ -1,8 +1,11 @@
+import useJoinGroupLive from "@hooks/useJoinGroupLive"
 import ChatLiveHeader from "./HeaderMobile"
 import LeftContent from "./LeftContent"
 import RightContent from "./RightContent"
 
-const ChatBoxLive: React.FC = () => {
+const ChatBoxLive = () => {
+  useJoinGroupLive()
+
   return (
     <div className="relative mx-auto h-[calc(100dvh-68px)] max-w-[1232px] px-6 max-lg:h-[calc(100dvh-150px)] max-lg:overflow-y-auto max-md:h-auto max-md:px-4 max-md:py-[60px]">
       <div className="md:hidden">

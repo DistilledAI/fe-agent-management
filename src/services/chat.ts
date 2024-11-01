@@ -242,3 +242,17 @@ export const getVoiceToText = async (
     console.error("Error fetching audio data:", error)
   }
 }
+
+interface InviteUser {
+  groupId: number
+  member: (number | undefined)[]
+}
+
+export const inviteUserJoinGroup = async (data: InviteUser, headers = {}) => {
+  return fetchApiAuth({
+    method: "post",
+    headers,
+    url: endpoint.INVITE_USER_JOIN_GROUP,
+    data,
+  })
+}

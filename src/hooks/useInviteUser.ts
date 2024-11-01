@@ -1,17 +1,17 @@
 import { PATH_NAMES } from "@constants/index"
-import { useEffect } from "react"
-import { useLocation, useNavigate, useParams } from "react-router-dom"
-import { createGroupChat } from "services/chat"
-import useAuthState from "./useAuthState"
-import { postCreateAnonymous } from "services/auth"
-import { cachedSessionStorage, storageKey } from "@utils/storage"
-import { useDispatch } from "react-redux"
+import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { loginSuccessByAnonymous } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
-import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
-import useWindowSize from "./useWindowSize"
-import { QueryDataKeys } from "types/queryDataKeys"
 import { ConfigBotType } from "@types"
+import { cachedSessionStorage, storageKey } from "@utils/storage"
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
+import { postCreateAnonymous } from "services/auth"
+import { createGroupChat } from "services/chat"
+import { QueryDataKeys } from "types/queryDataKeys"
+import useAuthState from "./useAuthState"
+import useWindowSize from "./useWindowSize"
 
 const useInviteUser = () => {
   const navigate = useNavigate()
@@ -29,11 +29,6 @@ const useInviteUser = () => {
 
   const handleInviteUserLoggedIn = async (userId: number) => {
     try {
-      // const checkGroupDirectResponse = await checkGroupDirect({
-      //   members: [userId],
-      // })
-      // const groupId = checkGroupDirectResponse?.data?.group?.id
-      // if (!groupId) {
       const createGroupResponse = await createGroupChat({
         members: [userId],
       })
@@ -110,7 +105,7 @@ const useInviteUser = () => {
     if (isAnonymousLogged) handleInviteUserLoggedIn(userId)
   }, [userId, sessionAccessToken, isLogin, isInvitePathName])
 
-  return { handleInviteUserLoggedIn }
+  return { handleInviteUserLoggedIn, handleInviteAnonymous }
 }
 
 export default useInviteUser

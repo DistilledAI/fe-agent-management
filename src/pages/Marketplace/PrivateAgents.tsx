@@ -1,11 +1,14 @@
 import AvatarCustom from "@components/AvatarCustom"
+import { LiveIcon } from "@components/Icons"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { MessageDots } from "@components/Icons/Message"
+import { envConfig } from "@configs/env"
 import { PATH_NAMES, RoleUser, STATUS_AGENT } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
 import { IUser } from "@reducers/userSlice"
 import { useQuery } from "@tanstack/react-query"
+import { ConfigBotType } from "@types"
 import { useNavigate } from "react-router-dom"
 import { searchUsers } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
@@ -15,6 +18,22 @@ const PrivateAgents = () => {
   const { user } = useAuthState()
 
   const handleChatWithAgent = async (agent: IUser) => {
+    // invite user to group live
+    const isBotLive = agent?.configBot === ConfigBotType.LIVE
+    if (isBotLive) {
+      const groupId = envConfig.groupIdMax
+      return navigate(`${PATH_NAMES.CHAT_LIVE_DETAIL}/${groupId}`)
+      // const inviteUserId = user?.id
+      // const payload = {
+      //   groupId,
+      //   member: [inviteUserId],
+      // }
+      // const res = await inviteUserJoinGroup(payload)
+      // if (res)
+      //   navigate(`${PATH_NAMES.CHAT_LIVE_DETAIL}/${groupId}?isInvited=true`)
+      // return
+    }
+
     if (user && user.id === agent.owner) {
       navigate(`${PATH_NAMES.PRIVATE_AGENT}/${agent.id}`)
     } else {
@@ -52,10 +71,19 @@ const PrivateAgents = () => {
     >
       <div className="flex gap-4">
         <AvatarCustom
-          badgeClassName="bg-yellow-10"
+          badgeClassName={
+            agent.configBot === "live" ? "bg-[#FF075A]" : "bg-yellow-10"
+          }
           src={agent.avatar}
           publicAddress={agent.publicAddress}
-          badgeIcon={<FilledBrainAIIcon size={14} />}
+          badgeIcon={
+            agent.configBot === "live" ? (
+              <LiveIcon />
+            ) : (
+              <FilledBrainAIIcon size={14} />
+            )
+          }
+          isLive={agent.configBot === "live"}
         />
         <div>
           <div className="flex items-center gap-2">

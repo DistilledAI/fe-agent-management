@@ -27,11 +27,7 @@ const RightContent: React.FC = () => {
   } = useFetchMessages()
 
   const renderMessage = (index: number, message: IMessageBox) => {
-    return (
-      <div className={twMerge("mb-5", index === messages.length - 1 && "pb-4")}>
-        <MessageLive message={message} />
-      </div>
-    )
+    return <MessageLive key={index} message={message} />
   }
 
   return (
@@ -45,7 +41,7 @@ const RightContent: React.FC = () => {
         isFetchingPreviousPage={isFetchingPreviousPage}
         onLoadPrevMessages={onLoadPrevMessages}
         chatId={chatId}
-        msgBoxClassName="p-0 md:px-4"
+        msgBoxClassName="p-0 md:px-4 pb-4"
         isChatAction={false}
         className="max-lg:!max-h-full md:max-h-[calc(100%-80px)]"
       />

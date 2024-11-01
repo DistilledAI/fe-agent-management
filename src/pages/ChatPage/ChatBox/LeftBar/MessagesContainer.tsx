@@ -1,6 +1,7 @@
 import AvatarContainer from "@components/AvatarContainer"
 import AvatarGroup from "@components/AvatarGroup"
 import DotLoading from "@components/DotLoading"
+import { LiveIcon } from "@components/Icons"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { FilledUserIcon, FilledUsersPlusIcon } from "@components/Icons/UserIcon"
@@ -13,6 +14,7 @@ import { getActiveColorRandomById } from "@utils/index"
 import { useNavigate, useParams } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
+import { match } from "ts-pattern"
 import { QueryDataKeys } from "types/queryDataKeys"
 import DotNotification from "../DotNotification"
 import ActiveEffect from "./ActiveEffect"
@@ -26,7 +28,6 @@ import {
 import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroups, { LIMIT, TypeGroup, UserGroup } from "./useFetchGroups"
-import { ConfigBotType } from "@types"
 
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
@@ -55,6 +56,58 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
         bgColor,
       }
     })
+  }
+
+  const renderInfoGroup = (groupItem: UserGroup) => {
+    const typeGroup = groupItem.group.typeGroup
+    const isLive = groupItem.group.live === 1
+    const isActive = Number(chatId) === groupItem.groupId
+
+    return match(typeGroup)
+      .returnType<React.ReactNode>()
+      .with(TypeGroup.PRIVATE_GROUP, () => (
+        <AvatarGroup groupName={sidebarCollapsed ? "" : groupItem.group.name} />
+      ))
+      .with(TypeGroup.PUBLIC_GROUP, () => (
+        <AvatarContainer
+          badgeIcon={<LiveIcon />}
+          avatarUrl={groupItem.group.image}
+          publicAddress={groupItem.group.name}
+          userName={sidebarCollapsed ? "" : groupItem.group.name}
+          badgeClassName={isLive ? "bg-[#FF075A]" : ""}
+          isLive={isLive}
+          usernameClassName={isLive && isActive ? "font-semibold" : ""}
+        />
+      ))
+      .otherwise(() => (
+        <AvatarContainer
+          badgeIcon={getIconGroup(
+            groupItem.userId,
+            groupItem.group.userA,
+            groupItem.group.userB,
+          )}
+          avatarUrl={getAvatarGroupChat(
+            groupItem.userId,
+            groupItem.group.userA,
+            groupItem.group.userB,
+          )}
+          publicAddress={getPublicAddressGroupChat(
+            groupItem.userId,
+            groupItem.group.userA,
+            groupItem.group.userB,
+          )}
+          userName={
+            sidebarCollapsed
+              ? ""
+              : getNameGroup(user, groupItem.group.userA, groupItem.group.userB)
+          }
+          badgeClassName={getColorGroupIcon(
+            groupItem.userId,
+            groupItem.group.userA,
+            groupItem.group.userB,
+          )}
+        />
+      ))
   }
 
   return (
@@ -105,6 +158,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
           }}
           itemContent={(_, groupItem) => {
             const isActive = Number(chatId) === groupItem.groupId
+            const isBotLive = groupItem.group.live === 1
 
             return (
               <div
@@ -116,9 +170,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                     (prev = []) =>
                       prev.filter((id) => id !== groupItem.groupId),
                   )
-
-                  const configBot = groupItem?.group?.userB?.configBot
-                  if (configBot === ConfigBotType.LIVE) {
+                  if (isBotLive) {
                     return navigate(
                       `${PATH_NAMES.CHAT_LIVE}/${groupItem.groupId}`,
                     )
@@ -130,46 +182,15 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                   isActive && "bg-mercury-100",
                   sidebarCollapsed &&
                     "flex w-14 items-center justify-center p-0",
+                  isActive && isBotLive && "bg-fading-orange",
                 )}
               >
-                {groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP ? (
-                  <AvatarGroup groupName={groupItem.group.name} />
-                ) : (
-                  <AvatarContainer
-                    badgeIcon={getIconGroup(
-                      groupItem.userId,
-                      groupItem.group.userA,
-                      groupItem.group.userB,
-                    )}
-                    avatarUrl={getAvatarGroupChat(
-                      groupItem.userId,
-                      groupItem.group.userA,
-                      groupItem.group.userB,
-                    )}
-                    publicAddress={getPublicAddressGroupChat(
-                      groupItem.userId,
-                      groupItem.group.userA,
-                      groupItem.group.userB,
-                    )}
-                    userName={
-                      sidebarCollapsed
-                        ? ""
-                        : getNameGroup(
-                            user,
-                            groupItem.group.userA,
-                            groupItem.group.userB,
-                          )
-                    }
-                    badgeClassName={getColorGroupIcon(
-                      groupItem.userId,
-                      groupItem.group.userA,
-                      groupItem.group.userB,
-                    )}
-                  />
-                )}
+                {renderInfoGroup(groupItem)}
                 <ActiveEffect
                   isActive={isActive}
-                  className={groupItem.bgColor}
+                  className={
+                    isBotLive ? "bg-lgd-code-hot-ramp" : groupItem.bgColor
+                  }
                 />
                 <DotNotification groupId={groupItem.groupId} />
                 {sidebarCollapsed ? (

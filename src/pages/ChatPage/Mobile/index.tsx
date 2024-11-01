@@ -1,12 +1,10 @@
 import useAuthState from "@hooks/useAuthState"
 import useOutsideClick from "@hooks/useOutSideClick"
-import useReconnectWallet from "@hooks/useReconnectWallet"
 import { Button, ScrollShadow } from "@nextui-org/react"
 import { useEffect, useRef, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import SearchResult from "../ChatBox/LeftBar/SearchContainer/Result"
 import useSearch from "../ChatBox/LeftBar/SearchContainer/useSearch"
-import useMessageSocket from "../ChatBox/useMessageSocket"
 import ChatDetail from "./ChatDetail"
 import ChatList from "./ChatList"
 import ChatSearch from "./ChatSearch"
@@ -23,9 +21,6 @@ const ChatPageMobile = () => {
   const { data, setQuery, query, debounceSearch } = useSearch(inputRef, false)
   const navigate = useNavigate()
   const groupChatId = chatId ?? privateChatId
-
-  useReconnectWallet()
-  useMessageSocket()
 
   useEffect(() => {
     if (groupChatId && !isLogin) navigate("/")

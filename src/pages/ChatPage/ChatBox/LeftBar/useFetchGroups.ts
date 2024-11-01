@@ -9,6 +9,7 @@ import { QueryDataKeys } from "types/queryDataKeys"
 export enum TypeGroup {
   DIRECT = "DIRECT",
   PRIVATE_GROUP = "PRIVATE_GROUP",
+  PUBLIC_GROUP = "PUBLIC_GROUP",
 }
 export interface IGroup {
   id: number
@@ -22,6 +23,7 @@ export interface IGroup {
   status: number
   createdAt: string
   typeGroup: TypeGroup
+  live?: number
 }
 
 export interface UserGroup {

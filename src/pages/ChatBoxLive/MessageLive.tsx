@@ -1,10 +1,14 @@
 import AvatarCustom from "@components/AvatarCustom"
+import { RoleUser } from "@constants/index"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
+import { twMerge } from "tailwind-merge"
 
 interface MessageLiveProps {
   message: IMessageBox
 }
 const MessageLive: React.FC<MessageLiveProps> = ({ message }) => {
+  const isBot = message?.roleOwner === RoleUser.BOT
+
   return (
     <div className="flex gap-4">
       <div>
@@ -14,8 +18,21 @@ const MessageLive: React.FC<MessageLiveProps> = ({ message }) => {
         />
       </div>
       <div className="flex flex-col">
-        <span className="text-base-b">{message?.username}</span>
-        <span className="text-base text-mercury-900">{message?.content}</span>
+        <span
+          className={twMerge(
+            isBot
+              ? "bg-lgd-code-hot-ramp bg-clip-text text-base font-bold text-transparent"
+              : "text-base-b",
+          )}
+        >
+          {message?.username}
+        </span>
+        <span
+          className="text-base text-mercury-900 aria-selected:italic"
+          aria-selected={isBot}
+        >
+          {message?.content}
+        </span>
       </div>
     </div>
   )
