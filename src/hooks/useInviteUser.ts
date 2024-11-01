@@ -23,7 +23,6 @@ const useInviteUser = () => {
   const { user, isLogin } = useAuthState()
   const userId = Number(params?.inviteUserId)
   const isInvitePathName = pathname === `${PATH_NAMES.INVITE}/${userId}`
-  const isMarketplacePathName = pathname === PATH_NAMES.MARKETPLACE
   const sessionAccessToken = cachedSessionStorage.getWithExpiry(
     storageKey.ACCESS_TOKEN,
   )
