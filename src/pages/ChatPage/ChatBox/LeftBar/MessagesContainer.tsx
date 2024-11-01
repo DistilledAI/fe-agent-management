@@ -66,14 +66,14 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
     return match(typeGroup)
       .returnType<React.ReactNode>()
       .with(TypeGroup.PRIVATE_GROUP, () => (
-        <AvatarGroup groupName={groupItem.group.name} />
+        <AvatarGroup groupName={sidebarCollapsed ? "" : groupItem.group.name} />
       ))
       .with(TypeGroup.PUBLIC_GROUP, () => (
         <AvatarContainer
           badgeIcon={<LiveIcon />}
           avatarUrl={groupItem.group.image}
           publicAddress={groupItem.group.name}
-          userName={groupItem.group.name}
+          userName={sidebarCollapsed ? "" : groupItem.group.name}
           badgeClassName={isLive ? "bg-[#FF075A]" : ""}
           isLive={isLive}
           usernameClassName={isLive && isActive ? "font-semibold" : ""}
