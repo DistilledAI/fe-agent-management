@@ -16,6 +16,7 @@ import {
 import useFetchGroups, {
   LIMIT,
   TypeGroup,
+  UserGroup,
 } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { IUser } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
@@ -23,6 +24,8 @@ import { useNavigate, useParams } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { StartNewChat } from ".."
+import { LiveIcon } from "@components/Icons"
+import { match } from "ts-pattern"
 
 const ChatList = () => {
   const { user } = useAuthState()
@@ -37,6 +40,58 @@ const ChatList = () => {
     ) : (
       <FilledBrainAIIcon size={14} />
     )
+  }
+
+  const renderInfoGroup = (groupItem: UserGroup) => {
+    const typeGroup = groupItem.group.typeGroup
+    const isLive = groupItem.group.live === 1
+    const isActive = Number(chatId) === groupItem.groupId
+
+    return match(typeGroup)
+      .returnType<React.ReactNode>()
+      .with(TypeGroup.PRIVATE_GROUP, () => (
+        <AvatarGroup groupName={groupItem.group.name} />
+      ))
+      .with(TypeGroup.PUBLIC_GROUP, () => (
+        <AvatarContainer
+          badgeIcon={<LiveIcon />}
+          avatarUrl={groupItem.group.image}
+          publicAddress={groupItem.group.name}
+          userName={groupItem.group.name}
+          badgeClassName={isLive ? "bg-[#FF075A]" : ""}
+          isLive={isLive}
+          usernameClassName={isLive && isActive ? "font-semibold" : ""}
+        />
+      ))
+      .otherwise(() => (
+        <AvatarContainer
+          badgeIcon={getIconGroup(
+            groupItem.userId,
+            groupItem.group.userA,
+            groupItem.group.userB,
+          )}
+          avatarUrl={getAvatarGroupChat(
+            groupItem.userId,
+            groupItem.group.userA,
+            groupItem.group.userB,
+          )}
+          publicAddress={getPublicAddressGroupChat(
+            groupItem.userId,
+            groupItem.group.userA,
+            groupItem.group.userB,
+          )}
+          userName={getNameGroup(
+            user,
+            groupItem.group.userA,
+            groupItem.group.userB,
+          )}
+          badgeClassName={getColorGroupIcon(
+            groupItem.userId,
+            groupItem.group.userA,
+            groupItem.group.userB,
+          )}
+        />
+      ))
   }
 
   if (isFetched && groups.length === 0 && !isLoading) return <StartNewChat />
@@ -76,37 +131,7 @@ const ChatList = () => {
             }}
             className="relative mb-2 gap-2 px-4 py-2"
           >
-            {groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP ? (
-              <AvatarGroup groupName={groupItem.group.name} />
-            ) : (
-              <AvatarContainer
-                badgeIcon={getIconGroup(
-                  groupItem.userId,
-                  groupItem.group.userA,
-                  groupItem.group.userB,
-                )}
-                avatarUrl={getAvatarGroupChat(
-                  groupItem.userId,
-                  groupItem.group.userA,
-                  groupItem.group.userB,
-                )}
-                publicAddress={getPublicAddressGroupChat(
-                  groupItem.userId,
-                  groupItem.group.userA,
-                  groupItem.group.userB,
-                )}
-                userName={getNameGroup(
-                  user,
-                  groupItem.group.userA,
-                  groupItem.group.userB,
-                )}
-                badgeClassName={getColorGroupIcon(
-                  groupItem.userId,
-                  groupItem.group.userA,
-                  groupItem.group.userB,
-                )}
-              />
-            )}
+            {renderInfoGroup(groupItem)}
             <DotNotification groupId={groupItem.groupId} />
           </div>
         )
