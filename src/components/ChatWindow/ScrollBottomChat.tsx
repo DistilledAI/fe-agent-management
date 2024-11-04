@@ -15,7 +15,7 @@ const ScrollBottomChat = ({ isScrollBottom, virtuosoRef }: Props) => {
   const onScrollToBottom = () => {
     virtuosoRef.current?.scrollToIndex({
       index: "LAST",
-      behavior: "smooth",
+      behavior: "auto",
       align: "end",
     })
   }

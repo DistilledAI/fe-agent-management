@@ -1,5 +1,4 @@
 import ChatWindow from "@components/ChatWindow"
-import ContextCleared from "@components/ContextCleared"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
@@ -19,6 +18,7 @@ import {
   RoleChat,
 } from "./helpers"
 import useFetchMessages from "./useFetchMessages"
+import AgentInfoCard from "./AgentInfoCard"
 
 const ChatMessages = () => {
   const {
@@ -30,7 +30,7 @@ const ChatMessages = () => {
     isFetchingPreviousPage,
   } = useFetchMessages()
   const { chatId } = useParams()
-  const { bgColor, textColor } = getActiveColorRandomById(chatId)
+  const { bgColor } = getActiveColorRandomById(chatId)
   const queryClient = useQueryClient()
   const myPrivateAgent = queryClient.getQueryData([
     QueryDataKeys.DELEGATE_PRIVATE_AGENT,
@@ -51,17 +51,6 @@ const ChatMessages = () => {
       message,
       messages,
     )
-
-    if (message.isChatCleared) {
-      return (
-        <div
-          key={index}
-          className="mx-auto flex max-w-[768px] justify-center pb-4"
-        >
-          <ContextCleared textClassName={textColor} />
-        </div>
-      )
-    }
 
     return (
       <div
@@ -96,6 +85,7 @@ const ChatMessages = () => {
   return (
     <>
       <ChatWindow
+        Header={<AgentInfoCard />}
         messages={messages}
         itemContent={renderMessage}
         isLoading={isLoading}
