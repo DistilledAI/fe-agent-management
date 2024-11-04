@@ -16,6 +16,7 @@ const AgentInfoCard = () => {
   const { data }: any = useQuery({
     queryKey: ["chat-detail", chatId],
     enabled: !!chatId,
+    staleTime: 60 * 60 * 1000,
     refetchOnMount: false,
   })
   const agentInfo = data && data?.data ? data?.data : {}
