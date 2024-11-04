@@ -1,5 +1,7 @@
 import { PATH_NAMES } from "@constants/index"
-import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import useFetchGroups, {
+  UserGroup,
+} from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { loginSuccessByAnonymous } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
 import { ConfigBotType } from "@types"
@@ -13,7 +15,7 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import useAuthState from "./useAuthState"
 import useWindowSize from "./useWindowSize"
 
-const useInviteUser = () => {
+const useInviteAgent = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const queryClient = useQueryClient()
@@ -21,16 +23,17 @@ const useInviteUser = () => {
   const params = useParams()
   const { pathname } = useLocation()
   const { user, isLogin } = useAuthState()
-  const userId = Number(params?.inviteUserId)
-  const isInvitePathName = pathname === `${PATH_NAMES.INVITE}/${userId}`
+  const agentId = Number(params?.inviteAgentId)
+  const isInvitePathName = pathname === `${PATH_NAMES.INVITE}/${agentId}`
   const sessionAccessToken = cachedSessionStorage.getWithExpiry(
     storageKey.ACCESS_TOKEN,
   )
+  const { fetchGroups } = useFetchGroups()
 
-  const handleInviteUserLoggedIn = async (userId: number) => {
+  const handleInviteUserLoggedIn = async (agentId: number) => {
     try {
       const createGroupResponse = await createGroupChat({
-        members: [userId],
+        members: [agentId],
       })
       const newData = createGroupResponse.data
       if (newData && isMobile)
@@ -44,16 +47,14 @@ const useInviteUser = () => {
       if (newGroupId) {
         const configBot = newData?.group?.userB?.configBot
         if (configBot === ConfigBotType.LIVE) {
-          return navigate(
-            `${PATH_NAMES.CHAT_LIVE}/${newGroupId}?isInvited=true`,
-          )
+          return navigate(`${PATH_NAMES.CHAT_LIVE}/${newGroupId}`)
         }
-        return navigate(`${PATH_NAMES.CHAT}/${newGroupId}?isInvited=true`)
+        navigate(`${PATH_NAMES.CHAT}/${newGroupId}`)
+        fetchGroups()
       } else {
         navigate(PATH_NAMES.HOME)
       }
       // }
-
       // navigate(`${PATH_NAMES.CHAT}/${groupId}`)
     } catch (error) {
       console.log("error", error)
@@ -93,19 +94,19 @@ const useInviteUser = () => {
 
   useEffect(() => {
     const isRealUser =
-      isInvitePathName && user?.id !== userId && isLogin && !sessionAccessToken
+      isInvitePathName && user?.id !== agentId && isLogin && !sessionAccessToken
     if (isRealUser) {
-      handleInviteUserLoggedIn(userId)
+      handleInviteUserLoggedIn(agentId)
     }
-  }, [isInvitePathName, userId, user?.id, isLogin, sessionAccessToken])
+  }, [isInvitePathName, agentId, user?.id, isLogin, sessionAccessToken])
 
   useEffect(() => {
     const isAnonymousLogged =
-      sessionAccessToken && isLogin && isInvitePathName && userId
-    if (isAnonymousLogged) handleInviteUserLoggedIn(userId)
-  }, [userId, sessionAccessToken, isLogin, isInvitePathName])
+      sessionAccessToken && isLogin && isInvitePathName && agentId
+    if (isAnonymousLogged) handleInviteUserLoggedIn(agentId)
+  }, [agentId, sessionAccessToken, isLogin, isInvitePathName])
 
   return { handleInviteUserLoggedIn, handleInviteAnonymous }
 }
 
-export default useInviteUser
+export default useInviteAgent
