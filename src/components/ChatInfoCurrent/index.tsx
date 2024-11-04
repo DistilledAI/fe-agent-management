@@ -33,7 +33,7 @@ const ChatInfoCurrent: React.FC<{
         avatarUrl={groupDetail.group.image}
         publicAddress={groupDetail.group.name}
         userName={groupDetail.group.name}
-        badgeClassName={isLive ? "bg-[#FF075A]" : ""}
+        badgeClassName={isLive ? "bg-lgd-code-hot-ramp" : ""}
         isLive={isLive}
         usernameClassName={isLive ? "font-semibold" : ""}
       />
