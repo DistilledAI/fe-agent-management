@@ -3,23 +3,23 @@ import FooterMobile from "./FooterMobile"
 import HeaderMobile from "./HeaderMobile"
 import { Outlet, useLocation, useParams } from "react-router-dom"
 import { PATH_NAMES } from "@constants/index"
-import useInviteUser from "@hooks/useInviteUser"
+import useInviteAgent from "@hooks/useInviteAgent"
 import useFetchMe from "@hooks/useFetchMe"
 import useReconnectWallet from "@hooks/useReconnectWallet"
 import useMessageSocket from "@pages/ChatPage/ChatBox/useMessageSocket"
 
 const MainLayout = () => {
-  useInviteUser()
+  useInviteAgent()
   useFetchMe()
   useReconnectWallet()
   useMessageSocket()
 
   const { screenWidth } = useWindowSize()
   const { pathname } = useLocation()
-  const { chatId, inviteUserId, privateChatId } = useParams()
+  const { chatId, inviteAgentId, privateChatId } = useParams()
   const ignoreLayout = [
     `${PATH_NAMES.CHAT}/${chatId}`,
-    `${PATH_NAMES.INVITE}/${inviteUserId}`,
+    `${PATH_NAMES.INVITE}/${inviteAgentId}`,
     `${PATH_NAMES.MY_DATA}`,
     `${PATH_NAMES.PRIVATE_AGENT}/${privateChatId}`,
     `${PATH_NAMES.CHAT_LIVE_DETAIL}/${chatId}`,
