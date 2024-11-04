@@ -67,7 +67,7 @@ const ChatWindow = ({
         align: style?.paddingBottom === "0px" ? "end" : "center",
       })
     }
-  }, [messages, isScrollBottom, chatId, style?.paddingBottom])
+  }, [messages, isScrollBottom, style?.paddingBottom, chatId])
 
   const onScroll = useCallback(
     async (e: React.UIEvent<HTMLDivElement>) => {
@@ -139,6 +139,7 @@ const ChatWindow = ({
       {isLoading && <MessagesSkeleton />}
       {!isLoading && messages.length ? (
         <Virtuoso
+          id="chat-window"
           style={{
             height: "100%",
           }}

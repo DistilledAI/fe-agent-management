@@ -110,6 +110,22 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
       ))
   }
 
+  const handleGroupClick = (groupItem: UserGroup, isBotLive: boolean) => {
+    queryClient.setQueryData<number[]>(
+      [QueryDataKeys.NOTIFICATION_GROUPS],
+      (prev = []) => prev.filter((id) => id !== groupItem.groupId),
+    )
+    if (isBotLive) {
+      return navigate(`${PATH_NAMES.CHAT_LIVE}/${groupItem.groupId}`)
+    }
+    navigate(`${PATH_NAMES.CHAT}/${groupItem.groupId}`)
+    const chatWindow = document.getElementById("chat-window")
+    if (chatWindow) {
+      chatWindow.style.scrollBehavior = "auto"
+      chatWindow.scrollTop = chatWindow.scrollHeight
+    }
+  }
+
   return (
     <>
       <div
@@ -164,19 +180,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
               <div
                 key={groupItem.id}
                 aria-selected={isActive}
-                onClick={() => {
-                  queryClient.setQueryData<number[]>(
-                    [QueryDataKeys.NOTIFICATION_GROUPS],
-                    (prev = []) =>
-                      prev.filter((id) => id !== groupItem.groupId),
-                  )
-                  if (isBotLive) {
-                    return navigate(
-                      `${PATH_NAMES.CHAT_LIVE}/${groupItem.groupId}`,
-                    )
-                  }
-                  navigate(`${PATH_NAMES.CHAT}/${groupItem.groupId}`)
-                }}
+                onClick={() => handleGroupClick(groupItem, isBotLive)}
                 className={twMerge(
                   "hover-light-effect group/item group relative mx-4 mb-2 h-14 gap-2 rounded-full px-2 py-2",
                   isActive && "bg-mercury-100",

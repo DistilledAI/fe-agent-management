@@ -4,7 +4,7 @@ import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
 import { RoleUser } from "@constants/index"
-import { useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { getActiveColorRandomById } from "@utils/index"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import { useParams } from "react-router-dom"
@@ -31,11 +31,12 @@ const ChatMessages = () => {
   } = useFetchMessages()
   const { chatId } = useParams()
   const { bgColor } = getActiveColorRandomById(chatId)
-  const queryClient = useQueryClient()
-  const myPrivateAgent = queryClient.getQueryData([
-    QueryDataKeys.DELEGATE_PRIVATE_AGENT,
-    chatId,
-  ])
+  const { data: myPrivateAgent } = useQuery({
+    queryKey: [QueryDataKeys.DELEGATE_PRIVATE_AGENT, chatId],
+    enabled: !!chatId,
+    staleTime: 60 * 60 * 1000,
+    refetchOnMount: false,
+  })
   const { spacing } = useStyleSpacing()
 
   const getBadgeIcon = (role: RoleUser) =>
