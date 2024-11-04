@@ -22,21 +22,21 @@ const AgentInfoCard = () => {
 
   return (
     <>
-      <div className="mx-auto max-w-[768px] rounded-[14px] border border-mercury-100 bg-mercury-50 p-4">
-        <div className="flex gap-x-4">
+      <div className="mx-auto max-w-[768px] border border-mercury-100 bg-mercury-50 p-3 md:rounded-[14px] md:p-4">
+        <div className="flex gap-x-3 md:gap-x-4">
           <AvatarCustom
             src={agentInfo?.group?.userB?.avatar}
             badgeClassName={getBadgeColor(RoleUser.BOT)}
             badgeIcon={<FilledBrainAIIcon />}
           />
-          <div className="flex-1">
-            <div className="flex items-center justify-between gap-x-4">
+          <div className="flex-1 space-y-2">
+            <div className="flex justify-between gap-x-2 md:gap-x-4">
               <div>
                 <h4 className="text-16 font-bold text-mercury-950">
                   {agentInfo?.group?.userB?.username}
                 </h4>
-                <div className="flex items-center gap-x-2">
-                  <span className="text-16 font-medium text-mercury-600">
+                <div className="flex items-center gap-x-1 max-[320px]:flex-wrap md:gap-x-2">
+                  <span className="text-14 font-medium text-mercury-600 md:text-16">
                     Create by
                   </span>
                   <div className="flex cursor-pointer items-center gap-x-1">
@@ -47,7 +47,7 @@ const AgentInfoCard = () => {
                     <Link
                       to={`${PATH_NAMES.AUTHOR_PROFILE}/${agentInfo?.group?.userB?.id}`}
                     >
-                      <span className="text-16 font-bold text-brown-10 hover:text-brown-10/70">
+                      <span className="line-clamp-1 text-16 font-bold text-brown-10 hover:text-brown-10/70">
                         {agentInfo?.group?.userB?.username}
                       </span>
                     </Link>
@@ -55,25 +55,25 @@ const AgentInfoCard = () => {
                 </div>
               </div>
 
-              <div className="flex gap-x-2">
+              <div className="flex gap-x-1 md:gap-x-2">
                 <Button
                   isIconOnly
                   onClick={onOpen}
-                  className="h-9 min-w-[52px] rounded-full border border-mercury-50 bg-mercury-100"
+                  className="rounded-full border border-mercury-50 bg-mercury-100 md:h-9 md:min-w-[52px]"
                 >
                   <ShareWithQrIcon />
                 </Button>
                 <Button
                   isDisabled
                   isIconOnly
-                  className="h-9 min-w-[52px] rounded-full border border-mercury-50 bg-mercury-100"
+                  className="rounded-full border border-mercury-50 bg-mercury-100 md:h-9 md:min-w-[52px]"
                 >
                   <ThreeDotsCircleIcon />
                 </Button>
               </div>
             </div>
 
-            <div className="flex items-center justify-between gap-x-4">
+            <div className="flex items-center justify-between gap-x-2 md:gap-x-4">
               <p className="line-clamp-2 max-w-[510px] text-14 font-medium text-mercury-600">
                 {agentInfo?.group?.userB?.description || "Distilled AI Agent"}
               </p>
