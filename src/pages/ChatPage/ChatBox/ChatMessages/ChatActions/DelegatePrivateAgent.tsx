@@ -20,7 +20,6 @@ const DelegatePrivateAgent: React.FC = () => {
   const callCheckStatusBotInGroup = async () => {
     const response = await checkStatusBotInGroup(groupId)
     if (response?.data) {
-      console.log({ response })
       return response?.data
     }
   }
@@ -29,7 +28,9 @@ const DelegatePrivateAgent: React.FC = () => {
     queryKey: [QueryDataKeys.DELEGATE_PRIVATE_AGENT, groupId],
     queryFn: callCheckStatusBotInGroup,
     enabled: !!groupId,
+    refetchOnMount: false,
     retry: false,
+    staleTime: 60 * 60 * 1000,
   })
 
   const botStatus = botInfo?.status
