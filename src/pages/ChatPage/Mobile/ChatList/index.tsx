@@ -58,7 +58,7 @@ const ChatList = () => {
           avatarUrl={groupItem.group.image}
           publicAddress={groupItem.group.name}
           userName={groupItem.group.name}
-          badgeClassName={isLive ? "bg-[#FF075A]" : ""}
+          badgeClassName={isLive ? "bg-lgd-code-hot-ramp" : ""}
           isLive={isLive}
           usernameClassName={isLive && isActive ? "font-semibold" : ""}
         />
