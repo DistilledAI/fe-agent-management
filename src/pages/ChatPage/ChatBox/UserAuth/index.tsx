@@ -3,16 +3,15 @@ import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
 import { WalletIcon } from "@components/Icons/Wallet"
 import { RootState } from "@configs/store"
 import { PATH_NAMES, RoleUser } from "@constants/index"
-import { Button, useDisclosure } from "@nextui-org/react"
+import { Button } from "@nextui-org/react"
 import useFetchDetail from "@pages/ChatPage/Mobile/ChatDetail/useFetch"
 import { useQuery } from "@tanstack/react-query"
-import { centerTextEllipsis, getActiveColorRandomById } from "@utils/index"
+import { getActiveColorRandomById } from "@utils/index"
 import { useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
 import { getMyPrivateAgent } from "services/chat"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
-import AccountSetting from "./AccountSetting"
 import AvatarCustom from "@components/AvatarCustom"
 
 interface UserAuthProps {
@@ -24,7 +23,6 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const navigate = useNavigate()
   const { groupDetail, chatId } = useFetchDetail()
   const { pathname } = useLocation()
-  const { isOpen, onClose, onOpen } = useDisclosure()
 
   const { data } = useQuery({
     queryKey: [QueryDataKeys.MY_BOT_LIST],
@@ -58,7 +56,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
             </div>
           </Button>
           <Button
-            onClick={onOpen}
+            onClick={() => navigate(PATH_NAMES.ACCOUNT)}
             className="btn-primary h-11 w-fit max-md:!h-auto max-md:!w-auto max-md:min-w-0 max-md:gap-0 max-md:p-0"
           >
             <AvatarCustom
@@ -66,11 +64,8 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
               src={user.avatar}
               className="h-8 w-8"
             />
-            <span className="text-base max-md:hidden">
-              {centerTextEllipsis(user.publicAddress, 6)}
-            </span>
+            <span className="text-base max-md:hidden">{user.username}</span>
           </Button>
-          <AccountSetting isOpen={isOpen} onClose={onClose} />
         </div>
       ) : (
         <Button

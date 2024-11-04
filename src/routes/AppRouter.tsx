@@ -4,6 +4,7 @@ import ProtectedByAuth from "@components/Layout/ProtectedByAuth"
 import { ChatDetailLoadingPage } from "@components/LoadingMobile"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
+import Account from "@pages/Account"
 import AddMyData from "@pages/AddMyData"
 import ChatBoxLive from "@pages/ChatBoxLive"
 import ChatMyAgent from "@pages/ChatMyAgent"
@@ -23,6 +24,13 @@ const AppRouter = () => {
         path={PATH_NAMES.HOME}
         element={isMobile ? <MainLayout /> : <MainLayoutDesktop />}
       >
+        {/* Route Protected By Auth */}
+        <Route path={PATH_NAMES.HOME} element={<ProtectedByAuth />}>
+          <Route path={PATH_NAMES.MY_DATA} element={<MyData />} />
+          <Route path={PATH_NAMES.ACCOUNT} element={<Account />} />
+        </Route>
+
+        {/* Route Regular */}
         <Route
           path={PATH_NAMES.HOME}
           element={isMobile ? <ChatPageMobile /> : <ChatBox />}
@@ -44,14 +52,6 @@ const AppRouter = () => {
           element={isMobile ? <ChatPageMobile /> : <ChatMyAgent />}
         />
         <Route path={PATH_NAMES.MARKETPLACE} element={<Marketplace />} />
-        <Route
-          path={PATH_NAMES.MY_DATA}
-          element={
-            <ProtectedByAuth>
-              <MyData />
-            </ProtectedByAuth>
-          }
-        />
         <Route
           path={`${PATH_NAMES.ADD_MY_DATA}/:botId`}
           element={<AddMyData />}
