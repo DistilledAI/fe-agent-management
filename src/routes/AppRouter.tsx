@@ -5,6 +5,7 @@ import { ChatDetailLoadingPage } from "@components/LoadingMobile"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
 import AddMyData from "@pages/AddMyData"
+import AuthorProfile from "@pages/AuthorProfile"
 import ChatBoxLive from "@pages/ChatBoxLive"
 import ChatMyAgent from "@pages/ChatMyAgent"
 import ChatBox from "@pages/ChatPage/ChatBox"
@@ -58,6 +59,10 @@ const AppRouter = () => {
           element={<AddMyData />}
         />
         <Route path={PATH_NAMES.ADD_MY_DATA} element={<AddMyData />} />
+        <Route
+          path={`${PATH_NAMES.AUTHOR_PROFILE}/:authorId`}
+          element={<AuthorProfile />}
+        />
         {isMobile && (
           <>
             <Route

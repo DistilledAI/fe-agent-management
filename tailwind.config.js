@@ -93,6 +93,8 @@ export default {
           "linear-gradient(65deg, #F5DCE2 16.01%, #F4E7DC 83.99%)",
         "fading-white":
           "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #FFF 100%)",
+        "lgd-muted-beige":
+          "linear-gradient(90deg, rgba(181, 141, 90, 0.10) 0%, rgba(162, 132, 94, 0.00) 100%)",
       },
       boxShadow: {
         1: "0px 0px 20px 0px rgba(0, 0, 0, 0.01)",
