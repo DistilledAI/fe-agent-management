@@ -10,6 +10,7 @@ export const PATH_NAMES = {
   MARKETPLACE: "/marketplace",
   MY_DATA: "/my-data",
   ADD_MY_DATA: "/add-my-data",
+  AUTHOR_PROFILE: "/author-profile",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {
