@@ -18,7 +18,7 @@ import {
   RoleChat,
 } from "./helpers"
 import useFetchMessages from "./useFetchMessages"
-import AgentInfoCard from "./AgentInfoCard"
+// import AgentInfoCard from "./AgentInfoCard"
 
 const ChatMessages = () => {
   const {
@@ -86,7 +86,7 @@ const ChatMessages = () => {
   return (
     <>
       <ChatWindow
-        Header={<AgentInfoCard />}
+        // Header={<AgentInfoCard />}
         messages={messages}
         itemContent={renderMessage}
         isLoading={isLoading}
