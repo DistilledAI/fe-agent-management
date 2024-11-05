@@ -11,7 +11,7 @@ import React from "react"
 import TableData from "../Components/TableData"
 import TableDataMobile from "../Components/TableDataMobile"
 import DeleteData from "../DeleteData"
-import SyncData from "../SyncData"
+import SyncData, { SyncLabel } from "../SyncData"
 import useFetchByCategory from "../useFetchByCategory"
 
 enum ColumnKey {
@@ -127,11 +127,14 @@ const LinkData: React.FC<{
 
   return (
     <div>
-      <HeadSectionData
-        iconTitle={<SocialLinkIcon color="#A2845E" size={24} />}
-        title="Website Links/Social media"
-        addTitle="Add link"
-      />
+      <div className="flex justify-between">
+        <HeadSectionData
+          iconTitle={<SocialLinkIcon color="#A2845E" size={24} />}
+          title="Website Links/Social media"
+          addTitle="Add link"
+        />
+        <SyncLabel />
+      </div>
       <div className="mt-4">
         {isMobile ? (
           <TableDataMobile

@@ -9,7 +9,7 @@ import React from "react"
 import TableData from "../Components/TableData"
 import TableDataMobile from "../Components/TableDataMobile"
 import DeleteData from "../DeleteData"
-import SyncData from "../SyncData"
+import SyncData, { SyncLabel } from "../SyncData"
 import useFetchByCategory from "../useFetchByCategory"
 
 enum ColumnKey {
@@ -123,11 +123,14 @@ const MediaData: React.FC<{
 
   return (
     <div>
-      <HeadSectionData
-        iconTitle={<PhotoPlusIcon color="#A2845E" size={24} />}
-        title="Photos & Videos "
-        addTitle="Add media"
-      />
+      <div className="flex justify-between">
+        <HeadSectionData
+          iconTitle={<PhotoPlusIcon color="#A2845E" size={24} />}
+          title="Photos & Videos "
+          addTitle="Add media"
+        />
+        <SyncLabel />
+      </div>
       <div className="mt-4">
         {isMobile ? (
           <TableDataMobile
