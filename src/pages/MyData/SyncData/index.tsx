@@ -1,3 +1,4 @@
+import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
 import { RefreshIcon } from "@components/Icons/RefreshIcon"
 import { Spinner } from "@nextui-org/react"
 import { useState } from "react"
@@ -48,7 +49,8 @@ const SyncData: React.FC<SyncDataProps> = ({ dataId, botId }) => {
 
 export const SyncLabel = () => {
   return (
-    <div className="w-full text-end">
+    <div className="flex w-full items-center justify-end gap-1">
+      <InfoCircleIcon />
       <span className="text-base-14-sb italic text-[#F78500]">
         Sync agents with new data
       </span>
