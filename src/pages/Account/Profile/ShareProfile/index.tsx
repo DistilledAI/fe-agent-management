@@ -15,6 +15,7 @@ const ShareProfile = () => {
       <Button
         className="flex w-full rounded-full bg-mercury-100 max-md:min-h-12"
         onClick={onOpen}
+        isDisabled={true}
       >
         <ShareWithQrIcon />
         <span className="font-medium text-mercury-950">Share your profile</span>
