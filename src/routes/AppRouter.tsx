@@ -8,6 +8,7 @@ import AddMyData from "@pages/AddMyData"
 import ChatBoxLive from "@pages/ChatBoxLive"
 import ChatMyAgent from "@pages/ChatMyAgent"
 import ChatBox from "@pages/ChatPage/ChatBox"
+import EditAgent from "@pages/ChatPage/EditAgent"
 import ChatPageMobile from "@pages/ChatPage/Mobile"
 import MyPrivateAgentContentMobile from "@pages/ChatPage/Mobile/MyPrivateAgentContentMobile"
 import Marketplace from "@pages/Marketplace"
@@ -65,6 +66,8 @@ const AppRouter = () => {
             />
           </>
         )}
+
+        <Route path={PATH_NAMES.EDIT_AGENT} element={<EditAgent />} />
       </Route>
     </Routes>
   )
