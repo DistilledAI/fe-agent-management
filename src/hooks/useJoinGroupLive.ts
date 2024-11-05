@@ -10,7 +10,7 @@ import { useAppDispatch } from "./useAppRedux"
 import useAuthState from "./useAuthState"
 
 const useJoinGroupLive = () => {
-  const { pathname } = useLocation()
+  const { pathname, state } = useLocation()
   const { chatId } = useParams()
   const isInvitePathName = pathname === `${PATH_NAMES.CHAT_LIVE}/${chatId}`
   const { isLogin, user } = useAuthState()
@@ -75,14 +75,19 @@ const useJoinGroupLive = () => {
     // user join group live
     ;(async () => {
       const isJoinLiveLogged =
-        chatId && isInvitePathName && user?.id && !isLogged && isLogin
+        chatId &&
+        isInvitePathName &&
+        user?.id &&
+        !isLogged &&
+        isLogin &&
+        !state?.isGroupJoined
 
       if (isJoinLiveLogged) {
         await joinGroupLive(user)
         fetchGroups()
       }
     })()
-  }, [isInvitePathName, chatId, user?.id, isLogin, isLogged])
+  }, [isInvitePathName, chatId, isLogin, isLogged, state?.isGroupJoined])
 
   return {}
 }
