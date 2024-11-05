@@ -3,7 +3,7 @@ import { Button } from "@nextui-org/react"
 
 const MyCredits = () => {
   return (
-    <ComingSoon position="right">
+    <ComingSoon position="top">
       <div
         style={{
           background:
@@ -20,10 +20,10 @@ const MyCredits = () => {
           <span className="font-medium text-mercury-600">$0</span>
         </div>
         <div className="flex items-center justify-between gap-4">
-          <Button className="w-full rounded-full border border-mercury-900 bg-mercury-900/20 text-[14px] font-medium text-white max-md:min-h-14 md:text-[16px]">
+          <Button className="w-full rounded-full border border-mercury-900 bg-mercury-900/20 text-[14px] font-medium text-white max-md:min-h-12 md:text-[16px]">
             Backup your wallet
           </Button>
-          <Button className="w-full rounded-full border border-mercury-900 bg-[#C3C3C333] text-[14px] font-medium text-white max-md:min-h-14 md:text-[16px]">
+          <Button className="w-full rounded-full border border-mercury-900 bg-[#C3C3C333] text-[14px] font-medium text-white max-md:min-h-12 md:text-[16px]">
             Get more credits
           </Button>
         </div>
