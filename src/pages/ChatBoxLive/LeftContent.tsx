@@ -1,4 +1,5 @@
 import bitcoinMaxIntro from "@assets/video/bitcoin-max-intro-ai.mp4"
+import ComingSoon from "@components/ComingSoon"
 import { ArrowsSort } from "@components/Icons/Arrow"
 import { TwitterIcon } from "@components/Icons/Twitter"
 import { VolumeIcon, VolumeOffIcon } from "@components/Icons/Voice"
@@ -65,10 +66,15 @@ const LeftContent: React.FC = () => {
               <TwitterIcon />
               <span className="text-base text-mercury-900">Twitter (AI)</span>
             </Button>
-            <Button className="h-[44px] w-full rounded-full bg-mercury-950 text-white">
-              <ArrowsSort color="#FFFF" />
-              <span className="text-base text-white">Trade BTCMX</span>
-            </Button>
+            <ComingSoon>
+              <Button
+                className="h-[44px] w-full rounded-full bg-mercury-950 text-white"
+                isDisabled
+              >
+                <ArrowsSort color="#FFFF" />
+                <span className="text-base text-white">Trade BTCMX</span>
+              </Button>
+            </ComingSoon>
           </div>
         </div>
       </div>
