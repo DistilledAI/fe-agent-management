@@ -26,12 +26,6 @@ const AppRouter = () => {
         path={PATH_NAMES.HOME}
         element={isMobile ? <MainLayout /> : <MainLayoutDesktop />}
       >
-        {/* Route Protected By Auth */}
-        <Route path={PATH_NAMES.HOME} element={<ProtectedByAuth />}>
-          <Route path={PATH_NAMES.MY_DATA} element={<MyData />} />
-          <Route path={PATH_NAMES.ACCOUNT} element={<Account />} />
-        </Route>
-
         {/* Route Regular */}
         <Route
           path={PATH_NAMES.HOME}
@@ -73,6 +67,11 @@ const AppRouter = () => {
         )}
 
         <Route path={PATH_NAMES.EDIT_AGENT} element={<EditAgent />} />
+        {/* Route Protected By Auth */}
+        <Route path={PATH_NAMES.HOME} element={<ProtectedByAuth />}>
+          <Route path={PATH_NAMES.MY_DATA} element={<MyData />} />
+          <Route path={PATH_NAMES.ACCOUNT} element={<Account />} />
+        </Route>
       </Route>
     </Routes>
   )
