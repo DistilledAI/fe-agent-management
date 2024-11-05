@@ -72,6 +72,7 @@ const AppRouter = () => {
           <Route path={PATH_NAMES.MY_DATA} element={<MyData />} />
           <Route path={PATH_NAMES.ACCOUNT} element={<Account />} />
         </Route>
+        <Route path={PATH_NAMES.EDIT_AGENT} element={<EditAgent />} />
       </Route>
     </Routes>
   )
