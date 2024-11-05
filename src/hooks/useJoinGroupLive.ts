@@ -1,6 +1,6 @@
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import { useLocation, useParams } from "react-router-dom"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { envConfig } from "@configs/env"
 import { inviteUserJoinGroup } from "services/chat"
 import useAuthState from "./useAuthState"
@@ -15,8 +15,13 @@ const useJoinGroupLive = () => {
   const isInvitePathName = pathname === `${PATH_NAMES.CHAT_LIVE}/${chatId}`
   const { isLogin, user } = useAuthState()
   const dispatch = useAppDispatch()
+  const [isLogged, setIsLogged] = useState(false)
   const isAnonymous = user?.role === RoleUser.ANONYMOUS
   const { fetchGroups } = useFetchGroups()
+
+  useEffect(() => {
+    if (!isAnonymous) setIsLogged(false)
+  }, [isAnonymous])
 
   const joinGroupLive = async (user: IUser, accessToken: string = "") => {
     const groupId = chatId || envConfig.groupIdMax
@@ -42,6 +47,7 @@ const useJoinGroupLive = () => {
     if (userAnonymous) {
       const isJoined = await joinGroupLive(userAnonymous, accessToken)
       if (isJoined) {
+        setIsLogged(true)
         setTimeout(async () => {
           await dispatch(
             loginSuccessByAnonymous({
@@ -69,14 +75,14 @@ const useJoinGroupLive = () => {
     // user join group live
     ;(async () => {
       const isJoinLiveLogged =
-        chatId && isInvitePathName && user?.id && !isAnonymous && isLogin
+        chatId && isInvitePathName && user?.id && !isLogged && isLogin
 
       if (isJoinLiveLogged) {
         await joinGroupLive(user)
         fetchGroups()
       }
     })()
-  }, [isInvitePathName, chatId, user?.id, isAnonymous, isLogin])
+  }, [isInvitePathName, chatId, user?.id, isLogin, isLogged])
 
   return {}
 }
