@@ -81,7 +81,7 @@ const DrawerLeft: React.FC<Props> = ({ isOpen, onClose }) => {
           {MENU.map(
             (item, index) =>
               !item.hidden && (
-                <ComingSoon isOffComing={!item.isComingSoon}>
+                <ComingSoon isOffComing={!item.isComingSoon} key={index}>
                   <Button
                     key={index}
                     className="btn-primary min-h-[60px] w-full justify-start"
