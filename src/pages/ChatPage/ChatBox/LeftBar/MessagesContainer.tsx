@@ -115,15 +115,16 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
       [QueryDataKeys.NOTIFICATION_GROUPS],
       (prev = []) => prev.filter((id) => id !== groupItem.groupId),
     )
-    if (isBotLive) {
-      return navigate(`${PATH_NAMES.CHAT_LIVE}/${groupItem.groupId}`)
-    }
-    navigate(`${PATH_NAMES.CHAT}/${groupItem.groupId}`)
     const chatWindow = document.getElementById("chat-window")
     if (chatWindow) {
       chatWindow.style.scrollBehavior = "auto"
       chatWindow.scrollTop = chatWindow.scrollHeight
     }
+
+    if (isBotLive) {
+      return navigate(`${PATH_NAMES.CHAT_LIVE}/${groupItem.groupId}`)
+    }
+    navigate(`${PATH_NAMES.CHAT}/${groupItem.groupId}`)
   }
 
   return (

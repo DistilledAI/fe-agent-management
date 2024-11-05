@@ -1,9 +1,29 @@
 import bitcoinMaxIntro from "@assets/video/bitcoin-max-intro-ai.mp4"
 import { ArrowsSort } from "@components/Icons/Arrow"
 import { TwitterIcon } from "@components/Icons/Twitter"
+import { VolumeIcon, VolumeOffIcon } from "@components/Icons/Voice"
 import { Button, ScrollShadow } from "@nextui-org/react"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useRef } from "react"
 
 const LeftContent: React.FC = () => {
+  const videoRef = useRef<any>(null)
+  const { data: isMuted = false } = useQuery<boolean>({
+    queryKey: ["agent-live-volume"],
+    staleTime: 60 * 60 * 1000,
+  })
+  const queryClient = useQueryClient()
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted
+      queryClient.setQueryData(
+        ["agent-live-volume"],
+        () => videoRef.current.muted,
+      )
+    }
+  }
+
   const openXLink = () => {
     window.open("https://x.com/maxisbuyin", "_blank")
   }
@@ -14,6 +34,8 @@ const LeftContent: React.FC = () => {
         <div className="flex h-full flex-col max-lg:h-auto">
           <div className="relative w-full overflow-hidden rounded-[32px] max-lg:flex-none">
             <video
+              ref={videoRef}
+              muted={isMuted}
               autoPlay
               playsInline
               loop
@@ -22,6 +44,17 @@ const LeftContent: React.FC = () => {
               <source src={bitcoinMaxIntro} type="video/mp4" />
               <track kind="captions"></track>
             </video>
+            <button
+              type="button"
+              onClick={toggleMute}
+              className="absolute left-5 top-5 z-10 p-[1px]"
+            >
+              {isMuted ? (
+                <VolumeOffIcon color="white" />
+              ) : (
+                <VolumeIcon color="white" />
+              )}
+            </button>
           </div>
 
           <div className="mt-6 flex items-center justify-between gap-2">
