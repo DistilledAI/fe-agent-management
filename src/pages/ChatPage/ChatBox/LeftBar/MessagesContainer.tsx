@@ -122,7 +122,11 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
     }
 
     if (isBotLive) {
-      return navigate(`${PATH_NAMES.CHAT_LIVE}/${groupItem.groupId}`)
+      return navigate(`${PATH_NAMES.CHAT_LIVE}/${groupItem.groupId}`, {
+        state: {
+          isGroupJoined: true,
+        },
+      })
     }
     navigate(`${PATH_NAMES.CHAT}/${groupItem.groupId}`)
   }
