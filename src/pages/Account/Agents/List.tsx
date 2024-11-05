@@ -1,5 +1,4 @@
 import AvatarCustom from "@components/AvatarCustom"
-import { SettingIcon } from "@components/Icons"
 import { CopyIcon } from "@components/Icons/Copy"
 import { ShareWithQrIcon } from "@components/Icons/Share"
 import TableData from "@pages/MyData/Components/TableData"
@@ -66,19 +65,20 @@ const ListAgent: React.FC<{
                 <p className="line-clamp-1 font-bold text-mercury-950">
                   {item.username}
                 </p>
-                <div
-                  onClick={() => {
-                    if (isPending(item.status)) return
-                    onOpen()
-                    setAgentSelected(item.id)
-                  }}
-                  className={twMerge(
-                    "cursor-pointer",
-                    isPending(item.status) ? "cursor-default opacity-70" : "",
-                  )}
-                >
-                  <ShareWithQrIcon />
-                </div>
+                {!isPending(item.status) && (
+                  <div
+                    onClick={() => {
+                      onOpen()
+                      setAgentSelected(item.id)
+                    }}
+                    className={twMerge(
+                      "cursor-pointer",
+                      isPending(item.status) ? "cursor-default opacity-70" : "",
+                    )}
+                  >
+                    <ShareWithQrIcon />
+                  </div>
+                )}
               </div>
               <p className="line-clamp-1 text-13 text-mercury-600">
                 {item.description}
@@ -88,11 +88,7 @@ const ListAgent: React.FC<{
         )
 
       case ColumnKey.Action:
-        return (
-          <div className="inline-flex cursor-pointer items-center gap-1 font-medium text-[#A2845E] hover:opacity-70">
-            <SettingIcon /> Edit
-          </div>
-        )
+        return <div></div>
 
       case ColumnKey.Status:
         return (
