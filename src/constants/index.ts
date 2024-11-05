@@ -85,3 +85,14 @@ export const ACTIVE_COLORS = [
     textColor: "text-code-agent-7",
   },
 ]
+
+export const MAP_DISPLAY_FROM_STATUS_MY_AGENT = {
+  [STATUS_AGENT.PENDING]: {
+    label: "Awaiting creation",
+    color: "#FF9500",
+  },
+  [STATUS_AGENT.ACTIVE]: {
+    label: "Active",
+    color: "#34C759",
+  },
+}

@@ -5,7 +5,11 @@ import { brainAIIcon } from "@assets/svg"
 import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
 import { MetamaskIconSmall } from "@components/Icons/MetamaskIcon"
 import { ShareWithCloudIcon } from "@components/Icons/Share"
-import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
+import {
+  MAP_DISPLAY_FROM_STATUS_MY_AGENT,
+  PATH_NAMES,
+  STATUS_AGENT,
+} from "@constants/index"
 import { Button } from "@nextui-org/react"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { useEffect, useState } from "react"
@@ -20,9 +24,6 @@ const PrivateAgent: React.FC<{
   const navigate = useNavigate()
   const firstBot = listBot?.[0]
   const status = firstBot?.status
-  const MAP_LABEL_FROM_STATUS = {
-    [STATUS_AGENT.PENDING]: "Awaiting creation",
-  }
   const isPending = status === STATUS_AGENT.PENDING
 
   const callGetMyPrivateAgent = async () => {
@@ -47,8 +48,11 @@ const PrivateAgent: React.FC<{
           My Private Agent:
         </span>
         <div className="relative flex items-center gap-1">
-          <span className="text-base font-medium text-[#FF9500]">
-            {MAP_LABEL_FROM_STATUS[status]}
+          <span
+            style={{ color: MAP_DISPLAY_FROM_STATUS_MY_AGENT[status]?.color }}
+            className="text-base font-medium"
+          >
+            {MAP_DISPLAY_FROM_STATUS_MY_AGENT[status]?.label ?? "- - -"}
           </span>
           <AvatarCustom src={firstBot?.avatar || brainAIIcon} className="p-1" />
           {/* <Button className="absolute -bottom-2 -right-1 flex h-6 w-6 min-w-0 items-center justify-center rounded-full bg-white p-0">

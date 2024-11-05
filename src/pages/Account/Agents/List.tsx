@@ -6,7 +6,11 @@ import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import React, { useState } from "react"
 import { IAgentData } from "types/user"
 import ShareModal from "../Profile/ShareProfile/ShareModal"
-import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
+import {
+  MAP_DISPLAY_FROM_STATUS_MY_AGENT,
+  PATH_NAMES,
+  STATUS_AGENT,
+} from "@constants/index"
 import { useDisclosure } from "@nextui-org/react"
 import { twMerge } from "tailwind-merge"
 
@@ -44,10 +48,6 @@ const ListAgent: React.FC<{
   const { isOpen, onClose, onOpen } = useDisclosure()
   const [agentSelected, setAgentSelected] = useState<number | null>(null)
   const isPending = (status: number) => status === STATUS_AGENT.PENDING
-
-  const MAP_LABEL_FROM_STATUS = {
-    [STATUS_AGENT.PENDING]: "Awaiting creation",
-  }
 
   const renderCell = (item: Record<string, any>, columnKey: string) => {
     switch (columnKey) {
@@ -92,8 +92,12 @@ const ListAgent: React.FC<{
 
       case ColumnKey.Status:
         return (
-          <div className="text-[#FF9500]">
-            {MAP_LABEL_FROM_STATUS[item.status]}
+          <div
+            style={{
+              color: MAP_DISPLAY_FROM_STATUS_MY_AGENT[item.status]?.color,
+            }}
+          >
+            {MAP_DISPLAY_FROM_STATUS_MY_AGENT[item.status]?.label ?? "- - -"}
           </div>
         )
 
