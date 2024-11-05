@@ -1,13 +1,13 @@
-import { PATH_NAMES, RoleUser } from "@constants/index"
-import { useLocation, useParams } from "react-router-dom"
-import { useEffect, useState } from "react"
 import { envConfig } from "@configs/env"
-import { inviteUserJoinGroup } from "services/chat"
-import useAuthState from "./useAuthState"
-import { postCreateAnonymous } from "services/auth"
-import { IUser, loginSuccessByAnonymous } from "@reducers/userSlice"
-import { useAppDispatch } from "./useAppRedux"
+import { PATH_NAMES, RoleUser } from "@constants/index"
 import useFetchGroups from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import { IUser, loginSuccessByAnonymous } from "@reducers/userSlice"
+import { useEffect, useState } from "react"
+import { useLocation, useParams } from "react-router-dom"
+import { postCreateAnonymous } from "services/auth"
+import { inviteUserJoinGroup } from "services/chat"
+import { useAppDispatch } from "./useAppRedux"
+import useAuthState from "./useAuthState"
 
 const useJoinGroupLive = () => {
   const { pathname } = useLocation()
@@ -28,7 +28,7 @@ const useJoinGroupLive = () => {
     const payload = {
       groupId,
       member: [user?.id],
-    }
+    } as any
     const headers = accessToken
       ? {
           Authorization: `Bearer ${accessToken}`,
