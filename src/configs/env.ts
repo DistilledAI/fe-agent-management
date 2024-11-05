@@ -3,5 +3,6 @@ export const envConfig = {
   socketUrl: import.meta.env.VITE_SOCKET_URL,
   groupDefaultForPrivateAgent: import.meta.env
     .VITE_GROUP_DEFAULT_FOR_PRIVATE_AGENT,
-  groupIdMax: import.meta.env.VITE_IS_STAGING ? 98 : 1177,
+  groupIdMax:
+    window.location.host === "mesh-distilled-ai-dev.web.app" ? 98 : 1177,
 }
