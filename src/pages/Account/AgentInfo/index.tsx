@@ -10,8 +10,8 @@ const AgentInfo: React.FC<{
   const navigate = useNavigate()
 
   return (
-    <div className="grid grid-cols-2 gap-10 rounded-[22px] bg-mercury-30 p-4">
-      <div className="flex flex-col gap-4">
+    <div className="grid grid-cols-2 gap-10 rounded-[22px] bg-mercury-30 p-4 max-md:grid-cols-1 max-md:gap-4 max-md:bg-white">
+      <div className="flex flex-col gap-4 max-md:order-2">
         <div className="flex items-center justify-between">
           <span className="text-mercury-600">IP Address:</span>
           <span className="text-mercury-900">203.0.11.23</span>

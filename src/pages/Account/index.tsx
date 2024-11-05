@@ -29,7 +29,7 @@ const Account = () => {
           logout()
           navigate(PATH_NAMES.HOME)
         }}
-        className="ml-3 cursor-pointer max-md:absolute max-md:left-3 max-md:top-5"
+        className="ml-3 cursor-pointer"
       >
         <LogoutIcon color="#FF3B30" />
       </div>
@@ -37,7 +37,7 @@ const Account = () => {
   }
 
   return (
-    <div className="mx-auto w-[800px] max-w-full px-4">
+    <div className="mx-auto w-[800px] max-w-full px-4 max-md:mt-4 max-md:pb-[80px]">
       <h3 className="mb-2 text-18 font-semibold md:text-24">My wallet</h3>
       <div className="inline-flex items-center">
         <div
@@ -60,8 +60,8 @@ const Account = () => {
         </div>
         {renderLogoutBtn()}
       </div>
-      <div className="mt-10 flex flex-col gap-4">
-        <div className="grid grid-cols-2 gap-4">
+      <div className="mt-10 flex flex-col gap-4 max-md:mt-7">
+        <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
           <div>
             <MyCredits />
           </div>

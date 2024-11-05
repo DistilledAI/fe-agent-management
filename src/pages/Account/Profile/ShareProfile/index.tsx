@@ -13,7 +13,7 @@ const ShareProfile = () => {
   return (
     <>
       <Button
-        className="flex w-full rounded-full bg-mercury-100 max-md:min-h-14"
+        className="flex w-full rounded-full bg-mercury-100 max-md:min-h-12"
         onClick={onOpen}
       >
         <ShareWithQrIcon />
