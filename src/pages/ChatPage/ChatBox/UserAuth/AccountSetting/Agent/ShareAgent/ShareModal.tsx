@@ -49,7 +49,7 @@ const ShareModal = ({ isOpen, onClose, agentData }: ShareModal) => {
       <ModalContent>
         <ModalHeader className="relative">
           <h3 className="flex-1 text-center text-24 font-semibold text-mercury-950">
-            My Agent QR
+            Agent QR
           </h3>
           <CloseButton
             onClose={onClose}
@@ -61,7 +61,7 @@ const ShareModal = ({ isOpen, onClose, agentData }: ShareModal) => {
             ref={qrRef}
             value={inviteUrl}
             size={256}
-            title="My Agent QR"
+            title="Agent QR"
             imageSettings={{
               src: distilledAIIcon,
               width: 38,

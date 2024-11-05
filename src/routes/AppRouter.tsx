@@ -6,6 +6,7 @@ import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
 import Account from "@pages/Account"
 import AddMyData from "@pages/AddMyData"
+import AuthorProfile from "@pages/AuthorProfile"
 import ChatBoxLive from "@pages/ChatBoxLive"
 import ChatMyAgent from "@pages/ChatMyAgent"
 import ChatBox from "@pages/ChatPage/ChatBox"
@@ -44,7 +45,7 @@ const AppRouter = () => {
           element={<ChatBoxLive />}
         />
         <Route
-          path={`${PATH_NAMES.INVITE}/:inviteUserId`}
+          path={`${PATH_NAMES.INVITE}/:inviteAgentId`}
           element={isMobile ? <ChatDetailLoadingPage /> : <ChatBox />}
         />
         <Route
@@ -57,6 +58,10 @@ const AppRouter = () => {
           element={<AddMyData />}
         />
         <Route path={PATH_NAMES.ADD_MY_DATA} element={<AddMyData />} />
+        <Route
+          path={`${PATH_NAMES.AUTHOR_PROFILE}/:authorId`}
+          element={<AuthorProfile />}
+        />
         {isMobile && (
           <>
             <Route

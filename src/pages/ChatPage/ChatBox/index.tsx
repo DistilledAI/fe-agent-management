@@ -10,7 +10,7 @@ import SpeechRecognition from "react-speech-recognition"
 
 const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
-  const { chatId, inviteUserId, privateChatId } = useParams()
+  const { chatId, inviteAgentId, privateChatId } = useParams()
   const { isLogin } = useAuthState()
   const navigate = useNavigate()
   const groupId = privateChatId || chatId
@@ -24,7 +24,7 @@ const ChatBox = () => {
 
   return (
     <div className="relative h-full max-h-dvh w-full">
-      {(isLogin && chatId) || inviteUserId ? (
+      {(isLogin && chatId) || inviteAgentId ? (
         <>
           <ChatMessages />
           <ChatInput

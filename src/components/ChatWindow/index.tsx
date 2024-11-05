@@ -27,6 +27,7 @@ interface ChatWindowProps {
   isFetchingPreviousPage?: boolean
   isChatAction?: boolean
   style?: CSSProperties
+  Header?: React.ReactNode
 }
 
 const LIMIT = 20
@@ -45,6 +46,7 @@ const ChatWindow = ({
   isFetchingPreviousPage,
   isChatAction = false,
   style,
+  Header,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [isAtBottom, setIsAtBottom] = useState<boolean>(true)
@@ -65,7 +67,7 @@ const ChatWindow = ({
         align: style?.paddingBottom === "0px" ? "end" : "center",
       })
     }
-  }, [messages, isScrollBottom, chatId, style?.paddingBottom])
+  }, [messages, isScrollBottom, style?.paddingBottom, chatId])
 
   const onScroll = useCallback(
     async (e: React.UIEvent<HTMLDivElement>) => {
@@ -89,15 +91,21 @@ const ChatWindow = ({
   )
 
   const renderHeader = useMemo(
-    () => () =>
-      isFetchingPreviousPage && messages.length >= LIMIT ? (
-        <div className="my-4 flex h-full items-center justify-center">
-          <DotLoading />
-        </div>
-      ) : (
-        <></>
-      ),
-    [isFetchingPreviousPage, messages.length],
+    () => () => {
+      return (
+        <>
+          {isFetchingPreviousPage && messages.length >= LIMIT ? (
+            <div className="flex h-full items-center justify-center py-4">
+              <DotLoading />
+            </div>
+          ) : (
+            <></>
+          )}
+          {Header ? <div className="pb-4">{Header}</div> : <></>}
+        </>
+      )
+    },
+    [isFetchingPreviousPage, messages.length, Header],
   )
 
   const renderEmptyPlaceholder = () =>
@@ -131,6 +139,7 @@ const ChatWindow = ({
       {isLoading && <MessagesSkeleton />}
       {!isLoading && messages.length ? (
         <Virtuoso
+          id="chat-window"
           style={{
             height: "100%",
           }}

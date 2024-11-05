@@ -7,6 +7,7 @@ import useAuthState from "./useAuthState"
 import { postCreateAnonymous } from "services/auth"
 import { IUser, loginSuccessByAnonymous } from "@reducers/userSlice"
 import { useAppDispatch } from "./useAppRedux"
+import useFetchGroups from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 
 const useJoinGroupLive = () => {
   const { pathname } = useLocation()
@@ -16,6 +17,7 @@ const useJoinGroupLive = () => {
   const dispatch = useAppDispatch()
   const [isAnonymous, setIsAnonymous] = useState(false)
   const navigate = useNavigate()
+  const { fetchGroups } = useFetchGroups()
 
   const joinGroupLive = async (user: IUser, accessToken: string = "") => {
     const groupId = chatId || envConfig.groupIdMax
@@ -29,7 +31,9 @@ const useJoinGroupLive = () => {
         }
       : {}
     const res = await inviteUserJoinGroup(payload, headers)
-    navigate(`${PATH_NAMES.CHAT_LIVE}/${chatId}?isInvited=true`)
+    navigate(`${PATH_NAMES.CHAT_LIVE}/${chatId}`, {
+      replace: true,
+    })
     return !!res.data
   }
 
@@ -51,6 +55,7 @@ const useJoinGroupLive = () => {
               expiry,
             }),
           )
+          fetchGroups()
         }, 1)
       }
     }
