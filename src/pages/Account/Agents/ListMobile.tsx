@@ -1,5 +1,5 @@
 import AvatarCustom from "@components/AvatarCustom"
-import { SettingIcon } from "@components/Icons"
+// import { SettingIcon } from "@components/Icons"
 import { ShareWithQrIcon } from "@components/Icons/Share"
 import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
 import useLoadMoreByScroll from "@hooks/useLoadMoreByScroll"
@@ -50,32 +50,33 @@ const ListAgentMobile: React.FC<{
                       <p className="line-clamp-1 max-w-[150px] font-bold text-mercury-950">
                         {item.username}
                       </p>
-                      <div
-                        onClick={() => {
-                          if (isPending(item.status)) return
-                          onOpen()
-                          setAgentSelected(item.id)
-                        }}
-                        className={twMerge(
-                          "cursor-pointer",
-                          isPending(item.status)
-                            ? "cursor-default opacity-70"
-                            : "",
-                        )}
-                      >
-                        <ShareWithQrIcon />
-                      </div>
+                      {!isPending(item.status) && (
+                        <div
+                          onClick={() => {
+                            onOpen()
+                            setAgentSelected(item.id)
+                          }}
+                          className={twMerge(
+                            "cursor-pointer",
+                            isPending(item.status)
+                              ? "cursor-default opacity-70"
+                              : "",
+                          )}
+                        >
+                          <ShareWithQrIcon />
+                        </div>
+                      )}
                     </div>
                     <p className="line-clamp-1 text-13 text-mercury-600">
                       {item.description}
                     </p>
                   </div>
                 </div>
-                <div className="flex w-[50px] justify-end">
+                {/* <div className="flex w-[50px] justify-end">
                   <div className="inline-flex cursor-pointer items-center gap-1 text-14 font-medium text-[#A2845E] hover:opacity-70">
                     <SettingIcon /> Edit
                   </div>
-                </div>
+                </div> */}
               </div>
             )
           })

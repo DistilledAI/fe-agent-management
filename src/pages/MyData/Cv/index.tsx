@@ -77,7 +77,7 @@ const CvData: React.FC<{
       case ColumnKey.Name:
         return (
           <a className="hover:underline" href={item.value} target="_blank">
-            <span className="line-clamp-1 text-base text-mercury-950">
+            <span className="line-clamp-1 max-w-[200px] text-base text-mercury-950">
               {item[columnKey]}
             </span>
           </a>
