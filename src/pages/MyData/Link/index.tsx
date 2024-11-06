@@ -127,7 +127,7 @@ const LinkData: React.FC<{
 
   return (
     <div>
-      <div className="flex justify-between">
+      <div className="flex justify-between max-sm:flex-col max-sm:justify-start">
         <HeadSectionData
           iconTitle={<SocialLinkIcon color="#A2845E" size={24} />}
           title="Website Links/Social media"

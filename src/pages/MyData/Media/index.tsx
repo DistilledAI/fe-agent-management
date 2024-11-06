@@ -123,7 +123,7 @@ const MediaData: React.FC<{
 
   return (
     <div>
-      <div className="flex justify-between">
+      <div className="flex justify-between max-sm:flex-col max-sm:justify-start">
         <HeadSectionData
           iconTitle={<PhotoPlusIcon color="#A2845E" size={24} />}
           title="Photos & Videos "
