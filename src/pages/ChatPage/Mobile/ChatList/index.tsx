@@ -3,7 +3,7 @@ import AvatarGroup from "@components/AvatarGroup"
 import DotLoading from "@components/DotLoading"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
-import { RoleUser } from "@constants/index"
+import { PATH_NAMES, RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import DotNotification from "@pages/ChatPage/ChatBox/DotNotification"
 import {
@@ -40,6 +40,27 @@ const ChatList = () => {
     ) : (
       <FilledBrainAIIcon size={14} />
     )
+  }
+
+  const handleGroupClick = (groupItem: UserGroup, isBotLive: boolean) => {
+    queryClient.setQueryData<number[]>(
+      [QueryDataKeys.NOTIFICATION_GROUPS],
+      (prev = []) => prev.filter((id) => id !== groupItem.groupId),
+    )
+    const chatWindow = document.getElementById("chat-window")
+    if (chatWindow) {
+      chatWindow.style.scrollBehavior = "auto"
+      chatWindow.scrollTop = chatWindow.scrollHeight
+    }
+
+    if (isBotLive) {
+      return navigate(`${PATH_NAMES.CHAT_LIVE}/${groupItem.groupId}`, {
+        state: {
+          isGroupJoined: true,
+        },
+      })
+    }
+    navigate(`${PATH_NAMES.CHAT}/${groupItem.groupId}`)
   }
 
   const renderInfoGroup = (groupItem: UserGroup) => {
@@ -118,16 +139,14 @@ const ChatList = () => {
       }}
       itemContent={(_, groupItem) => {
         const isActive = Number(chatId) === groupItem.groupId
+        const isBotLive = groupItem.group.live === 1
+
         return (
           <div
             key={groupItem.id}
             aria-selected={isActive}
             onClick={() => {
-              queryClient.setQueryData<number[]>(
-                [QueryDataKeys.NOTIFICATION_GROUPS],
-                (prev = []) => prev.filter((id) => id !== groupItem.groupId),
-              )
-              navigate(`/chat/${groupItem.groupId}`)
+              handleGroupClick(groupItem, isBotLive)
             }}
             className="relative mb-2 gap-2 px-4 py-2"
           >
