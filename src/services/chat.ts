@@ -56,10 +56,20 @@ export const checkGroupDirect = async (data: IDataCreateGroupChat) => {
   })
 }
 
-export const leaveGroup = async (groupId: number) => {
+export const deleteGroup = async (groupId: number) => {
   return fetchApiAuth({
     method: "delete",
-    url: endpoint.LEAVE_GROUP(groupId),
+    url: endpoint.DELETE_GROUP(groupId),
+  })
+}
+
+export const leaveGroup = async (groupId: number) => {
+  return fetchApiAuth({
+    method: "post",
+    url: endpoint.LEAVE_GROUP,
+    data: {
+      groupId,
+    },
   })
 }
 
