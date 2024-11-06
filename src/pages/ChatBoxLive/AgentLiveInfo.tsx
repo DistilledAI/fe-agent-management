@@ -48,7 +48,7 @@ const AgentLiveInfo = () => {
             <TwitterButton />
             <AgentDescription />
           </ModalBody>
-          <ModalFooter className="px-3">
+          <ModalFooter className="px-3 pb-10">
             <Button
               className="h-14 w-full rounded-full bg-mercury-950 text-[16px] text-mercury-30"
               onClick={onClose}
