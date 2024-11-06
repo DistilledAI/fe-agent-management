@@ -4,10 +4,10 @@ import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
 import { RoleUser } from "@constants/index"
+import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useQuery } from "@tanstack/react-query"
 import { getActiveColorRandomById } from "@utils/index"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
-import { useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import ChatActions from "./ChatActions"
@@ -29,7 +29,7 @@ const ChatMessages = () => {
     hasPreviousMore,
     isFetchingPreviousPage,
   } = useFetchMessages()
-  const { chatId } = useParams()
+  const { chatId } = useGetChatId()
   const { bgColor } = getActiveColorRandomById(chatId)
   const { data: myPrivateAgent } = useQuery({
     queryKey: [QueryDataKeys.DELEGATE_PRIVATE_AGENT, chatId],

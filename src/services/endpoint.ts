@@ -26,13 +26,14 @@ const endpoint = {
   CHAT_GROUP_DIRECT: withBaseURL("/group/check-group-direct"),
   INVITE_USER_JOIN_GROUP: withBaseURL("/group/invite-user"),
   LEAVE_GROUP: (groupId: number) => withBaseURL(`/group/delete/${groupId}`),
-  GET_GROUP_CHAT_DETAIL: (groupId: number) =>
-    withBaseURL(`/group/detail/${groupId}`),
+  GET_GROUP_CHAT_DETAIL: () => withBaseURL("/group/detail"),
   GET_HISTORY_CHAT: (id: number) => withBaseURL(`/chat/group/${id}/message`),
   CHECK_CONVERSATION_CHAT: (userToId: number) =>
     withBaseURL(`/chat/check-conversation/${userToId}`),
   GET_USER_PROFILE: (type: string, userName: string) =>
     withBaseURL(`/user/${type}-crawl/${userName}`),
+  GET_GROUP_DETAIL_FROM_LABEL: (label: string) =>
+    withBaseURL(`/group/detail/label/${label}`),
 
   //my data
   UPLOAD_MY_DATA: withBaseURL("/my-data/upload"),

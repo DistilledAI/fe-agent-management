@@ -1,3 +1,4 @@
+import AvatarCustom from "@components/AvatarCustom"
 import ChatInfoCurrent from "@components/ChatInfoCurrent"
 import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
 import { WalletIcon } from "@components/Icons/Wallet"
@@ -12,7 +13,6 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { getMyPrivateAgent } from "services/chat"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
-import AvatarCustom from "@components/AvatarCustom"
 
 interface UserAuthProps {
   connectWallet: any

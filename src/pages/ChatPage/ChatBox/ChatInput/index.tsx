@@ -1,14 +1,15 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
 import { Button, Textarea } from "@nextui-org/react"
+import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
+import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useParams } from "react-router-dom"
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition"
 import { twMerge } from "tailwind-merge"
 import VoiceChat from "./Voice"
-import { useStyleSpacing } from "providers/StyleSpacingProvider"
-import { useParams } from "react-router-dom"
 
 interface ChatInputProps {
   isDisabledInput: boolean
@@ -32,7 +33,9 @@ const ChatInput = ({
   const boxRef = useRef<HTMLDivElement>(null)
   const heightBoxRef = useRef(0)
   const { setSpacing, spacing } = useStyleSpacing()
-  const { chatId, privateChatId } = useParams()
+  const { privateChatId } = useParams()
+  const { chatId } = useGetChatId()
+
   const groupId = chatId || privateChatId
 
   const handleSubmit = async () => {
