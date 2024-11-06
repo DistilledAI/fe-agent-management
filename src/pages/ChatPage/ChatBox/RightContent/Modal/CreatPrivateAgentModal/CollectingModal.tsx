@@ -6,9 +6,12 @@ import CollectingContent from "./CollectingContent"
 const CollectingModal: React.FC<{
   openPopup: boolean
   setOpenPopup: any
-}> = ({ openPopup, setOpenPopup }) => {
+  isCollected?: boolean
+  callbackChange?: () => void
+}> = ({ openPopup, setOpenPopup, isCollected, callbackChange }) => {
   const onOpenChange = () => {
     setOpenPopup(!openPopup)
+    if (callbackChange) callbackChange()
   }
 
   const baseClassName = "bg-white max-md:!m-0 max-md:h-[calc(100vh-100px)]"
@@ -46,7 +49,7 @@ const CollectingModal: React.FC<{
           </video>
 
           <div className="absolute bottom-10 left-1/2 -translate-x-1/2 rounded-[22px] border border-white bg-[rgba(244,244,245,0.50)] p-6 backdrop-blur-md">
-            <CollectingContent />
+            <CollectingContent isCollected={isCollected} />
           </div>
         </div>
       </ModalContent>

@@ -123,7 +123,7 @@ const CvData: React.FC<{
 
   return (
     <div>
-      <div className="flex justify-between">
+      <div className="flex justify-between max-sm:flex-col max-sm:justify-start">
         <HeadSectionData
           iconTitle={<PDFTypeIcon color="#A2845E" size={24} />}
           title="CV"
