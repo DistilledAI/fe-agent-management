@@ -66,7 +66,7 @@ const RightContent = () => {
         onLoadPrevMessages={onLoadPrevMessages}
         chatId={chatId}
         isChatAction={false}
-        msgBoxClassName="p-0 px-6 pb-6 md:px-4 md:pb-4"
+        msgBoxClassName="p-0 px-4 pb-4"
         className={twMerge(
           "h-full md:max-h-[calc(100%-80px)]",
           isCloseLiveChat && "opacity-0 delay-300",

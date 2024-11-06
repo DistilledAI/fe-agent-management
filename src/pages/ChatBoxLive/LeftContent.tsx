@@ -18,12 +18,16 @@ const LeftContent = () => {
         staleTime: Infinity,
       },
       {
+        queryKey: [QueryDataKeys.CLOSE_LIVE_CHAT],
+      },
+      {
         queryKey: [QueryDataKeys.EXPAND_LIVE_CHAT],
       },
     ],
   })
   const isMuted = !!queries[0].data
-  const isExpandLiveChat = !!queries[1].data
+  const isCloseChatLive = !!queries[1].data
+  const isExpandLiveChat = !!queries[2].data
 
   const toggleMute = () => {
     if (videoRef.current) {
@@ -38,8 +42,9 @@ const LeftContent = () => {
   return (
     <div
       className={twMerge(
-        "flex w-full max-w-full flex-1 flex-col transition-all duration-300 ease-linear max-md:px-4 lg:max-w-[320px]",
+        "flex w-full max-w-full flex-col transition-all duration-300 ease-linear max-md:px-4 lg:max-w-[320px]",
         isExpandLiveChat && "hidden",
+        isCloseChatLive && "h-[calc(100%-113px)]",
       )}
     >
       <div className="flex h-full flex-col md:h-fit">
@@ -50,7 +55,10 @@ const LeftContent = () => {
             autoPlay
             playsInline
             loop
-            className="h-full w-full rounded-[32px] object-cover md:h-auto"
+            className={twMerge(
+              "h-full w-full rounded-[32px] object-cover max-md:max-h-[350px] md:h-auto",
+              isCloseChatLive && "max-md:max-h-full",
+            )}
           >
             <source src={bitcoinMaxIntro} type="video/mp4" />
             <track kind="captions"></track>
