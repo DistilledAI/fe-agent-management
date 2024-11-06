@@ -23,6 +23,7 @@ export interface IGroup {
   createdAt: string
   typeGroup: TypeGroup
   live?: number
+  label?: string
 }
 
 export interface UserGroup {
