@@ -9,15 +9,20 @@ import useSubmitChat from "@hooks/useSubmitChat"
 import { useParams } from "react-router-dom"
 import SpeechRecognition from "react-speech-recognition"
 import useAuthState from "@hooks/useAuthState"
-import { CloseFilledIcon } from "@components/Icons/DefiLens"
-import { ArrowsBarToUpIcon } from "@components/Icons/Arrow"
+import { useQuery } from "@tanstack/react-query"
+import ToggleActionsMobile from "./ToggleActionsMobile"
+import useWindowSize from "@hooks/useWindowSize"
 
-const RightContent: React.FC = () => {
+const RightContent = () => {
+  const { isMobile } = useWindowSize()
   const { isLogin } = useAuthState()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const { chatId } = useParams()
   const { mutation } = useSubmitChat(chatId, SpeechRecognition.stopListening)
   const isEnableTextInput = isLogin && chatId
+  const { data: isCloseLiveChat = false } = useQuery<boolean>({
+    queryKey: ["close-live-chat"],
+  })
 
   const {
     isLoading,
@@ -41,30 +46,15 @@ const RightContent: React.FC = () => {
   return (
     <div
       className={twMerge(
-        "flex-1",
-        "max-md:shadow-7 max-md:rounded-[14px] max-md:border-t max-md:border-t-white max-md:bg-mercury-30",
+        "flex-1 transition-all duration-300 ease-linear",
+        "max-md:shadow-7 bg-white max-md:rounded-[14px] max-md:border-t max-md:border-t-white",
         "md:px-10",
         "max-2xl:px-0",
+        isCloseLiveChat && "h-[113px] flex-none md:flex-1",
       )}
     >
-      <div className="flex items-center justify-between border-b border-b-mercury-100 px-4 py-2 md:hidden">
-        <h4 className="text-16 font-bold text-mercury-950">Live Chat</h4>
+      {isMobile ? <ToggleActionsMobile /> : <></>}
 
-        <div className="flex items-center gap-4">
-          <button
-            type="button"
-            className="rounded-full p-[5.5px] hover:bg-mercury-30"
-          >
-            <ArrowsBarToUpIcon />
-          </button>
-          <button
-            type="button"
-            className="rounded-full p-[5.5px] hover:bg-mercury-30"
-          >
-            <CloseFilledIcon />
-          </button>
-        </div>
-      </div>
       <ChatWindow
         messages={messages}
         itemContent={renderMessage}
@@ -76,7 +66,10 @@ const RightContent: React.FC = () => {
         chatId={chatId}
         isChatAction={false}
         msgBoxClassName="p-0 px-6 pb-6 md:px-4 md:pb-4"
-        className="h-full md:max-h-[calc(100%-80px)]"
+        className={twMerge(
+          "h-full md:max-h-[calc(100%-80px)]",
+          isCloseLiveChat && "opacity-0 delay-300",
+        )}
         scrollBottomClassName="max-md:!bottom-[93px] max-md:bg-none"
       />
       <div

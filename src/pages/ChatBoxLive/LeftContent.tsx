@@ -4,16 +4,30 @@ import { ArrowsSort } from "@components/Icons/Arrow"
 import { TwitterIcon } from "@components/Icons/Twitter"
 import { VolumeIcon, VolumeOffIcon } from "@components/Icons/Voice"
 import { Button, ScrollShadow } from "@nextui-org/react"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQueries, useQueryClient } from "@tanstack/react-query"
 import { useRef } from "react"
+import { twMerge } from "tailwind-merge"
 
-const LeftContent: React.FC = () => {
+const LeftContent = () => {
   const videoRef = useRef<any>(null)
-  const { data: isMuted = false } = useQuery<boolean>({
-    queryKey: ["agent-live-volume"],
-    staleTime: Infinity,
-  })
   const queryClient = useQueryClient()
+  const queries = useQueries({
+    queries: [
+      {
+        queryKey: ["agent-live-volume"],
+        staleTime: Infinity,
+      },
+      {
+        queryKey: ["close-live-chat"],
+      },
+      {
+        queryKey: ["expand-live-chat"],
+      },
+    ],
+  })
+  const isMuted = !!queries[0].data
+  const isCloseLiveChat = !!queries[1].data
+  const isExpandLiveChat = !!queries[2].data
 
   const toggleMute = () => {
     if (videoRef.current) {
@@ -30,52 +44,58 @@ const LeftContent: React.FC = () => {
   }
 
   return (
-    <div className="flex w-full max-w-full flex-col max-md:px-4 lg:h-full lg:max-w-[320px]">
-      <div className="max-lg:h-auto max-lg:flex-none">
-        <div className="flex h-full flex-col max-lg:h-auto">
-          <div className="relative w-full overflow-hidden rounded-[32px] max-lg:flex-none">
-            <video
-              ref={videoRef}
-              muted={isMuted}
-              autoPlay
-              playsInline
-              loop
-              className="h-auto max-h-[568px] object-cover max-md:w-full"
-            >
-              <source src={bitcoinMaxIntro} type="video/mp4" />
-              <track kind="captions"></track>
-            </video>
-            <button
-              type="button"
-              onClick={toggleMute}
-              className="absolute left-5 top-5 z-10 p-[1px]"
-            >
-              {isMuted ? (
-                <VolumeOffIcon color="white" />
-              ) : (
-                <VolumeIcon color="white" />
-              )}
-            </button>
-          </div>
+    <div
+      className={twMerge(
+        "flex w-full max-w-full flex-1 flex-col transition-all duration-300 ease-linear max-md:px-4 lg:max-w-[320px]",
+        isExpandLiveChat && "hidden",
+      )}
+    >
+      <div className="flex h-full flex-col md:h-fit">
+        <div className="relative h-full">
+          <video
+            ref={videoRef}
+            muted={isMuted}
+            autoPlay
+            playsInline
+            loop
+            className={twMerge(
+              "h-auto w-full rounded-[32px] object-cover",
+              isCloseLiveChat && "h-full",
+            )}
+          >
+            <source src={bitcoinMaxIntro} type="video/mp4" />
+            <track kind="captions"></track>
+          </video>
+          <button
+            type="button"
+            onClick={toggleMute}
+            className="absolute left-5 top-5 z-10 p-[1px]"
+          >
+            {isMuted ? (
+              <VolumeOffIcon color="white" />
+            ) : (
+              <VolumeIcon color="white" />
+            )}
+          </button>
+        </div>
 
-          <div className="mt-6 hidden items-center justify-between gap-2 md:flex">
+        <div className="mt-6 hidden items-center justify-between gap-2 md:flex">
+          <Button
+            className="h-[44px] w-full rounded-full bg-mercury-70 text-white"
+            onClick={openXLink}
+          >
+            <TwitterIcon />
+            <span className="text-base text-mercury-900">Twitter (AI)</span>
+          </Button>
+          <ComingSoon>
             <Button
-              className="h-[44px] w-full rounded-full bg-mercury-70 text-white"
-              onClick={openXLink}
+              className="h-[44px] w-full rounded-full bg-mercury-950 text-white"
+              isDisabled
             >
-              <TwitterIcon />
-              <span className="text-base text-mercury-900">Twitter (AI)</span>
+              <ArrowsSort color="#FFFF" />
+              <span className="text-base text-white">Trade BTCMX</span>
             </Button>
-            <ComingSoon>
-              <Button
-                className="h-[44px] w-full rounded-full bg-mercury-950 text-white"
-                isDisabled
-              >
-                <ArrowsSort color="#FFFF" />
-                <span className="text-base text-white">Trade BTCMX</span>
-              </Button>
-            </ComingSoon>
-          </div>
+          </ComingSoon>
         </div>
       </div>
       <div className="mt-6 hidden md:block">
