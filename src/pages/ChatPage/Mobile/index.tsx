@@ -1,3 +1,5 @@
+import distilledAiPrivateAgent from "@assets/video/distilled-ai-private-agent-3d.mp4"
+import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import useOutsideClick from "@hooks/useOutSideClick"
 import { Button, ScrollShadow } from "@nextui-org/react"
@@ -6,13 +8,13 @@ import { useNavigate, useParams } from "react-router-dom"
 import SearchResult from "../ChatBox/LeftBar/SearchContainer/Result"
 import useSearch from "../ChatBox/LeftBar/SearchContainer/useSearch"
 import ChatDetail from "./ChatDetail"
+import useGetChatId from "./ChatDetail/useGetChatId"
 import ChatList from "./ChatList"
 import ChatSearch from "./ChatSearch"
-import distilledAiPrivateAgent from "@assets/video/distilled-ai-private-agent-3d.mp4"
-import { PATH_NAMES } from "@constants/index"
 
 const ChatPageMobile = () => {
-  const { chatId, privateChatId } = useParams()
+  const { privateChatId } = useParams()
+  const { chatId } = useGetChatId()
   const { isLogin } = useAuthState()
   const [isSearch, setIsSearch] = useState(false)
   const inputRef = useRef<any>(null)

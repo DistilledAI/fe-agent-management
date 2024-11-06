@@ -1,17 +1,18 @@
 import AvatarCustom from "@components/AvatarCustom"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
-import { getBadgeColor } from "./helpers"
 import { PATH_NAMES, RoleUser } from "@constants/index"
+import { getBadgeColor } from "./helpers"
 // import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
-import { Button, useDisclosure } from "@nextui-org/react"
 import { ShareWithQrIcon } from "@components/Icons/Share"
 import { ThreeDotsCircleIcon } from "@components/Icons/SocialLinkIcon"
+import { Button, useDisclosure } from "@nextui-org/react"
+import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useQuery } from "@tanstack/react-query"
-import { Link, useParams } from "react-router-dom"
+import { Link } from "react-router-dom"
 import ShareModal from "../UserAuth/AccountSetting/Agent/ShareAgent/ShareModal"
 
 const AgentInfoCard = () => {
-  const { chatId } = useParams()
+  const { chatId } = useGetChatId()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { data }: any = useQuery({
     queryKey: ["chat-detail", chatId],

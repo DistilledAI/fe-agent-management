@@ -2,6 +2,7 @@ import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import { Button } from "@nextui-org/react"
+import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useQuery } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import { changeStatusBotInGroup, checkStatusBotInGroup } from "services/chat"
@@ -13,7 +14,8 @@ const BOT_STATUS = {
 }
 
 const DelegatePrivateAgent: React.FC = () => {
-  const { chatId, privateChatId } = useParams()
+  const { privateChatId } = useParams()
+  const { chatId } = useGetChatId()
   //   const [isShowNotification, setShowNotification] = useState<boolean>(false)
   const groupId = chatId || privateChatId
 

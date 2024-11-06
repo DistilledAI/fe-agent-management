@@ -1,9 +1,9 @@
-import { envConfig } from "@configs/env"
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import useFetchGroups from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { IUser, loginSuccessByAnonymous } from "@reducers/userSlice"
 import { useEffect, useState } from "react"
-import { useLocation, useParams } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import { postCreateAnonymous } from "services/auth"
 import { inviteUserJoinGroup } from "services/chat"
 import { useAppDispatch } from "./useAppRedux"
@@ -11,8 +11,9 @@ import useAuthState from "./useAuthState"
 
 const useJoinGroupLive = () => {
   const { pathname, state } = useLocation()
-  const { chatId } = useParams()
-  const isInvitePathName = pathname === `${PATH_NAMES.CHAT_LIVE}/${chatId}`
+  const { chatId, originalChatId } = useGetChatId()
+  const isInvitePathName =
+    pathname === `${PATH_NAMES.CHAT_LIVE}/${originalChatId}`
   const { isLogin, user } = useAuthState()
   const dispatch = useAppDispatch()
   const [isLogged, setIsLogged] = useState(false)
@@ -24,7 +25,7 @@ const useJoinGroupLive = () => {
   }, [isAnonymous])
 
   const joinGroupLive = async (user: IUser, accessToken: string = "") => {
-    const groupId = chatId || envConfig.groupIdMax
+    const groupId = chatId
     const payload = {
       groupId,
       member: [user?.id],

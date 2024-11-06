@@ -1,12 +1,12 @@
+import ComingSoon from "@components/ComingSoon"
+import { useAppSelector } from "@hooks/useAppRedux"
+import { ScrollShadow } from "@nextui-org/react"
 import { useEffect, useRef } from "react"
+import { twMerge } from "tailwind-merge"
 import GenAITools from "./GenAITools"
 import PrivateAgents from "./PrivateAgents"
 import Productivity from "./Productivity"
-import { twMerge } from "tailwind-merge"
-import ComingSoon from "@components/ComingSoon"
-import { ScrollShadow } from "@nextui-org/react"
 import useScrollTabActive from "./useScrollTabActive"
-import { useAppSelector } from "@hooks/useAppRedux"
 
 const Marketplace = () => {
   const siderCollapsed = useAppSelector((state) => state.sidebarCollapsed)
@@ -111,23 +111,25 @@ const Marketplace = () => {
           className="z-10 flex max-w-full items-center gap-3 overflow-x-auto whitespace-nowrap bg-white px-4 backdrop-blur-[10px]"
           ref={containerRef}
         >
-          {CATEGORIES.map((category, index) => (
-            <button
-              type="button"
-              key={category.id}
-              id={`category-tab-${index}`}
-              onClick={() => {
-                setElementIndex(index)
-                handleTabClick(category.id)
-              }}
-              className={twMerge(
-                "h-11 flex-shrink-0 rounded-full bg-mercury-50 px-4 text-[18px] text-mercury-900 transition-all duration-500 ease-linear",
-                activeId === category.id && "bg-mercury-950 text-white",
-              )}
-            >
-              {category.name}
-            </button>
-          ))}
+          {CATEGORIES.map((category, index) => {
+            return (
+              <button
+                type="button"
+                key={category.id}
+                id={`category-tab-${index}`}
+                onClick={() => {
+                  setElementIndex(index)
+                  handleTabClick(category.id)
+                }}
+                className={twMerge(
+                  "h-11 flex-shrink-0 rounded-full bg-mercury-50 px-4 text-[18px] text-mercury-900 transition-all duration-500 ease-linear",
+                  activeId === category.id && "bg-mercury-950 text-white",
+                )}
+              >
+                {category.name}
+              </button>
+            )
+          })}
         </ScrollShadow>
       </div>
 

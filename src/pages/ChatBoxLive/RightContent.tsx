@@ -1,24 +1,24 @@
 import ChatWindow from "@components/ChatWindow"
 import { useAppSelector } from "@hooks/useAppRedux"
+import useAuthState from "@hooks/useAuthState"
+import useSubmitChat from "@hooks/useSubmitChat"
+import useWindowSize from "@hooks/useWindowSize"
 import ChatInput from "@pages/ChatPage/ChatBox/ChatInput"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import useFetchMessages from "@pages/ChatPage/ChatBox/ChatMessages/useFetchMessages"
-import { twMerge } from "tailwind-merge"
-import MessageLive from "./MessageLive"
-import useSubmitChat from "@hooks/useSubmitChat"
-import { useParams } from "react-router-dom"
-import SpeechRecognition from "react-speech-recognition"
-import useAuthState from "@hooks/useAuthState"
+import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useQuery } from "@tanstack/react-query"
-import ToggleActionsMobile from "./ToggleActionsMobile"
-import useWindowSize from "@hooks/useWindowSize"
+import SpeechRecognition from "react-speech-recognition"
+import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
+import MessageLive from "./MessageLive"
+import ToggleActionsMobile from "./ToggleActionsMobile"
 
 const RightContent = () => {
   const { isMobile } = useWindowSize()
   const { isLogin } = useAuthState()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
-  const { chatId } = useParams()
+  const { chatId } = useGetChatId()
   const { mutation } = useSubmitChat(chatId, SpeechRecognition.stopListening)
   const isEnableTextInput = isLogin && chatId
   const { data: isCloseLiveChat = false } = useQuery<boolean>({
