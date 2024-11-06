@@ -7,4 +7,7 @@ export enum QueryDataKeys {
   MY_BOT_DATA = "my-bot-data",
   MY_BOT_LIST = "my-bot-list",
   DELEGATE_PRIVATE_AGENT = "delegate-private-agent",
+  AGENT_LIVE_VOLUME = "agent-live-volume",
+  CLOSE_LIVE_CHAT = "close-live-chat",
+  EXPAND_LIVE_CHAT = "expand-live-chat",
 }

@@ -1,12 +1,12 @@
 import bitcoinMaxIntro from "@assets/video/bitcoin-max-intro-ai.mp4"
-import ComingSoon from "@components/ComingSoon"
-import { ArrowsSort } from "@components/Icons/Arrow"
-import { TwitterIcon } from "@components/Icons/Twitter"
 import { VolumeIcon, VolumeOffIcon } from "@components/Icons/Voice"
-import { Button, ScrollShadow } from "@nextui-org/react"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
 import { useRef } from "react"
 import { twMerge } from "tailwind-merge"
+import { QueryDataKeys } from "types/queryDataKeys"
+import TradeTokenButton from "./TradeTokenButton"
+import AgentDescription from "./AgentDescription"
+import TwitterButton from "./TwitterButton"
 
 const LeftContent = () => {
   const videoRef = useRef<any>(null)
@@ -14,20 +14,16 @@ const LeftContent = () => {
   const queries = useQueries({
     queries: [
       {
-        queryKey: ["agent-live-volume"],
+        queryKey: [QueryDataKeys.AGENT_LIVE_VOLUME],
         staleTime: Infinity,
       },
       {
-        queryKey: ["close-live-chat"],
-      },
-      {
-        queryKey: ["expand-live-chat"],
+        queryKey: [QueryDataKeys.EXPAND_LIVE_CHAT],
       },
     ],
   })
   const isMuted = !!queries[0].data
-  const isCloseLiveChat = !!queries[1].data
-  const isExpandLiveChat = !!queries[2].data
+  const isExpandLiveChat = !!queries[1].data
 
   const toggleMute = () => {
     if (videoRef.current) {
@@ -37,10 +33,6 @@ const LeftContent = () => {
         () => videoRef.current.muted,
       )
     }
-  }
-
-  const openXLink = () => {
-    window.open("https://x.com/maxisbuyin", "_blank")
   }
 
   return (
@@ -58,10 +50,7 @@ const LeftContent = () => {
             autoPlay
             playsInline
             loop
-            className={twMerge(
-              "h-auto w-full rounded-[32px] object-cover",
-              isCloseLiveChat && "h-full",
-            )}
+            className="h-full w-full rounded-[32px] object-cover md:h-auto"
           >
             <source src={bitcoinMaxIntro} type="video/mp4" />
             <track kind="captions"></track>
@@ -80,33 +69,12 @@ const LeftContent = () => {
         </div>
 
         <div className="mt-6 hidden items-center justify-between gap-2 md:flex">
-          <Button
-            className="h-[44px] w-full rounded-full bg-mercury-70 text-white"
-            onClick={openXLink}
-          >
-            <TwitterIcon />
-            <span className="text-base text-mercury-900">Twitter (AI)</span>
-          </Button>
-          <ComingSoon>
-            <Button
-              className="h-[44px] w-full rounded-full bg-mercury-950 text-white"
-              isDisabled
-            >
-              <ArrowsSort color="#FFFF" />
-              <span className="text-base text-white">Trade BTCMX</span>
-            </Button>
-          </ComingSoon>
+          <TwitterButton />
+          <TradeTokenButton />
         </div>
       </div>
       <div className="mt-6 hidden md:block">
-        <h4 className="text-base-b mb-1">Description</h4>
-        <ScrollShadow className="max-h-[100px]">
-          <p className="text-mercury-600">
-            Meet Max: the AI Bitcoin Maxi spreading the true power of $BTC. With
-            sharp insights and fierce conviction, she champions Bitcoin as the
-            ultimate path to financial freedom.
-          </p>
-        </ScrollShadow>
+        <AgentDescription />
       </div>
     </div>
   )
