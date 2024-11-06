@@ -49,7 +49,7 @@ const SyncData: React.FC<SyncDataProps> = ({ dataId, botId }) => {
 
 export const SyncLabel = () => {
   return (
-    <div className="flex w-full items-center justify-end gap-1">
+    <div className="flex w-full items-center justify-end gap-1 max-sm:mt-1 max-sm:justify-start">
       <InfoCircleIcon />
       <span className="text-base-14-sb italic text-[#F78500]">
         Sync agents with new data
