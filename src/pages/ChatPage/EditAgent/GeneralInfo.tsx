@@ -1,6 +1,15 @@
 import AvatarCustom from "@components/AvatarCustom"
+import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
-import { Button, Input, Textarea } from "@nextui-org/react"
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Input,
+  Textarea,
+} from "@nextui-org/react"
 import { Controller, useFormContext } from "react-hook-form"
 import CategoryLabel, { Divider, FieldLabel } from "./CategoryLabel"
 
@@ -10,6 +19,18 @@ const GeneralInfo: React.FC = () => {
   return (
     <div className="w-full">
       <CategoryLabel text="General info" icon={<ClipboardTextIcon />} />
+      <div className="">
+        <FieldLabel text="Agent picture" />
+        <div className="flex gap-2">
+          <AvatarCustom />
+          <Button className="h-[44px] rounded-full border border-mercury-50 bg-mercury-100">
+            <span className="text-base text-mercury-950">Use AI Generated</span>
+          </Button>
+          <Button className="h-[44px] rounded-full border border-mercury-50 bg-mercury-100">
+            <span className="text-base text-mercury-950">Upload picture</span>
+          </Button>
+        </div>
+      </div>
       <div className="mb-4 mt-4 flex w-full justify-between gap-[56px]">
         <Controller
           name="agentName"
@@ -31,18 +52,38 @@ const GeneralInfo: React.FC = () => {
           )}
         />
 
-        <div className="">
-          <FieldLabel text="Agent picture" />
+        <div className="w-full">
+          <FieldLabel text="Post content on social media" />
           <div className="flex gap-2">
-            <AvatarCustom />
-            <Button className="h-[44px] rounded-full border border-mercury-50 bg-mercury-100">
-              <span className="text-base text-mercury-950">
-                Use AI Generated
-              </span>
-            </Button>
-            <Button className="h-[44px] rounded-full border border-mercury-50 bg-mercury-100">
-              <span className="text-base text-mercury-950">Upload picture</span>
-            </Button>
+            <Dropdown>
+              <DropdownTrigger>
+                <div className="flex-items-center cursor-pointer rounded-full bg-mercury-30 px-2 py-[6px]">
+                  <span className="text-16 text-mercury-950">Twitter</span>
+                  <ChevronDownIcon />
+                </div>
+              </DropdownTrigger>
+              <DropdownMenu
+                variant="flat"
+                disallowEmptySelection
+                selectionMode="single"
+                selectedKeys={"x"}
+              >
+                <DropdownItem>
+                  <span className="text-16 text-mercury-950">x</span>
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+
+            <Input
+              key="agentName"
+              type="text"
+              placeholder="Enter your agent’s profile link"
+              className="w-full"
+              classNames={{
+                mainWrapper: "border border-mercury-400 rounded-xl",
+                inputWrapper: " bg-mercury-70",
+              }}
+            />
           </div>
         </div>
       </div>

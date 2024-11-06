@@ -47,6 +47,10 @@ const Characteristic: React.FC = () => {
           />
         </div>
       </div>
+
+      <div>
+        <FieldLabel text="Toxic policies" />
+      </div>
     </div>
   )
 }
