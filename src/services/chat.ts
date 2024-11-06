@@ -155,10 +155,15 @@ export const checkStatusBotInGroup = async (groupId: string | undefined) => {
   })
 }
 
-export const getGroupChatDetail = async (groupId: number) => {
+export interface GroupChatDetail {
+  filter: any
+}
+
+export const getGroupChatDetail = async (params: any) => {
   return fetchApiAuth({
     method: "get",
-    url: endpoint.GET_GROUP_CHAT_DETAIL(groupId),
+    url: endpoint.GET_GROUP_CHAT_DETAIL(),
+    params,
   })
 }
 
@@ -267,5 +272,12 @@ export const trainData = async (data: TrainData) => {
     method: "post",
     url: endpoint.TRAIN_DATA_MY_DATA,
     data,
+  })
+}
+
+export const getGroupDetailFromLabel = async (label: string) => {
+  return fetchApiAuth({
+    method: "get",
+    url: endpoint.GET_GROUP_DETAIL_FROM_LABEL(label),
   })
 }

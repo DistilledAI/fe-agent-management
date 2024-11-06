@@ -8,10 +8,11 @@ import { FilledUserIcon, FilledUsersPlusIcon } from "@components/Icons/UserIcon"
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
+import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { IUser } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById } from "@utils/index"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
 import { match } from "ts-pattern"
@@ -35,7 +36,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
   const { groups, isLoading, handleLoadMore } = useFetchGroups()
   const { user } = useAuthState()
   const navigate = useNavigate()
-  const { chatId } = useParams()
+  const { chatId } = useGetChatId()
   const queryClient = useQueryClient()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
 

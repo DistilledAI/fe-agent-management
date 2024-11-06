@@ -1,21 +1,21 @@
 import ChatWindow from "@components/ChatWindow"
+import { ArrowsBarToUpIcon } from "@components/Icons/Arrow"
+import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { useAppSelector } from "@hooks/useAppRedux"
+import useAuthState from "@hooks/useAuthState"
+import useSubmitChat from "@hooks/useSubmitChat"
 import ChatInput from "@pages/ChatPage/ChatBox/ChatInput"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import useFetchMessages from "@pages/ChatPage/ChatBox/ChatMessages/useFetchMessages"
+import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
+import SpeechRecognition from "react-speech-recognition"
 import { twMerge } from "tailwind-merge"
 import MessageLive from "./MessageLive"
-import useSubmitChat from "@hooks/useSubmitChat"
-import { useParams } from "react-router-dom"
-import SpeechRecognition from "react-speech-recognition"
-import useAuthState from "@hooks/useAuthState"
-import { CloseFilledIcon } from "@components/Icons/DefiLens"
-import { ArrowsBarToUpIcon } from "@components/Icons/Arrow"
 
 const RightContent: React.FC = () => {
   const { isLogin } = useAuthState()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
-  const { chatId } = useParams()
+  const { chatId } = useGetChatId()
   const { mutation } = useSubmitChat(chatId, SpeechRecognition.stopListening)
   const isEnableTextInput = isLogin && chatId
 

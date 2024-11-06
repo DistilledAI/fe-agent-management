@@ -1,14 +1,16 @@
 import useAuthState from "@hooks/useAuthState"
+import useSubmitChat from "@hooks/useSubmitChat"
 import ChatInput from "@pages/ChatPage/ChatBox/ChatInput"
 import ChatMessages from "@pages/ChatPage/ChatBox/ChatMessages"
-import { useParams } from "react-router-dom"
-import ChatDetailHeader from "./Header"
 import { StyleSpacingProvider } from "providers/StyleSpacingProvider"
-import useSubmitChat from "@hooks/useSubmitChat"
+import { useParams } from "react-router-dom"
 import SpeechRecognition from "react-speech-recognition"
+import ChatDetailHeader from "./Header"
+import useGetChatId from "./useGetChatId"
 
 const ChatDetail = () => {
-  const { chatId, privateChatId } = useParams()
+  const { privateChatId } = useParams()
+  const { chatId } = useGetChatId()
   const { isLogin } = useAuthState()
   const groupId = chatId || privateChatId
   const { mutation } = useSubmitChat(groupId, SpeechRecognition.stopListening)

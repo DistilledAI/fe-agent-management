@@ -1,13 +1,14 @@
+import { PATH_NAMES } from "@constants/index"
+import useAuthState from "@hooks/useAuthState"
+import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
+import { IUser } from "@reducers/userSlice"
+import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getChatHistoryById } from "services/chat"
-import { IGroup } from "../LeftBar/useFetchGroups"
-import { IUser } from "@reducers/userSlice"
-import { convertDataFetchToMessage, IMessageBox } from "./helpers"
-import useAuthState from "@hooks/useAuthState"
-import { PATH_NAMES } from "@constants/index"
-import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
+import { IGroup } from "../LeftBar/useFetchGroups"
+import { convertDataFetchToMessage, IMessageBox } from "./helpers"
 
 export interface IMessage {
   id: number
@@ -37,7 +38,8 @@ const STALE_TIME = 60 * 60 * 1000
 
 const useFetchMessages = () => {
   const { user, isLogin } = useAuthState()
-  const { chatId, privateChatId } = useParams()
+  const { privateChatId } = useParams()
+  const { chatId } = useGetChatId()
   const navigate = useNavigate()
   const groupId = privateChatId || chatId
   // const queryClient = useQueryClient()

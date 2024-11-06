@@ -1,6 +1,7 @@
 import AvatarContainer from "@components/AvatarContainer"
 import AvatarGroup from "@components/AvatarGroup"
 import DotLoading from "@components/DotLoading"
+import { LiveIcon } from "@components/Icons"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import { RoleUser } from "@constants/index"
@@ -20,17 +21,17 @@ import useFetchGroups, {
 } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { IUser } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
+import { match } from "ts-pattern"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { StartNewChat } from ".."
-import { LiveIcon } from "@components/Icons"
-import { match } from "ts-pattern"
+import useGetChatId from "../ChatDetail/useGetChatId"
 
 const ChatList = () => {
   const { user } = useAuthState()
   const navigate = useNavigate()
-  const { chatId } = useParams()
+  const { chatId } = useGetChatId()
   const { groups, isLoading, handleLoadMore, isFetched } = useFetchGroups()
   const queryClient = useQueryClient()
 
