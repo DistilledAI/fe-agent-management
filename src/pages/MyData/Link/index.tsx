@@ -133,7 +133,7 @@ const LinkData: React.FC<{
           title="Website Links/Social media"
           addTitle="Add link"
         />
-        <SyncLabel />
+        {data.length > 0 && <SyncLabel />}
       </div>
       <div className="mt-4">
         {isMobile ? (
