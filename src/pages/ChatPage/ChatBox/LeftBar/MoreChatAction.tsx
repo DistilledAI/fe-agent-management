@@ -12,14 +12,15 @@ import {
 } from "@nextui-org/react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { leaveGroup } from "services/chat"
-import { UserGroup } from "./useFetchGroups"
+import { deleteGroup, leaveGroup } from "services/chat"
+import { TypeGroup, UserGroup } from "./useFetchGroups"
 import { useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 
 const MoreChatAction: React.FC<{
   groupId: number
-}> = ({ groupId }) => {
+  groupType: TypeGroup
+}> = ({ groupId, groupType }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const { isOpen: openPopup, onOpen, onOpenChange, onClose } = useDisclosure()
   const navigate = useNavigate()
@@ -27,7 +28,10 @@ const MoreChatAction: React.FC<{
 
   const handleLeaveGroup = async () => {
     try {
-      const response = await leaveGroup(groupId)
+      const isChatToUser = groupType === TypeGroup.DIRECT
+      const response = isChatToUser
+        ? await deleteGroup(groupId)
+        : await leaveGroup(groupId)
       if (response?.data?.message) {
         queryClient.setQueryData(
           [QueryDataKeys.MY_LIST_CHAT],
