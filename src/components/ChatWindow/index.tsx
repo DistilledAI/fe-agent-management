@@ -28,6 +28,7 @@ interface ChatWindowProps {
   isChatAction?: boolean
   style?: CSSProperties
   Header?: React.ReactNode
+  scrollBottomClassName?: string
 }
 
 const LIMIT = 20
@@ -47,6 +48,7 @@ const ChatWindow = ({
   isChatAction = false,
   style,
   Header,
+  scrollBottomClassName,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [isAtBottom, setIsAtBottom] = useState<boolean>(true)
@@ -162,6 +164,7 @@ const ChatWindow = ({
         />
       ) : null}
       <ScrollBottomChat
+        scrollBottomClassName={scrollBottomClassName}
         isScrollBottom={isScrollBottom}
         virtuosoRef={virtuosoRef}
       />

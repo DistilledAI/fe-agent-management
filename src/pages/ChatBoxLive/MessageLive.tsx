@@ -10,7 +10,7 @@ const MessageLive: React.FC<MessageLiveProps> = ({ message }) => {
   const isBot = message?.roleOwner === RoleUser.BOT
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-3 md:gap-4">
       <div>
         <AvatarCustom
           src={message?.avatar}
