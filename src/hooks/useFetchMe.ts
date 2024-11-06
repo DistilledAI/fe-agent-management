@@ -5,7 +5,7 @@ import { getUser } from "services/user"
 import useAuthState from "./useAuthState"
 import useAuthAction from "./useAuthAction"
 
-const useFetchMe = () => {
+const useFetchMe = (isFetchNow = true) => {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
   const { logout } = useAuthAction()
@@ -31,8 +31,8 @@ const useFetchMe = () => {
   }
 
   useEffect(() => {
-    if (isLogin) fetchData()
-  }, [isLogin, sessionAccessToken])
+    if (isLogin && isFetchNow) fetchData()
+  }, [isLogin, sessionAccessToken, isFetchNow])
 
   return { loading, fetchData }
 }

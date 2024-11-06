@@ -64,7 +64,9 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
               src={user.avatar}
               className="h-8 w-8"
             />
-            <span className="text-base max-md:hidden">{user.username}</span>
+            <span className="line-clamp-1 block max-w-[150px] text-base max-md:hidden">
+              {user.username}
+            </span>
           </Button>
         </div>
       ) : (

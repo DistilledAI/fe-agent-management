@@ -7,29 +7,29 @@ import { useDispatch } from "react-redux"
 import { toast } from "react-toastify"
 import { updateUser } from "services/user"
 
-const AuthorUsername = () => {
+const AuthorDescription = () => {
   const { user } = useAuthState()
   const dispatch = useDispatch()
-  const nameRef = useRef<any>()
+  const descriptionRef = useRef<any>()
 
   const handleUpdate = async () => {
-    const username = nameRef.current.innerText
-    if (username === user?.username) return
-    dispatch(updateUserSlice({ user: { ...user, username } as IUser }))
+    const description = descriptionRef.current.innerText
+    if (description === user?.description) return
+    dispatch(updateUserSlice({ user: { ...user, description } as IUser }))
     await updateUser({
-      username,
-      description: user?.description,
+      description,
+      username: user?.username,
       avatar: user?.avatar,
     })
     toast.success("Updated successfully!")
   }
 
   const handleFocus = () => {
-    nameRef.current.focus()
+    descriptionRef.current.focus()
     const range = document.createRange()
     const selection = window.getSelection()
     if (!selection) return
-    range.selectNodeContents(nameRef.current)
+    range.selectNodeContents(descriptionRef.current)
     range.collapse(false)
     selection.removeAllRanges()
     selection.addRange(range)
@@ -38,22 +38,22 @@ const AuthorUsername = () => {
   const handleKeyDown = (e: any) => {
     if (e.key === "Enter") {
       e.preventDefault()
-      nameRef.current.blur()
+      descriptionRef.current.blur()
     }
   }
 
   return (
     <div className="flex items-center justify-between">
-      <span className="text-mercury-600">Name:</span>
+      <span className="text-mercury-600">Bio:</span>
       <div className="flex items-center gap-2">
         <span
-          ref={nameRef}
+          ref={descriptionRef}
           onBlur={handleUpdate}
           onKeyDown={handleKeyDown}
           contentEditable={true}
           className="line-clamp-1 block max-w-36 text-ellipsis whitespace-nowrap text-mercury-900 focus:border-none focus:outline-none"
         >
-          {user?.username}
+          {user?.description ?? "-"}
         </span>
         <Button
           onClick={handleFocus}
@@ -66,4 +66,4 @@ const AuthorUsername = () => {
   )
 }
 
-export default AuthorUsername
+export default AuthorDescription
