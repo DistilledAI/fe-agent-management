@@ -25,7 +25,8 @@ const endpoint = {
   CHAT_TO_GROUP: withBaseURL("/group/chat-to-group"),
   CHAT_GROUP_DIRECT: withBaseURL("/group/check-group-direct"),
   INVITE_USER_JOIN_GROUP: withBaseURL("/group/invite-user"),
-  LEAVE_GROUP: (groupId: number) => withBaseURL(`/group/delete/${groupId}`),
+  LEAVE_GROUP: withBaseURL(`/group/out-group`),
+  DELETE_GROUP: (groupId: number) => withBaseURL(`/group/delete/${groupId}`),
   GET_GROUP_CHAT_DETAIL: () => withBaseURL("/group/detail"),
   GET_HISTORY_CHAT: (id: number) => withBaseURL(`/chat/group/${id}/message`),
   CHECK_CONVERSATION_CHAT: (userToId: number) =>

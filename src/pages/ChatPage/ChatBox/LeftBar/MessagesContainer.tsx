@@ -206,7 +206,10 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                 {sidebarCollapsed ? (
                   <></>
                 ) : (
-                  <MoreChatAction groupId={groupItem.groupId} />
+                  <MoreChatAction
+                    groupId={groupItem.groupId}
+                    groupType={groupItem.group.typeGroup}
+                  />
                 )}
               </div>
             )
