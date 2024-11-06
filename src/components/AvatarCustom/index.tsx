@@ -96,7 +96,7 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
         "h-10 w-10 overflow-hidden rounded-full border-1 border-mercury-400 bg-mercury-100",
         className,
         isLive &&
-          "h-[38px] w-[38px] border-white outline outline-2 outline-[#FF075A]",
+          "border-white outline outline-2 outline-[#FF075A] md:h-[38px] md:w-[38px]",
       )}
     >
       <canvas ref={canvasRef} style={{ display: "none" }} />

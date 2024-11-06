@@ -3,13 +3,19 @@ import { Button } from "@nextui-org/react"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import { RefObject } from "react"
 import { VirtuosoHandle } from "react-virtuoso"
+import { twMerge } from "tailwind-merge"
 
 interface Props {
   isScrollBottom: boolean
   virtuosoRef: RefObject<VirtuosoHandle>
+  scrollBottomClassName?: string
 }
 
-const ScrollBottomChat = ({ isScrollBottom, virtuosoRef }: Props) => {
+const ScrollBottomChat = ({
+  isScrollBottom,
+  virtuosoRef,
+  scrollBottomClassName,
+}: Props) => {
   const { spacing } = useStyleSpacing()
 
   const onScrollToBottom = () => {
@@ -26,7 +32,10 @@ const ScrollBottomChat = ({ isScrollBottom, virtuosoRef }: Props) => {
 
   return (
     <div
-      className="absolute inset-x-0 bottom-0 z-10 flex h-20 w-full items-center justify-center bg-fading-white bg-cover bg-no-repeat"
+      className={twMerge(
+        "absolute inset-x-0 bottom-0 z-10 flex h-20 w-full items-center justify-center bg-fading-white bg-cover bg-no-repeat",
+        scrollBottomClassName,
+      )}
       style={{
         bottom: `${spacing}px`,
       }}
