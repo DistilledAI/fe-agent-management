@@ -23,15 +23,6 @@ const PrivateAgents = () => {
     if (isBotLive) {
       const groupId = envConfig.groupIdMax
       return navigate(`${PATH_NAMES.CHAT_LIVE_DETAIL}/${groupId}`)
-      // const inviteAgentId = user?.id
-      // const payload = {
-      //   groupId,
-      //   member: [inviteAgentId],
-      // }
-      // const res = await inviteUserJoinGroup(payload)
-      // if (res)
-      //   navigate(`${PATH_NAMES.CHAT_LIVE_DETAIL}/${groupId}?isInvited=true`)
-      // return
     }
 
     if (user && user.id === agent.owner) {

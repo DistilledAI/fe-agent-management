@@ -12,6 +12,7 @@ import useAuthState from "@hooks/useAuthState"
 import { useQuery } from "@tanstack/react-query"
 import ToggleActionsMobile from "./ToggleActionsMobile"
 import useWindowSize from "@hooks/useWindowSize"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const RightContent = () => {
   const { isMobile } = useWindowSize()
@@ -21,7 +22,7 @@ const RightContent = () => {
   const { mutation } = useSubmitChat(chatId, SpeechRecognition.stopListening)
   const isEnableTextInput = isLogin && chatId
   const { data: isCloseLiveChat = false } = useQuery<boolean>({
-    queryKey: ["close-live-chat"],
+    queryKey: [QueryDataKeys.CLOSE_LIVE_CHAT],
   })
 
   const {

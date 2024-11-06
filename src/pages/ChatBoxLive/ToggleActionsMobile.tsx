@@ -3,16 +3,17 @@ import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
 import { twMerge } from "tailwind-merge"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const ToggleActionsMobile = () => {
   const queryClient = useQueryClient()
   const queries = useQueries({
     queries: [
       {
-        queryKey: ["expand-live-chat"],
+        queryKey: [QueryDataKeys.EXPAND_LIVE_CHAT],
       },
       {
-        queryKey: ["close-live-chat"],
+        queryKey: [QueryDataKeys.CLOSE_LIVE_CHAT],
       },
     ],
   })
@@ -20,9 +21,12 @@ const ToggleActionsMobile = () => {
   const isCloseLiveChat = !!queries[1].data
 
   const handleExpandChatLive = (isExpand: boolean) => {
-    queryClient.setQueryData<boolean>(["expand-live-chat"], () => isExpand)
+    queryClient.setQueryData<boolean>(
+      [QueryDataKeys.EXPAND_LIVE_CHAT],
+      () => isExpand,
+    )
     const chatWindow = document.getElementById("chat-window")
-    if (chatWindow) {
+    if (chatWindow && !isExpand) {
       chatWindow.scrollTop = chatWindow.scrollHeight
       chatWindow.style.scrollBehavior = "smooth"
       setTimeout(() => {
@@ -32,7 +36,10 @@ const ToggleActionsMobile = () => {
   }
 
   const handleCloseChatLive = (isClose: boolean) => {
-    queryClient.setQueryData<boolean>(["close-live-chat"], () => isClose)
+    queryClient.setQueryData<boolean>(
+      [QueryDataKeys.CLOSE_LIVE_CHAT],
+      () => isClose,
+    )
     handleExpandChatLive(false)
   }
 
