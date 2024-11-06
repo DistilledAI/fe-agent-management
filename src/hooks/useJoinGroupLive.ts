@@ -3,7 +3,7 @@ import useFetchGroups from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { IUser, loginSuccessByAnonymous } from "@reducers/userSlice"
 import { useEffect, useState } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { postCreateAnonymous } from "services/auth"
 import { inviteUserJoinGroup } from "services/chat"
 import { useAppDispatch } from "./useAppRedux"
@@ -19,6 +19,7 @@ const useJoinGroupLive = () => {
   const [isLogged, setIsLogged] = useState(false)
   const isAnonymous = user?.role === RoleUser.ANONYMOUS
   const { fetchGroups } = useFetchGroups()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (!isAnonymous) setIsLogged(false)
@@ -36,6 +37,7 @@ const useJoinGroupLive = () => {
         }
       : {}
     const res = await inviteUserJoinGroup(payload, headers)
+    navigate(`${PATH_NAMES.CHAT_LIVE_DETAIL}/${res?.data?.group?.label}`)
     return !!res.data
   }
 
