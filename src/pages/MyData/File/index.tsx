@@ -129,7 +129,7 @@ const FileData: React.FC<{
           title="PDFs"
           addTitle="Add pdf"
         />
-        <SyncLabel />
+        {data.length > 0 && <SyncLabel />}
       </div>
 
       <div className="mt-4">

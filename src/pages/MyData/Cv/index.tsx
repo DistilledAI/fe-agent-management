@@ -129,7 +129,7 @@ const CvData: React.FC<{
           title="CV"
           addTitle="Add cv"
         />
-        <SyncLabel />
+        {data.length > 0 && <SyncLabel />}
       </div>
 
       <div className="mt-4">
