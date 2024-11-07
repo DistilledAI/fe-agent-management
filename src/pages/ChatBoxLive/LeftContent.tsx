@@ -1,16 +1,19 @@
 import bitcoinMaxIntro from "@assets/video/bitcoin-max-intro-ai.mp4"
 import { VolumeIcon, VolumeOffIcon } from "@components/Icons/Voice"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
-import { useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import TradeTokenButton from "./TradeTokenButton"
 import AgentDescription from "./AgentDescription"
 import TwitterButton from "./TwitterButton"
+import { Skeleton } from "@nextui-org/react"
 
 const LeftContent = () => {
   const videoRef = useRef<any>(null)
   const queryClient = useQueryClient()
+  const [isLoaded, setIsLoaded] = useState(false)
+
   const queries = useQueries({
     queries: [
       {
@@ -29,6 +32,10 @@ const LeftContent = () => {
   const isMuted = !!queries[0].data
   const isCloseChatLive = !!queries[1].data
   const isExpandLiveChat = !!queries[2].data
+
+  useEffect(() => {
+    setTimeout(() => setIsLoaded(true), 500)
+  }, [])
 
   const toggleMute = () => {
     if (videoRef.current) {
@@ -50,20 +57,22 @@ const LeftContent = () => {
     >
       <div className="flex h-full flex-col md:h-fit">
         <div className="relative h-full">
-          <video
-            ref={videoRef}
-            muted={isMuted}
-            autoPlay
-            playsInline
-            loop
-            className={twMerge(
-              "h-full w-full rounded-[32px] object-cover max-md:max-h-[350px] md:h-auto",
-              isCloseChatLive && "max-md:max-h-full",
-            )}
-          >
-            <source src={bitcoinMaxIntro} type="video/mp4" />
-            <track kind="captions"></track>
-          </video>
+          <Skeleton isLoaded={isLoaded} className="rounded-[32px]">
+            <video
+              ref={videoRef}
+              muted={isMuted}
+              autoPlay
+              playsInline
+              loop
+              className={twMerge(
+                "h-full w-full rounded-[32px] object-cover max-md:max-h-[350px] max-md:min-h-[350px] md:h-auto",
+                isCloseChatLive && "max-md:max-h-full",
+              )}
+            >
+              <source src={bitcoinMaxIntro} type="video/mp4" />
+              <track kind="captions"></track>
+            </video>
+          </Skeleton>
           <button
             type="button"
             onClick={toggleMute}
