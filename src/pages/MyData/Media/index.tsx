@@ -129,7 +129,7 @@ const MediaData: React.FC<{
           title="Photos & Videos "
           addTitle="Add media"
         />
-        <SyncLabel />
+        {data.length > 0 && <SyncLabel />}
       </div>
       <div className="mt-4">
         {isMobile ? (
