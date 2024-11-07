@@ -4,12 +4,13 @@ import { Textarea } from "@nextui-org/react"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition"
 import { twMerge } from "tailwind-merge"
 import VoiceChat from "./Voice"
+import useWindowSize from "@hooks/useWindowSize"
 
 interface ChatInputProps {
   isDisabledInput: boolean
@@ -29,12 +30,19 @@ const ChatInput = ({
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const [isFocus, setIsFocus] = useState(false)
   const [message, setMessage] = useState("")
+  const { pathname } = useLocation()
+  const { isMobile } = useWindowSize()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
   const heightBoxRef = useRef(0)
   const { setSpacing, spacing } = useStyleSpacing()
   const { privateChatId } = useParams()
   const { chatId } = useGetChatId()
+  const inputRef = useRef<any>(null)
+
+  useEffect(() => {
+    if (!isMobile) inputRef.current.focus()
+  }, [pathname, isMobile])
 
   const groupId = chatId || privateChatId
 
@@ -111,7 +119,7 @@ const ChatInput = ({
         placeholder="Type your message"
         classNames={{
           inputWrapper: twMerge(
-            "bg-mercury-200 border-none focus-within:!bg-mercury-200 hover:!bg-mercury-200 shadow-none px-0",
+            "bg-mercury-200 border-none focus-within:!bg-mercury-200 hover:!bg-mercury-200 shadow-none px-0 !ring-offset-0 !ring-transparent",
             isDarkTheme &&
               "bg-mercury-950 focus-within:!bg-mercury-950 hover:!bg-mercury-950",
           ),
@@ -128,6 +136,7 @@ const ChatInput = ({
         onBlur={() => setIsFocus(false)}
         onValueChange={setMessage}
         value={message}
+        ref={inputRef}
         isDisabled={isDisabledInput}
       />
       <VoiceChat
