@@ -29,7 +29,7 @@ const AgentLiveInfo = () => {
         hideCloseButton
         placement="bottom"
         classNames={{
-          base: "bg-mercury-30 m-0 rounded-b-none h-1/2",
+          base: "bg-mercury-30 m-0 rounded-b-none h-auto max-h-full",
           wrapper: "z-[99]",
           backdrop: "z-[99]",
         }}
@@ -48,7 +48,7 @@ const AgentLiveInfo = () => {
             <TwitterButton />
             <AgentDescription />
           </ModalBody>
-          <ModalFooter className="px-3 pb-10">
+          <ModalFooter className="px-3">
             <Button
               className="h-14 w-full rounded-full bg-mercury-950 text-[16px] text-mercury-30"
               onClick={onClose}
