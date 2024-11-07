@@ -14,6 +14,7 @@ const LeftContent = () => {
   const queries = useQueries({
     queries: [
       {
+        initialData: true,
         queryKey: [QueryDataKeys.AGENT_LIVE_VOLUME],
         staleTime: Infinity,
       },
@@ -33,7 +34,7 @@ const LeftContent = () => {
     if (videoRef.current) {
       videoRef.current.muted = !videoRef.current.muted
       queryClient.setQueryData(
-        ["agent-live-volume"],
+        [QueryDataKeys.AGENT_LIVE_VOLUME],
         () => videoRef.current.muted,
       )
     }

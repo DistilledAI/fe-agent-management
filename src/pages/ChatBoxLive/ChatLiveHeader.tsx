@@ -15,7 +15,7 @@ const ChatLiveHeader = () => {
   const isLive = groupDetail ? groupDetail.group.live === 1 : false
 
   return (
-    <div className="fixed left-0 top-0 z-[1] mt-3 flex h-11 w-full items-center gap-3 bg-mercury-30 px-3 md:hidden">
+    <div className="fixed left-0 top-0 z-20 flex h-14 w-full items-center gap-3 bg-mercury-30 px-3 md:hidden">
       <div className="flex flex-1 items-center gap-3">
         <Button
           onClick={() => navigate(PATH_NAMES.HOME)}

@@ -26,7 +26,7 @@ const ToggleActionsMobile = () => {
       () => isExpand,
     )
     const chatWindow = document.getElementById("chat-window")
-    if (chatWindow && !isExpand) {
+    if (chatWindow) {
       chatWindow.scrollTop = chatWindow.scrollHeight
       chatWindow.style.scrollBehavior = "smooth"
       setTimeout(() => {
@@ -53,11 +53,10 @@ const ToggleActionsMobile = () => {
           className={twMerge(
             "rounded-full p-[5.5px] hover:bg-mercury-30",
             isCloseLiveChat && "hidden",
-            isExpandLiveChat && "rotate-180",
           )}
           onClick={() => handleExpandChatLive(!isExpandLiveChat)}
         >
-          <ArrowsBarToUpIcon />
+          {isExpandLiveChat ? <ChevronDownIcon /> : <ArrowsBarToUpIcon />}
         </button>
         <button
           type="button"
