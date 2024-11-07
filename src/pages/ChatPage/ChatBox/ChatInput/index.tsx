@@ -1,6 +1,6 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
-import { Button, Textarea } from "@nextui-org/react"
+import { Textarea } from "@nextui-org/react"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
@@ -94,17 +94,19 @@ const ChatInput = ({
         wrapperClassName,
       )}
     >
-      <Button
-        isDisabled
+      <button
+        type="button"
         className={twMerge(
           "h-9 w-[52px] min-w-[52px] rounded-full border border-white bg-mercury-30 px-4 py-2",
           isDarkTheme && "bg-mercury-30",
+          //disabled
+          "border-transparent bg-[#EDEDED]",
         )}
       >
         <PaperClipFilledIcon
           color={isDarkTheme ? "rgba(84, 84, 84, 1)" : "#545454"}
         />
-      </Button>
+      </button>
       <Textarea
         placeholder="Type your message"
         classNames={{
@@ -137,18 +139,17 @@ const ChatInput = ({
         isDisabled={isDisabledInput}
         isDarkTheme={isDarkTheme}
       />
-      <Button
+      <button
+        type="button"
         onClick={handleSubmit}
-        isDisabled={!message || isPending}
-        type="submit"
-        isIconOnly
         className={twMerge(
           "h-9 w-[52px] min-w-[52px] rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2",
           isDarkTheme && "bg-white",
+          (!message || isPending) && "border-transparent bg-mercury-950/50",
         )}
       >
         <ArrowUpFilledIcon bgColor={isDarkTheme ? "#363636" : "#FAFAFA"} />
-      </Button>
+      </button>
     </div>
   )
 }
