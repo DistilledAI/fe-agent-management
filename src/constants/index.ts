@@ -6,6 +6,7 @@ export const PATH_NAMES = {
   CHAT_DETAIL: "/chat/:chatId",
   CHAT_LIVE_DETAIL: "/chat/live",
   INVITE: "/invite",
+  NOT_FOUND: "/not-found",
   PRIVATE_AGENT: "/private-agent",
   MARKETPLACE: "/marketplace",
   MY_DATA: "/my-data",

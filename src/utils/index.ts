@@ -56,7 +56,7 @@ export const isImageUrl = (url: string) => {
 }
 
 export const getActiveColorRandomById = (id: number | string | undefined) => {
-  if (!id)
+  if (!id || isNaN(Number(id)))
     return {
       bgColor: "",
       borderColor: "",
