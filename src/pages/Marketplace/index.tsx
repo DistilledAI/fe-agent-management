@@ -13,7 +13,7 @@ const Marketplace = () => {
   const CATEGORIES = [
     {
       id: "private-agents",
-      name: "Private agents",
+      name: "AI Agent",
       component: <PrivateAgents />,
       isComing: false,
     },
