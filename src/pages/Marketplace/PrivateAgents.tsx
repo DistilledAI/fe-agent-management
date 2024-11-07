@@ -22,7 +22,7 @@ const PrivateAgents = () => {
     const isBotLive = agent?.configBot === ConfigBotType.LIVE
     if (isBotLive) {
       const groupId = envConfig.groupIdMax
-      return navigate(`${PATH_NAMES.CHAT_LIVE_DETAIL}/${groupId}`)
+      return navigate(`${PATH_NAMES.LIVE}/${groupId}`)
     }
 
     if (user && user.id === agent.owner) {

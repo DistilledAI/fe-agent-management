@@ -46,7 +46,7 @@ const SearchResult: React.FC<{
     const isBotLive = agent?.configBot === ConfigBotType.LIVE
     if (isBotLive) {
       const groupId = envConfig.groupIdMax
-      navigate(`${PATH_NAMES.CHAT_LIVE_DETAIL}/${groupId}`)
+      navigate(`${PATH_NAMES.LIVE}/${groupId}`)
       if (selectedCallback) selectedCallback()
       return
     }
