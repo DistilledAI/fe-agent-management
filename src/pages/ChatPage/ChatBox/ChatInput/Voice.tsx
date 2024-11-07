@@ -2,7 +2,7 @@ import { allowMicrophone } from "@assets/images"
 import DrawerBottom from "@components/DrawerBottom"
 import { MicrophoneFilledIcon } from "@components/Icons/Microphone"
 import useWindowSize from "@hooks/useWindowSize"
-import { Button, Image } from "@nextui-org/react"
+import { Image } from "@nextui-org/react"
 import React, { useEffect, useState } from "react"
 import type SpeechRecognition from "react-speech-recognition"
 import { toast } from "react-toastify"
@@ -81,26 +81,28 @@ const VoiceChat: React.FC<{
           <span
             style={{ animation: "bounce .8s ease-in-out infinite .5s" }}
             className="absolute z-[-1] h-10 w-10 rounded-full bg-gray-400 opacity-20"
-          ></span>
-          <Button
+          />
+          <button
+            type="button"
             onClick={stopVoice}
             className="relative h-10 w-10 min-w-10 rounded-full bg-code-agent-1 p-0"
           >
-            <span className="h-3 w-3 rounded-sm bg-white"></span>
-          </Button>
+            <span className="h-3 w-3 rounded-sm bg-white" />
+          </button>
         </div>
       ) : (
-        <Button
+        <button
+          type="button"
           onClick={startVoice}
-          isIconOnly
-          isDisabled={isDisabled}
+          disabled={isDisabled}
           className={twMerge(
             "h-9 rounded-full bg-mercury-200",
             isDarkTheme && "bg-mercury-950",
+            isDisabled && "bg-mercury-200/50",
           )}
         >
           <MicrophoneFilledIcon color={isDarkTheme ? "#E6E6E6" : "#545454"} />
-        </Button>
+        </button>
       )}
       {isMobile && (
         <>
