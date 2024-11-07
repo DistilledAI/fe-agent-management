@@ -11,7 +11,9 @@ import ChatInput from "../../ChatInput"
 import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
 import useFetchMessages from "../../ChatMessages/useFetchMessages"
 
-const PrivateAgentChatContent: React.FC = () => {
+const PrivateAgentChatContent: React.FC<{
+  hasInputChat?: boolean
+}> = ({ hasInputChat = true }) => {
   const {
     isLoading,
     onLoadPrevMessages,
@@ -64,13 +66,15 @@ const PrivateAgentChatContent: React.FC = () => {
           paddingBottom: `${spacing}px`,
         }}
       />
-      <ChatInput
-        onSubmit={mutation.mutate}
-        isPending={mutation.isPending}
-        isDisabledInput={false}
-        wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
-        isDarkTheme
-      />
+      {hasInputChat && (
+        <ChatInput
+          onSubmit={mutation.mutate}
+          isPending={mutation.isPending}
+          isDisabledInput={false}
+          wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
+          isDarkTheme
+        />
+      )}
     </>
   )
 }
