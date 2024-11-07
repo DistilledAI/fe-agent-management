@@ -14,6 +14,7 @@ import ChatPageMobile from "@pages/ChatPage/Mobile"
 import MyPrivateAgentContentMobile from "@pages/ChatPage/Mobile/MyPrivateAgentContentMobile"
 import Marketplace from "@pages/Marketplace"
 import MyData from "@pages/MyData"
+import PageNotFound from "@pages/NotFound"
 import { Route, Routes } from "react-router-dom"
 
 const AppRouter = () => {
@@ -72,6 +73,7 @@ const AppRouter = () => {
         </Route>
         {/* <Route path={PATH_NAMES.EDIT_AGENT} element={<EditAgent />} /> */}
       </Route>
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   )
 }

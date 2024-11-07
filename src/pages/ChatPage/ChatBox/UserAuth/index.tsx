@@ -30,7 +30,6 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
     refetchOnWindowFocus: false,
   })
   const hasBot = data ? data.data.items.length > 0 : false
-
   const { textColor } = getActiveColorRandomById(chatId)
   const isHiddenMyData = pathname === PATH_NAMES.MY_DATA || !hasBot
   const isShowInfo =
