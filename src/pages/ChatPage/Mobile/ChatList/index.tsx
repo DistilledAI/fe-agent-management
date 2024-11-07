@@ -55,7 +55,7 @@ const ChatList = () => {
     }
 
     if (isBotLive) {
-      return navigate(`${PATH_NAMES.CHAT_LIVE}/${groupItem.groupId}`, {
+      return navigate(`${PATH_NAMES.LIVE}/${groupItem.groupId}`, {
         state: {
           isGroupJoined: true,
         },

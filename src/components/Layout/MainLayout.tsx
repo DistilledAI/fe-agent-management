@@ -24,7 +24,7 @@ const MainLayout = () => {
     `${PATH_NAMES.INVITE}/${inviteAgentId}`,
     `${PATH_NAMES.MY_DATA}`,
     `${PATH_NAMES.PRIVATE_AGENT}/${privateChatId}`,
-    `${PATH_NAMES.CHAT_LIVE_DETAIL}`,
+    `${PATH_NAMES.LIVE}`,
   ]
 
   const isIgnoreLayout = ignoreLayout.some((path) => pathname.startsWith(path))
