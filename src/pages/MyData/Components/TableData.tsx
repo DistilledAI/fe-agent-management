@@ -26,6 +26,7 @@ const TableData: React.FC<{
     hasMore: boolean
   }
   baseClassName?: string
+  renderColumnByKey?: (columnKey: string) => React.ReactNode
 }> = ({
   columns,
   rows,
@@ -34,6 +35,7 @@ const TableData: React.FC<{
   tdClassName,
   loadMore,
   baseClassName,
+  renderColumnByKey,
 }) => {
   const [loaderRef, scrollerRef] = useInfiniteScroll({
     hasMore: loadMore?.hasMore,
@@ -65,6 +67,7 @@ const TableData: React.FC<{
             key={column.key}
           >
             {column.label}
+            {renderColumnByKey && renderColumnByKey(column.key)}
           </TableColumn>
         )}
       </TableHeader>

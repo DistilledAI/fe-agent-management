@@ -1,9 +1,10 @@
 import AvatarContainer from "@components/AvatarContainer"
 import AvatarGroup from "@components/AvatarGroup"
 import DotLoading from "@components/DotLoading"
+import { LiveIcon } from "@components/Icons"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
-import { RoleUser } from "@constants/index"
+import { PATH_NAMES, RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import DotNotification from "@pages/ChatPage/ChatBox/DotNotification"
 import {
@@ -20,17 +21,17 @@ import useFetchGroups, {
 } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { IUser } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
+import { match } from "ts-pattern"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { StartNewChat } from ".."
-import { LiveIcon } from "@components/Icons"
-import { match } from "ts-pattern"
+import useGetChatId from "../ChatDetail/useGetChatId"
 
 const ChatList = () => {
   const { user } = useAuthState()
   const navigate = useNavigate()
-  const { chatId } = useParams()
+  const { chatId } = useGetChatId()
   const { groups, isLoading, handleLoadMore, isFetched } = useFetchGroups()
   const queryClient = useQueryClient()
 
@@ -40,6 +41,27 @@ const ChatList = () => {
     ) : (
       <FilledBrainAIIcon size={14} />
     )
+  }
+
+  const handleGroupClick = (groupItem: UserGroup, isBotLive: boolean) => {
+    queryClient.setQueryData<number[]>(
+      [QueryDataKeys.NOTIFICATION_GROUPS],
+      (prev = []) => prev.filter((id) => id !== groupItem.groupId),
+    )
+    const chatWindow = document.getElementById("chat-window")
+    if (chatWindow) {
+      chatWindow.style.scrollBehavior = "auto"
+      chatWindow.scrollTop = chatWindow.scrollHeight
+    }
+
+    if (isBotLive) {
+      return navigate(`${PATH_NAMES.CHAT_LIVE}/${groupItem.groupId}`, {
+        state: {
+          isGroupJoined: true,
+        },
+      })
+    }
+    navigate(`${PATH_NAMES.CHAT}/${groupItem.groupId}`)
   }
 
   const renderInfoGroup = (groupItem: UserGroup) => {
@@ -58,7 +80,7 @@ const ChatList = () => {
           avatarUrl={groupItem.group.image}
           publicAddress={groupItem.group.name}
           userName={groupItem.group.name}
-          badgeClassName={isLive ? "bg-[#FF075A]" : ""}
+          badgeClassName={isLive ? "bg-lgd-code-hot-ramp" : ""}
           isLive={isLive}
           usernameClassName={isLive && isActive ? "font-semibold" : ""}
         />
@@ -118,16 +140,14 @@ const ChatList = () => {
       }}
       itemContent={(_, groupItem) => {
         const isActive = Number(chatId) === groupItem.groupId
+        const isBotLive = groupItem.group.live === 1
+
         return (
           <div
             key={groupItem.id}
             aria-selected={isActive}
             onClick={() => {
-              queryClient.setQueryData<number[]>(
-                [QueryDataKeys.NOTIFICATION_GROUPS],
-                (prev = []) => prev.filter((id) => id !== groupItem.groupId),
-              )
-              navigate(`/chat/${groupItem.groupId}`)
+              handleGroupClick(groupItem, isBotLive)
             }}
             className="relative mb-2 gap-2 px-4 py-2"
           >

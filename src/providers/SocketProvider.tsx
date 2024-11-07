@@ -27,8 +27,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
   useEffect(() => {
     let initSocket: Socket | undefined
-
-    if (isLogin) {
+    const accessToken = getAccessToken()
+    if (isLogin && accessToken) {
       const createSocketConnection = () => {
         initSocket = io(envConfig.socketUrl, {
           path: "/socket.io",

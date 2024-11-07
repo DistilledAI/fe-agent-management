@@ -1,6 +1,6 @@
 import { useAppSelector } from "@hooks/useAppRedux"
 import useFetchMe from "@hooks/useFetchMe"
-import useInviteUser from "@hooks/useInviteUser"
+import useInviteAgent from "@hooks/useInviteAgent"
 import LeftBar from "@pages/ChatPage/ChatBox/LeftBar"
 import useMessageSocket from "@pages/ChatPage/ChatBox/useMessageSocket"
 import UserAuthWrapper from "@pages/ChatPage/ChatBox/UserAuth/UserAuthWrapper"
@@ -10,7 +10,7 @@ import { twMerge } from "tailwind-merge"
 
 const MainLayoutDesktop = () => {
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
-  useInviteUser()
+  useInviteAgent()
   useFetchMe()
   useMessageSocket()
 

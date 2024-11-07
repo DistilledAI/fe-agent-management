@@ -11,12 +11,24 @@ export const getUser = async () => {
 interface IUserUpdate {
   username?: string
   avatar?: string
+  description?: string
 }
 export const updateUser = async (data: IUserUpdate) => {
   return fetchApiAuth({
     method: "POST",
     url: endpoint.UPDATE_USER,
     data,
+  })
+}
+
+export const updateAvatarUser = async (data: FormData) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.UPDATE_AVATAR_USER,
+    data,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
   })
 }
 

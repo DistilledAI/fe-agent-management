@@ -1,14 +1,13 @@
 import ChatWindow from "@components/ChatWindow"
-import ContextCleared from "@components/ContextCleared"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
 import { RoleUser } from "@constants/index"
-import { useQueryClient } from "@tanstack/react-query"
+import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
+import { useQuery } from "@tanstack/react-query"
 import { getActiveColorRandomById } from "@utils/index"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
-import { useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import ChatActions from "./ChatActions"
@@ -19,6 +18,7 @@ import {
   RoleChat,
 } from "./helpers"
 import useFetchMessages from "./useFetchMessages"
+// import AgentInfoCard from "./AgentInfoCard"
 
 const ChatMessages = () => {
   const {
@@ -29,13 +29,14 @@ const ChatMessages = () => {
     hasPreviousMore,
     isFetchingPreviousPage,
   } = useFetchMessages()
-  const { chatId } = useParams()
-  const { bgColor, textColor } = getActiveColorRandomById(chatId)
-  const queryClient = useQueryClient()
-  const myPrivateAgent = queryClient.getQueryData([
-    QueryDataKeys.DELEGATE_PRIVATE_AGENT,
-    chatId,
-  ])
+  const { chatId } = useGetChatId()
+  const { bgColor } = getActiveColorRandomById(chatId)
+  const { data: myPrivateAgent } = useQuery({
+    queryKey: [QueryDataKeys.DELEGATE_PRIVATE_AGENT, chatId],
+    enabled: !!chatId,
+    staleTime: 60 * 60 * 1000,
+    refetchOnMount: false,
+  })
   const { spacing } = useStyleSpacing()
 
   const getBadgeIcon = (role: RoleUser) =>
@@ -51,17 +52,6 @@ const ChatMessages = () => {
       message,
       messages,
     )
-
-    if (message.isChatCleared) {
-      return (
-        <div
-          key={index}
-          className="mx-auto flex max-w-[768px] justify-center pb-4"
-        >
-          <ContextCleared textClassName={textColor} />
-        </div>
-      )
-    }
 
     return (
       <div
@@ -96,6 +86,7 @@ const ChatMessages = () => {
   return (
     <>
       <ChatWindow
+        // Header={<AgentInfoCard />}
         messages={messages}
         itemContent={renderMessage}
         isLoading={isLoading}

@@ -1,17 +1,18 @@
 import useJoinGroupLive from "@hooks/useJoinGroupLive"
-import ChatLiveHeader from "./HeaderMobile"
+import ChatLiveHeader from "./ChatLiveHeader"
 import LeftContent from "./LeftContent"
 import RightContent from "./RightContent"
+import useWindowSize from "@hooks/useWindowSize"
 
 const ChatBoxLive = () => {
   useJoinGroupLive()
+  const { isMobile } = useWindowSize()
 
   return (
-    <div className="relative mx-auto h-[calc(100dvh-68px)] max-w-[1232px] px-6 max-lg:h-[calc(100dvh-150px)] max-lg:overflow-y-auto max-md:h-auto max-md:px-4 max-md:py-[60px]">
-      <div className="md:hidden">
-        <ChatLiveHeader />
-      </div>
-      <div className="flex h-full gap-10 pb-4 max-lg:h-auto max-lg:flex-col max-md:gap-5">
+    <div className="relative mx-auto h-dvh max-w-[1232px] bg-mercury-30 max-md:overflow-hidden max-md:pt-[68px] md:h-[calc(100dvh-68px)] md:bg-white md:px-6">
+      {isMobile ? <ChatLiveHeader /> : <></>}
+
+      <div className="flex h-full gap-2 pb-4 max-lg:flex-col md:gap-10">
         <LeftContent />
         <RightContent />
       </div>

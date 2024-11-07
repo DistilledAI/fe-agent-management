@@ -8,10 +8,11 @@ import { FilledUserIcon, FilledUsersPlusIcon } from "@components/Icons/UserIcon"
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
+import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { IUser } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById } from "@utils/index"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
 import { match } from "ts-pattern"
@@ -35,7 +36,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
   const { groups, isLoading, handleLoadMore } = useFetchGroups()
   const { user } = useAuthState()
   const navigate = useNavigate()
-  const { chatId } = useParams()
+  const { chatId } = useGetChatId()
   const queryClient = useQueryClient()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
 
@@ -74,7 +75,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
           avatarUrl={groupItem.group.image}
           publicAddress={groupItem.group.name}
           userName={sidebarCollapsed ? "" : groupItem.group.name}
-          badgeClassName={isLive ? "bg-[#FF075A]" : ""}
+          badgeClassName={isLive ? "bg-lgd-code-hot-ramp" : ""}
           isLive={isLive}
           usernameClassName={isLive && isActive ? "font-semibold" : ""}
         />
@@ -108,6 +109,27 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
           )}
         />
       ))
+  }
+
+  const handleGroupClick = (groupItem: UserGroup, isBotLive: boolean) => {
+    queryClient.setQueryData<number[]>(
+      [QueryDataKeys.NOTIFICATION_GROUPS],
+      (prev = []) => prev.filter((id) => id !== groupItem.groupId),
+    )
+    const chatWindow = document.getElementById("chat-window")
+    if (chatWindow) {
+      chatWindow.style.scrollBehavior = "auto"
+      chatWindow.scrollTop = chatWindow.scrollHeight
+    }
+
+    if (isBotLive) {
+      return navigate(`${PATH_NAMES.CHAT_LIVE}/${groupItem?.group?.label}`, {
+        state: {
+          isGroupJoined: true,
+        },
+      })
+    }
+    navigate(`${PATH_NAMES.CHAT}/${groupItem.groupId}`)
   }
 
   return (
@@ -164,19 +186,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
               <div
                 key={groupItem.id}
                 aria-selected={isActive}
-                onClick={() => {
-                  queryClient.setQueryData<number[]>(
-                    [QueryDataKeys.NOTIFICATION_GROUPS],
-                    (prev = []) =>
-                      prev.filter((id) => id !== groupItem.groupId),
-                  )
-                  if (isBotLive) {
-                    return navigate(
-                      `${PATH_NAMES.CHAT_LIVE}/${groupItem.groupId}`,
-                    )
-                  }
-                  navigate(`${PATH_NAMES.CHAT}/${groupItem.groupId}`)
-                }}
+                onClick={() => handleGroupClick(groupItem, isBotLive)}
                 className={twMerge(
                   "hover-light-effect group/item group relative mx-4 mb-2 h-14 gap-2 rounded-full px-2 py-2",
                   isActive && "bg-mercury-100",
@@ -196,7 +206,10 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                 {sidebarCollapsed ? (
                   <></>
                 ) : (
-                  <MoreChatAction groupId={groupItem.groupId} />
+                  <MoreChatAction
+                    groupId={groupItem.groupId}
+                    groupType={groupItem.group.typeGroup}
+                  />
                 )}
               </div>
             )

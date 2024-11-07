@@ -56,10 +56,20 @@ export const checkGroupDirect = async (data: IDataCreateGroupChat) => {
   })
 }
 
-export const leaveGroup = async (groupId: number) => {
+export const deleteGroup = async (groupId: number) => {
   return fetchApiAuth({
     method: "delete",
-    url: endpoint.LEAVE_GROUP(groupId),
+    url: endpoint.DELETE_GROUP(groupId),
+  })
+}
+
+export const leaveGroup = async (groupId: number) => {
+  return fetchApiAuth({
+    method: "post",
+    url: endpoint.LEAVE_GROUP,
+    data: {
+      groupId,
+    },
   })
 }
 
@@ -155,10 +165,15 @@ export const checkStatusBotInGroup = async (groupId: string | undefined) => {
   })
 }
 
-export const getGroupChatDetail = async (groupId: number) => {
+export interface GroupChatDetail {
+  filter: any
+}
+
+export const getGroupChatDetail = async (params: any) => {
   return fetchApiAuth({
     method: "get",
-    url: endpoint.GET_GROUP_CHAT_DETAIL(groupId),
+    url: endpoint.GET_GROUP_CHAT_DETAIL(),
+    params,
   })
 }
 
@@ -254,5 +269,25 @@ export const inviteUserJoinGroup = async (data: InviteUser, headers = {}) => {
     headers,
     url: endpoint.INVITE_USER_JOIN_GROUP,
     data,
+  })
+}
+
+interface TrainData {
+  botId: number
+  id: number
+}
+
+export const trainData = async (data: TrainData) => {
+  return fetchApiAuth({
+    method: "post",
+    url: endpoint.TRAIN_DATA_MY_DATA,
+    data,
+  })
+}
+
+export const getGroupDetailFromLabel = async (label: string) => {
+  return fetchApiAuth({
+    method: "get",
+    url: endpoint.GET_GROUP_DETAIL_FROM_LABEL(label),
   })
 }

@@ -1,13 +1,13 @@
 import { CloseFilledIcon } from "@components/Icons/DefiLens/index.tsx"
 import "@rainbow-me/rainbowkit/styles.css"
 import Providers from "Providers.tsx"
-import React from "react"
 import ReactDOM from "react-dom/client"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import "regenerator-runtime/runtime"
 import App from "./App.tsx"
 import "./index.css"
+import React from "react"
 
 console.info("VITE_COMMIT_ID", import.meta.env.VITE_COMMIT_ID || "dev")
 

@@ -8,6 +8,7 @@ const endpoint = {
   GET_USER: withBaseURL("/user/detail"),
   SEARCH_USER: withBaseURL("/user/search"),
   UPDATE_USER: withBaseURL("/user/update"),
+  UPDATE_AVATAR_USER: withBaseURL("/user/update-avatar"),
   CREATE_ANONYMOUS: withBaseURL("/user/create-anonymous"),
 
   //bot
@@ -24,20 +25,23 @@ const endpoint = {
   CHAT_TO_GROUP: withBaseURL("/group/chat-to-group"),
   CHAT_GROUP_DIRECT: withBaseURL("/group/check-group-direct"),
   INVITE_USER_JOIN_GROUP: withBaseURL("/group/invite-user"),
-  LEAVE_GROUP: (groupId: number) => withBaseURL(`/group/delete/${groupId}`),
-  GET_GROUP_CHAT_DETAIL: (groupId: number) =>
-    withBaseURL(`/group/detail/${groupId}`),
+  LEAVE_GROUP: withBaseURL(`/group/out-group`),
+  DELETE_GROUP: (groupId: number) => withBaseURL(`/group/delete/${groupId}`),
+  GET_GROUP_CHAT_DETAIL: () => withBaseURL("/group/detail"),
   GET_HISTORY_CHAT: (id: number) => withBaseURL(`/chat/group/${id}/message`),
   CHECK_CONVERSATION_CHAT: (userToId: number) =>
     withBaseURL(`/chat/check-conversation/${userToId}`),
   GET_USER_PROFILE: (type: string, userName: string) =>
     withBaseURL(`/user/${type}-crawl/${userName}`),
+  GET_GROUP_DETAIL_FROM_LABEL: (label: string) =>
+    withBaseURL(`/group/detail/label/${label}`),
 
   //my data
   UPLOAD_MY_DATA: withBaseURL("/my-data/upload"),
   MAP_MY_DATA_TO_BOT: withBaseURL("/my-data/map-bot"),
   GET_MY_BOT_DATA: (botId: number) => withBaseURL(`/my-data/list/${botId}`),
   DELETE_MY_BOT_DATA: withBaseURL("/my-data/delete"),
+  TRAIN_DATA_MY_DATA: withBaseURL("/my-data/train-data"),
 }
 
 export default endpoint

@@ -1,8 +1,7 @@
 import useAuthState from "@hooks/useAuthState"
 import { IUser } from "@reducers/userSlice"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { useEffect, useState } from "react"
-import { useSearchParams } from "react-router-dom"
+import { useState } from "react"
 import { getGroupList } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 
@@ -24,6 +23,7 @@ export interface IGroup {
   createdAt: string
   typeGroup: TypeGroup
   live?: number
+  label?: string
 }
 
 export interface UserGroup {
@@ -46,9 +46,7 @@ export const LIMIT = 10
 const useFetchGroups = () => {
   const { isLogin } = useAuthState()
   const [hasMore, setHasMore] = useState(true)
-  const [searchParams, setSearchParams] = useSearchParams()
   const [offset, setOffset] = useState(LIMIT)
-  const isInvited = searchParams.get("isInvited") === "true"
   const [isFetched, setIsFetched] = useState(false)
   const queryClient = useQueryClient()
 
@@ -96,16 +94,6 @@ const useFetchGroups = () => {
       setOffset((prev) => prev + LIMIT)
     }
   }
-
-  useEffect(() => {
-    if (isInvited) {
-      refetch({})
-      setSearchParams((params) => {
-        params.delete("isInvited")
-        return params
-      })
-    }
-  }, [isInvited])
 
   return {
     isLoading: isFetching,

@@ -1,31 +1,33 @@
+import { PATH_NAMES } from "@constants/index"
+import useFetchMe from "@hooks/useFetchMe"
+import useInviteAgent from "@hooks/useInviteAgent"
+import useReconnectWallet from "@hooks/useReconnectWallet"
 import useWindowSize from "@hooks/useWindowSize"
+import useMessageSocket from "@pages/ChatPage/ChatBox/useMessageSocket"
+import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
+import { Outlet, useLocation, useParams } from "react-router-dom"
 import FooterMobile from "./FooterMobile"
 import HeaderMobile from "./HeaderMobile"
-import { Outlet, useLocation, useParams } from "react-router-dom"
-import { PATH_NAMES } from "@constants/index"
-import useInviteUser from "@hooks/useInviteUser"
-import useFetchMe from "@hooks/useFetchMe"
-import useReconnectWallet from "@hooks/useReconnectWallet"
-import useMessageSocket from "@pages/ChatPage/ChatBox/useMessageSocket"
 
 const MainLayout = () => {
-  useInviteUser()
+  useInviteAgent()
   useFetchMe()
   useReconnectWallet()
   useMessageSocket()
 
   const { screenWidth } = useWindowSize()
   const { pathname } = useLocation()
-  const { chatId, inviteUserId, privateChatId } = useParams()
+  const { inviteAgentId, privateChatId } = useParams()
+  const { chatId } = useGetChatId()
   const ignoreLayout = [
     `${PATH_NAMES.CHAT}/${chatId}`,
-    `${PATH_NAMES.INVITE}/${inviteUserId}`,
+    `${PATH_NAMES.INVITE}/${inviteAgentId}`,
     `${PATH_NAMES.MY_DATA}`,
     `${PATH_NAMES.PRIVATE_AGENT}/${privateChatId}`,
-    `${PATH_NAMES.CHAT_LIVE_DETAIL}/${chatId}`,
+    `${PATH_NAMES.CHAT_LIVE_DETAIL}`,
   ]
 
-  const isIgnoreLayout = ignoreLayout.includes(pathname)
+  const isIgnoreLayout = ignoreLayout.some((path) => pathname.startsWith(path))
   const isHeader = !isIgnoreLayout
   const isFooter = !isIgnoreLayout
 

@@ -1,14 +1,16 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
-import { Button, Textarea } from "@nextui-org/react"
+import { Textarea } from "@nextui-org/react"
+import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
+import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useLocation, useParams } from "react-router-dom"
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition"
 import { twMerge } from "tailwind-merge"
 import VoiceChat from "./Voice"
-import { useStyleSpacing } from "providers/StyleSpacingProvider"
-import { useParams } from "react-router-dom"
+import useWindowSize from "@hooks/useWindowSize"
 
 interface ChatInputProps {
   isDisabledInput: boolean
@@ -28,11 +30,20 @@ const ChatInput = ({
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const [isFocus, setIsFocus] = useState(false)
   const [message, setMessage] = useState("")
+  const { pathname } = useLocation()
+  const { isMobile } = useWindowSize()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
   const heightBoxRef = useRef(0)
   const { setSpacing, spacing } = useStyleSpacing()
-  const { chatId, privateChatId } = useParams()
+  const { privateChatId } = useParams()
+  const { chatId } = useGetChatId()
+  const inputRef = useRef<any>(null)
+
+  useEffect(() => {
+    if (!isMobile) inputRef.current.focus()
+  }, [pathname, isMobile])
+
   const groupId = chatId || privateChatId
 
   const handleSubmit = async () => {
@@ -91,22 +102,24 @@ const ChatInput = ({
         wrapperClassName,
       )}
     >
-      <Button
-        isDisabled
+      <button
+        type="button"
         className={twMerge(
           "h-9 w-[52px] min-w-[52px] rounded-full border border-white bg-mercury-30 px-4 py-2",
           isDarkTheme && "bg-mercury-30",
+          //disabled
+          "border-transparent bg-[#EDEDED]",
         )}
       >
         <PaperClipFilledIcon
           color={isDarkTheme ? "rgba(84, 84, 84, 1)" : "#545454"}
         />
-      </Button>
+      </button>
       <Textarea
         placeholder="Type your message"
         classNames={{
           inputWrapper: twMerge(
-            "bg-mercury-200 border-none focus-within:!bg-mercury-200 hover:!bg-mercury-200 shadow-none px-0",
+            "bg-mercury-200 border-none focus-within:!bg-mercury-200 hover:!bg-mercury-200 shadow-none px-0 !ring-offset-0 !ring-transparent",
             isDarkTheme &&
               "bg-mercury-950 focus-within:!bg-mercury-950 hover:!bg-mercury-950",
           ),
@@ -123,6 +136,7 @@ const ChatInput = ({
         onBlur={() => setIsFocus(false)}
         onValueChange={setMessage}
         value={message}
+        ref={inputRef}
         isDisabled={isDisabledInput}
       />
       <VoiceChat
@@ -134,18 +148,17 @@ const ChatInput = ({
         isDisabled={isDisabledInput}
         isDarkTheme={isDarkTheme}
       />
-      <Button
+      <button
+        type="button"
         onClick={handleSubmit}
-        isDisabled={!message || isPending}
-        type="submit"
-        isIconOnly
         className={twMerge(
           "h-9 w-[52px] min-w-[52px] rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2",
           isDarkTheme && "bg-white",
+          (!message || isPending) && "border-transparent bg-mercury-950/50",
         )}
       >
         <ArrowUpFilledIcon bgColor={isDarkTheme ? "#363636" : "#FAFAFA"} />
-      </Button>
+      </button>
     </div>
   )
 }

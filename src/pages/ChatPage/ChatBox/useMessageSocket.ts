@@ -1,18 +1,19 @@
+import { TYPE_BOT } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { IUser } from "@reducers/userSlice"
+import { useQueryClient } from "@tanstack/react-query"
+import { makeId } from "@utils/index"
 import { useSocket } from "providers/SocketProvider"
 import { useEffect, useRef } from "react"
 import { useParams } from "react-router-dom"
+import { getVoiceToText } from "services/chat"
+import { QueryDataKeys } from "types/queryDataKeys"
+import useGetChatId from "../Mobile/ChatDetail/useGetChatId"
 import { IMessageBox, RoleChat } from "./ChatMessages/helpers"
-import { makeId } from "@utils/index"
-import { TYPE_BOT } from "@constants/index"
-import { useQueryClient } from "@tanstack/react-query"
 import {
   ICachedMessageData,
   chatMessagesKey,
 } from "./ChatMessages/useFetchMessages"
-import { QueryDataKeys } from "types/queryDataKeys"
-import { getVoiceToText } from "services/chat"
 
 interface IDataListen {
   event: string
@@ -31,7 +32,8 @@ enum StatusMessage {
 }
 
 const useMessageSocket = () => {
-  const { chatId, privateChatId } = useParams()
+  const { privateChatId } = useParams()
+  const { chatId } = useGetChatId()
   const { socket } = useSocket()
   const { user } = useAuthState()
   const indexResRef = useRef(-1)

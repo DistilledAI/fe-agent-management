@@ -4,7 +4,9 @@ import ProtectedByAuth from "@components/Layout/ProtectedByAuth"
 import { ChatDetailLoadingPage } from "@components/LoadingMobile"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
+import Account from "@pages/Account"
 import AddMyData from "@pages/AddMyData"
+import AuthorProfile from "@pages/AuthorProfile"
 import ChatBoxLive from "@pages/ChatBoxLive"
 import ChatMyAgent from "@pages/ChatMyAgent"
 import ChatBox from "@pages/ChatPage/ChatBox"
@@ -23,6 +25,7 @@ const AppRouter = () => {
         path={PATH_NAMES.HOME}
         element={isMobile ? <MainLayout /> : <MainLayoutDesktop />}
       >
+        {/* Route Regular */}
         <Route
           path={PATH_NAMES.HOME}
           element={isMobile ? <ChatPageMobile /> : <ChatBox />}
@@ -36,7 +39,7 @@ const AppRouter = () => {
           element={<ChatBoxLive />}
         />
         <Route
-          path={`${PATH_NAMES.INVITE}/:inviteUserId`}
+          path={`${PATH_NAMES.INVITE}/:inviteAgentId`}
           element={isMobile ? <ChatDetailLoadingPage /> : <ChatBox />}
         />
         <Route
@@ -45,18 +48,14 @@ const AppRouter = () => {
         />
         <Route path={PATH_NAMES.MARKETPLACE} element={<Marketplace />} />
         <Route
-          path={PATH_NAMES.MY_DATA}
-          element={
-            <ProtectedByAuth>
-              <MyData />
-            </ProtectedByAuth>
-          }
-        />
-        <Route
           path={`${PATH_NAMES.ADD_MY_DATA}/:botId`}
           element={<AddMyData />}
         />
         <Route path={PATH_NAMES.ADD_MY_DATA} element={<AddMyData />} />
+        <Route
+          path={`${PATH_NAMES.AUTHOR_PROFILE}/:authorId`}
+          element={<AuthorProfile />}
+        />
         {isMobile && (
           <>
             <Route
@@ -65,6 +64,13 @@ const AppRouter = () => {
             />
           </>
         )}
+
+        {/* Route Protected By Auth */}
+        <Route path={PATH_NAMES.HOME} element={<ProtectedByAuth />}>
+          <Route path={PATH_NAMES.MY_DATA} element={<MyData />} />
+          <Route path={PATH_NAMES.ACCOUNT} element={<Account />} />
+        </Route>
+        {/* <Route path={PATH_NAMES.EDIT_AGENT} element={<EditAgent />} /> */}
       </Route>
     </Routes>
   )

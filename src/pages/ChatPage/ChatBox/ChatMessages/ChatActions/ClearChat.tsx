@@ -1,13 +1,15 @@
 // import ComingSoon from "@components/ComingSoon"
 import { MessagePlusIcon } from "@components/Icons/Message"
 import { Button } from "@nextui-org/react"
+import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useQueryClient } from "@tanstack/react-query"
-import { ICachedMessageData, chatMessagesKey } from "../useFetchMessages"
 import { useParams } from "react-router-dom"
+import { ICachedMessageData, chatMessagesKey } from "../useFetchMessages"
 
 const ClearChat = () => {
   const queryClient = useQueryClient()
-  const { chatId, privateChatId } = useParams()
+  const { privateChatId } = useParams()
+  const { chatId } = useGetChatId()
   const groupId = privateChatId || chatId
 
   const handleClearChat = () => {

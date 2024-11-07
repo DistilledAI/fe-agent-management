@@ -2,15 +2,18 @@ import { brainAIIcon } from "@assets/svg"
 import ChatWindow from "@components/ChatWindow"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
+import useSubmitChat from "@hooks/useSubmitChat"
+import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
+import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import { useParams } from "react-router-dom"
+import SpeechRecognition from "react-speech-recognition"
+import ChatInput from "../../ChatInput"
 import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
 import useFetchMessages from "../../ChatMessages/useFetchMessages"
-import { useStyleSpacing } from "providers/StyleSpacingProvider"
-import ChatInput from "../../ChatInput"
-import useSubmitChat from "@hooks/useSubmitChat"
-import SpeechRecognition from "react-speech-recognition"
 
-const PrivateAgentChatContent: React.FC = () => {
+const PrivateAgentChatContent: React.FC<{
+  hasInputChat?: boolean
+}> = ({ hasInputChat = true }) => {
   const {
     isLoading,
     onLoadPrevMessages,
@@ -20,7 +23,8 @@ const PrivateAgentChatContent: React.FC = () => {
     hasPreviousMore,
   } = useFetchMessages()
   const { spacing } = useStyleSpacing()
-  const { privateChatId, chatId } = useParams()
+  const { privateChatId } = useParams()
+  const { chatId } = useGetChatId()
   const groupId = privateChatId || chatId
   const { mutation } = useSubmitChat(groupId, SpeechRecognition.stopListening)
 
@@ -62,13 +66,15 @@ const PrivateAgentChatContent: React.FC = () => {
           paddingBottom: `${spacing}px`,
         }}
       />
-      <ChatInput
-        onSubmit={mutation.mutate}
-        isPending={mutation.isPending}
-        isDisabledInput={false}
-        wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
-        isDarkTheme
-      />
+      {hasInputChat && (
+        <ChatInput
+          onSubmit={mutation.mutate}
+          isPending={mutation.isPending}
+          isDisabledInput={false}
+          wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
+          isDarkTheme
+        />
+      )}
     </>
   )
 }

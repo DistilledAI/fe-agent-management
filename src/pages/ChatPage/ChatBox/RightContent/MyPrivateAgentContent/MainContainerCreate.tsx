@@ -16,6 +16,7 @@ const MainContainerCreate: React.FC<{
   botId?: number | string
   onCallBack?: any
 }> = ({ children, setCreated, botId, onCallBack }) => {
+  const [isCollected, setIsCollected] = useState(false)
   const [openFYIPopup, setOpenFYIPopupp] = useState<boolean>(false)
   const [openCollectingPopup, setOpenCollectingPopup] = useState<boolean>(false)
   const queryClient = useQueryClient()
@@ -58,7 +59,7 @@ const MainContainerCreate: React.FC<{
         }
         await mapMyDataToBot(payload)
         toast.success("Updated bot successfully")
-        onCallBack()
+        setIsCollected(true)
         return
       }
 
@@ -71,15 +72,12 @@ const MainContainerCreate: React.FC<{
         }
         await mapMyDataToBot(payload)
         toast.success("Created bot successfully")
-        setOpenCollectingPopup(false)
-        setCreated(true)
         queryClient.refetchQueries({ queryKey: [QueryDataKeys.MY_BOT_LIST] })
+        setIsCollected(true)
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message)
       console.log("error", error)
-      setOpenCollectingPopup(false)
-    } finally {
       setOpenCollectingPopup(false)
     }
   }
@@ -122,6 +120,11 @@ const MainContainerCreate: React.FC<{
       <CollectingModal
         openPopup={openCollectingPopup}
         setOpenPopup={setOpenCollectingPopup}
+        callbackChange={() => {
+          if (onCallBack) onCallBack()
+          if (setCreated) setCreated(true)
+        }}
+        isCollected={isCollected}
       />
     </>
   )

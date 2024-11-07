@@ -23,15 +23,6 @@ const PrivateAgents = () => {
     if (isBotLive) {
       const groupId = envConfig.groupIdMax
       return navigate(`${PATH_NAMES.CHAT_LIVE_DETAIL}/${groupId}`)
-      // const inviteUserId = user?.id
-      // const payload = {
-      //   groupId,
-      //   member: [inviteUserId],
-      // }
-      // const res = await inviteUserJoinGroup(payload)
-      // if (res)
-      //   navigate(`${PATH_NAMES.CHAT_LIVE_DETAIL}/${groupId}?isInvited=true`)
-      // return
     }
 
     if (user && user.id === agent.owner) {
@@ -72,7 +63,7 @@ const PrivateAgents = () => {
       <div className="flex gap-4">
         <AvatarCustom
           badgeClassName={
-            agent.configBot === "live" ? "bg-[#FF075A]" : "bg-yellow-10"
+            agent.configBot === "live" ? "bg-lgd-code-hot-ramp" : "bg-yellow-10"
           }
           src={agent.avatar}
           publicAddress={agent.publicAddress}
