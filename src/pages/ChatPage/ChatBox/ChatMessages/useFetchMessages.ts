@@ -31,7 +31,7 @@ export interface ICachedMessageData {
 
 export const chatMessagesKey = (chatId: string | undefined) => {
   if (!chatId) return []
-  return [QueryDataKeys.CHAT_MESSAGES, chatId]
+  return [QueryDataKeys.CHAT_MESSAGES, chatId.toString()]
 }
 
 const STALE_TIME = 60 * 60 * 1000
