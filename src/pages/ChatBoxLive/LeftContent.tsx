@@ -4,10 +4,8 @@ import { useQueries, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useRef, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
-import TradeTokenButton from "./TradeTokenButton"
 import AgentDescription from "./AgentDescription"
-import TwitterButton from "./TwitterButton"
-import { Skeleton } from "@nextui-org/react"
+import TradeTokenButton from "./TradeTokenButton"
 
 const LeftContent = () => {
   const videoRef = useRef<any>(null)
@@ -87,7 +85,7 @@ const LeftContent = () => {
         </div>
 
         <div className="mt-6 hidden items-center justify-between gap-2 md:flex">
-          <TwitterButton />
+          {/* <TwitterButton /> */}
           <TradeTokenButton />
         </div>
       </div>
