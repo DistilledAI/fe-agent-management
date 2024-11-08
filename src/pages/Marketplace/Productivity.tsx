@@ -8,17 +8,17 @@ import { Button } from "@nextui-org/react"
 const PRODUCTIVITY_LIST = [
   {
     name: "Email Helper",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    description: "",
     icon: <MailBoltIcon />,
   },
   {
     name: "Blog Writer",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    description: "",
     icon: <PencilCogIcon />,
   },
   {
     name: "Travel Planner",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    description: "",
     icon: <PlaneTiltIcon />,
   },
 ]
@@ -29,7 +29,7 @@ const Productivity = () => {
       className="flex justify-between gap-6 border-b border-b-mercury-70 py-2 last:border-none"
       key={index}
     >
-      <div className="flex gap-4">
+      <div className="flex items-center gap-4">
         <AvatarCustom badgeClassName="bg-yellow-10" icon={item.icon} />
         <div className="flex-1">
           <div className="flex items-center gap-2">
@@ -38,7 +38,7 @@ const Productivity = () => {
             </span>
           </div>
           <p className="max-w-[187px] text-13 font-medium text-mercury-600">
-            {item.description || "Distilled AI Agent"}
+            {item.description}
           </p>
         </div>
       </div>
