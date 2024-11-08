@@ -10,6 +10,7 @@ import AuthorProfile from "@pages/AuthorProfile"
 import ChatBoxLive from "@pages/ChatBoxLive"
 import ChatMyAgent from "@pages/ChatMyAgent"
 import ChatBox from "@pages/ChatPage/ChatBox"
+import EditAgent from "@pages/ChatPage/EditAgent"
 import ChatPageMobile from "@pages/ChatPage/Mobile"
 import MyPrivateAgentContentMobile from "@pages/ChatPage/Mobile/MyPrivateAgentContentMobile"
 import Marketplace from "@pages/Marketplace"
@@ -70,7 +71,7 @@ const AppRouter = () => {
           <Route path={PATH_NAMES.MY_DATA} element={<MyData />} />
           <Route path={PATH_NAMES.ACCOUNT} element={<Account />} />
         </Route>
-        {/* <Route path={PATH_NAMES.EDIT_AGENT} element={<EditAgent />} /> */}
+        <Route path={PATH_NAMES.EDIT_AGENT} element={<EditAgent />} />
       </Route>
     </Routes>
   )

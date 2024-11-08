@@ -3,10 +3,10 @@ import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
 import { Textarea } from "@nextui-org/react"
 import CategoryLabel, { FieldLabel } from "./CategoryLabel"
 
-const Characteristic: React.FC = () => {
+const Behaviors: React.FC = () => {
   return (
     <div>
-      <CategoryLabel text="Characteristic" icon={<ClipboardTextIcon />} />
+      <CategoryLabel text="Agent Behaviors" icon={<ClipboardTextIcon />} />
       <div className="my-4">
         <FieldLabel text="Greeting message" />
         <Textarea
@@ -47,11 +47,7 @@ const Characteristic: React.FC = () => {
           />
         </div>
       </div>
-
-      <div>
-        <FieldLabel text="Toxic policies" />
-      </div>
     </div>
   )
 }
-export default Characteristic
+export default Behaviors
