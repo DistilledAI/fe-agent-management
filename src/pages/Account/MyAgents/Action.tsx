@@ -1,9 +1,7 @@
-import { SettingIcon } from "@components/Icons"
-import { PATH_NAMES, Publish, STATUS_AGENT } from "@constants/index"
+import { Publish, STATUS_AGENT } from "@constants/index"
 import { Button } from "@nextui-org/react"
 import { useQueryClient } from "@tanstack/react-query"
 import React, { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { publishMarketplace } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
@@ -17,13 +15,13 @@ const MyAgentAction: React.FC<{
   )
   const [loading, setLoading] = useState(false)
   const queryClient = useQueryClient()
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const isActive = data.status === STATUS_AGENT.ACTIVE
-  const agentId = data.id
+  // const agentId = data.id
 
-  const onRedirectEditAgentPage = () => {
-    navigate(`${PATH_NAMES.AGENT_DETAIL}/${agentId}`)
-  }
+  // const onRedirectEditAgentPage = () => {
+  //   navigate(`${PATH_NAMES.AGENT_DETAIL}/${agentId}`)
+  // }
 
   useEffect(() => {
     setIsPublished(data.publish === Publish.Published)
@@ -58,12 +56,12 @@ const MyAgentAction: React.FC<{
       >
         {isPublished ? "Unpublish" : "Publish"}
       </Button>
-      <div
+      {/* <div
         className="inline-flex cursor-pointer items-center gap-1 font-medium text-[#A2845E] hover:opacity-70 max-sm:text-14"
         onClick={onRedirectEditAgentPage}
       >
         <SettingIcon /> Edit
-      </div>
+      </div> */}
     </div>
   )
 }
