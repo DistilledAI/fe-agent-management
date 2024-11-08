@@ -10,4 +10,6 @@ export enum QueryDataKeys {
   AGENT_LIVE_VOLUME = "agent-live-volume",
   CLOSE_LIVE_CHAT = "close-live-chat",
   EXPAND_LIVE_CHAT = "expand-live-chat",
+  USER_PUBLIC_DETAIL = "user-public-detail",
+  PUBLIC_AGENTS_BY_OWNER = "public-agents-by-owner",
 }
