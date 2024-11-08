@@ -19,3 +19,20 @@ export const getPublicAgentsByOwner = async (ownerId: number) => {
     },
   })
 }
+
+interface UploadAgentPayload {
+  botId: number
+  avatar?: string
+  username?: string
+  description?: string
+  email?: string
+  firstMsg?: string
+}
+
+export const updateAgent = async (data: UploadAgentPayload) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.UPDATE_AGENT,
+    data,
+  })
+}
