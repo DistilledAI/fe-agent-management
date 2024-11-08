@@ -1,6 +1,6 @@
 import AvatarCustom from "@components/AvatarCustom"
 import { Skeleton } from "@nextui-org/react"
-import ShareAgent from "@pages/ChatPage/ChatBox/UserAuth/AccountSetting/Agent/ShareAgent"
+import ShareProfile from "@pages/Account/Profile/ShareProfile"
 import { useQuery } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import { getUserPublicDetail } from "services/user"
@@ -44,7 +44,11 @@ const AuthorInfo = () => {
           </div>
         </div>
         <div className="max-md:mt-2 max-md:w-full">
-          <ShareAgent agentData={authorInfo} isDisabled={!authorInfo} />
+          <ShareProfile
+            textButton="Share as QR"
+            titleShareQRModal="Author QR"
+            isDisabled={!authorInfo}
+          />
         </div>
       </div>
     </div>

@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query"
 import { ConfigBotType } from "@types"
 import { useNavigate, useParams } from "react-router-dom"
 import { getPublicAgentsByOwner } from "services/agent"
+import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 
 const PublicAgents = () => {
@@ -51,50 +52,61 @@ const PublicAgents = () => {
         <span>Public AI Agents</span>
       </h4>
 
-      <div className="grid min-h-[200px] grid-cols-1 gap-y-6 rounded-[22px] bg-mercury-30 p-4 md:grid-cols-2 md:gap-x-20">
-        {publicAgents.map((agent: IUser, index: number) => (
-          <div
-            className="flex h-fit cursor-pointer justify-between rounded-[22px] border-b border-b-mercury-70 p-2 last:border-none hover:bg-mercury-200 md:border-b-[0px]"
-            key={index}
-            onClick={() => handleChatWithAgent(agent)}
-          >
-            <div className="flex gap-4">
-              <AvatarCustom
-                badgeClassName={
-                  agent.configBot === "live"
-                    ? "bg-lgd-code-hot-ramp"
-                    : "bg-yellow-10"
-                }
-                src={agent.avatar}
-                publicAddress={agent.publicAddress}
-                badgeIcon={
-                  agent.configBot === "live" ? (
-                    <LiveIcon />
-                  ) : (
-                    <FilledBrainAIIcon size={14} />
-                  )
-                }
-                isLive={agent.configBot === "live"}
-              />
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-base-b line-clamp-1 text-mercury-800">
-                    {agent.username}
-                  </span>
-                </div>
-                <p className="max-w-[187px] text-13 font-medium text-mercury-600">
-                  {agent.description || "Distilled AI Agent"}
-                </p>
-              </div>
-            </div>
-            <Button
-              className="h-9 min-w-[52px] rounded-full border border-mercury-50 bg-mercury-100 px-4 py-2"
+      <div
+        className={twMerge(
+          "min-h-[200px] rounded-[22px] bg-mercury-30 p-4",
+          publicAgents.length &&
+            "grid grid-cols-1 gap-y-6 md:grid-cols-2 md:gap-x-20",
+          !publicAgents.length && "flex items-center justify-center",
+        )}
+      >
+        {publicAgents.length ? (
+          publicAgents.map((agent: IUser, index: number) => (
+            <div
+              className="flex h-fit cursor-pointer justify-between rounded-[22px] border-b border-b-mercury-70 p-2 last:border-none hover:bg-mercury-200 md:border-b-[0px]"
+              key={index}
               onClick={() => handleChatWithAgent(agent)}
             >
-              <MessageDots />
-            </Button>
-          </div>
-        ))}
+              <div className="flex gap-4">
+                <AvatarCustom
+                  badgeClassName={
+                    agent.configBot === "live"
+                      ? "bg-lgd-code-hot-ramp"
+                      : "bg-yellow-10"
+                  }
+                  src={agent.avatar}
+                  publicAddress={agent.publicAddress}
+                  badgeIcon={
+                    agent.configBot === "live" ? (
+                      <LiveIcon />
+                    ) : (
+                      <FilledBrainAIIcon size={14} />
+                    )
+                  }
+                  isLive={agent.configBot === "live"}
+                />
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-base-b line-clamp-1 text-mercury-800">
+                      {agent.username}
+                    </span>
+                  </div>
+                  <p className="max-w-[187px] text-13 font-medium text-mercury-600">
+                    {agent.description || "Distilled AI Agent"}
+                  </p>
+                </div>
+              </div>
+              <Button
+                className="h-9 min-w-[52px] rounded-full border border-mercury-50 bg-mercury-100 px-4 py-2"
+                onClick={() => handleChatWithAgent(agent)}
+              >
+                <MessageDots />
+              </Button>
+            </div>
+          ))
+        ) : (
+          <span className="text-18 text-mercury-900">No Data</span>
+        )}
       </div>
     </div>
   )

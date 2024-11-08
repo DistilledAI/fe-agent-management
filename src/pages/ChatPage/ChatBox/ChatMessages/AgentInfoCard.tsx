@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
 import { getUserPublicDetail } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
-import ShareModal from "../UserAuth/AccountSetting/Agent/ShareAgent/ShareModal"
+import ShareQRModal from "@components/ShareQRModal"
 
 const AgentInfoCard = ({ messages }: { messages: IMessageBox[] }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -106,7 +106,12 @@ const AgentInfoCard = ({ messages }: { messages: IMessageBox[] }) => {
           </div>
         </div>
       </div>
-      <ShareModal isOpen={isOpen} onClose={onClose} agentData={agentInfo} />
+      <ShareQRModal
+        isOpen={isOpen}
+        onClose={onClose}
+        shareUrl={`${window.location.origin}${PATH_NAMES.INVITE}/${agentInfo?.id}`}
+        title="Agent QR"
+      />
     </>
   )
 }

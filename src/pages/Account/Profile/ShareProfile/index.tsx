@@ -6,25 +6,36 @@ import ShareQRModal from "@components/ShareQRModal"
 
 const appUrl = window.location.origin
 
-const ShareProfile = () => {
+interface Props {
+  textButton?: string
+  titleShareQRModal?: string
+  isDisabled?: boolean
+}
+
+const ShareProfile = ({
+  textButton = "Share your profile",
+  titleShareQRModal = "My Profile QR",
+  isDisabled = false,
+}: Props) => {
   const { user } = useAuthState()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
     <>
       <Button
+        isDisabled={isDisabled}
         className="flex w-full rounded-full bg-mercury-100 max-md:min-h-12"
         onClick={onOpen}
       >
         <ShareWithQrIcon />
-        <span className="font-medium text-mercury-950">Share your profile</span>
+        <span className="font-medium text-mercury-950">{textButton}</span>
       </Button>
       {isOpen && (
         <ShareQRModal
           shareUrl={`${appUrl}${PATH_NAMES.AUTHOR_PROFILE}/${user?.id}`}
           isOpen={isOpen}
           onClose={onClose}
-          title="My Profile QR"
+          title={titleShareQRModal}
         />
       )}
     </>
