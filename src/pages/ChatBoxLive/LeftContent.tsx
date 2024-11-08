@@ -1,5 +1,6 @@
 import bitcoinMaxIntro from "@assets/video/bitcoin-max-intro-ai.mp4"
 import { VolumeIcon, VolumeOffIcon } from "@components/Icons/Voice"
+import { Skeleton } from "@nextui-org/react"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useRef, useState } from "react"
 import { twMerge } from "tailwind-merge"
