@@ -3,6 +3,7 @@ import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
 import { Button, Input, Textarea } from "@nextui-org/react"
 import { Controller, useFormContext } from "react-hook-form"
 import CategoryLabel, { Divider, FieldLabel } from "./CategoryLabel"
+import ChangeAvatarContainer from "./ChangeAvatarContainer"
 
 const GeneralInfo: React.FC = () => {
   const { control } = useFormContext()
@@ -10,42 +11,49 @@ const GeneralInfo: React.FC = () => {
   return (
     <div className="w-full">
       <CategoryLabel text="General info" icon={<ClipboardTextIcon />} />
-      <div className="mb-4 mt-4 flex w-full justify-between gap-[56px]">
+      <div className="mb-4 mt-4 flex w-full items-center justify-between gap-[56px]">
         <Controller
           name="agentName"
           control={control}
           render={() => (
             <div className="w-full">
               <FieldLabel text="Agent name" required />
-              <Input
-                key="agentName"
-                type="text"
-                placeholder="Keep it unique and within 4-30 characters."
-                className="w-full"
-                classNames={{
-                  mainWrapper: "border border-mercury-400 rounded-xl",
-                  inputWrapper: " bg-mercury-70",
-                }}
-              />
+              <div className="flex h-[72px] items-center">
+                <Input
+                  key="agent-name"
+                  type="text"
+                  placeholder="Keep it unique and within 4-30 characters."
+                  className="w-full"
+                  classNames={{
+                    mainWrapper: "border border-mercury-400 rounded-xl",
+                    inputWrapper: " bg-mercury-70",
+                  }}
+                />
+              </div>
             </div>
           )}
         />
 
         <div className="">
           <FieldLabel text="Agent picture" />
-          <div className="flex gap-2">
-            <AvatarCustom />
-            <Button className="h-[44px] rounded-full border border-mercury-50 bg-mercury-100">
-              <span className="text-base text-mercury-950">
-                Use AI Generated
-              </span>
+          <div className="flex items-center gap-2">
+            <ChangeAvatarContainer>
+              <AvatarCustom className="h-[72px] w-[72px]" />
+            </ChangeAvatarContainer>
+            <Button className="h-[44px] rounded-full border border-mercury-50 bg-mercury-950">
+              <span className="text-base text-white">Use AI Generated</span>
             </Button>
-            <Button className="h-[44px] rounded-full border border-mercury-50 bg-mercury-100">
-              <span className="text-base text-mercury-950">Upload picture</span>
-            </Button>
+            <ChangeAvatarContainer>
+              <button className="h-[44px] w-[130px] rounded-full border border-mercury-50 bg-mercury-30">
+                <span className="text-base text-mercury-950">
+                  Upload picture
+                </span>
+              </button>
+            </ChangeAvatarContainer>
           </div>
         </div>
       </div>
+
       <div className="w-full">
         <div className="flex items-center justify-between">
           <FieldLabel text="Description" />
