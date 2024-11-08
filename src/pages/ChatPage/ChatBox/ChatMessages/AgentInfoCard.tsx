@@ -1,16 +1,16 @@
 import AvatarCustom from "@components/AvatarCustom"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
+import { ShareWithQrIcon } from "@components/Icons/Share"
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import { getBadgeColor, IMessageBox } from "./helpers"
-import { ShareWithQrIcon } from "@components/Icons/Share"
 // import { ThreeDotsCircleIcon } from "@components/Icons/SocialLinkIcon"
 import { Button, useDisclosure } from "@nextui-org/react"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
-import ShareModal from "../UserAuth/AccountSetting/Agent/ShareAgent/ShareModal"
 import { getUserPublicDetail } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
+import ShareModal from "../UserAuth/AccountSetting/Agent/ShareAgent/ShareModal"
 
 const AgentInfoCard = ({ messages }: { messages: IMessageBox[] }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()

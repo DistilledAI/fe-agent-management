@@ -1,8 +1,8 @@
 import useJoinGroupLive from "@hooks/useJoinGroupLive"
+import useWindowSize from "@hooks/useWindowSize"
 import ChatLiveHeader from "./ChatLiveHeader"
 import LeftContent from "./LeftContent"
 import RightContent from "./RightContent"
-import useWindowSize from "@hooks/useWindowSize"
 
 const ChatBoxLive = () => {
   useJoinGroupLive()
