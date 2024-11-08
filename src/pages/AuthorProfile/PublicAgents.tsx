@@ -19,7 +19,7 @@ const PublicAgents = () => {
   const { user } = useAuthState()
   const { authorId } = useParams()
 
-  const { data } = useQuery({
+  const { data, isFetched } = useQuery({
     queryKey: [QueryDataKeys.PUBLIC_AGENTS_BY_OWNER, authorId],
     queryFn: () => getPublicAgentsByOwner(Number(authorId)),
     enabled: !!authorId,
@@ -60,7 +60,7 @@ const PublicAgents = () => {
           !publicAgents.length && "flex items-center justify-center",
         )}
       >
-        {publicAgents.length ? (
+        {publicAgents.length && isFetched ? (
           publicAgents.map((agent: IUser, index: number) => (
             <div
               className="flex h-fit cursor-pointer justify-between rounded-[22px] border-b border-b-mercury-70 p-2 last:border-none hover:bg-mercury-200 md:border-b-[0px]"
@@ -105,6 +105,9 @@ const PublicAgents = () => {
             </div>
           ))
         ) : (
+          <></>
+        )}
+        {!publicAgents.length && isFetched && (
           <span className="text-18 text-mercury-900">No Data</span>
         )}
       </div>

@@ -1,4 +1,5 @@
 import AvatarCustom from "@components/AvatarCustom"
+import { PATH_NAMES } from "@constants/index"
 import { Skeleton } from "@nextui-org/react"
 import ShareProfile from "@pages/Account/Profile/ShareProfile"
 import { useQuery } from "@tanstack/react-query"
@@ -48,6 +49,7 @@ const AuthorInfo = () => {
             textButton="Share as QR"
             titleShareQRModal="Author QR"
             isDisabled={!authorInfo}
+            shareUrl={`${window.location.origin}${PATH_NAMES.AUTHOR_PROFILE}/${authorId}`}
           />
         </div>
       </div>
