@@ -10,12 +10,14 @@ interface Props {
   textButton?: string
   titleShareQRModal?: string
   isDisabled?: boolean
+  shareUrl?: string
 }
 
 const ShareProfile = ({
   textButton = "Share your profile",
   titleShareQRModal = "My Profile QR",
   isDisabled = false,
+  shareUrl,
 }: Props) => {
   const { user } = useAuthState()
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -32,7 +34,9 @@ const ShareProfile = ({
       </Button>
       {isOpen && (
         <ShareQRModal
-          shareUrl={`${appUrl}${PATH_NAMES.AUTHOR_PROFILE}/${user?.id}`}
+          shareUrl={
+            shareUrl || `${appUrl}${PATH_NAMES.AUTHOR_PROFILE}/${user?.id}`
+          }
           isOpen={isOpen}
           onClose={onClose}
           title={titleShareQRModal}
