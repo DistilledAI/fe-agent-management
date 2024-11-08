@@ -3,8 +3,8 @@ import { useAppSelector } from "@hooks/useAppRedux"
 import { ScrollShadow } from "@nextui-org/react"
 import { useEffect, useRef } from "react"
 import { twMerge } from "tailwind-merge"
+import AIAGents from "./AIAGents"
 import GenAITools from "./GenAITools"
-import PrivateAgents from "./PrivateAgents"
 import Productivity from "./Productivity"
 import useScrollTabActive from "./useScrollTabActive"
 
@@ -12,9 +12,9 @@ const Marketplace = () => {
   const siderCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const CATEGORIES = [
     {
-      id: "private-agents",
+      id: "ai-agents",
       name: "AI Agent",
-      component: <PrivateAgents />,
+      component: <AIAGents />,
       isComing: false,
     },
     {

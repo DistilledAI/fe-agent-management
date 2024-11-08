@@ -1,10 +1,10 @@
+import useWindowSize from "@hooks/useWindowSize"
 import React from "react"
 import { IAgentData } from "types/user"
-import useWindowSize from "@hooks/useWindowSize"
-import ListAgentMobile from "./ListMobile"
 import ListAgent from "./List"
+import ListAgentMobile from "./ListMobile"
 
-const Agents: React.FC<{
+const MyAgents: React.FC<{
   agents: IAgentData[]
 }> = ({ agents }) => {
   const { isMobile } = useWindowSize()
@@ -16,4 +16,4 @@ const Agents: React.FC<{
   )
 }
 
-export default Agents
+export default MyAgents

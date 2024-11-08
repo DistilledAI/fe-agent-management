@@ -18,6 +18,8 @@ const endpoint = {
   CHANGE_STATUS_BOT_IN_GROUP: withBaseURL("/group/change-status-bot-in-group"),
   CHECK_STATUS_BOT_IN_GROUP: (groupId: string | undefined) =>
     withBaseURL(`/group/check-status-bot-in-group/${groupId}`),
+  PUBLISH_MARKETPLACE: (botId: number) =>
+    withBaseURL(`/bot/publish-marketplace/${botId}`),
 
   //chat
   GET_MY_CHAT_GROUP_LIST: withBaseURL("/chat/group/list"),

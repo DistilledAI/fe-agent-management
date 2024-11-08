@@ -3,7 +3,7 @@ import { LiveIcon } from "@components/Icons"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { MessageDots } from "@components/Icons/Message"
 import { envConfig } from "@configs/env"
-import { PATH_NAMES, RoleUser, STATUS_AGENT } from "@constants/index"
+import { PATH_NAMES, Publish, RoleUser, STATUS_AGENT } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
 import { IUser } from "@reducers/userSlice"
@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom"
 import { searchUsers } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 
-const PrivateAgents = () => {
+const AIAGents = () => {
   const navigate = useNavigate()
   const { user } = useAuthState()
 
@@ -38,6 +38,7 @@ const PrivateAgents = () => {
       username: "",
       status: STATUS_AGENT.ACTIVE,
       role: RoleUser.BOT,
+      publish: Publish.Published,
     }
     const res = await searchUsers(JSON.stringify(payloadData))
     return res?.data?.items as IUser[]
@@ -97,4 +98,4 @@ const PrivateAgents = () => {
   ))
 }
 
-export default PrivateAgents
+export default AIAGents

@@ -38,6 +38,11 @@ export enum RoleUser {
   SUPER_ADMIN = 10,
 }
 
+export enum Publish {
+  Published = 1,
+  Unpublished = 0,
+}
+
 export const STATUS_AGENT = {
   ACTIVE: 1,
   SUSPENDED: 2,

@@ -1,13 +1,13 @@
 import AvatarCustom from "@components/AvatarCustom"
 
+import { Skeleton } from "@nextui-org/react"
 import ShareAgent from "@pages/ChatPage/ChatBox/UserAuth/AccountSetting/Agent/ShareAgent"
-import PrivateAgents from "@pages/Marketplace/PrivateAgents"
-import BackButton from "./BackButton"
+import PrivateAgents from "@pages/Marketplace/AIAGents"
 import { useQuery } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import { getUserPublicDetail } from "services/user"
-import { Skeleton } from "@nextui-org/react"
 import { twMerge } from "tailwind-merge"
+import BackButton from "./BackButton"
 
 const AuthorProfile = () => {
   const { authorId } = useParams()
@@ -26,7 +26,7 @@ const AuthorProfile = () => {
     <>
       <BackButton />
       <div className="space-y-2">
-        <div className="w-full bg-lgd-muted-beige px-4 py-3">
+        <div className="bg-lgd-muted-beige w-full px-4 py-3">
           <div className="mx-auto flex w-full max-w-[768px] flex-wrap gap-x-4">
             <div className="flex flex-1 items-center gap-x-4">
               <Skeleton isLoaded={isFetched} className="rounded-full">

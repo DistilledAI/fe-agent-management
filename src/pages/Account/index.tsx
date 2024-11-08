@@ -4,14 +4,14 @@ import { LogoutIcon } from "@components/Icons/OutputIcon"
 import { PATH_NAMES } from "@constants/index"
 import useAuthAction from "@hooks/useAuthAction"
 import useAuthState from "@hooks/useAuthState"
-import MyCredits from "./Credits"
+import { useQuery } from "@tanstack/react-query"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { useNavigate } from "react-router-dom"
-import AuthorProfile from "./Profile"
-import AgentInfo from "./AgentInfo"
-import Agents from "./Agents"
-import { useQuery } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
+import AgentInfo from "./AgentInfo"
+import MyCredits from "./Credits"
+import MyAgents from "./MyAgents"
+import AuthorProfile from "./Profile"
 
 const Account = () => {
   const { user } = useAuthState()
@@ -73,7 +73,7 @@ const Account = () => {
           <AgentInfo agent={agents[0]} />
         </div>
         <div>
-          <Agents agents={agents} />
+          <MyAgents agents={agents} />
         </div>
       </div>
     </div>
