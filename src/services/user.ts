@@ -72,3 +72,15 @@ export const deleteMyBotData = async (data: {
     data,
   })
 }
+
+export const getUserPublicDetail = async (userId: number) => {
+  return fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_USER_PUBLIC_DETAIL,
+    params: {
+      filter: JSON.stringify({
+        userId,
+      }),
+    },
+  })
+}

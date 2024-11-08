@@ -2,17 +2,17 @@ export const PATH_NAMES = {
   HOME: "/",
   LLM: "/chatbot",
   CHAT: "/chat",
-  CHAT_LIVE: "/chat/live",
+  LIVE: "/live",
   CHAT_DETAIL: "/chat/:chatId",
-  CHAT_LIVE_DETAIL: "/chat/live",
   INVITE: "/invite",
+  NOT_FOUND: "/not-found",
   PRIVATE_AGENT: "/private-agent",
   MARKETPLACE: "/marketplace",
   MY_DATA: "/my-data",
   ADD_MY_DATA: "/add-my-data",
   ACCOUNT: "/account",
-  AUTHOR_PROFILE: "/author-profile",
-  EDIT_AGENT: "/edit-agent",
+  AUTHOR_PROFILE: "/author",
+  AGENT_DETAIL: "/agent",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {
@@ -36,6 +36,11 @@ export enum RoleUser {
   BOT = 4,
   ANONYMOUS = 5,
   SUPER_ADMIN = 10,
+}
+
+export enum Publish {
+  Published = 1,
+  Unpublished = 0,
 }
 
 export const STATUS_AGENT = {

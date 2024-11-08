@@ -10,6 +10,7 @@ const endpoint = {
   UPDATE_USER: withBaseURL("/user/update"),
   UPDATE_AVATAR_USER: withBaseURL("/user/update-avatar"),
   CREATE_ANONYMOUS: withBaseURL("/user/create-anonymous"),
+  GET_USER_PUBLIC_DETAIL: withBaseURL("/user/public/detail"),
 
   //bot
   CREATE_BOT: withBaseURL("/bot/create-bot"),
@@ -17,6 +18,11 @@ const endpoint = {
   CHANGE_STATUS_BOT_IN_GROUP: withBaseURL("/group/change-status-bot-in-group"),
   CHECK_STATUS_BOT_IN_GROUP: (groupId: string | undefined) =>
     withBaseURL(`/group/check-status-bot-in-group/${groupId}`),
+  PUBLISH_MARKETPLACE: (botId: number) =>
+    withBaseURL(`/bot/publish-marketplace/${botId}`),
+  GET_AGENT_DETAIL: (botId: number) => withBaseURL(`/bot/detail/${botId}`),
+  GET_BOT_PUBLIC_BY_OWNER: (ownerId: number) =>
+    withBaseURL(`/bot/public/info/get-by-owner/${ownerId}`),
 
   //chat
   GET_MY_CHAT_GROUP_LIST: withBaseURL("/chat/group/list"),

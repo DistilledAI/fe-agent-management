@@ -20,6 +20,8 @@ export interface IMessageBox {
   publicAddress?: string
   isChatCleared?: boolean
   username?: string
+  agentId?: number
+  ownerId?: number
 }
 
 const isOwner = (currentUserId: number, userId: number) => {
@@ -45,6 +47,8 @@ export const convertDataFetchToMessage = (
       publicAddress: mess.user?.publicAddress,
       isChatCleared: false,
       username: mess?.user?.username,
+      agentId: mess.user.id,
+      ownerId: mess.user.owner,
     }))
     .reverse()
 }

@@ -2,7 +2,11 @@ import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { IUser } from "@reducers/userSlice"
-import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query"
+import {
+  InfiniteData,
+  useInfiniteQuery,
+  useQueryClient,
+} from "@tanstack/react-query"
 import { useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getChatHistoryById } from "services/chat"
@@ -42,7 +46,7 @@ const useFetchMessages = () => {
   const { chatId } = useGetChatId()
   const navigate = useNavigate()
   const groupId = privateChatId || chatId
-  // const queryClient = useQueryClient()
+  const queryClient = useQueryClient()
 
   const fetchMessages = async ({ pageParam = 0 }) => {
     if (!groupId) return
@@ -60,17 +64,6 @@ const useFetchMessages = () => {
     }
   }
 
-  // useLayoutEffect(() => {
-  //   if (groupId && user?.id) {
-  //     queryClient.prefetchInfiniteQuery({
-  //       queryKey: chatMessagesKey(groupId),
-  //       queryFn: fetchMessages,
-  //       staleTime: STALE_TIME,
-  //       initialPageParam: 0,
-  //     })
-  //   }
-  // }, [groupId, user?.id])
-
   const {
     data,
     error,
@@ -87,13 +80,40 @@ const useFetchMessages = () => {
     getPreviousPageParam: (firstPage) => firstPage?.nextOffset,
     staleTime: STALE_TIME,
     refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
     initialPageParam: 0,
   })
+
+  const resetInfiniteQueryPagination = () => {
+    queryClient.setQueryData(chatMessagesKey(groupId), (oldData: any) => {
+      if (!oldData) return undefined
+      const lastPages = oldData.pages.slice(-1)
+      const lastPageParams = oldData.pageParams.slice(-1)
+
+      return {
+        pages: lastPages,
+        pageParams: lastPageParams,
+      }
+    })
+    queryClient.invalidateQueries({
+      queryKey: chatMessagesKey(groupId),
+    })
+  }
+
+  useEffect(() => {
+    window.addEventListener("focus", resetInfiniteQueryPagination)
+    window.addEventListener("online", resetInfiniteQueryPagination)
+
+    return () => {
+      window.removeEventListener("focus", resetInfiniteQueryPagination)
+      window.removeEventListener("online", resetInfiniteQueryPagination)
+    }
+  }, [groupId])
 
   useEffect(() => {
     if (error) {
       console.error(error)
-      navigate(PATH_NAMES.HOME)
+      navigate(PATH_NAMES.NOT_FOUND)
     }
   }, [error])
 

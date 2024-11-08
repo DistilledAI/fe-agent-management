@@ -1,0 +1,21 @@
+import endpoint from "./endpoint"
+import { fetchApiAuth } from "./fetchApi"
+
+export const getAgentDetail = async (botId: number) => {
+  return fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_AGENT_DETAIL(botId),
+  })
+}
+
+export const getPublicAgentsByOwner = async (ownerId: number) => {
+  return fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_BOT_PUBLIC_BY_OWNER(ownerId),
+    params: {
+      filter: JSON.stringify({
+        publish: 1,
+      }),
+    },
+  })
+}

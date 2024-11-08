@@ -1,18 +1,19 @@
 import AvatarCustom from "@components/AvatarCustom"
 import { CopyIcon } from "@components/Icons/Copy"
 import { ShareWithQrIcon } from "@components/Icons/Share"
-import TableData from "@pages/MyData/Components/TableData"
-import { centerTextEllipsis, copyClipboard } from "@utils/index"
-import React, { useState } from "react"
-import { IAgentData } from "types/user"
-import ShareModal from "../Profile/ShareProfile/ShareModal"
 import {
   MAP_DISPLAY_FROM_STATUS_MY_AGENT,
   PATH_NAMES,
   STATUS_AGENT,
 } from "@constants/index"
 import { useDisclosure } from "@nextui-org/react"
+import TableData from "@pages/MyData/Components/TableData"
+import { centerTextEllipsis, copyClipboard } from "@utils/index"
+import React, { useState } from "react"
 import { twMerge } from "tailwind-merge"
+import { IAgentData } from "types/user"
+import ShareModal from "../../../components/ShareQRModal"
+import MyAgentAction from "./Action"
 
 enum ColumnKey {
   Agent = "agent",
@@ -88,7 +89,7 @@ const ListAgent: React.FC<{
         )
 
       case ColumnKey.Action:
-        return <div></div>
+        return <MyAgentAction data={item as any} />
 
       case ColumnKey.Status:
         return (
@@ -140,10 +141,10 @@ const ListAgent: React.FC<{
   const getTdClassName = (key: string) => {
     switch (key) {
       case ColumnKey.Action:
-        return "align-top text-right"
+        return "text-right"
 
       default:
-        return "align-top"
+        return ""
     }
   }
 

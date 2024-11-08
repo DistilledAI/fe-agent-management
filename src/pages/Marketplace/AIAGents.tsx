@@ -3,7 +3,7 @@ import { LiveIcon } from "@components/Icons"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { MessageDots } from "@components/Icons/Message"
 import { envConfig } from "@configs/env"
-import { PATH_NAMES, RoleUser, STATUS_AGENT } from "@constants/index"
+import { PATH_NAMES, Publish, RoleUser, STATUS_AGENT } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
 import { IUser } from "@reducers/userSlice"
@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom"
 import { searchUsers } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 
-const PrivateAgents = () => {
+const AIAgents = () => {
   const navigate = useNavigate()
   const { user } = useAuthState()
 
@@ -22,11 +22,10 @@ const PrivateAgents = () => {
     const isBotLive = agent?.configBot === ConfigBotType.LIVE
     if (isBotLive) {
       const groupId = envConfig.groupIdMax
-      return navigate(`${PATH_NAMES.CHAT_LIVE_DETAIL}/${groupId}`)
+      return navigate(`${PATH_NAMES.LIVE}/${groupId}`)
     }
-
     if (user && user.id === agent.owner) {
-      navigate(`${PATH_NAMES.PRIVATE_AGENT}/${agent.id}`)
+      navigate(`${PATH_NAMES.HOME}`)
     } else {
       const inviteUrl = `${PATH_NAMES.INVITE}/${agent?.id}`
       navigate(inviteUrl)
@@ -38,6 +37,7 @@ const PrivateAgents = () => {
       username: "",
       status: STATUS_AGENT.ACTIVE,
       role: RoleUser.BOT,
+      publish: Publish.Published,
     }
     const res = await searchUsers(JSON.stringify(payloadData))
     return res?.data?.items as IUser[]
@@ -97,4 +97,4 @@ const PrivateAgents = () => {
   ))
 }
 
-export default PrivateAgents
+export default AIAgents

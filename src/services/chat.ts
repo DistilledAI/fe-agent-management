@@ -291,3 +291,10 @@ export const getGroupDetailFromLabel = async (label: string) => {
     url: endpoint.GET_GROUP_DETAIL_FROM_LABEL(label),
   })
 }
+
+export const publishMarketplace = async (botId: number) => {
+  return fetchApiAuth({
+    method: "post",
+    url: endpoint.PUBLISH_MARKETPLACE(botId),
+  })
+}

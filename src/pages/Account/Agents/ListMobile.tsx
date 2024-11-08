@@ -6,7 +6,7 @@ import useLoadMoreByScroll from "@hooks/useLoadMoreByScroll"
 import React, { useRef, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { IAgentData } from "types/user"
-import ShareModal from "../Profile/ShareProfile/ShareModal"
+import ShareModal from "../../../components/ShareQRModal"
 import { useDisclosure } from "@nextui-org/react"
 
 const ListAgentMobile: React.FC<{

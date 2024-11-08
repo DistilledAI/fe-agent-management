@@ -14,6 +14,7 @@ import ChatPageMobile from "@pages/ChatPage/Mobile"
 import MyPrivateAgentContentMobile from "@pages/ChatPage/Mobile/MyPrivateAgentContentMobile"
 import Marketplace from "@pages/Marketplace"
 import MyData from "@pages/MyData"
+import PageNotFound from "@pages/NotFound"
 import { Route, Routes } from "react-router-dom"
 
 const AppRouter = () => {
@@ -34,10 +35,7 @@ const AppRouter = () => {
           path={PATH_NAMES.CHAT_DETAIL}
           element={isMobile ? <ChatPageMobile /> : <ChatBox />}
         />
-        <Route
-          path={`${PATH_NAMES.CHAT_LIVE_DETAIL}/:chatId`}
-          element={<ChatBoxLive />}
-        />
+        <Route path={`${PATH_NAMES.LIVE}/:chatId`} element={<ChatBoxLive />} />
         <Route
           path={`${PATH_NAMES.INVITE}/:inviteAgentId`}
           element={isMobile ? <ChatDetailLoadingPage /> : <ChatBox />}
@@ -70,8 +68,12 @@ const AppRouter = () => {
           <Route path={PATH_NAMES.MY_DATA} element={<MyData />} />
           <Route path={PATH_NAMES.ACCOUNT} element={<Account />} />
         </Route>
-        {/* <Route path={PATH_NAMES.EDIT_AGENT} element={<EditAgent />} /> */}
+        {/* <Route
+          path={`${PATH_NAMES.AGENT_DETAIL}/:agentId`}
+          element={<EditAgent />}
+        /> */}
       </Route>
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   )
 }
