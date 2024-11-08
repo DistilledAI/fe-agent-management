@@ -24,9 +24,8 @@ const AIAGents = () => {
       const groupId = envConfig.groupIdMax
       return navigate(`${PATH_NAMES.LIVE}/${groupId}`)
     }
-
     if (user && user.id === agent.owner) {
-      navigate(`${PATH_NAMES.PRIVATE_AGENT}/${agent.id}`)
+      navigate(`${PATH_NAMES.HOME}`)
     } else {
       const inviteUrl = `${PATH_NAMES.INVITE}/${agent?.id}`
       navigate(inviteUrl)
