@@ -6,7 +6,7 @@ import { CheckedIcon } from "@components/Icons/Checked"
 import { ShareWithQrIcon } from "@components/Icons/Share"
 import { PATH_NAMES } from "@constants/index"
 import { Button, Modal, ModalContent, useDisclosure } from "@nextui-org/react"
-import ShareModal from "@pages/Account/Profile/ShareProfile/ShareModal"
+import ShareModal from "@components/ShareQRModal"
 import React from "react"
 import { Link } from "react-router-dom"
 

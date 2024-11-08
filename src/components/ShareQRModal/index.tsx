@@ -11,9 +11,15 @@ import { useRef } from "react"
 
 interface ShareModal extends IModalProps {
   shareUrl: string
+  title?: string
 }
 
-const ShareModal = ({ isOpen, onClose, shareUrl }: ShareModal) => {
+const ShareQRModal = ({
+  isOpen,
+  onClose,
+  shareUrl,
+  title = "QR Code",
+}: ShareModal) => {
   const qrRef = useRef<HTMLCanvasElement>(null)
 
   const handleDownloadQR = () => {
@@ -43,7 +49,7 @@ const ShareModal = ({ isOpen, onClose, shareUrl }: ShareModal) => {
       <ModalContent>
         <ModalHeader className="relative">
           <h3 className="flex-1 text-center text-24 font-semibold text-mercury-950">
-            My Profile QR
+            {title}
           </h3>
           <CloseButton
             onClose={onClose}
@@ -88,4 +94,4 @@ const ShareModal = ({ isOpen, onClose, shareUrl }: ShareModal) => {
   )
 }
 
-export default ShareModal
+export default ShareQRModal
