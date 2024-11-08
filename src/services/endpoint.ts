@@ -10,6 +10,7 @@ const endpoint = {
   UPDATE_USER: withBaseURL("/user/update"),
   UPDATE_AVATAR_USER: withBaseURL("/user/update-avatar"),
   CREATE_ANONYMOUS: withBaseURL("/user/create-anonymous"),
+  GET_USER_PUBLIC_DETAIL: withBaseURL("/user/public/detail"),
 
   //bot
   CREATE_BOT: withBaseURL("/bot/create-bot"),
