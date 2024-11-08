@@ -1,23 +1,19 @@
 import AvatarCustom from "@components/AvatarCustom"
-import { SettingIcon } from "@components/Icons"
 import { CopyIcon } from "@components/Icons/Copy"
 import { ShareWithQrIcon } from "@components/Icons/Share"
 import {
   MAP_DISPLAY_FROM_STATUS_MY_AGENT,
   PATH_NAMES,
-  Publish,
   STATUS_AGENT,
 } from "@constants/index"
-import { Button, useDisclosure } from "@nextui-org/react"
+import { useDisclosure } from "@nextui-org/react"
 import TableData from "@pages/MyData/Components/TableData"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { toast } from "react-toastify"
-import { publishMarketplace } from "services/chat"
 import { twMerge } from "tailwind-merge"
 import { IAgentData } from "types/user"
 import ShareModal from "../Profile/ShareProfile/ShareModal"
+import MyAgentAction from "./Action"
 
 enum ColumnKey {
   Agent = "agent",
@@ -53,19 +49,6 @@ const ListAgent: React.FC<{
   const { isOpen, onClose, onOpen } = useDisclosure()
   const [agentSelected, setAgentSelected] = useState<number | null>(null)
   const isPending = (status: number) => status === STATUS_AGENT.PENDING
-  const navigate = useNavigate()
-
-  const onPublishMarketplace = async (botId: number) => {
-    try {
-      const res = await publishMarketplace(botId)
-      if (res) {
-        navigate(PATH_NAMES.MARKETPLACE)
-        toast.success(`published successfully`)
-      }
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message)
-    }
-  }
 
   const renderCell = (item: Record<string, any>, columnKey: string) => {
     switch (columnKey) {
@@ -106,21 +89,7 @@ const ListAgent: React.FC<{
         )
 
       case ColumnKey.Action:
-        const isPublished = item.publish === Publish.Published
-
-        return (
-          <div className="flex gap-2">
-            <Button
-              onClick={() => onPublishMarketplace(item.id)}
-              isDisabled={item.status !== STATUS_AGENT.ACTIVE}
-            >
-              {isPublished ? "Unpublish" : "Publish"}
-            </Button>
-            <div className="inline-flex cursor-pointer items-center gap-1 font-medium text-[#A2845E] hover:opacity-70">
-              <SettingIcon /> Edit
-            </div>
-          </div>
-        )
+        return <MyAgentAction data={item as any} />
 
       case ColumnKey.Status:
         return (
@@ -172,10 +141,10 @@ const ListAgent: React.FC<{
   const getTdClassName = (key: string) => {
     switch (key) {
       case ColumnKey.Action:
-        return "align-top text-right"
+        return "text-right"
 
       default:
-        return "align-top"
+        return ""
     }
   }
 

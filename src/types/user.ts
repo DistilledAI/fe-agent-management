@@ -1,3 +1,4 @@
+import { Publish } from "@constants/index"
 import { BotDataTypeKey } from "@types"
 
 export interface IUserDetail {
@@ -53,4 +54,5 @@ export interface IAgentData {
   ccId: number | null
   status: number
   createdAt: string
+  publish: Publish
 }
