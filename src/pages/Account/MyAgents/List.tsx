@@ -12,7 +12,7 @@ import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import React, { useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { IAgentData } from "types/user"
-import ShareModal from "../Profile/ShareProfile/ShareModal"
+import ShareModal from "../../../components/ShareQRModal"
 import MyAgentAction from "./Action"
 
 enum ColumnKey {

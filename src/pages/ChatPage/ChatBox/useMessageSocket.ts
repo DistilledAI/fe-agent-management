@@ -169,6 +169,7 @@ const useMessageSocket = () => {
       isTyping: true,
       roleOwner: e.user.role,
       createdAt: new Date().toISOString(),
+      publicAddress: e.user.publicAddress,
     }
     addNewMsg(newMsg, e)
   }

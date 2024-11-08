@@ -1,9 +1,8 @@
 import { ShareWithQrIcon } from "@components/Icons/Share"
 import { Button, useDisclosure } from "@nextui-org/react"
-import ShareModal from "./ShareModal"
 import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
-import ComingSoon from "@components/ComingSoon"
+import ShareQRModal from "@components/ShareQRModal"
 
 const appUrl = window.location.origin
 
@@ -13,23 +12,19 @@ const ShareProfile = () => {
 
   return (
     <>
-      <ComingSoon>
-        <Button
-          className="flex w-full rounded-full bg-mercury-100 max-md:min-h-12"
-          onClick={onOpen}
-          isDisabled={true}
-        >
-          <ShareWithQrIcon />
-          <span className="font-medium text-mercury-950">
-            Share your profile
-          </span>
-        </Button>
-      </ComingSoon>
+      <Button
+        className="flex w-full rounded-full bg-mercury-100 max-md:min-h-12"
+        onClick={onOpen}
+      >
+        <ShareWithQrIcon />
+        <span className="font-medium text-mercury-950">Share your profile</span>
+      </Button>
       {isOpen && (
-        <ShareModal
-          shareUrl={`${appUrl}${PATH_NAMES.INVITE}/${user?.id}`}
+        <ShareQRModal
+          shareUrl={`${appUrl}${PATH_NAMES.AUTHOR_PROFILE}/${user?.id}`}
           isOpen={isOpen}
           onClose={onClose}
+          title="My Profile QR"
         />
       )}
     </>
