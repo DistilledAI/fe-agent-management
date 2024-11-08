@@ -20,6 +20,7 @@ const endpoint = {
     withBaseURL(`/group/check-status-bot-in-group/${groupId}`),
   PUBLISH_MARKETPLACE: (botId: number) =>
     withBaseURL(`/bot/publish-marketplace/${botId}`),
+  GET_AGENT_DETAIL: (botId: number) => withBaseURL(`/bot/detail/${botId}`),
 
   //chat
   GET_MY_CHAT_GROUP_LIST: withBaseURL("/chat/group/list"),

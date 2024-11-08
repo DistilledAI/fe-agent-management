@@ -12,7 +12,7 @@ export const PATH_NAMES = {
   ADD_MY_DATA: "/add-my-data",
   ACCOUNT: "/account",
   AUTHOR_PROFILE: "/author",
-  EDIT_AGENT: "/edit-agent",
+  AGENT_DETAIL: "/agent",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {
