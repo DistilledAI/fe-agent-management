@@ -14,6 +14,7 @@ const ChangeAvatarContainer: React.FC<{
     const newFileList = fileList.filter((item) => item.status !== undefined)
     const fileListDone = newFileList.filter((item) => item?.status === "done")
     const newFileListDone = fileListDone.map((item) => item?.response?.id)
+    console.log("🚀 ~ newFileListDone:", newFileListDone)
     // setValue(fieldkey, newFileListDone)
     setFileList(newFileList)
   }
