@@ -9,8 +9,6 @@ import App from "./App.tsx"
 import "./index.css"
 import React from "react"
 
-console.info("VITE_COMMIT_ID", import.meta.env.VITE_COMMIT_ID || "dev")
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Providers>
