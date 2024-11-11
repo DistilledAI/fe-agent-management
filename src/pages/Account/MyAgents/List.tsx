@@ -14,6 +14,7 @@ import { twMerge } from "tailwind-merge"
 import { IAgentData } from "types/user"
 import ShareModal from "../../../components/ShareQRModal"
 import MyAgentAction from "./Action"
+import PublishedOnMarket from "@components/PublishedOnMarket"
 
 enum ColumnKey {
   Agent = "agent",
@@ -47,7 +48,13 @@ const ListAgent: React.FC<{
   agents: IAgentData[]
 }> = ({ agents }) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
+  const {
+    isOpen: isOpenPublished,
+    onClose: onClosePublished,
+    onOpen: onOpenPublished,
+  } = useDisclosure()
   const [agentSelected, setAgentSelected] = useState<number | null>(null)
+  const [dataPublished, setDataPublished] = useState<IAgentData>()
   const isPending = (status: number) => status === STATUS_AGENT.PENDING
 
   const renderCell = (item: Record<string, any>, columnKey: string) => {
@@ -89,7 +96,15 @@ const ListAgent: React.FC<{
         )
 
       case ColumnKey.Action:
-        return <MyAgentAction data={item as any} />
+        return (
+          <MyAgentAction
+            data={item as any}
+            onPublishDone={(value) => {
+              onOpenPublished()
+              setDataPublished(value)
+            }}
+          />
+        )
 
       case ColumnKey.Status:
         return (
@@ -166,6 +181,24 @@ const ListAgent: React.FC<{
           setAgentSelected(null)
         }}
       />
+      {dataPublished && (
+        <PublishedOnMarket
+          isOpen={isOpenPublished}
+          onClose={() => {
+            onClosePublished()
+            setDataPublished(undefined)
+          }}
+          data={{
+            avatar: dataPublished.avatar ?? undefined,
+            nameDisplay: dataPublished.username,
+            username: dataPublished.username,
+            description: dataPublished.description ?? "",
+            publicAddress:
+              dataPublished.publicAddress ?? dataPublished.username,
+            id: dataPublished.id,
+          }}
+        />
+      )}
     </>
   )
 }

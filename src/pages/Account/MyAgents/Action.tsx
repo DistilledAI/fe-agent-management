@@ -9,7 +9,8 @@ import { IAgentData } from "types/user"
 
 const MyAgentAction: React.FC<{
   data: IAgentData
-}> = ({ data }) => {
+  onPublishDone?: (data: IAgentData) => void
+}> = ({ data, onPublishDone }) => {
   const [isPublished, setIsPublished] = useState(
     data.publish === Publish.Published,
   )
@@ -34,7 +35,7 @@ const MyAgentAction: React.FC<{
       const res = await publishMarketplace(botId)
       if (res) {
         setIsPublished(!isPublished)
-        toast.success(`Published successfully!`)
+        if (onPublishDone) onPublishDone(data)
         queryClient.refetchQueries({
           queryKey: [QueryDataKeys.PRIVATE_AGENTS_MKL],
         })
