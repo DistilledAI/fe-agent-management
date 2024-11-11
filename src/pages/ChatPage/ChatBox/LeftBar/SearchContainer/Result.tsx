@@ -52,7 +52,7 @@ const SearchResult: React.FC<{
     }
 
     if (user && user.id === agent.owner) {
-      navigate(`${PATH_NAMES.PRIVATE_AGENT}/${agent.id}`)
+      navigate(`${PATH_NAMES.HOME}`)
     } else {
       const inviteUrl = `${PATH_NAMES.INVITE}/${agent?.id}`
       navigate(inviteUrl)

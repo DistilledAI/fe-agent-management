@@ -5,7 +5,8 @@ import { Controller, useFormContext } from "react-hook-form"
 import CategoryLabel, { Divider, FieldLabel } from "./CategoryLabel"
 import ChangeAvatarContainer from "./ChangeAvatarContainer"
 
-const GeneralInfo: React.FC = () => {
+const GeneralInfo: React.FC<{ agentData: any }> = ({ agentData }) => {
+  console.log({ agentData })
   const { control } = useFormContext()
 
   return (
@@ -13,25 +14,29 @@ const GeneralInfo: React.FC = () => {
       <CategoryLabel text="General info" icon={<ClipboardTextIcon />} />
       <div className="mb-4 mt-4 flex w-full items-center justify-between gap-[56px]">
         <Controller
-          name="agentName"
+          name="userName"
           control={control}
-          render={() => (
-            <div className="w-full">
-              <FieldLabel text="Agent name" required />
-              <div className="flex h-[72px] items-center">
-                <Input
-                  key="agent-name"
-                  type="text"
-                  placeholder="Keep it unique and within 4-30 characters."
-                  className="w-full"
-                  classNames={{
-                    mainWrapper: "border border-mercury-400 rounded-xl",
-                    inputWrapper: " bg-mercury-70",
-                  }}
-                />
+          render={({ field: { value, onChange } }: any) => {
+            return (
+              <div className="w-full">
+                <FieldLabel text="Agent name" required />
+                <div className="flex h-[72px] items-center">
+                  <Input
+                    key="agent-name"
+                    value={value}
+                    type="text"
+                    placeholder="Keep it unique and within 4-30 characters."
+                    className="w-full"
+                    classNames={{
+                      mainWrapper: "border border-mercury-400 rounded-xl",
+                      inputWrapper: " bg-mercury-70",
+                    }}
+                    onChange={(e) => onChange(e.target.value)}
+                  />
+                </div>
               </div>
-            </div>
-          )}
+            )
+          }}
         />
 
         <div className="">

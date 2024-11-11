@@ -1,27 +1,45 @@
-import { configureStore } from "@reduxjs/toolkit"
-import { persistReducer, persistStore } from "redux-persist"
+import { configureStore, Store } from "@reduxjs/toolkit"
+import { Persistor, persistReducer, persistStore } from "redux-persist"
 import rootReducer from "@reducers/index"
-import storage from "redux-persist/lib/storage" // defaults to localStorage for web
+import sessionStorage from "redux-persist/lib/storage/session"
+import localStorage from "redux-persist/lib/storage"
 
-const persistConfig = {
-  key: "root",
-  storage,
-  whitelist: ["agents", "sidebarCollapsed", "user"],
+let store: Store
+let persistor: Persistor
+
+const initStore = (isLocalStorage: boolean) => {
+  const persistConfig = {
+    key: "root",
+    storage: isLocalStorage ? localStorage : sessionStorage,
+    whitelist: ["agents", "sidebarCollapsed", "user"],
+  }
+
+  const persistedReducer = persistReducer(persistConfig, rootReducer)
+
+  store = configureStore({
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
+  })
+
+  persistor = persistStore(store)
 }
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+// const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
-})
+// const store = configureStore({
+//   reducer: persistedReducer,
+//   middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware({
+//       serializableCheck: false,
+//     }),
+// })
 
-const persistor = persistStore(store)
+// const persistor = persistStore(store)
 
-export { store, persistor }
+export { store, persistor, initStore }
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

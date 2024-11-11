@@ -1,4 +1,5 @@
 import { RootState } from "@configs/store"
+import { RoleUser } from "@constants/index"
 import { cachedSessionStorage, storageKey } from "@utils/storage"
 import { useSelector } from "react-redux"
 
@@ -9,7 +10,12 @@ const useAuthState = () => {
     storageKey.ACCESS_TOKEN,
   )
 
-  return { user, isLogin: isLoggedIn, sessionAccessToken }
+  const isAnonymous = user?.role === RoleUser.ANONYMOUS
+  const isOverStatusLoginWithAnonymous =
+    isAnonymous && isLoggedIn && !sessionAccessToken
+  const isLogin = isOverStatusLoginWithAnonymous ? false : isLoggedIn
+
+  return { user, isLogin, sessionAccessToken }
 }
 
 export default useAuthState

@@ -104,11 +104,12 @@ const ChatInput = ({
     >
       <button
         type="button"
+        disabled
         className={twMerge(
           "h-9 w-[52px] min-w-[52px] rounded-full border border-white bg-mercury-30 px-4 py-2",
           isDarkTheme && "bg-mercury-30",
           //disabled
-          "border-transparent bg-[#EDEDED]",
+          "border-transparent bg-[#EDEDED] disabled:bg-white/60",
         )}
       >
         <PaperClipFilledIcon
@@ -151,10 +152,10 @@ const ChatInput = ({
       <button
         type="button"
         onClick={handleSubmit}
+        disabled={isDisabledInput || !message || isPending}
         className={twMerge(
-          "h-9 w-[52px] min-w-[52px] rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2",
-          isDarkTheme && "bg-white",
-          (!message || isPending) && "border-transparent bg-mercury-950/50",
+          "h-9 w-[52px] min-w-[52px] rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2 disabled:border-transparent disabled:bg-mercury-950/60",
+          isDarkTheme && "bg-white disabled:bg-white/60",
         )}
       >
         <ArrowUpFilledIcon bgColor={isDarkTheme ? "#363636" : "#FAFAFA"} />

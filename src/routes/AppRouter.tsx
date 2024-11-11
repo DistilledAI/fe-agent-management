@@ -9,6 +9,7 @@ import AddMyData from "@pages/AddMyData"
 import AuthorProfile from "@pages/AuthorProfile"
 import ChatBoxLive from "@pages/ChatBoxLive"
 import ChatMyAgent from "@pages/ChatMyAgent"
+import AgentDetail from "@pages/ChatPage/AgentDetail"
 import ChatBox from "@pages/ChatPage/ChatBox"
 import ChatPageMobile from "@pages/ChatPage/Mobile"
 import MyPrivateAgentContentMobile from "@pages/ChatPage/Mobile/MyPrivateAgentContentMobile"
@@ -68,10 +69,10 @@ const AppRouter = () => {
           <Route path={PATH_NAMES.MY_DATA} element={<MyData />} />
           <Route path={PATH_NAMES.ACCOUNT} element={<Account />} />
         </Route>
-        {/* <Route
+        <Route
           path={`${PATH_NAMES.AGENT_DETAIL}/:agentId`}
-          element={<EditAgent />}
-        /> */}
+          element={<AgentDetail />}
+        />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
