@@ -96,9 +96,8 @@ const VoiceChat: React.FC<{
           onClick={startVoice}
           disabled={isDisabled}
           className={twMerge(
-            "h-9 rounded-full bg-mercury-200",
-            isDarkTheme && "bg-mercury-950",
-            isDisabled && "bg-mercury-200/50",
+            "h-9 rounded-full bg-mercury-200 disabled:bg-mercury-200/60",
+            isDarkTheme && "bg-mercury-950 disabled:bg-mercury-950/60",
           )}
         >
           <MicrophoneFilledIcon color={isDarkTheme ? "#E6E6E6" : "#545454"} />
