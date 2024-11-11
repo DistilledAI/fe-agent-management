@@ -48,7 +48,7 @@ const RightContent = () => {
     <div
       className={twMerge(
         "flex-1 transition-all duration-300 ease-linear",
-        "max-md:shadow-7 bg-white max-md:rounded-[14px] max-md:border-t max-md:border-t-white",
+        "bg-white max-md:rounded-[14px] max-md:border-t max-md:border-t-white max-md:shadow-7",
         "md:px-10",
         "max-2xl:px-0",
         isCloseLiveChat && "h-[113px] flex-none md:flex-1",
@@ -72,6 +72,7 @@ const RightContent = () => {
           isCloseLiveChat && "opacity-0 delay-300",
         )}
         scrollBottomClassName="max-md:!bottom-[93px] max-md:bg-none"
+        increaseViewportBy={1000}
       />
       <div
         className={twMerge(

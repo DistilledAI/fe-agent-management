@@ -29,6 +29,7 @@ interface ChatWindowProps {
   style?: CSSProperties
   Header?: React.ReactNode
   scrollBottomClassName?: string
+  increaseViewportBy?: number
 }
 
 const LIMIT = 20
@@ -49,6 +50,7 @@ const ChatWindow = ({
   style,
   Header,
   scrollBottomClassName,
+  increaseViewportBy = 500,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [isAtBottom, setIsAtBottom] = useState<boolean>(true)
@@ -151,7 +153,7 @@ const ChatWindow = ({
             index: messages.length - 1,
             align: "end",
           }}
-          increaseViewportBy={500}
+          increaseViewportBy={increaseViewportBy}
           onScroll={messages.length >= LIMIT ? onScroll : undefined}
           components={{
             Header: renderHeader,
