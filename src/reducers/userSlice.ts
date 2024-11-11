@@ -1,3 +1,4 @@
+import { initStore } from "@configs/store"
 import { TYPE_BOT } from "@constants/index"
 import { createSlice } from "@reduxjs/toolkit"
 import {
@@ -37,21 +38,23 @@ export interface IUserState {
   isLogin: boolean
 }
 
+const userInitState = {
+  id: 0,
+  createdAt: "",
+  publicAddress: "",
+  role: -1,
+  status: -1,
+  typeLogin: "",
+  username: "",
+  avatar: "",
+  description: "",
+  owner: -1,
+  typeBot: -1,
+  configBot: "",
+}
+
 const initStateValues = {
-  user: {
-    id: 0,
-    createdAt: "",
-    publicAddress: "",
-    role: -1,
-    status: -1,
-    typeLogin: "",
-    username: "",
-    avatar: "",
-    description: "",
-    owner: -1,
-    typeBot: -1,
-    configBot: "",
-  },
+  user: userInitState,
   isLogin: !!getAccessToken(),
 }
 
@@ -62,7 +65,11 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state, action: { payload: LoginSuccessPayload }) => {
+      initStore(true)
       cachedSessionStorage.removeItem(storageKey.ACCESS_TOKEN)
+      setTimeout(() => {
+        cachedSessionStorage.removeItem("persist:root")
+      }, 1000)
 
       const { user, accessToken, expiry } = action.payload
       state.user = user
@@ -78,6 +85,12 @@ const userSlice = createSlice({
       action: { payload: LoginSuccessPayload },
     ) => {
       const { user, accessToken, expiry } = action.payload
+
+      initStore(false)
+      setTimeout(() => {
+        cachedLocalStorage.removeItem("persist:root")
+      }, 1000)
+
       state.user = user
       state.isLogin = true
       cachedSessionStorage.setWithExpiry(
@@ -87,10 +100,12 @@ const userSlice = createSlice({
       )
     },
     logout: (state) => {
-      state.user = null
+      state.user = userInitState
       state.isLogin = false
       cachedLocalStorage.removeItem(storageKey.ACCESS_TOKEN)
       cachedSessionStorage.removeItem(storageKey.ACCESS_TOKEN)
+      cachedLocalStorage.removeItem("persist:root")
+      cachedSessionStorage.removeItem("persist:root")
     },
     updateUser: (state, action: { payload: UpdateUserPayload }) => {
       state.user = action.payload.user
