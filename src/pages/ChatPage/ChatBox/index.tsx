@@ -4,15 +4,13 @@ import useSubmitChat from "@hooks/useSubmitChat"
 import { useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import SpeechRecognition from "react-speech-recognition"
-import useGetChatId from "../Mobile/ChatDetail/useGetChatId"
 import ChatInput from "./ChatInput"
 import ChatMessages from "./ChatMessages"
 import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
 
 const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
-  const { inviteAgentId, privateChatId } = useParams()
-  const { chatId } = useGetChatId()
+  const { inviteAgentId, privateChatId, chatId } = useParams()
   const { isLogin } = useAuthState()
   const navigate = useNavigate()
   const groupId = privateChatId || chatId

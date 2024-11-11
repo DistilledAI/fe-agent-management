@@ -3,6 +3,7 @@ import { Persistor, persistReducer, persistStore } from "redux-persist"
 import rootReducer from "@reducers/index"
 import storage from "redux-persist/lib/storage" // defaults to localStorage for web
 import sessionStorage from "redux-persist/lib/storage/session"
+import localStorage from "redux-persist/lib/storage"
 
 let store: Store
 let persistor: Persistor
@@ -10,7 +11,7 @@ let persistor: Persistor
 const initStore = (isLocalStorage: boolean) => {
   const persistConfig = {
     key: "root",
-    storage: isLocalStorage ? storage : sessionStorage,
+    storage: isLocalStorage ? localStorage : sessionStorage,
     whitelist: ["agents", "sidebarCollapsed", "user"],
   }
 

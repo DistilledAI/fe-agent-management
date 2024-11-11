@@ -8,10 +8,6 @@ import "regenerator-runtime/runtime"
 import App from "./App.tsx"
 import "./index.css"
 import React from "react"
-import { initStore } from "@configs/store.ts"
-
-const hasAccessToken = localStorage.getItem("accessToken")
-initStore(!!hasAccessToken)
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

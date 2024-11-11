@@ -1,4 +1,4 @@
-import { persistor, store } from "@configs/store"
+import { initStore, persistor, store } from "@configs/store"
 import { config } from "@configs/wagmi"
 import { NextUIProvider } from "@nextui-org/react"
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit"
@@ -12,6 +12,9 @@ import { PersistGate } from "redux-persist/integration/react"
 import { WagmiProvider } from "wagmi"
 
 const queryClient = new QueryClient()
+
+const accessToken = localStorage.getItem("accessToken")
+initStore(!!accessToken)
 
 const Providers = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   return (
