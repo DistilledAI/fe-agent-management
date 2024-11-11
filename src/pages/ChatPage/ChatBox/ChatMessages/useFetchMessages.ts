@@ -113,7 +113,7 @@ const useFetchMessages = () => {
   useEffect(() => {
     if (error) {
       console.error(error)
-      navigate(PATH_NAMES.NOT_FOUND)
+      navigate(PATH_NAMES.HOME)
     }
   }, [error])
 

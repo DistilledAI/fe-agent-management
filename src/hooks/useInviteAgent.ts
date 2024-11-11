@@ -56,7 +56,7 @@ const useInviteAgent = () => {
       navigate(`${PATH_NAMES.CHAT}/${groupId}`)
     } catch (error) {
       console.log("error", error)
-      navigate(PATH_NAMES.NOT_FOUND)
+      navigate(PATH_NAMES.HOME)
     }
   }
 

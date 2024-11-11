@@ -12,6 +12,7 @@ import { IAgentData } from "types/user"
 import ShareModal from "../../../components/ShareQRModal"
 import { useDisclosure } from "@nextui-org/react"
 import MyAgentAction from "./Action"
+import PublishedOnMarket from "@components/PublishedOnMarket"
 
 const ListAgentMobile: React.FC<{
   data: IAgentData[]
@@ -19,7 +20,13 @@ const ListAgentMobile: React.FC<{
   hasMore: boolean
 }> = ({ data, loadMore, hasMore }) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
+  const {
+    isOpen: isOpenPublished,
+    onClose: onClosePublished,
+    onOpen: onOpenPublished,
+  } = useDisclosure()
   const [agentSelected, setAgentSelected] = useState<number | null>(null)
+  const [dataPublished, setDataPublished] = useState<IAgentData>()
   const isEmpty = data.length === 0
   const tableRef = useRef<any>(null)
 
@@ -87,7 +94,13 @@ const ListAgentMobile: React.FC<{
                     </div>
                   </div>
                   <div>
-                    <MyAgentAction data={item} />
+                    <MyAgentAction
+                      data={item}
+                      onPublishDone={(value) => {
+                        onOpenPublished()
+                        setDataPublished(value)
+                      }}
+                    />
                   </div>
                 </div>
               </div>
@@ -103,6 +116,24 @@ const ListAgentMobile: React.FC<{
           setAgentSelected(null)
         }}
       />
+      {dataPublished && (
+        <PublishedOnMarket
+          isOpen={isOpenPublished}
+          onClose={() => {
+            onClosePublished()
+            setDataPublished(undefined)
+          }}
+          data={{
+            avatar: dataPublished.avatar ?? undefined,
+            nameDisplay: dataPublished.username,
+            username: dataPublished.username,
+            description: dataPublished.description ?? "",
+            publicAddress:
+              dataPublished.publicAddress ?? dataPublished.username,
+            id: dataPublished.id,
+          }}
+        />
+      )}
     </>
   )
 }

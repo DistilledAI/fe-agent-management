@@ -18,12 +18,9 @@ const AuthorDescription = () => {
   }, [user?.description])
 
   const handleUpdate = async () => {
-    if (!value) return
     const MAX_LENGTH = 500
     const isSameOldDesc = value === user?.description
-    const isOverLength = value.length > MAX_LENGTH
-    const isNoneValue = value.trim() === ""
-    if (isNoneValue) return setValue(user?.description)
+    const isOverLength = value && value.length > MAX_LENGTH
     if (isSameOldDesc) return
     if (isOverLength) return toast.warning(`Max length ${MAX_LENGTH}`)
 
