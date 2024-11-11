@@ -18,8 +18,14 @@ const AuthorUsername = () => {
   }, [user?.username])
 
   const handleUpdate = async () => {
-    if (value?.trim() === "") return setValue(user?.username)
-    if (value === user?.username) return
+    if (!value) return
+    const MAX_LENGTH = 30
+    const isSameOldName = value === user?.username
+    const isOverLength = value.length > MAX_LENGTH
+    const isNoneValue = value.trim() === ""
+    if (isNoneValue) return setValue(user?.username)
+    if (isSameOldName) return
+    if (isOverLength) return toast.warning(`Max length ${MAX_LENGTH}`)
     dispatch(updateUserSlice({ user: { ...user, username: value } as IUser }))
     await updateUser({
       username: value,
