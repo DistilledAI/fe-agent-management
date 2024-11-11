@@ -1,7 +1,6 @@
 import { configureStore, Store } from "@reduxjs/toolkit"
 import { Persistor, persistReducer, persistStore } from "redux-persist"
 import rootReducer from "@reducers/index"
-import storage from "redux-persist/lib/storage" // defaults to localStorage for web
 import sessionStorage from "redux-persist/lib/storage/session"
 import localStorage from "redux-persist/lib/storage"
 
