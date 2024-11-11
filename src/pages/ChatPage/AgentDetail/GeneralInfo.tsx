@@ -6,6 +6,7 @@ import CategoryLabel, { Divider, FieldLabel } from "./CategoryLabel"
 import ChangeAvatarContainer from "./ChangeAvatarContainer"
 
 const GeneralInfo: React.FC<{ agentData: any }> = ({ agentData }) => {
+  console.log({ agentData })
   const { control } = useFormContext()
 
   return (
