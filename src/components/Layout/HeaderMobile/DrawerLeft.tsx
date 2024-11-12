@@ -1,6 +1,6 @@
 import React from "react"
 import { Button, Modal, ModalBody, ModalContent } from "@nextui-org/react"
-import { FilledWindowIcon } from "@components/Icons/FilledWindowIcon"
+// import { FilledWindowIcon } from "@components/Icons/FilledWindowIcon"
 import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
 import CloseButton from "@components/CloseButton"
 import ComingSoon from "@components/ComingSoon"
@@ -26,13 +26,13 @@ const DrawerLeft: React.FC<Props> = ({ isOpen, onClose }) => {
   const isHiddenMyData = !hasBot
 
   const MENU = [
-    {
-      name: "Playground",
-      icon: <FilledWindowIcon />,
-      isComingSoon: true,
-      url: "",
-      hidden: false,
-    },
+    // {
+    //   name: "Playground",
+    //   icon: <FilledWindowIcon />,
+    //   isComingSoon: true,
+    //   url: "",
+    //   hidden: false,
+    // },
     {
       name: "My data",
       icon: <DatabaseSearchIcon />,

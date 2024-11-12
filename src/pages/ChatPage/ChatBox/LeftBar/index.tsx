@@ -1,5 +1,5 @@
 import MyEcho from "./MyEcho"
-import Playground from "./Playground"
+// import Playground from "./Playground"
 import PrivateAI from "./PrivateAI"
 import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
 import SidebarCollapsed from "./SidebarCollapsed"
@@ -47,7 +47,7 @@ const LeftBar = () => {
               sidebarCollapsed && "flex-shrink-0 flex-col justify-center",
             )}
           >
-            <Playground />
+            {/* <Playground /> */}
             <ButtonMarketplace />
           </div>
         </div>
