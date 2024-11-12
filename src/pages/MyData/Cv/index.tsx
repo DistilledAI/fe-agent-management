@@ -9,7 +9,7 @@ import React from "react"
 import TableData from "../Components/TableData"
 import TableDataMobile from "../Components/TableDataMobile"
 import DeleteData from "../DeleteData"
-import SyncData, { SyncLabel } from "../SyncData"
+import SyncData, { MY_DATA_STATUS, SyncLabel } from "../SyncData"
 import useFetchByCategory from "../useFetchByCategory"
 
 enum ColumnKey {
@@ -49,6 +49,17 @@ const CvData: React.FC<{
     fetchNextPage,
   } = useFetchByCategory(category, botId)
 
+  const hasSyncData = Boolean(
+    data.find(
+      (item) =>
+        item.status === MY_DATA_STATUS.ACTIVE || MY_DATA_STATUS.SUSPENDED,
+    ),
+  )
+
+  const hasSyncDataByStatus = (status: MY_DATA_STATUS) => {
+    return status === MY_DATA_STATUS.ACTIVE || MY_DATA_STATUS.SUSPENDED
+  }
+
   const renderCell = (item: Record<string, any>, columnKey: string) => {
     const dataId = item?.id
 
@@ -67,22 +78,22 @@ const CvData: React.FC<{
         )
       case ColumnKey.Action:
         return (
-          <div className="flex items-center gap-4">
+          <div className="flex items-center justify-end gap-4">
             {/* <div className="cursor-pointer hover:opacity-70">
               <EditPenFilledIcon color="#545454" />
             </div> */}
+            <SyncData botId={botId} dataId={dataId} status={item.status} />
             <DeleteData
               botId={item.userId}
               ids={[item.id]}
               category={category}
             />
-            <SyncData botId={botId} dataId={dataId} />
           </div>
         )
       case ColumnKey.Name:
         return (
           <div className="flex flex-row items-center gap-1">
-            <InfoCircleIcon />
+            {hasSyncDataByStatus(item.status) && <InfoCircleIcon />}
             <a
               className="max-w-[150px] truncate hover:underline"
               href={item.value}
@@ -107,13 +118,13 @@ const CvData: React.FC<{
   const getTdClassName = (key: string) => {
     switch (key) {
       case ColumnKey.Action:
-        return "w-[100px]"
+        return "w-[140px] text-right"
       case ColumnKey.Name:
         return "w-[200px]"
       case ColumnKey.Type:
-        return "w-[200px]"
+        return "w-[180px]"
       case ColumnKey.Date:
-        return "w-[150px]"
+        return "w-[180px]"
 
       default:
         return ""
@@ -129,7 +140,7 @@ const CvData: React.FC<{
           title="CV"
           addTitle="Add cv"
         />
-        {data.length > 0 && <SyncLabel />}
+        {hasSyncData && <SyncLabel />}
       </div>
 
       <div className="mt-4">
