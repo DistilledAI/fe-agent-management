@@ -10,7 +10,7 @@ import { getActiveColorRandomById } from "@utils/index"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
-import ChatActions from "./ChatActions"
+// import ChatActions from "./ChatActions"
 import {
   getBadgeColor,
   groupedMessages,
@@ -37,6 +37,7 @@ const ChatMessages = () => {
     staleTime: 60 * 60 * 1000,
     refetchOnMount: false,
   })
+
   const { spacing } = useStyleSpacing()
 
   const getBadgeIcon = (role: RoleUser) =>
@@ -101,7 +102,7 @@ const ChatMessages = () => {
           paddingBottom: `${spacing}px`,
         }}
       />
-      <ChatActions />
+      {/* <ChatActions /> */}
     </>
   )
 }

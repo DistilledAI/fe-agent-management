@@ -40,6 +40,10 @@ const useMessageSocket = () => {
   const queryClient = useQueryClient()
   const groupId = chatId || privateChatId
 
+  const setQueryIsChatting = (chattingId: string, status: boolean = false) => {
+    return queryClient.setQueryData(["isChatting", chattingId], () => status)
+  }
+
   const isPassRuleMessage = (e: IDataListen) => {
     if (e.user.id === user?.id) return false
 
@@ -94,7 +98,6 @@ const useMessageSocket = () => {
 
   const updateNewMsg = (e: IDataListen, isPlusMsg: boolean = true) => {
     const groupId = e.group.toString()
-
     queryClient.setQueryData(
       chatMessagesKey(groupId),
       (cachedData: ICachedMessageData) => {
@@ -175,7 +178,8 @@ const useMessageSocket = () => {
   }
 
   const handleWithUpdate = (e: IDataListen) => {
-    if (isReloadWhenResponse(e.index)) return
+    if (isReloadWhenResponse(e.index))
+      return setQueryIsChatting(e.group.toString(), true)
     const isBotVoice = e.user.typeBot === TYPE_BOT.VOICE
     const isBotLive = e.user.configBot === "live"
     const isStop = isBotLive || isBotVoice
@@ -224,6 +228,10 @@ const useMessageSocket = () => {
     if (socket) {
       const event = "chat-group"
       socket.on(event, (e: IDataListen) => {
+        if (e.event === StatusMessage.DONE) {
+          setQueryIsChatting(e.group.toString(), false)
+        }
+
         handleResponseForMessage(e)
         handleResponseForNotification(e)
       })

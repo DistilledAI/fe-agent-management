@@ -11,6 +11,7 @@ import SpeechRecognition, {
 import { twMerge } from "tailwind-merge"
 import VoiceChat from "./Voice"
 import useWindowSize from "@hooks/useWindowSize"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 
 interface ChatInputProps {
   isDisabledInput: boolean
@@ -39,17 +40,27 @@ const ChatInput = ({
   const { privateChatId } = useParams()
   const { chatId } = useGetChatId()
   const inputRef = useRef<any>(null)
-
-  useEffect(() => {
-    if (!isMobile) inputRef.current.focus()
-  }, [pathname, isMobile])
+  const queryClient = useQueryClient()
 
   const groupId = chatId || privateChatId
+
+  const { data: IsChatting } = useQuery({
+    initialData: false,
+    queryKey: ["isChatting", groupId],
+    enabled: !!groupId,
+  })
+
+  useEffect(() => {
+    if (!isMobile) {
+      inputRef.current.focus()
+    }
+  }, [pathname, isMobile, IsChatting])
 
   const handleSubmit = async () => {
     if (!message) return
 
     setMessage("")
+    queryClient.setQueryData(["isChatting", groupId], () => true)
     onSubmit(message)
   }
 
@@ -109,7 +120,7 @@ const ChatInput = ({
           "h-9 w-[52px] min-w-[52px] rounded-full border border-white bg-mercury-30 px-4 py-2",
           isDarkTheme && "bg-mercury-30",
           //disabled
-          "border-transparent bg-[#EDEDED] disabled:bg-white/60",
+          "border-transparent disabled:bg-mercury-30/50",
         )}
       >
         <PaperClipFilledIcon
