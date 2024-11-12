@@ -5,7 +5,7 @@ import { Controller, useFormContext } from "react-hook-form"
 import CategoryLabel, { Divider, FieldLabel } from "./CategoryLabel"
 import ChangeAvatarContainer from "./ChangeAvatarContainer"
 
-const GeneralInfo: React.FC<{ agentData: any }> = ({ agentData }) => {
+const GeneralInfo: React.FC = () => {
   const { control } = useFormContext()
 
   return (
@@ -13,7 +13,7 @@ const GeneralInfo: React.FC<{ agentData: any }> = ({ agentData }) => {
       <CategoryLabel text="General info" icon={<ClipboardTextIcon />} />
       <div className="mb-4 mt-4 flex w-full items-center justify-between gap-[56px]">
         <Controller
-          name="userName"
+          name="username"
           control={control}
           render={({ field: { value, onChange } }: any) => {
             return (
@@ -63,13 +63,26 @@ const GeneralInfo: React.FC<{ agentData: any }> = ({ agentData }) => {
           <FieldLabel text="Description" />
           <span className="text-base-md text-mercury-900">0/200</span>
         </div>
-        <Textarea
-          placeholder="Briefly outline your agent story or mission."
-          minRows={5}
-          maxRows={5}
-          className="w-full rounded-xl border border-mercury-400"
-          classNames={{
-            inputWrapper: "bg-mercury-70",
+
+        <Controller
+          name="description"
+          control={control}
+          render={({ field: { value, onChange } }: any) => {
+            return (
+              <div className="w-full">
+                <Textarea
+                  placeholder="Briefly outline your agent story or mission."
+                  minRows={5}
+                  maxRows={5}
+                  className="w-full rounded-xl border border-mercury-400"
+                  classNames={{
+                    inputWrapper: "bg-mercury-70",
+                  }}
+                  value={value}
+                  onChange={(e) => onChange(e.target.value)}
+                />
+              </div>
+            )
           }}
         />
       </div>

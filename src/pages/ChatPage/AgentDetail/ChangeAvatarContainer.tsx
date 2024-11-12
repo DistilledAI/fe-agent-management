@@ -51,6 +51,7 @@ const ChangeAvatarContainer: React.FC<{
     fileList: fileList,
     customRequest: handleCustomRequest,
     beforeUpload,
+    showUploadList: false,
   }
   return (
     <Upload {...props} accept="image/*">

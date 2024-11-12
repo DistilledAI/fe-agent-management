@@ -2,12 +2,19 @@ import { CloudUpload } from "@components/Icons/CloudUpload"
 import { QRCodeIcon } from "@components/Icons/QRCode"
 import { Button } from "@nextui-org/react"
 
-const Header: React.FC = () => {
+const Header: React.FC<{ agentData: any; methods: any }> = ({
+  agentData,
+  methods,
+}) => {
+  const userNameData = agentData?.username
+
   return (
     <div className="bg-lgd-muted-beige flex items-center justify-center p-3">
       <div className="flex w-full max-w-[800px] items-center justify-between px-4">
         <div className="flex flex-col">
-          <span className="text-24 text-mercury-950">Unnamed1934</span>
+          <span className="text-24 font-semibold text-mercury-950">
+            {userNameData}
+          </span>
           <span className="text-base font-medium text-mercury-500">
             No publish yet
           </span>
@@ -21,7 +28,10 @@ const Header: React.FC = () => {
             <CloudUpload />
             <span className="text-base text-mercury-950">Publish</span>
           </Button>
-          <Button className="h-[44px] rounded-full border border-mercury-50 bg-mercury-950">
+          <Button
+            className="h-[44px] rounded-full border border-mercury-50 bg-mercury-950"
+            type="submit"
+          >
             <span className="text-base text-mercury-30">Save</span>
           </Button>
         </div>
