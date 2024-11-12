@@ -2,10 +2,7 @@ import { CloudUpload } from "@components/Icons/CloudUpload"
 import { QRCodeIcon } from "@components/Icons/QRCode"
 import { Button } from "@nextui-org/react"
 
-const Header: React.FC<{ agentData: any; methods: any }> = ({
-  agentData,
-  methods,
-}) => {
+const Header: React.FC<{ agentData: any }> = ({ agentData }) => {
   const userNameData = agentData?.username
 
   return (

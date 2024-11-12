@@ -64,7 +64,7 @@ const AgentDetail: React.FC = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <Header agentData={agentData} methods={methods} />
+        <Header agentData={agentData} />
         <div className="mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px]">
           <GeneralInfo />
           <Behaviors />
