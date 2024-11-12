@@ -6,7 +6,7 @@ interface LabelCustomProps {
 }
 
 interface FieldLabelProps {
-  text: string
+  text: string | React.ReactNode
   required?: boolean
   containerClassName?: string
 }

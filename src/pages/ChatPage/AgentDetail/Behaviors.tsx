@@ -1,22 +1,36 @@
 import { scaler } from "@assets/images"
 import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
 import { Textarea } from "@nextui-org/react"
+import { Controller, useFormContext } from "react-hook-form"
 import CategoryLabel, { FieldLabel } from "./CategoryLabel"
 
 const Behaviors: React.FC = () => {
+  const { control } = useFormContext()
+
   return (
     <div>
       <CategoryLabel text="Agent Behaviors" icon={<ClipboardTextIcon />} />
       <div className="my-4">
         <FieldLabel text="Greeting message" />
-        <Textarea
-          placeholder="An agent’s opening message in a new context."
-          className="w-full rounded-xl border border-mercury-400"
-          classNames={{
-            inputWrapper: "bg-mercury-70",
+
+        <Controller
+          name="firstMsg"
+          control={control}
+          render={({ field: { value, onChange } }: any) => {
+            return (
+              <Textarea
+                placeholder="An agent’s opening message in a new context."
+                className="w-full rounded-xl border border-mercury-400"
+                classNames={{
+                  inputWrapper: "bg-mercury-70",
+                }}
+                minRows={5}
+                maxRows={5}
+                onChange={(e) => onChange(e.target.value)}
+                value={value}
+              />
+            )
           }}
-          minRows={5}
-          maxRows={5}
         />
       </div>
 
