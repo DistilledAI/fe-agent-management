@@ -1,4 +1,5 @@
 import { Publish } from "@constants/index"
+import { MY_DATA_STATUS } from "@pages/MyData/SyncData"
 import { BotDataTypeKey } from "@types"
 
 export interface IUserDetail {
@@ -32,6 +33,7 @@ export interface IBotData {
   userId: number
   value: string
   user: IUserDetail
+  status: MY_DATA_STATUS
 }
 
 export interface IAgentData {
