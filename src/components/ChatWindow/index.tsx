@@ -150,7 +150,7 @@ const ChatWindow = ({
           ref={virtuosoRef}
           data={messages}
           initialTopMostItemIndex={{
-            index: messages.length - 1,
+            index: "LAST",
             align: "end",
           }}
           increaseViewportBy={increaseViewportBy}

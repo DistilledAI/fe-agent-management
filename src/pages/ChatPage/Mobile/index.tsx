@@ -11,6 +11,7 @@ import ChatDetail from "./ChatDetail"
 import useGetChatId from "./ChatDetail/useGetChatId"
 import ChatList from "./ChatList"
 import ChatSearch from "./ChatSearch"
+import VideoCustom from "@components/VideoCustom"
 
 const ChatPageMobile = () => {
   const { privateChatId } = useParams()
@@ -66,17 +67,7 @@ export const StartNewChat = () => {
   return (
     <div className="bg-white p-4 text-center">
       <div className="mb-7 w-full overflow-hidden rounded-lg">
-        <video
-          controls={false}
-          playsInline
-          autoPlay
-          muted
-          loop
-          className="w-full"
-        >
-          <source src={distilledAiPrivateAgent} type="video/mp4" />
-          <track kind="captions" />
-        </video>
+        <VideoCustom videoSrc={distilledAiPrivateAgent} />
       </div>
       <p className="mb-2 text-24 font-semibold">Start a new chat</p>
       <p className="text-14">
