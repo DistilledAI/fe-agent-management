@@ -10,6 +10,7 @@ import SpeechRecognition from "react-speech-recognition"
 import ChatInput from "../../ChatInput"
 import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
 import useFetchMessages from "../../ChatMessages/useFetchMessages"
+import { useQuery } from "@tanstack/react-query"
 
 const PrivateAgentChatContent: React.FC<{
   hasInputChat?: boolean
@@ -27,6 +28,11 @@ const PrivateAgentChatContent: React.FC<{
   const { chatId } = useGetChatId()
   const groupId = privateChatId || chatId
   const { mutation } = useSubmitChat(groupId, SpeechRecognition.stopListening)
+  const { data: isChatting } = useQuery<boolean>({
+    initialData: false,
+    queryKey: ["isChatting", groupId],
+    enabled: !!groupId,
+  })
 
   const renderMessage = (_: number, message: IMessageBox) => {
     return (
@@ -70,7 +76,7 @@ const PrivateAgentChatContent: React.FC<{
         <ChatInput
           onSubmit={mutation.mutate}
           isPending={mutation.isPending}
-          isDisabledInput={false}
+          isDisabledInput={isChatting}
           wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
           isDarkTheme
         />
