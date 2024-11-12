@@ -2,14 +2,9 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useSocket } from "providers/SocketProvider"
 import { useEffect } from "react"
 import { QueryDataKeys } from "types/queryDataKeys"
+import { LIMIT_MY_DATA } from "./useFetchByCategory"
 
-const useUpdateStatus = ({
-  botId,
-  category,
-}: {
-  botId: number
-  category: string
-}) => {
+const useUpdateStatus = (botId: number) => {
   const { socket } = useSocket()
   const queryClient = useQueryClient()
 
@@ -19,17 +14,28 @@ const useUpdateStatus = ({
       socket.on(event, (e) => {
         if (e?.event === "notification" && e?.data) {
           queryClient.setQueryData(
-            [`${QueryDataKeys.MY_BOT_DATA}-${botId}-${category}`],
+            [`${QueryDataKeys.MY_BOT_DATA}-${botId}-${e.data.key}`],
             (oldData: any) => {
-              const dt = oldData?.pages?.flat()?.map((item: any) => {
+              const flatData = oldData?.pages?.flat()?.map((item: any) => {
                 if (item.id === e.data.id) {
                   return { ...item, status: e.data.status }
                 }
                 return item
               })
+
+              const chunkArray = (array: any[], size: number) => {
+                const result = []
+                for (let i = 0; i < array.length; i += size) {
+                  result.push(array.slice(i, i + size))
+                }
+                return result
+              }
+
+              const chunkedPages = chunkArray(flatData, LIMIT_MY_DATA)
+
               return {
-                pageParams: [1],
-                pages: dt,
+                pageParams: oldData.pageParams,
+                pages: chunkedPages,
               }
             },
           )
@@ -40,7 +46,7 @@ const useUpdateStatus = ({
         socket.off(event)
       }
     }
-  }, [socket, botId, category])
+  }, [socket, botId])
 }
 
 export default useUpdateStatus

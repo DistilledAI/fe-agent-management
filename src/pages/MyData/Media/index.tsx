@@ -11,7 +11,6 @@ import TableDataMobile from "../Components/TableDataMobile"
 import DeleteData from "../DeleteData"
 import SyncData, { MY_DATA_STATUS, SyncLabel } from "../SyncData"
 import useFetchByCategory from "../useFetchByCategory"
-import useUpdateStatus from "../useUpdateStatus"
 
 enum ColumnKey {
   Name = "name",
@@ -49,8 +48,6 @@ const MediaData: React.FC<{
     hasNextPage,
     fetchNextPage,
   } = useFetchByCategory(category, botId)
-
-  useUpdateStatus({ botId, category })
 
   const hasSyncData = Boolean(
     data.find(
