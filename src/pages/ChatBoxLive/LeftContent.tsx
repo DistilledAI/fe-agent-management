@@ -33,7 +33,7 @@ const LeftContent = () => {
   const isExpandLiveChat = !!queries[2].data
 
   useEffect(() => {
-    setTimeout(() => setIsLoaded(true), 500)
+    setTimeout(() => setIsLoaded(true), 200)
   }, [])
 
   const toggleMute = () => {

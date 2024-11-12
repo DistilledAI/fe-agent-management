@@ -99,7 +99,7 @@ const ChatWindow = ({
       return (
         <>
           {isFetchingPreviousPage && messages.length >= LIMIT ? (
-            <div className="flex h-full items-center justify-center py-4">
+            <div className="flex h-full items-center justify-center py-6">
               <DotLoading />
             </div>
           ) : (

@@ -29,9 +29,6 @@ const ToggleActionsMobile = () => {
     if (chatWindow) {
       chatWindow.scrollTop = chatWindow.scrollHeight
       chatWindow.style.scrollBehavior = isExpand ? "auto" : "smooth"
-      setTimeout(() => {
-        chatWindow.style.scrollBehavior = "auto"
-      }, 1000)
     }
   }
 

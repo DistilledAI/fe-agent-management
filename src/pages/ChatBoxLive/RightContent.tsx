@@ -37,7 +37,10 @@ const RightContent = () => {
   const renderMessage = (index: number, message: IMessageBox) => {
     return (
       <div
-        className={twMerge(index === messages.length - 1 && "pb-24 md:pb-0")}
+        className={twMerge(
+          index === 0 && "pt-4",
+          index === messages.length - 1 && "pb-24 md:pb-0",
+        )}
       >
         <MessageLive key={index} message={message} />
       </div>
@@ -72,7 +75,7 @@ const RightContent = () => {
           isCloseLiveChat && "opacity-0 delay-300",
         )}
         scrollBottomClassName="max-md:!bottom-[93px] max-md:bg-none"
-        increaseViewportBy={1000}
+        increaseViewportBy={1500}
       />
       <div
         className={twMerge(

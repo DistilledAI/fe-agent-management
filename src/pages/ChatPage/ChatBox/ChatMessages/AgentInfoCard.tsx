@@ -99,7 +99,7 @@ const AgentInfoCard = ({ messages }: { messages: IMessageBox[] }) => {
             </div>
 
             <div className="flex items-center justify-between gap-x-2 md:gap-x-4">
-              <p className="line-clamp-2 max-w-[510px] text-14 font-medium text-mercury-600">
+              <p className="line-clamp-3 max-w-[510px] text-14 font-medium text-mercury-600">
                 {agentOwner?.description || "Distilled AI Agent"}
               </p>
             </div>

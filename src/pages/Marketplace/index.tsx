@@ -6,7 +6,7 @@ import { twMerge } from "tailwind-merge"
 import GenAITools from "./GenAITools"
 import Productivity from "./Productivity"
 import useScrollTabActive from "./useScrollTabActive"
-import AIAgents from "./AIAGents"
+import AIAgents from "./AIAgents"
 
 const Marketplace = () => {
   const siderCollapsed = useAppSelector((state) => state.sidebarCollapsed)
@@ -148,9 +148,9 @@ const Marketplace = () => {
             >
               {category.name}
             </h5>
-            <div
+            <ScrollShadow
               className={twMerge(
-                "grid min-h-[50dvh] grid-cols-1 justify-between gap-y-6 overflow-y-auto rounded-[22px] bg-mercury-30 px-1 py-3 md:grid-cols-2 md:gap-x-20 md:px-2 md:py-4",
+                "grid h-[50dvh] grid-cols-1 justify-between gap-y-6 overflow-y-auto rounded-[22px] bg-mercury-30 px-1 py-3 md:grid-cols-2 md:gap-x-10 md:p-4",
                 category.isComing && "overflow-y-visible",
               )}
               style={{ gridAutoRows: "max-content" }}
@@ -168,7 +168,7 @@ const Marketplace = () => {
               ) : (
                 category.component
               )}
-            </div>
+            </ScrollShadow>
           </div>
         ))}
       </div>
