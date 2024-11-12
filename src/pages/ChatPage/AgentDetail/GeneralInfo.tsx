@@ -2,11 +2,17 @@ import AvatarCustom from "@components/AvatarCustom"
 import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
 import { Button, Input, Textarea } from "@nextui-org/react"
 import { Controller, useFormContext } from "react-hook-form"
-import CategoryLabel, { Divider, FieldLabel } from "./CategoryLabel"
+import CategoryLabel, { FieldLabel } from "./CategoryLabel"
 import ChangeAvatarContainer from "./ChangeAvatarContainer"
+import { IAgentData } from "types/user"
 
-const GeneralInfo: React.FC = () => {
-  const { control } = useFormContext()
+const GeneralInfo: React.FC<{
+  agentData: IAgentData
+}> = ({ agentData }) => {
+  const { control, watch } = useFormContext()
+  const descLength = watch("description")?.length ?? 0
+
+  const DESC_MAX_LENGTH = 200
 
   return (
     <div className="w-full">
@@ -42,7 +48,11 @@ const GeneralInfo: React.FC = () => {
           <FieldLabel text="Agent picture" />
           <div className="flex items-center gap-2">
             <ChangeAvatarContainer>
-              <AvatarCustom className="h-[72px] w-[72px]" />
+              <AvatarCustom
+                src={agentData?.avatar ?? undefined}
+                publicAddress={agentData?.publicAddress ?? agentData?.username}
+                className="h-[72px] w-[72px]"
+              />
             </ChangeAvatarContainer>
             <Button className="h-[44px] rounded-full border border-mercury-50 bg-mercury-950">
               <span className="text-base text-white">Use AI Generated</span>
@@ -61,7 +71,9 @@ const GeneralInfo: React.FC = () => {
       <div className="w-full">
         <div className="flex items-center justify-between">
           <FieldLabel text="Description" />
-          <span className="text-base-md text-mercury-900">0/200</span>
+          <span className="text-base-md text-mercury-900">
+            {descLength}/{DESC_MAX_LENGTH}
+          </span>
         </div>
 
         <Controller
@@ -79,15 +91,16 @@ const GeneralInfo: React.FC = () => {
                     inputWrapper: "bg-mercury-70",
                   }}
                   value={value}
-                  onChange={(e) => onChange(e.target.value)}
+                  onChange={(e) => {
+                    if (descLength >= DESC_MAX_LENGTH) return
+                    onChange(e.target.value)
+                  }}
                 />
               </div>
             )
           }}
         />
       </div>
-
-      <Divider />
     </div>
   )
 }

@@ -8,6 +8,9 @@ import Behaviors from "./Behaviors"
 import GeneralInfo from "./GeneralInfo"
 import Header from "./Header"
 import Preferences from "./Preferences"
+import { Divider } from "@nextui-org/react"
+import ToxicPolicies from "./ToxicPolicies"
+import Monetization from "./Monetization"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
@@ -25,7 +28,7 @@ const AgentDetail: React.FC = () => {
   })
 
   useEffect(() => {
-    let defaults = {
+    const defaults = {
       username: userNameData,
       description: descriptionData,
       firstMsg: firstMsgData,
@@ -66,10 +69,14 @@ const AgentDetail: React.FC = () => {
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <Header agentData={agentData} />
         <div className="mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px]">
-          <GeneralInfo />
+          <GeneralInfo agentData={agentData} />
+          <Divider className="my-9" />
           <Behaviors />
           <AIAgentGenerate />
           <Preferences />
+          <ToxicPolicies />
+          <Divider className="my-9" />
+          <Monetization />
         </div>
       </form>
     </FormProvider>

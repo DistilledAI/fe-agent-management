@@ -54,7 +54,7 @@ const AIAgentGenerate: React.FC = () => {
           <div className="flex items-center gap-2">
             <TwitterIcon />
             <span>Automate Posting on Twitter</span>
-            <Button className="text-base-14 h-8 rounded-full bg-brown-10 font-bold text-mercury-30">
+            <Button className="text-base-14 h-auto rounded-full bg-brown-10 py-[2px] font-bold text-mercury-30">
               AI AGENT GENERATE
             </Button>
           </div>
