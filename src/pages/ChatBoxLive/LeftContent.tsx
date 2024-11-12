@@ -64,7 +64,7 @@ const LeftContent = () => {
               playsInline
               loop
               className={twMerge(
-                "h-full w-full rounded-[32px] object-cover max-md:max-h-[350px] max-md:min-h-[350px] md:h-auto",
+                "h-full min-h-[350px] w-full rounded-[32px] object-cover max-md:max-h-[350px] md:h-auto md:min-h-[426px]",
                 isCloseChatLive && "max-md:max-h-full",
               )}
             >
