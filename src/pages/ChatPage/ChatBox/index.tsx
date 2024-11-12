@@ -7,16 +7,22 @@ import SpeechRecognition from "react-speech-recognition"
 import ChatInput from "./ChatInput"
 import ChatMessages from "./ChatMessages"
 import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
+import { useQuery } from "@tanstack/react-query"
 
 const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
   const { inviteAgentId, privateChatId, chatId } = useParams()
   const { isLogin } = useAuthState()
   const navigate = useNavigate()
-  const groupId = privateChatId || chatId
+  const groupId = chatId || privateChatId
   const { mutation } = useSubmitChat(groupId, SpeechRecognition.stopListening)
+  const { data: isChatting } = useQuery<boolean>({
+    initialData: false,
+    queryKey: ["isChatting", groupId],
+    enabled: !!groupId,
+  })
 
-  const isEnableTextInput = isLogin && (privateChatId || chatId)
+  const isEnableTextInput = isLogin && (chatId || privateChatId)
 
   useEffect(() => {
     if (chatId && !isLogin) navigate("/")
@@ -30,7 +36,7 @@ const ChatBox = () => {
           <ChatInput
             onSubmit={mutation.mutate}
             isPending={mutation.isPending}
-            isDisabledInput={!isEnableTextInput}
+            isDisabledInput={isChatting || !isEnableTextInput}
             wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
           />
         </>
