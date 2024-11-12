@@ -6,7 +6,7 @@ import { twMerge } from "tailwind-merge"
 import GenAITools from "./GenAITools"
 import Productivity from "./Productivity"
 import useScrollTabActive from "./useScrollTabActive"
-import AIAgents from "./AIAgents"
+import AIAgentList from "./AIAgentList"
 
 const Marketplace = () => {
   const siderCollapsed = useAppSelector((state) => state.sidebarCollapsed)
@@ -14,7 +14,7 @@ const Marketplace = () => {
     {
       id: "ai-agents",
       name: "AI Agents",
-      component: <AIAgents />,
+      component: <AIAgentList />,
       isComing: false,
     },
     {

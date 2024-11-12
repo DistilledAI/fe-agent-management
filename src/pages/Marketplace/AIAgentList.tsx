@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom"
 import { searchUsers } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 
-const AIAgents = () => {
+const AIAgentList = () => {
   const navigate = useNavigate()
   const { user } = useAuthState()
 
@@ -95,4 +95,4 @@ const AIAgents = () => {
   ))
 }
 
-export default AIAgents
+export default AIAgentList
