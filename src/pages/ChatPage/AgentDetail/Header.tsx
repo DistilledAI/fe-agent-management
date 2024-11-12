@@ -1,12 +1,13 @@
 import { CloudUpload } from "@components/Icons/CloudUpload"
 import { QRCodeIcon } from "@components/Icons/QRCode"
 import { Button } from "@nextui-org/react"
+import { IAgentData } from "types/user"
 
-const Header: React.FC<{ agentData: any }> = ({ agentData }) => {
+const Header: React.FC<{ agentData: IAgentData }> = ({ agentData }) => {
   const userNameData = agentData?.username
 
   return (
-    <div className="bg-lgd-muted-beige flex items-center justify-center p-3">
+    <div className="flex items-center justify-center bg-lgd-muted-beige p-3">
       <div className="flex w-full max-w-[800px] items-center justify-between px-4">
         <div className="flex flex-col">
           <span className="text-24 font-semibold text-mercury-950">
