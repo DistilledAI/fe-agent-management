@@ -10,12 +10,14 @@ import { getTimeLastCollected } from "./helpers"
 import LinkData from "./Link"
 import MediaData from "./Media"
 import useFetchMyData from "./useFetch"
+import useUpdateStatus from "./useUpdateStatus"
 
 const MyData: React.FC = () => {
   const { isMobile } = useWindowSize()
   const navigate = useNavigate()
   const { list, isLoading, isFetched, botId } = useFetchMyData()
   const lastCollected = getTimeLastCollected(list)
+  useUpdateStatus(botId)
 
   return (
     <div className="mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px]">
