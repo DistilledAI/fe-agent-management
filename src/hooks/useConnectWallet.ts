@@ -96,13 +96,26 @@ const useConnectWallet = () => {
       setLoadingConnectOwallet(true)
       const timestamp = Math.floor(Date.now() / 1000) + 86400
       //@ts-ignore
-      const provider = new ethers.providers.Web3Provider(window.eth_owallet)
+
+      const provider = new ethers.providers.Web3Provider(
+        //@ts-ignore
+        isMobile ? window.ethereum : window.eth_owallet,
+      )
       //@ts-ignore
-      await window.eth_owallet.request!({
-        method: "wallet_switchEthereumChain",
-        chainId: "0x01",
-        params: [{ chainId: "0x01" }],
-      })
+      if (isMobile) {
+        await window.ethereum.request!({
+          method: "wallet_switchEthereumChain",
+          chainId: "0x01",
+          params: [{ chainId: "0x01" }],
+        })
+      } else {
+        //@ts-ignore
+        await window.eth_owallet.request!({
+          method: "wallet_switchEthereumChain",
+          chainId: "0x01",
+          params: [{ chainId: "0x01" }],
+        })
+      }
       //@ts-ignore
       await window?.owallet.enable("0x01")
 
