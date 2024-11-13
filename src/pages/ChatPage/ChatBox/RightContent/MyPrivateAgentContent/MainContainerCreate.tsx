@@ -41,6 +41,8 @@ const MainContainerCreate: React.FC<{
     uploadPDFsValues.length > 0 ||
     photosVideosValues.length > 0
 
+  console.log("🚀 ~ isDisabled:", isDisabled)
+
   const onSubmit = async () => {
     setOpenCollectingPopup(true)
     const payloadData = [
@@ -117,6 +119,8 @@ const MainContainerCreate: React.FC<{
                 <span className="">Connect data</span>
               </Button>
             </div> */}
+
+            <button onSubmit={onSubmit}></button>
           </div>
         </div>
       </FormProvider>

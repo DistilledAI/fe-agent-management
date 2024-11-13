@@ -12,7 +12,7 @@ const AgentInitialization: React.FC = () => {
     },
   })
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     // const agentIdNumber = Number(agentId)
     // try {
     //   const res = await updateAgent({

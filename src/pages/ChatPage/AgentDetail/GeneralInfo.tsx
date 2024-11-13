@@ -7,7 +7,7 @@ import CategoryLabel, { FieldLabel } from "./CategoryLabel"
 import ChangeAvatarContainer from "./ChangeAvatarContainer"
 
 const GeneralInfo: React.FC<{
-  agentData: IAgentData
+  agentData?: IAgentData
   isBasicVersion?: boolean
 }> = ({ agentData, isBasicVersion }) => {
   const { control, watch } = useFormContext()
