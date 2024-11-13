@@ -15,6 +15,7 @@ import {
   PATH_NAMES,
   PERSONALITY_LIST,
 } from "@constants/index"
+import { updateAvatarUser } from "services/user"
 
 const AgentInitialization = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -34,12 +35,19 @@ const AgentInitialization = () => {
     try {
       setIsLoading(true)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { avatar, ...newData } = data
+      const { avatar, avatarFile, ...newData } = data
       const res = await createBot({
         ...newData,
         name: newData?.username,
       })
       const botId = res?.data?.id
+      const isUpdateAvatar = botId && data.avatarFile
+      if (isUpdateAvatar) {
+        const formData = new FormData()
+        formData.append("file", data.avatarFile)
+        formData.append("userId", botId.toString() ?? "")
+        await updateAvatarUser(formData)
+      }
       if (res && botId) {
         toast.success("Created agent successfully")
         navigate(`${PATH_NAMES.ADD_MY_DATA}/${botId}`)

@@ -12,4 +12,5 @@ export enum QueryDataKeys {
   EXPAND_LIVE_CHAT = "expand-live-chat",
   USER_PUBLIC_DETAIL = "user-public-detail",
   PUBLIC_AGENTS_BY_OWNER = "public-agents-by-owner",
+  AGENT_DETAIL = "agent-detail",
 }

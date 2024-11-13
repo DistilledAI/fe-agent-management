@@ -13,12 +13,33 @@ import ToxicPolicies from "./ToxicPolicies"
 import Monetization from "./Monetization"
 import { PATH_NAMES } from "@constants/index"
 import AgentBehaviors, { SelectedBehaviors } from "./AgentBehaviors"
+import { useQuery } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
+import { updateAvatarUser } from "services/user"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
-  const [agentData, setAgentData] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+
+  const fetchAgentDetail = async () => {
+    try {
+      const agentIdNumber = Number(agentId)
+      const response = await getAgentDetail(agentIdNumber)
+      if (response?.data) return response.data
+      else navigate(PATH_NAMES.HOME)
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message)
+      navigate(PATH_NAMES.HOME)
+    }
+  }
+
+  const { data: agentData, refetch } = useQuery({
+    queryKey: [QueryDataKeys.AGENT_DETAIL],
+    queryFn: fetchAgentDetail,
+    refetchOnWindowFocus: false,
+  })
+
   const userNameData = agentData?.username
   const descriptionData = agentData?.description
   const firstMsgData = agentData?.firstMsg
@@ -71,7 +92,7 @@ const AgentDetail: React.FC = () => {
   const onSubmit = async (data: any) => {
     if (!isPassRule(data)) return
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { avatar, ...newData } = data
+    const { avatar, avatarFile, ...newData } = data
     const agentIdNumber = Number(agentId)
 
     try {
@@ -80,7 +101,14 @@ const AgentDetail: React.FC = () => {
         ...newData,
         botId: agentIdNumber,
       })
+      if (data.avatarFile) {
+        const formData = new FormData()
+        formData.append("file", data.avatarFile)
+        formData.append("userId", agentData?.id?.toString() ?? "")
+        await updateAvatarUser(formData)
+      }
       if (res.data) {
+        refetch()
         toast.success("Updated successfully!")
       }
     } catch (error) {
@@ -89,22 +117,6 @@ const AgentDetail: React.FC = () => {
       setLoading(false)
     }
   }
-
-  const fetchAgentDetail = async () => {
-    try {
-      const agentIdNumber = Number(agentId)
-      const response = await getAgentDetail(agentIdNumber)
-      if (response?.data) setAgentData(response?.data)
-      else navigate(PATH_NAMES.HOME)
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message)
-      navigate(PATH_NAMES.HOME)
-    }
-  }
-
-  useEffect(() => {
-    fetchAgentDetail()
-  }, [agentId])
 
   return (
     <FormProvider {...methods}>
