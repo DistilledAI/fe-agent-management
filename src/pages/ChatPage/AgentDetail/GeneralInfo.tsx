@@ -12,6 +12,7 @@ const GeneralInfo: React.FC<{
 }> = ({ agentData }) => {
   const { control, watch } = useFormContext()
   const descLength = watch("description")?.length ?? 0
+  const avatarWatch = watch("avatar")
 
   const DESC_MAX_LENGTH = 200
 
@@ -50,10 +51,8 @@ const GeneralInfo: React.FC<{
           <div className="flex items-center gap-[18px]">
             <ChangeAvatarContainer>
               <AvatarCustom
-                src={watch("avatar") ?? undefined}
-                icon={
-                  !agentData?.avatar ? <FilledBrainAIIcon size={32} /> : <></>
-                }
+                src={avatarWatch ?? undefined}
+                icon={!avatarWatch ? <FilledBrainAIIcon size={32} /> : null}
                 publicAddress={agentData?.publicAddress ?? agentData?.username}
                 className="h-[72px] w-[72px] cursor-pointer max-sm:h-[50px] max-sm:w-[50px]"
               />
