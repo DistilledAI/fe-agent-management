@@ -154,13 +154,7 @@ const VideoCustom = ({
             classNames?.playBtn,
           )}
         >
-          {playIcon ? (
-            playIcon
-          ) : isPlaying ? (
-            <PauseIcon color="white" />
-          ) : (
-            <PlayIcon color="white" />
-          )}
+          {playIcon ? playIcon : isPlaying ? <PauseIcon /> : <PlayIcon />}
         </button>
       )}
       {/* Fullscreen Button */}
@@ -173,11 +167,7 @@ const VideoCustom = ({
             classNames?.fullScreenBtn,
           )}
         >
-          {fullScreenIcon ? (
-            fullScreenIcon
-          ) : (
-            <ArrowsMaximizeIcon color="white" />
-          )}
+          {fullScreenIcon ? fullScreenIcon : <ArrowsMaximizeIcon />}
         </button>
       )}
     </div>

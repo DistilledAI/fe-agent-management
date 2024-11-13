@@ -35,13 +35,13 @@ const MainContainerCreate: React.FC<{
   const photosVideosValues =
     values.photosVideos.length > 0 ? values.photosVideos : []
 
-  const isDisabled =
-    uploadCVValues.length > 0 ||
-    uploadSocialLinkValues.length > 0 ||
-    uploadPDFsValues.length > 0 ||
-    photosVideosValues.length > 0
+  // const isDisabled =
+  //   uploadCVValues.length > 0 ||
+  //   uploadSocialLinkValues.length > 0 ||
+  //   uploadPDFsValues.length > 0 ||
+  //   photosVideosValues.length > 0
 
-  console.log("🚀 ~ isDisabled:", isDisabled)
+  // console.log("🚀 ~ isDisabled:", isDisabled)
 
   const onSubmit = async () => {
     setOpenCollectingPopup(true)

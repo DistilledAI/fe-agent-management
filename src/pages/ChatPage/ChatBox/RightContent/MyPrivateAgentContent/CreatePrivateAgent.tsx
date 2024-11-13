@@ -10,11 +10,12 @@ import useAuthState from "@hooks/useAuthState"
 import useWindowSize from "@hooks/useWindowSize"
 import { Button } from "@nextui-org/react"
 import { useNavigate } from "react-router-dom"
-import IntroVideo from "../Modal/CreatPrivateAgentModal/IntroVideo"
 import AgentInitialization from "./AgentInitialization"
 import MainContainerCreate from "./MainContainerCreate"
 import UploadCustom from "./UploadCustom"
 import UploadSocialLink from "./UploadSocialLink"
+import VideoCustom from "@components/VideoCustom"
+import { introPrivateAgentVideo } from "@assets/video"
 
 export const TYPE_DATA_KEY = {
   SOCIAL_MEDIA: "social-media",
@@ -86,7 +87,7 @@ const CreatePrivateAgent: React.FC<{
   if (!isLogin || (isLogin && sessionAccessToken)) {
     return (
       <MainContainerCreate>
-        <div className="absolute left-1/2 top-1/2 max-w-[768px] -translate-x-1/2 -translate-y-1/2">
+        <div className="absolute left-1/2 top-1/2 w-full max-w-[768px] -translate-x-1/2 -translate-y-1/2">
           {connectWalletLoading && (
             <div className="mb-6 flex flex-col items-center gap-2">
               <div className="flex-items-center">
@@ -97,11 +98,18 @@ const CreatePrivateAgent: React.FC<{
               </div>
             </div>
           )}
-          <div className="flex h-fit w-full gap-2">
-            <div className="h-full w-full">
-              <IntroVideo />
-            </div>
-            <div className="flex w-full flex-col items-center rounded-[22px] border border-mercury-70 bg-mercury-30 p-6">
+          <div className="flex gap-6">
+            <VideoCustom
+              videoSrc={introPrivateAgentVideo}
+              classNames={{
+                wrapper:
+                  "rounded-[22px] border border-mercury-200 overflow-hidden flex-1",
+                video: "h-full object-cover",
+              }}
+              isPlayIcon
+              isFullScreenIcon
+            />
+            <div className="flex w-full flex-1 flex-col items-center rounded-[22px] border border-mercury-70 bg-mercury-30 p-6">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FC0]">
                 <FilledBrainAIIcon color="#363636" size={24} />
               </div>
@@ -112,7 +120,7 @@ const CreatePrivateAgent: React.FC<{
                 Connect your encrypted wallet and private data.
               </span>
               <Button
-                className="mt-6 h-[56px] w-full rounded-full bg-mercury-950 text-[18px] text-white"
+                className="mt-6 h-[56px] w-full rounded-full bg-mercury-950 text-[18px] text-mercury-30"
                 onClick={connectWallet}
               >
                 Connect Wallet
