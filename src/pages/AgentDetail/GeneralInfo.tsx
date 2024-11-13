@@ -7,13 +7,11 @@ import CategoryLabel, { FieldLabel } from "./CategoryLabel"
 import ChangeAvatarContainer from "./ChangeAvatarContainer"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { fileToBase64, isPassFileSize } from "@utils/index"
-import { updateAvatarUser } from "services/user"
 import { toast } from "react-toastify"
 
 const GeneralInfo: React.FC<{
   agentData?: IAgentData
-  isHiddenUploadAva?: boolean
-}> = ({ agentData, isHiddenUploadAva }) => {
+}> = ({ agentData }) => {
   const { control, watch, setValue } = useFormContext()
   const descLength = watch("description")?.length ?? 0
   const avatarWatch = watch("avatar")
@@ -24,10 +22,7 @@ const GeneralInfo: React.FC<{
     try {
       const maxSize = 1 * 1024 * 1024
       if (!isPassFileSize(file.size, maxSize)) return
-      const formData = new FormData()
-      formData.append("file", file)
-      formData.append("userId", agentData?.id?.toString() ?? "")
-      await updateAvatarUser(formData)
+      setValue("avatarFile", file)
       const fileBase64 = await fileToBase64(file)
       if (fileBase64) setValue("avatar", fileBase64)
     } catch (error) {
@@ -66,36 +61,32 @@ const GeneralInfo: React.FC<{
           }}
         />
 
-        {isHiddenUploadAva && (
-          <div>
-            <FieldLabel text="Agent picture" />
-            <div className="flex items-center gap-[18px]">
-              <ChangeAvatarContainer handleUpload={handleUploadAvatar}>
-                <AvatarCustom
-                  src={avatarWatch ?? undefined}
-                  icon={!avatarWatch ? <FilledBrainAIIcon size={32} /> : null}
-                  publicAddress={
-                    agentData?.publicAddress ?? agentData?.username
-                  }
-                  className="h-[72px] w-[72px] cursor-pointer max-sm:h-[50px] max-sm:w-[50px]"
-                />
-              </ChangeAvatarContainer>
-              {/* <Button className="h-[44px] rounded-full border border-mercury-50 bg-mercury-950">
+        <div>
+          <FieldLabel text="Agent picture" />
+          <div className="flex items-center gap-[18px]">
+            <ChangeAvatarContainer handleUpload={handleUploadAvatar}>
+              <AvatarCustom
+                src={avatarWatch ?? undefined}
+                icon={!avatarWatch ? <FilledBrainAIIcon size={32} /> : null}
+                publicAddress={agentData?.publicAddress ?? agentData?.username}
+                className="h-[72px] w-[72px] cursor-pointer max-sm:h-[50px] max-sm:w-[50px]"
+              />
+            </ChangeAvatarContainer>
+            {/* <Button className="h-[44px] rounded-full border border-mercury-50 bg-mercury-950">
               <span className="text-base text-white">Use AI Generated</span>
             </Button> */}
-              <ChangeAvatarContainer handleUpload={handleUploadAvatar}>
-                <button
-                  type="button"
-                  className="h-[44px] w-[130px] rounded-full border border-mercury-50 bg-mercury-30 max-sm:h-[38px] max-sm:w-auto max-sm:bg-mercury-100 max-sm:px-3"
-                >
-                  <span className="text-base text-mercury-950 max-sm:text-14">
-                    Upload picture
-                  </span>
-                </button>
-              </ChangeAvatarContainer>
-            </div>
+            <ChangeAvatarContainer handleUpload={handleUploadAvatar}>
+              <button
+                type="button"
+                className="h-[44px] w-[130px] rounded-full border border-mercury-50 bg-mercury-30 max-sm:h-[38px] max-sm:w-auto max-sm:bg-mercury-100 max-sm:px-3"
+              >
+                <span className="text-base text-mercury-950 max-sm:text-14">
+                  Upload picture
+                </span>
+              </button>
+            </ChangeAvatarContainer>
           </div>
-        )}
+        </div>
       </div>
 
       <div className="w-full">
