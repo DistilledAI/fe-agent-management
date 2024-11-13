@@ -7,13 +7,12 @@ import { IDataSignatureAuth, signatureAuth } from "services/auth"
 import { useAccount } from "wagmi"
 import useAuthAction from "./useAuthAction"
 import useAuthState from "./useAuthState"
-import useWindowSize from "./useWindowSize"
 
 const useConnectWallet = () => {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
   const { address } = useAccount()
-  const { isMobile } = useWindowSize()
+  // const { isMobile } = useWindowSize()
   const { isLogin } = useAuthState()
   const { logout } = useAuthAction()
 
