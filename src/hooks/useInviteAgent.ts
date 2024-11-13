@@ -35,6 +35,8 @@ const useInviteAgent = () => {
         members: [agentId],
       })
       const groupId = checkGroupDirectResponse?.data?.group?.id
+      const createBy = checkGroupDirectResponse?.data?.group?.createBy
+      const isOwnerBot = (ownerBotId: number) => ownerBotId === user.id
       if (!groupId) {
         const createGroupResponse = await createGroupChat({
           members: [agentId],
@@ -48,12 +50,21 @@ const useInviteAgent = () => {
             },
           )
         const newGroupId = newData?.groupId
+        const newGroupCreateBy = newData?.group?.createBy
         if (newGroupId) {
-          navigate(`${PATH_NAMES.CHAT}/${newGroupId}`)
+          navigate(
+            isOwnerBot(newGroupCreateBy)
+              ? `${PATH_NAMES.HOME}`
+              : `${PATH_NAMES.CHAT}/${newGroupId}`,
+          )
         }
         return fetchGroups()
       }
-      navigate(`${PATH_NAMES.CHAT}/${groupId}`)
+      navigate(
+        isOwnerBot(createBy)
+          ? `${PATH_NAMES.HOME}`
+          : `${PATH_NAMES.CHAT}/${groupId}`,
+      )
     } catch (error) {
       console.log("error", error)
       navigate(PATH_NAMES.HOME)

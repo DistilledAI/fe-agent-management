@@ -52,12 +52,15 @@ const CvData: React.FC<{
   const hasSyncData = Boolean(
     data.find(
       (item) =>
-        item.status === MY_DATA_STATUS.ACTIVE || MY_DATA_STATUS.SUSPENDED,
+        item.status === MY_DATA_STATUS.ACTIVE ||
+        item.status === MY_DATA_STATUS.SUSPENDED,
     ),
   )
 
   const hasSyncDataByStatus = (status: MY_DATA_STATUS) => {
-    return status === MY_DATA_STATUS.ACTIVE || MY_DATA_STATUS.SUSPENDED
+    return (
+      status === MY_DATA_STATUS.ACTIVE || status === MY_DATA_STATUS.SUSPENDED
+    )
   }
 
   const renderCell = (item: Record<string, any>, columnKey: string) => {
