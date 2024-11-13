@@ -91,18 +91,16 @@ const FileData: React.FC<{
       case ColumnKey.Action:
         return (
           <div className="flex items-center justify-end gap-4">
-            {isBotActive ? (
-              <>
-                <SyncData botId={botId} dataId={dataId} status={item.status} />
-                <DeleteData
-                  botId={item.userId}
-                  ids={[item.id]}
-                  category={category}
-                />
-              </>
-            ) : (
-              <div className="text-orange-500">Processing...</div>
-            )}
+            <div
+              className={!isBotActive ? "pointer-events-none opacity-45" : ""}
+            >
+              <SyncData botId={botId} dataId={dataId} status={item.status} />
+            </div>
+            <DeleteData
+              botId={item.userId}
+              ids={[item.id]}
+              category={category}
+            />
           </div>
         )
       case ColumnKey.Name:

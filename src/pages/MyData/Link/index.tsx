@@ -98,18 +98,16 @@ const LinkData: React.FC<{
             {/* <div className="cursor-pointer hover:opacity-70">
               <EditPenFilledIcon color="#545454" />
             </div> */}
-            {isBotActive ? (
-              <>
-                <SyncData botId={botId} dataId={dataId} status={item.status} />
-                <DeleteData
-                  botId={item.userId}
-                  ids={[item.id]}
-                  category={category}
-                />
-              </>
-            ) : (
-              <div className="text-orange-500">Processing...</div>
-            )}
+            <div
+              className={!isBotActive ? "pointer-events-none opacity-45" : ""}
+            >
+              <SyncData botId={botId} dataId={dataId} status={item.status} />
+            </div>
+            <DeleteData
+              botId={item.userId}
+              ids={[item.id]}
+              category={category}
+            />
           </div>
         )
       case ColumnKey.Name:

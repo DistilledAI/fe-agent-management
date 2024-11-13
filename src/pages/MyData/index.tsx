@@ -11,6 +11,7 @@ import LinkData from "./Link"
 import MediaData from "./Media"
 import useFetchMyData from "./useFetch"
 import useUpdateStatus from "./useUpdateStatus"
+import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
 
 const MyData: React.FC = () => {
   const { isMobile } = useWindowSize()
@@ -35,7 +36,7 @@ const MyData: React.FC = () => {
           <AddData botId={botId} />
         </div>
       ) : (
-        <div className="mb-10 flex items-center justify-between">
+        <div className="mb-7 flex items-center justify-between">
           <div className="text-mercury-950">
             <h3 className="mb-1 text-24 font-semibold">My data</h3>
             <div className="inline-flex items-center text-mercury-800">
@@ -54,6 +55,17 @@ const MyData: React.FC = () => {
           <span className="ml-1 font-semibold">{lastCollected}</span>
         </div>
       )}
+      <div className="bg-brown-50 border-brown-500 mb-6 flex items-center gap-6 rounded-lg border px-4 py-3">
+        <div className="flex items-center gap-2">
+          <div>
+            <InfoCircleIcon size={28} color="#83664B" />
+          </div>
+          <p className="text-brown-600 text-14 font-medium md:text-16">
+            Your agent is in the process of being created, you can't sync data
+            for your agent yet. This process typically takes around 6 hours.
+          </p>
+        </div>
+      </div>
       <div className="flex flex-col gap-6">
         <LinkData botId={botId} category={BotDataTypeKey.SOCIAL_MEDIA} />
         <FileData botId={botId} category={BotDataTypeKey.PDF_FILE} />
