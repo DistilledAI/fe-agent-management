@@ -11,6 +11,9 @@ import TableDataMobile from "../Components/TableDataMobile"
 import DeleteData from "../DeleteData"
 import SyncData, { MY_DATA_STATUS, SyncLabel } from "../SyncData"
 import useFetchByCategory from "../useFetchByCategory"
+import { useQuery } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
+import { STATUS_AGENT } from "@constants/index"
 
 enum ColumnKey {
   Name = "name",
@@ -57,6 +60,12 @@ const FileData: React.FC<{
     ),
   )
 
+  const { data: dtAgent }: { data: any } = useQuery({
+    queryKey: [QueryDataKeys.MY_BOT_LIST],
+    refetchOnWindowFocus: false,
+  })
+  const isBotActive = dtAgent?.data?.items?.[0]?.status === STATUS_AGENT.ACTIVE
+
   const hasSyncDataByStatus = (status: MY_DATA_STATUS) => {
     return (
       status === MY_DATA_STATUS.ACTIVE || status === MY_DATA_STATUS.SUSPENDED
@@ -82,15 +91,18 @@ const FileData: React.FC<{
       case ColumnKey.Action:
         return (
           <div className="flex items-center justify-end gap-4">
-            {/* <div className="cursor-pointer hover:opacity-70">
-              <EditPenFilledIcon color="#545454" />
-            </div> */}
-            <SyncData botId={botId} dataId={dataId} status={item.status} />
-            <DeleteData
-              botId={item.userId}
-              ids={[item.id]}
-              category={category}
-            />
+            {isBotActive ? (
+              <>
+                <SyncData botId={botId} dataId={dataId} status={item.status} />
+                <DeleteData
+                  botId={item.userId}
+                  ids={[item.id]}
+                  category={category}
+                />
+              </>
+            ) : (
+              <div className="text-orange-500">Processing...</div>
+            )}
           </div>
         )
       case ColumnKey.Name:
