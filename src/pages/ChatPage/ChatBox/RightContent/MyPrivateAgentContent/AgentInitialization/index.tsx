@@ -1,11 +1,11 @@
-import GeneralInfo from "@pages/ChatPage/AgentDetail/GeneralInfo"
+import GeneralInfo from "@pages/AgentDetail/GeneralInfo"
 import { FormProvider, useForm } from "react-hook-form"
 import Header from "./Header"
 import { InfoCircleOutlineIcon } from "@components/Icons/InfoCircleIcon"
-import { Divider } from "@pages/ChatPage/AgentDetail/CategoryLabel"
+import { Divider } from "@pages/AgentDetail/CategoryLabel"
 import AgentBehaviors, {
   SelectedBehaviors,
-} from "@pages/ChatPage/AgentDetail/AgentBehaviors"
+} from "@pages/AgentDetail/AgentBehaviors"
 import { useState } from "react"
 
 const AgentInitialization: React.FC = () => {

@@ -12,7 +12,7 @@ import { Divider } from "@nextui-org/react"
 import ToxicPolicies from "./ToxicPolicies"
 import Monetization from "./Monetization"
 import { PATH_NAMES } from "@constants/index"
-import AgentBehaviors from "./AgentBehaviors"
+import AgentBehaviors, { SelectedBehaviors } from "./AgentBehaviors"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
@@ -23,6 +23,8 @@ const AgentDetail: React.FC = () => {
   const descriptionData = agentData?.description
   const firstMsgData = agentData?.firstMsg
   const avatarData = agentData?.avatar
+  const agentPersonalData = agentData?.agentPersonal
+  const agentCommunicationData = agentData?.agentCommunication
 
   const methods = useForm<any>({
     defaultValues: {
@@ -30,8 +32,16 @@ const AgentDetail: React.FC = () => {
       description: "",
       firstMsg: "",
       avatar: "",
+      agentPersonal: [],
+      agentCommunication: [],
     },
   })
+
+  const handleSelectBehaviors = (selected: SelectedBehaviors) => {
+    const { agentPersonal, agentCommunication } = selected
+    methods.setValue("agentPersonal", agentPersonal)
+    methods.setValue("agentCommunication", agentCommunication)
+  }
 
   useEffect(() => {
     const defaults = {
@@ -39,6 +49,8 @@ const AgentDetail: React.FC = () => {
       description: descriptionData,
       firstMsg: firstMsgData,
       avatar: avatarData,
+      agentPersonal: agentPersonalData,
+      agentCommunication: agentCommunicationData,
     }
     methods.reset(defaults)
   }, [agentData, methods.reset])
@@ -78,7 +90,7 @@ const AgentDetail: React.FC = () => {
       const agentIdNumber = Number(agentId)
       const response = await getAgentDetail(agentIdNumber)
       if (response?.data) setAgentData(response?.data)
-      // else navigate(PATH_NAMES.HOME)
+      else navigate(PATH_NAMES.HOME)
     } catch (error: any) {
       toast.error(error?.response?.data?.message)
       navigate(PATH_NAMES.HOME)
@@ -97,8 +109,11 @@ const AgentDetail: React.FC = () => {
           <GeneralInfo agentData={agentData} />
           <Divider className="my-9" />
           <AgentBehaviors
-            onSelectBehaviors={() => {}}
-            selectedBehaviors={{ agentPersonal: [], agentCommunication: [] }}
+            onSelectBehaviors={handleSelectBehaviors}
+            selectedBehaviors={{
+              agentPersonal: methods.watch("agentPersonal") || [],
+              agentCommunication: methods.watch("agentCommunication") || [],
+            }}
           />
           <Divider className="my-9" />
           <AdvancedConfig />
