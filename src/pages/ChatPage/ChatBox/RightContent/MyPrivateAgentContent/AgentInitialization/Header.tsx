@@ -1,6 +1,14 @@
 import { Button } from "@nextui-org/react"
+import { useFormContext, useWatch } from "react-hook-form"
 
-const Header: React.FC = () => {
+interface Props {
+  isLoading: boolean
+}
+
+const Header = ({ isLoading }: Props) => {
+  const { control } = useFormContext()
+  const username = useWatch({ control, name: "username" })
+
   return (
     <div className="bg-lgd-muted-beige-2 flex items-center justify-center p-3">
       <div className="flex w-full max-w-[768px] items-center justify-between px-4">
@@ -16,7 +24,8 @@ const Header: React.FC = () => {
           <Button
             className="h-[44px] rounded-full bg-mercury-950 text-[16px] text-mercury-30"
             type="submit"
-            isDisabled
+            isLoading={isLoading}
+            isDisabled={!username}
           >
             Create Private Agent
           </Button>

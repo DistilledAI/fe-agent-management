@@ -23,8 +23,8 @@ const AgentDetail: React.FC = () => {
   const descriptionData = agentData?.description
   const firstMsgData = agentData?.firstMsg
   const avatarData = agentData?.avatar
-  const agentPersonalData = agentData?.agentPersonal
-  const agentCommunicationData = agentData?.agentCommunication
+  const agentPersonalData = agentData?.agentPersonal || []
+  const agentCommunicationData = agentData?.agentCommunication || []
 
   const methods = useForm<any>({
     defaultValues: {
@@ -113,8 +113,8 @@ const AgentDetail: React.FC = () => {
           <AgentBehaviors
             onSelectBehaviors={handleSelectBehaviors}
             selectedBehaviors={{
-              agentPersonal: methods.watch("agentPersonal") || [],
-              agentCommunication: methods.watch("agentCommunication") || [],
+              agentPersonal: methods.watch("agentPersonal"),
+              agentCommunication: methods.watch("agentCommunication"),
             }}
           />
           <Divider className="my-9" />

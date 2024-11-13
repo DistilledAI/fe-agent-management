@@ -1,11 +1,11 @@
 import { desktopPrivateAgent } from "@assets/images"
 import { PATH_NAMES } from "@constants/index"
-import useConnectWallet from "@hooks/useConnectWallet"
-import CreatePrivateAgent from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/CreatePrivateAgent"
+import ConnectData from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization/ConnectData"
+import MainContainerCreate from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/MainContainerCreate"
 import { useNavigate, useParams } from "react-router-dom"
 
 const AddMyData = () => {
-  const { loading, connectMultipleWallet } = useConnectWallet()
+  // const { loading, connectWallet } = useConnectWallet()
   const { botId } = useParams()
   const navigate = useNavigate()
 
@@ -20,12 +20,9 @@ const AddMyData = () => {
         backgroundImage: `url(${desktopPrivateAgent})`,
       }}
     >
-      <CreatePrivateAgent
-        connectWalletLoading={loading}
-        connectWallet={connectMultipleWallet}
-        botId={botId}
-        onCallBack={onCallBack}
-      />
+      <MainContainerCreate botId={botId} onCallBack={onCallBack}>
+        <ConnectData />
+      </MainContainerCreate>
     </div>
   )
 }
