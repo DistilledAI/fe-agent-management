@@ -5,9 +5,9 @@ import { useDispatch } from "react-redux"
 import { toast } from "react-toastify"
 import { IDataSignatureAuth, signatureAuth } from "services/auth"
 import { useAccount } from "wagmi"
-import useWindowSize from "./useWindowSize"
-import useAuthState from "./useAuthState"
 import useAuthAction from "./useAuthAction"
+import useAuthState from "./useAuthState"
+import useWindowSize from "./useWindowSize"
 
 const useConnectWallet = () => {
   const [loading, setLoading] = useState(false)
@@ -54,7 +54,8 @@ const useConnectWallet = () => {
   }
 
   const connectWallet = async () => {
-    if (!window.ethereum || !window.ethereum.isMetaMask) {
+    const isOwallet = window.ethereum.isOwallet
+    if (!window.ethereum || !window.ethereum.isMetaMask || !isOwallet) {
       if (isMobile) {
         toast.info("Please open the application in metamask's browser")
         setTimeout(() => {
@@ -68,22 +69,33 @@ const useConnectWallet = () => {
       toast.warning("Please install MetaMask to continue!")
       return
     }
+
     const isTrustWalletDefault =
       window.ethereum.isTrust || window.ethereum.isTrustWallet
+
     if (isTrustWalletDefault) {
       toast.warning(
         "Trust Wallet is set to default, please turn off and reload page to use MetaMask!",
       )
       return
     }
+
     try {
       setLoading(true)
-
       const timestamp = Math.floor(Date.now() / 1000) + 86400
       const provider = new ethers.providers.Web3Provider(window.ethereum)
+      if (isOwallet) {
+        try {
+          //@ts-ignore
+          await window?.owallet.enable("0x01")
+        } catch (error) {
+          console.log("🚀 ~ connectWal ~ error:", error)
+        }
+      }
       await provider.send("eth_requestAccounts", [])
       const signer = await provider.getSigner()
       const publicAddress = await getPublicAddress(signer)
+      console.log("🚀 ~ connectWal ~ publicAddress:", publicAddress)
 
       const domain = {}
       const types = {
@@ -99,7 +111,8 @@ const useConnectWallet = () => {
         timestamp,
       }
 
-      const signature = await signer._signTypedData(domain, types, value)
+      let signature = (await signer._signTypedData(domain, types, value)) as any
+      if (isOwallet) signature = signature?.result
       const digest = ethers.utils._TypedDataEncoder.hash(domain, types, value)
       const publicKey = ethers.utils.recoverPublicKey(digest, signature)
 
@@ -118,7 +131,7 @@ const useConnectWallet = () => {
 
       await login(input)
     } catch (error) {
-      console.error(error)
+      console.error(error, "error")
     } finally {
       setLoading(false)
     }

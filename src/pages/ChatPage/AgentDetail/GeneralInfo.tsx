@@ -2,13 +2,14 @@ import AvatarCustom from "@components/AvatarCustom"
 import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
 import { Button, Input, Textarea } from "@nextui-org/react"
 import { Controller, useFormContext } from "react-hook-form"
+import { IAgentData } from "types/user"
 import CategoryLabel, { FieldLabel } from "./CategoryLabel"
 import ChangeAvatarContainer from "./ChangeAvatarContainer"
-import { IAgentData } from "types/user"
 
 const GeneralInfo: React.FC<{
   agentData: IAgentData
-}> = ({ agentData }) => {
+  isBasicVersion?: boolean
+}> = ({ agentData, isBasicVersion }) => {
   const { control, watch } = useFormContext()
   const descLength = watch("description")?.length ?? 0
 
@@ -70,7 +71,12 @@ const GeneralInfo: React.FC<{
 
       <div className="w-full">
         <div className="flex items-center justify-between">
-          <FieldLabel text="Description" />
+          <FieldLabel
+            text={
+              isBasicVersion ? "Describe your Agent’s purpose" : "Description"
+            }
+            required={isBasicVersion}
+          />
           <span className="text-base-md text-mercury-900">
             {descLength}/{DESC_MAX_LENGTH}
           </span>
