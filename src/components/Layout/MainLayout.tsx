@@ -1,3 +1,4 @@
+import ConnectWalletModal from "@components/ConnectWalletModal"
 import { PATH_NAMES } from "@constants/index"
 import useFetchMe from "@hooks/useFetchMe"
 import useInviteAgent from "@hooks/useInviteAgent"
@@ -35,17 +36,20 @@ const MainLayout = () => {
   const hasFooter = screenWidth < 768 && isFooter
 
   return (
-    <div className="max-md:bg-mercury-30">
-      {hasHeader && <HeaderMobile />}
-      <div
-        aria-checked={hasHeader}
-        aria-current={hasFooter}
-        className="aria-current:pb-[60px] aria-checked:pt-[50px]"
-      >
-        <Outlet />
+    <>
+      <div className="max-md:bg-mercury-30">
+        {hasHeader && <HeaderMobile />}
+        <div
+          aria-checked={hasHeader}
+          aria-current={hasFooter}
+          className="aria-current:pb-[60px] aria-checked:pt-[50px]"
+        >
+          <Outlet />
+        </div>
+        {hasFooter && <FooterMobile />}
       </div>
-      {hasFooter && <FooterMobile />}
-    </div>
+      <ConnectWalletModal />
+    </>
   )
 }
 

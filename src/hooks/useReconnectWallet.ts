@@ -1,6 +1,6 @@
 import { useEffect } from "react"
-import useAuthState from "./useAuthState"
 import useAuthAction from "./useAuthAction"
+import useAuthState from "./useAuthState"
 
 const useReconnectWallet = () => {
   const { isLogin, user } = useAuthState()
@@ -15,7 +15,9 @@ const useReconnectWallet = () => {
         logout()
       }
     }
-    window.ethereum.on("accountsChanged", handleAccountsChanged)
+
+    if (window.ethereum.on)
+      window.ethereum.on("accountsChanged", handleAccountsChanged)
 
     return () => {
       if (window.ethereum.removeListener) {

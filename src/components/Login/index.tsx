@@ -10,7 +10,7 @@ import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 const Login = () => {
-  const { connectWallet, loading } = useConnectWallet()
+  const { connectMultipleWallet, loading } = useConnectWallet()
   const { isMobile } = useWindowSize()
   const navigate = useNavigate()
 
@@ -38,7 +38,7 @@ const Login = () => {
           <FilledExclamationCircleIcon />
           <span
             className="cursor-pointer text-center text-24 text-mercury-800 max-md:text-20"
-            onClick={() => connectWallet()}
+            onClick={connectMultipleWallet}
           >
             <span className="font-semibold text-mercury-950">
               Connect wallet

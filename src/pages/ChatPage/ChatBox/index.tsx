@@ -1,16 +1,16 @@
 import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
 import useSubmitChat from "@hooks/useSubmitChat"
+import { useQuery } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import SpeechRecognition from "react-speech-recognition"
 import ChatInput from "./ChatInput"
 import ChatMessages from "./ChatMessages"
 import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
-import { useQuery } from "@tanstack/react-query"
 
 const ChatBox = () => {
-  const { loading, connectWallet } = useConnectWallet()
+  const { loading, connectMultipleWallet } = useConnectWallet()
   const { inviteAgentId, privateChatId, chatId } = useParams()
   const { isLogin } = useAuthState()
   const navigate = useNavigate()
@@ -43,7 +43,7 @@ const ChatBox = () => {
       ) : (
         <MyPrivateAgentContent
           connectWalletLoading={loading}
-          connectWallet={connectWallet}
+          connectWallet={connectMultipleWallet}
         />
       )}
     </div>

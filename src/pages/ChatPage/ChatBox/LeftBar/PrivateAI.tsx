@@ -1,11 +1,11 @@
+import { useAppDispatch, useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
+import { updateSidebarCollapsed } from "@reducers/sidebarCollapsedSlice"
 import { defineElement } from "@utils/index"
 import { useEffect, useState } from "react"
 import AddPerson from "./AddPerson"
 import MessagesContainer from "./MessagesContainer"
 import SearchContainer from "./SearchContainer"
-import { useAppDispatch, useAppSelector } from "@hooks/useAppRedux"
-import { updateSidebarCollapsed } from "@reducers/sidebarCollapsedSlice"
 
 export const DISPLAY_MODES = {
   MESSAGES: "MESSAGES",

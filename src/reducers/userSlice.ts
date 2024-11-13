@@ -2,10 +2,10 @@ import { initStore } from "@configs/store"
 import { TYPE_BOT } from "@constants/index"
 import { createSlice } from "@reduxjs/toolkit"
 import {
-  storageKey,
   cachedLocalStorage,
   cachedSessionStorage,
   getAccessToken,
+  storageKey,
 } from "@utils/storage"
 
 export interface IUser {

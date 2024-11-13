@@ -5,7 +5,7 @@ import CreatePrivateAgent from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAg
 import { useNavigate, useParams } from "react-router-dom"
 
 const AddMyData = () => {
-  const { loading, connectWallet } = useConnectWallet()
+  const { loading, connectMultipleWallet } = useConnectWallet()
   const { botId } = useParams()
   const navigate = useNavigate()
 
@@ -22,7 +22,7 @@ const AddMyData = () => {
     >
       <CreatePrivateAgent
         connectWalletLoading={loading}
-        connectWallet={connectWallet}
+        connectWallet={connectMultipleWallet}
         botId={botId}
         onCallBack={onCallBack}
       />

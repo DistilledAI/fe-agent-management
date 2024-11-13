@@ -1,11 +1,11 @@
 import { useAppSelector } from "@hooks/useAppRedux"
-import UserAuth from "."
 import useConnectWallet from "@hooks/useConnectWallet"
 import useReconnectWallet from "@hooks/useReconnectWallet"
 import { twMerge } from "tailwind-merge"
+import UserAuth from "."
 
 const UserAuthWrapper = () => {
-  const { loading, connectWallet } = useConnectWallet()
+  const { connectMultipleWallet } = useConnectWallet()
   useReconnectWallet()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
 
@@ -17,7 +17,7 @@ const UserAuthWrapper = () => {
       )}
     >
       <div className="pb-2 pr-4 pt-4">
-        <UserAuth connectWallet={connectWallet} loading={loading} />
+        <UserAuth connectWallet={connectMultipleWallet} />
       </div>
     </div>
   )
