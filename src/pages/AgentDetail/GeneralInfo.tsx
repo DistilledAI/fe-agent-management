@@ -6,15 +6,34 @@ import { IAgentData } from "types/user"
 import CategoryLabel, { FieldLabel } from "./CategoryLabel"
 import ChangeAvatarContainer from "./ChangeAvatarContainer"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
+import { fileToBase64, isPassFileSize } from "@utils/index"
+import { updateAvatarUser } from "services/user"
+import { toast } from "react-toastify"
 
 const GeneralInfo: React.FC<{
   agentData?: IAgentData
 }> = ({ agentData }) => {
-  const { control, watch } = useFormContext()
+  const { control, watch, setValue } = useFormContext()
   const descLength = watch("description")?.length ?? 0
   const avatarWatch = watch("avatar")
 
   const DESC_MAX_LENGTH = 200
+
+  const handleUploadAvatar = async (file: File) => {
+    try {
+      const maxSize = 1 * 1024 * 1024
+      if (!isPassFileSize(file.size, maxSize)) return
+      const formData = new FormData()
+      formData.append("file", file)
+      formData.append("userId", agentData?.id?.toString() ?? "")
+      await updateAvatarUser(formData)
+      const fileBase64 = await fileToBase64(file)
+      if (fileBase64) setValue("avatar", fileBase64)
+    } catch (error) {
+      console.error(error)
+      toast.error(`${file.name} failed to upload.`)
+    }
+  }
 
   return (
     <div className="space-y-4">
@@ -49,7 +68,7 @@ const GeneralInfo: React.FC<{
         <div>
           <FieldLabel text="Agent picture" />
           <div className="flex items-center gap-[18px]">
-            <ChangeAvatarContainer>
+            <ChangeAvatarContainer handleUpload={handleUploadAvatar}>
               <AvatarCustom
                 src={avatarWatch ?? undefined}
                 icon={!avatarWatch ? <FilledBrainAIIcon size={32} /> : null}
@@ -60,7 +79,7 @@ const GeneralInfo: React.FC<{
             {/* <Button className="h-[44px] rounded-full border border-mercury-50 bg-mercury-950">
               <span className="text-base text-white">Use AI Generated</span>
             </Button> */}
-            <ChangeAvatarContainer>
+            <ChangeAvatarContainer handleUpload={handleUploadAvatar}>
               <button
                 type="button"
                 className="h-[44px] w-[130px] rounded-full border border-mercury-50 bg-mercury-30 max-sm:h-[38px] max-sm:w-auto max-sm:bg-mercury-100 max-sm:px-3"

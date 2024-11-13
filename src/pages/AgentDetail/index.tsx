@@ -67,12 +67,14 @@ const AgentDetail: React.FC = () => {
 
   const onSubmit = async (data: any) => {
     if (!isPassRule(data)) return
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { avatar, ...newData } = data
     const agentIdNumber = Number(agentId)
 
     try {
       setLoading(true)
       const res = await updateAgent({
-        ...data,
+        ...newData,
         botId: agentIdNumber,
       })
       if (res.data) {

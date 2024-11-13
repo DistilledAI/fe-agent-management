@@ -1,15 +1,13 @@
 import { Upload, UploadFile, UploadProps } from "antd"
 import { useState } from "react"
-import { useFormContext } from "react-hook-form"
 import { toast } from "react-toastify"
-import { uploadMyData } from "services/user"
 
 const maxSizeUpload = 50
 
 const ChangeAvatarContainer: React.FC<{
   children: React.ReactNode
-}> = ({ children }) => {
-  const { setValue } = useFormContext()
+  handleUpload: (file: File) => void
+}> = ({ children, handleUpload }) => {
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
   const handleChange: UploadProps["onChange"] = ({ fileList }) => {
@@ -22,20 +20,19 @@ const ChangeAvatarContainer: React.FC<{
   }
 
   const handleCustomRequest = async (options: any) => {
-    const { onSuccess, onError, file } = options
-    const formData = new FormData()
-    formData.append("file", file)
-    try {
-      const response = await uploadMyData(formData)
-      if (response) {
-        onSuccess(response?.data?.[0])
-        setValue("avatar", response?.data?.[0]?.value)
-      }
-    } catch (error) {
-      console.error(error)
-      onError(error)
-      toast.error(`${file.name} failed to upload.`)
-    }
+    const { file } = options
+    handleUpload(file)
+    // try {
+    //   const response = await uploadMyData(formData)
+    //   if (response) {
+    //     onSuccess(response?.data?.[0])
+    //     setValue("avatar", response?.data?.[0]?.value)
+    //   }
+    // } catch (error) {
+    //   console.error(error)
+    //   onError(error)
+    //   toast.error(`${file.name} failed to upload.`)
+    // }
   }
 
   const beforeUpload = async (file: any) => {
