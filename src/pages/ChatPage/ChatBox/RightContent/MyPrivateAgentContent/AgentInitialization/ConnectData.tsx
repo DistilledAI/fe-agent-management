@@ -6,15 +6,39 @@ import { ThreeDotsIcon } from "@components/Icons/SocialLinkIcon"
 import { TYPE_DATA_KEY } from "../CreatePrivateAgent"
 import UploadCustom from "../UploadCustom"
 import UploadSocialLink from "../UploadSocialLink"
+import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
+import { Link, useNavigate, useParams } from "react-router-dom"
+import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
+import { useQuery } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
+import { useEffect } from "react"
 
 const ConnectData = () => {
+  const { botId } = useParams()
+  const navigate = useNavigate()
+  const { data } = useQuery<any>({
+    queryKey: [QueryDataKeys.MY_BOT_LIST],
+    refetchOnWindowFocus: false,
+  })
+  const agent =
+    data?.data?.items?.length > 0
+      ? data?.data?.items?.find((agent: any) => agent?.id?.toString() === botId)
+      : null
+  const showEstimateBanner = agent && agent?.status !== STATUS_AGENT.ACTIVE
+
+  useEffect(() => {
+    if (botId !== agent?.id?.toString()) {
+      navigate(PATH_NAMES.HOME)
+    }
+  }, [botId, agent?.id])
+
   return (
     <>
       <div className="absolute top-[53%] flex -translate-y-1/2 items-center justify-center text-center">
         <span className="text-base text-mercury-800">Max file size: 50MB</span>
       </div>
-      <div className="absolute top-[50px] h-full w-[650px]">
-        <div className="mb-12 flex flex-col items-center justify-center text-center">
+      <div className="absolute top-[50px] h-full w-full max-w-[768px]">
+        <div className="mb-6 flex flex-col items-center justify-center text-center">
           <div className="flex-items-center gap-1">
             <FilledBrainAIIcon color="#A2845E" size={24} />
             <ThreeDotsIcon />
@@ -26,7 +50,27 @@ const ConnectData = () => {
             by connect your data:
           </span>
         </div>
-        <div className="">
+        {showEstimateBanner ? (
+          <div className="bg-brown-50 border-brown-500 mb-6 flex items-center gap-6 rounded-lg border px-4 py-3">
+            <div className="flex items-center gap-2">
+              <InfoCircleIcon color="#83664B" />
+              <p className="text-brown-600 text-16 font-medium">
+                We appreciate your patience. This process typically takes around
+                6 hours.
+              </p>
+            </div>
+            <Link
+              to={`${PATH_NAMES.MARKETPLACE}`}
+              className="text-brown-600 text-16 font-bold hover:underline"
+            >
+              Chat with other agents
+            </Link>
+          </div>
+        ) : (
+          <></>
+        )}
+
+        <div>
           <div className="grid grid-cols-2 gap-6">
             <div>
               <UploadSocialLink />
