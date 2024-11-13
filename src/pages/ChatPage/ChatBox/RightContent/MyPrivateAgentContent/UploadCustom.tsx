@@ -17,6 +17,8 @@ interface UploadCustomProps {
   icon: any
   label: string
   accept?: string
+  maxCount?: number
+  multiple?: boolean
 }
 
 const maxSizeUpload = 50
@@ -27,6 +29,8 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
   icon,
   label,
   accept = ".doc,.docx,application/pdf",
+  maxCount,
+  multiple,
 }) => {
   const messagesEndRef = useRef<any>()
   const { control, setValue, getValues } = useFormContext()
@@ -115,6 +119,8 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
               width: "100%",
             }}
             className="!w-full"
+            maxCount={maxCount}
+            multiple={multiple}
           >
             <div className="flex h-[50px] w-full min-w-[130px] cursor-pointer items-center justify-between gap-2 rounded-full border border-mercury-70 bg-mercury-30 p-4 shadow-6">
               <div className="flex items-center gap-2">

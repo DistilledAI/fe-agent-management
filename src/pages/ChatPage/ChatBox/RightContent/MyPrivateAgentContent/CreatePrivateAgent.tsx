@@ -1,10 +1,9 @@
+import { introPrivateAgentVideo } from "@assets/video"
 import DotLoading from "@components/DotLoading"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 // import { DatabaseImportIcon } from "@components/Icons/DatabaseImportIcon"
 import { MessageFilledIcon } from "@components/Icons/Message"
-// import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
-// import { PhotoPlusIcon } from "@components/Icons/PhotoPlusIcon"
-// import { ThreeDotsIcon } from "@components/Icons/SocialLinkIcon"
+import VideoCustom from "@components/VideoCustom"
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 // import useWindowSize from "@hooks/useWindowSize"
@@ -14,14 +13,13 @@ import { useNavigate } from "react-router-dom"
 import MainContainerCreate from "./MainContainerCreate"
 // import UploadCustom from "./UploadCustom"
 // import UploadSocialLink from "./UploadSocialLink"
-import VideoCustom from "@components/VideoCustom"
-import { introPrivateAgentVideo } from "@assets/video"
 
 export const TYPE_DATA_KEY = {
   SOCIAL_MEDIA: "social-media",
   CV_FILE: "cv-file",
   PDF_FILE: "pdf-file",
   PHOTO_VIDEO_FILE: "photo-video-file",
+  TXT_FILE: "txt-file",
 }
 
 const CreatePrivateAgent: React.FC<{

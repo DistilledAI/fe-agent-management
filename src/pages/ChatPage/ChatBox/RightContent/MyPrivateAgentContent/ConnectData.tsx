@@ -3,11 +3,11 @@ import { DatabaseImportIcon } from "@components/Icons/DatabaseImportIcon"
 import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
 import { PhotoPlusIcon } from "@components/Icons/PhotoPlusIcon"
 import { ThreeDotsIcon } from "@components/Icons/SocialLinkIcon"
-import { TYPE_DATA_KEY } from "../CreatePrivateAgent"
-import UploadCustom from "../UploadCustom"
-import UploadSocialLink from "../UploadSocialLink"
+import { TYPE_DATA_KEY } from "./CreatePrivateAgent"
+import UploadCustom from "./UploadCustom"
+import UploadSocialLink from "./UploadSocialLink"
 
-const ConnectData = () => {
+const ConnectData: React.FC = () => {
   return (
     <>
       <div className="absolute top-[53%] flex -translate-y-1/2 items-center justify-center text-center">
@@ -58,15 +58,6 @@ const ConnectData = () => {
                 multiple
               />
             </div>
-            {/* <UploadCustom
-              fieldkey="photosVideos"
-              fileKey={TYPE_DATA_KEY.PHOTO_VIDEO_FILE}
-              icon={<PhotoPlusIcon />}
-              label="Text files"
-              accept=".txt"
-              maxCount={3}
-              multiple
-            /> */}
           </div>
         </div>
       </div>
