@@ -1,29 +1,35 @@
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { getAgentDetail, updateAgent } from "services/agent"
 import AIAgentGenerate from "./AIAgentGenerate"
-import Behaviors from "./Behaviors"
+import AdvancedConfig from "./AdvancedConfig"
 import GeneralInfo from "./GeneralInfo"
 import Header from "./Header"
 import Preferences from "./Preferences"
 import { Divider } from "@nextui-org/react"
 import ToxicPolicies from "./ToxicPolicies"
 import Monetization from "./Monetization"
+import { PATH_NAMES } from "@constants/index"
+import AgentBehaviors from "./AgentBehaviors"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
   const [agentData, setAgentData] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
   const userNameData = agentData?.username
   const descriptionData = agentData?.description
   const firstMsgData = agentData?.firstMsg
+  const avatarData = agentData?.avatar
 
   const methods = useForm<any>({
     defaultValues: {
       username: "",
       description: "",
       firstMsg: "",
+      avatar: "",
     },
   })
 
@@ -32,21 +38,38 @@ const AgentDetail: React.FC = () => {
       username: userNameData,
       description: descriptionData,
       firstMsg: firstMsgData,
+      avatar: avatarData,
     }
     methods.reset(defaults)
   }, [agentData, methods.reset])
 
+  const isPassRule = (data: any) => {
+    const isUsernameLengthPass =
+      data["username"]?.length >= 4 && data["username"]?.length <= 30
+    if (!isUsernameLengthPass) {
+      toast.warning("Agent name within 4-30 characters")
+      return false
+    }
+    return true
+  }
+
   const onSubmit = async (data: any) => {
+    if (!isPassRule(data)) return
     const agentIdNumber = Number(agentId)
 
     try {
+      setLoading(true)
       const res = await updateAgent({
         ...data,
         botId: agentIdNumber,
       })
-      console.log("🚀 ~ onSubmit ~ res:", res)
+      if (res.data) {
+        toast.success("Updated successfully!")
+      }
     } catch (error) {
       console.log("error", error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -54,9 +77,11 @@ const AgentDetail: React.FC = () => {
     try {
       const agentIdNumber = Number(agentId)
       const response = await getAgentDetail(agentIdNumber)
-      if (response) setAgentData(response?.data)
+      if (response?.data) setAgentData(response?.data)
+      // else navigate(PATH_NAMES.HOME)
     } catch (error: any) {
       toast.error(error?.response?.data?.message)
+      navigate(PATH_NAMES.HOME)
     }
   }
 
@@ -67,11 +92,16 @@ const AgentDetail: React.FC = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <Header agentData={agentData} />
-        <div className="mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px]">
+        <Header submitLoading={loading} agentData={agentData} />
+        <div className="mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6">
           <GeneralInfo agentData={agentData} />
           <Divider className="my-9" />
-          <Behaviors />
+          <AgentBehaviors
+            onSelectBehaviors={() => {}}
+            selectedBehaviors={{ agentPersonal: [], agentCommunication: [] }}
+          />
+          <Divider className="my-9" />
+          <AdvancedConfig />
           <AIAgentGenerate />
           <Preferences />
           <ToxicPolicies />

@@ -46,7 +46,7 @@ const AgentInitialization: React.FC = () => {
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <Header />
         <div className="mx-auto max-w-[768px] space-y-8 pb-[100px] pt-6 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px]">
-          <GeneralInfo isBasicVersion />
+          <GeneralInfo />
           <Divider />
           <AgentBehaviors
             selectedBehaviors={selectedBehaviors}

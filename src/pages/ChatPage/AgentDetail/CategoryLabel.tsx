@@ -16,7 +16,9 @@ const CategoryLabel: React.FC<LabelCustomProps> = ({ text, icon }) => {
   return (
     <div className="flex items-center gap-2">
       {icon}
-      <span className="text-22 font-bold text-mercury-950">{text}</span>
+      <span className="text-22 font-bold text-mercury-950 max-sm:text-18">
+        {text}
+      </span>
     </div>
   )
 }

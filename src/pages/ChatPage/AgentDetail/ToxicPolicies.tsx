@@ -8,7 +8,7 @@ const ToxicPolicies = () => {
         text={
           <div className="flex items-center gap-2">
             <span>Toxic policies</span>
-            <Button className="text-base-14 h-auto rounded-full bg-mercury-800 py-[2px] font-bold text-mercury-30">
+            <Button className="text-base-14 h-auto rounded-full bg-mercury-800 py-[2px] font-bold text-mercury-30 max-sm:text-12">
               COMING SOON
             </Button>
           </div>

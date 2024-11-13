@@ -55,10 +55,7 @@ const ListAgentMobile: React.FC<{
                   {MAP_DISPLAY_FROM_STATUS_MY_AGENT[item.status]?.label ??
                     "- - -"}
                 </div>
-                <div
-                  key={item.id}
-                  className="flex items-center justify-between"
-                >
+                <div key={item.id} className="flex flex-col gap-3">
                   <div className="flex gap-3">
                     <div>
                       <AvatarCustom

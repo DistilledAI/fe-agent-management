@@ -1,4 +1,3 @@
-import { LoadingDataIcon } from "@components/Icons"
 import { CheckedIcon } from "@components/Icons/Checked"
 import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
 import { RefreshIcon } from "@components/Icons/RefreshIcon"
@@ -56,7 +55,6 @@ const SyncData: React.FC<SyncDataProps> = ({
       ))
       .with(MY_DATA_STATUS.PROCESSING, () => (
         <div className="flex items-center gap-1 font-semibold text-[#A2845E]">
-          <LoadingDataIcon />
           Syncing...
         </div>
       ))

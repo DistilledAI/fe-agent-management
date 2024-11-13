@@ -51,8 +51,8 @@ const useMessageSocket = () => {
   }
 
   const isReloadWhenResponse = (index: number) => {
-    if (index === 0) indexResRef.current = 0
-    if (indexResRef.current !== 0 && index !== 0) return true
+    if (index === 1) indexResRef.current = 1
+    if (indexResRef.current !== 1 && index !== 1) return true
 
     return false
   }

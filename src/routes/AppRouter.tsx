@@ -63,15 +63,15 @@ const AppRouter = () => {
             />
           </>
         )}
-        <Route
-          path={`${PATH_NAMES.AGENT_DETAIL}/:agentId`}
-          element={<AgentDetail />}
-        />
 
         {/* Route Protected By Auth */}
         <Route path={PATH_NAMES.HOME} element={<ProtectedByAuth />}>
           <Route path={PATH_NAMES.MY_DATA} element={<MyData />} />
           <Route path={PATH_NAMES.ACCOUNT} element={<Account />} />
+          <Route
+            path={`${PATH_NAMES.AGENT_DETAIL}/:agentId`}
+            element={<AgentDetail />}
+          />
         </Route>
       </Route>
       <Route path="*" element={<PageNotFound />} />
