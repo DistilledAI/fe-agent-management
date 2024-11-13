@@ -103,3 +103,99 @@ export const MAP_DISPLAY_FROM_STATUS_MY_AGENT = {
     color: "#34C759",
   },
 }
+
+export const PERSONALITY_LIST = [
+  {
+    label: "😊 Friendly",
+    icon: "",
+    selected: false,
+    value: "friendly",
+  },
+  {
+    label: "💼 Professional",
+    icon: "",
+    selected: false,
+    value: "professional",
+  },
+  {
+    label: "🤡 Humorous",
+    icon: "",
+    selected: false,
+    value: "humorous",
+  },
+  {
+    label: "🛟 Supportive",
+    icon: "",
+    selected: false,
+    value: "supportive",
+  },
+  {
+    label: "🥰 Empathetic",
+    icon: "",
+    selected: false,
+    value: "empathetic",
+  },
+  {
+    label: "🤓 Informative",
+    icon: "",
+    selected: false,
+    value: "informative",
+  },
+  {
+    label: "🤠 Adventurous",
+    icon: "",
+    selected: false,
+    value: "adventurous",
+  },
+  {
+    label: "⭐️ Custom",
+    icon: "",
+    selected: false,
+    value: "personality custom",
+  },
+]
+
+export const COMMUNICATION_STYLE_LIST = [
+  {
+    label: "👔 Formal",
+    icon: "",
+    selected: false,
+    value: "formal",
+  },
+  {
+    label: "🧢 Casual",
+    icon: "",
+    selected: false,
+    value: "casual",
+  },
+  {
+    label: "🔥 Enthusiastic",
+    icon: "",
+    selected: false,
+    value: "enthusiastic",
+  },
+  {
+    label: "🍃 Calm",
+    icon: "",
+    selected: false,
+    value: "calm",
+  },
+  {
+    label: "👀 Direct",
+    icon: "",
+    selected: false,
+    value: "direct",
+  },
+  {
+    label: "📝 Storytelling",
+    icon: "",
+    selected: false,
+    value: "storytelling",
+  },
+  {
+    label: "⭐️ Custom",
+    icon: "",
+    selected: false,
+    value: "communication custom",
+  },
+]

@@ -1,10 +1,11 @@
 import AvatarCustom from "@components/AvatarCustom"
 import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
-import { Button, Input, Textarea } from "@nextui-org/react"
+import { Input, Textarea } from "@nextui-org/react"
 import { Controller, useFormContext } from "react-hook-form"
 import { IAgentData } from "types/user"
 import CategoryLabel, { FieldLabel } from "./CategoryLabel"
 import ChangeAvatarContainer from "./ChangeAvatarContainer"
+import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 
 const GeneralInfo: React.FC<{
   agentData?: IAgentData
@@ -16,9 +17,9 @@ const GeneralInfo: React.FC<{
   const DESC_MAX_LENGTH = 200
 
   return (
-    <div className="w-full">
+    <div className="space-y-4">
       <CategoryLabel text="General info" icon={<ClipboardTextIcon />} />
-      <div className="mb-4 mt-4 flex w-full items-center justify-between gap-[56px]">
+      <div className="flex w-full items-center justify-between gap-[56px]">
         <Controller
           name="username"
           control={control}
@@ -45,24 +46,28 @@ const GeneralInfo: React.FC<{
           }}
         />
 
-        <div className="">
+        <div>
           <FieldLabel text="Agent picture" />
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-[18px]">
             <ChangeAvatarContainer>
               <AvatarCustom
-                src={agentData?.avatar ?? undefined}
-                publicAddress={agentData?.publicAddress ?? agentData?.username}
-                className="h-[72px] w-[72px]"
+                src={agentData?.avatar || undefined}
+                icon={
+                  !agentData?.avatar ? <FilledBrainAIIcon size={32} /> : <></>
+                }
+                publicAddress={agentData?.publicAddress || agentData?.username}
+                className="h-[72px] w-[72px] cursor-pointer"
               />
             </ChangeAvatarContainer>
-            <Button className="h-[44px] rounded-full border border-mercury-50 bg-mercury-950">
+            {/* <Button className="h-[44px] rounded-full border border-mercury-50 bg-mercury-950">
               <span className="text-base text-white">Use AI Generated</span>
-            </Button>
+            </Button> */}
             <ChangeAvatarContainer>
-              <button className="h-[44px] w-[130px] rounded-full border border-mercury-50 bg-mercury-30">
-                <span className="text-base text-mercury-950">
-                  Upload picture
-                </span>
+              <button
+                type="button"
+                className="w-[130px] rounded-full border border-white bg-mercury-30 py-3 text-16 text-mercury-950"
+              >
+                Upload picture
               </button>
             </ChangeAvatarContainer>
           </div>
