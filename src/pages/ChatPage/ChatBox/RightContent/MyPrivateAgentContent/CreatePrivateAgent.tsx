@@ -113,12 +113,15 @@ const CreatePrivateAgent: React.FC<{
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FC0]">
                 <FilledBrainAIIcon color="#363636" size={24} />
               </div>
-              <span className="my-2 text-[24px] font-semibold text-mercury-950">
+              <h3 className="my-2 text-[24px] font-semibold text-mercury-950">
                 Start your own Private agent
-              </span>
-              <span className="text-base text-mercury-800">
-                Connect your encrypted wallet and private data.
-              </span>
+              </h3>
+              <h4 className="text-center text-base text-mercury-800">
+                Your <span className="font-bold">private agents</span>. Built
+                with your <span className="font-bold">private data</span>.
+                Protected by your <span className="font-bold">private key</span>
+                .
+              </h4>
               <Button
                 className="mt-6 h-[56px] w-full rounded-full bg-mercury-950 text-[18px] text-mercury-30"
                 onClick={connectWallet}
@@ -132,13 +135,13 @@ const CreatePrivateAgent: React.FC<{
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-mercury-200">
               <MessageFilledIcon />
             </div>
-            <span className="my-2 text-[24px] font-semibold text-mercury-950">
+            <h3 className="my-2 text-[24px] font-semibold text-mercury-950">
               Start a new chat
-            </span>
-            <span className="text-base text-mercury-800">
+            </h3>
+            <h4 className="text-base text-mercury-800">
               Explore the <span className="font-bold">Marketplace</span> to chat
               with a public agent, interact with an AI Companion and more
-            </span>
+            </h4>
             <Button
               className="mt-6 h-[56px] w-full rounded-full bg-mercury-100 text-[18px] text-mercury-950"
               onClick={() => navigate(PATH_NAMES.MARKETPLACE)}

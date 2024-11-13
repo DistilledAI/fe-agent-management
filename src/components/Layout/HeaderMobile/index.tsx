@@ -1,6 +1,6 @@
 import { BarIcon } from "@components/Icons/Bar"
 import { DistilledIconNoText } from "@components/Icons/DistilledAIIcon"
-import { DISTILLED_AI_URL, PATH_NAMES } from "@constants/index"
+import { PATH_NAMES } from "@constants/index"
 import useConnectWallet from "@hooks/useConnectWallet"
 import { useDisclosure } from "@nextui-org/react"
 import UserAuth from "@pages/ChatPage/ChatBox/UserAuth"
@@ -29,7 +29,7 @@ const HeaderMobile: React.FC = () => {
           {pageTitle ? (
             <span className="text-base-sb">{pageTitle}</span>
           ) : (
-            <Link target="_blank" to={DISTILLED_AI_URL}>
+            <Link to="/">
               <DistilledIconNoText />
             </Link>
           )}
