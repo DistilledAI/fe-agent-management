@@ -37,7 +37,7 @@ const MyAgentAction: React.FC<{
       const res = await publishMarketplace(botId)
       if (res) {
         setIsPublished(!isPublished)
-        if (onPublishDone) onPublishDone(data)
+        if (onPublishDone && !isPublished) onPublishDone(data)
         queryClient.refetchQueries({
           queryKey: [QueryDataKeys.PRIVATE_AGENTS_MKL],
         })

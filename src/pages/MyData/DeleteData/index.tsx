@@ -11,13 +11,15 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import useDeleteData from "./useDelete"
 import { IBotData } from "types/user"
 import { BotDataTypeKey } from "@types"
+import { twMerge } from "tailwind-merge"
 
 const DeleteData: React.FC<{
   botId: number
   ids: number[]
   category: BotDataTypeKey
   trigger?: React.ReactNode
-}> = ({ botId, ids, category, trigger = <DeleteIcon /> }) => {
+  isDisable?: boolean
+}> = ({ botId, ids, category, isDisable, trigger = <DeleteIcon /> }) => {
   const [isOpen, setIsOpen] = useState(false)
   const queryClient = useQueryClient()
 
@@ -48,8 +50,14 @@ const DeleteData: React.FC<{
     >
       <PopoverTrigger>
         <div
-          onClick={() => setIsOpen(true)}
-          className="cursor-pointer hover:opacity-70"
+          onClick={() => {
+            if (isDisable) setIsOpen(false)
+            else setIsOpen(true)
+          }}
+          className={twMerge(
+            "cursor-pointer hover:opacity-70",
+            isDisable && "cursor-auto opacity-70",
+          )}
         >
           {trigger}
         </div>

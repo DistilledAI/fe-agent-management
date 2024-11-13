@@ -52,6 +52,7 @@ export const STATUS_AGENT = {
 
 export enum TYPE_BOT {
   VOICE = 2,
+  NONE = -1,
 }
 
 export const ACTIVE_COLORS = [

@@ -38,7 +38,7 @@ export interface IUserState {
   isLogin: boolean
 }
 
-const userInitState = {
+const userInitState: IUser = {
   id: 0,
   createdAt: "",
   publicAddress: "",
