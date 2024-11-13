@@ -56,6 +56,8 @@ export default {
         },
         brown: {
           10: "#A2845E",
+          50: "#F6F5F0",
+          500: "#A2845E",
         },
         green: {
           10: "#34C759",

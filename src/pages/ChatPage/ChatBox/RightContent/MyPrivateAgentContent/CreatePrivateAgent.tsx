@@ -103,7 +103,7 @@ const CreatePrivateAgent: React.FC<{
               videoSrc={introPrivateAgentVideo}
               classNames={{
                 wrapper:
-                  "rounded-[22px] border border-mercury-200 overflow-hidden flex-1",
+                  "rounded-[22px] border border-mercury-70 overflow-hidden flex-1 bg-mercury-30",
                 video: "h-full object-cover",
               }}
               isPlayIcon

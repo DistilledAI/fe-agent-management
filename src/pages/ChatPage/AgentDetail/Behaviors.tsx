@@ -6,106 +6,11 @@ import { Textarea } from "@nextui-org/react"
 import { useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import CategoryLabel, { FieldLabel } from "./CategoryLabel"
+import { COMMUNICATION_STYLE_LIST, PERSONALITY_LIST } from "@constants/index"
 
 interface BehaviorsProps {
   isBasicVersion?: boolean
 }
-
-const LIST_PERSONALITY = [
-  {
-    label: "😊 Friendly",
-    icon: "",
-    selected: false,
-    key: "Friendly",
-  },
-  {
-    label: "💼 Professional",
-    icon: "",
-    selected: false,
-    key: "Professional",
-  },
-  {
-    label: "🤡 Humorous",
-    icon: "",
-    selected: false,
-    key: "Humorous",
-  },
-  {
-    label: "🛟 Supportive",
-    icon: "",
-    selected: false,
-    key: "Supportive",
-  },
-  {
-    label: "🥰 Empathetic",
-    icon: "",
-    selected: false,
-    key: "Empathetic",
-  },
-  {
-    label: "🤓 Informative",
-    icon: "",
-    selected: false,
-    key: "Informative",
-  },
-  {
-    label: "🤠 Adventurous",
-    icon: "",
-    selected: false,
-    key: "Adventurous",
-  },
-  {
-    label: "⭐️ Custom",
-    icon: "",
-    selected: false,
-    key: "Custom",
-  },
-]
-
-const COMMUNICATION_STYLE = [
-  {
-    label: "👔 Formal",
-    icon: "",
-    selected: false,
-    key: "Formal",
-  },
-  {
-    label: "🧢 Casual",
-    icon: "",
-    selected: false,
-    key: "Casual",
-  },
-  {
-    label: "🔥 Enthusiastic",
-    icon: "",
-    selected: false,
-    key: "Enthusiastic",
-  },
-  {
-    label: "🍃 Calm",
-    icon: "",
-    selected: false,
-    key: "Calm",
-  },
-  {
-    label: "👀 Direct",
-    icon: "",
-    selected: false,
-    key: "Direct",
-  },
-  {
-    label: "📝 Storytelling",
-    icon: "",
-    selected: false,
-    key: "Storytelling",
-  },
-  {
-    label: "⭐️ Custom",
-    icon: "",
-    selected: false,
-    key: "Custom",
-  },
-]
 
 const Behaviors: React.FC<BehaviorsProps> = ({ isBasicVersion }) => {
   const { control } = useFormContext()
@@ -117,24 +22,20 @@ const Behaviors: React.FC<BehaviorsProps> = ({ isBasicVersion }) => {
 
   if (isBasicVersion) {
     return (
-      <div>
+      <div className="space-y-6">
         <CategoryLabel
           text="Agent Behaviors"
           icon={<StarUserIconOutline color="#A2845E" />}
         />
-        <div className="my-4">
+        <div>
           <FieldLabel
-            text={
-              <div className="mb-2 flex flex-col">
-                <span className="text-base-sb text-mercury-950">
-                  Your Agent’s Personality
-                </span>
-              </div>
-            }
+            text="Your Agent’s Personality"
+            desc="Choose up to three traits that best describe your agent's personality."
+            containerClassName="mb-4"
           />
 
           <div className="flex flex-wrap gap-2">
-            {LIST_PERSONALITY.map((item) => {
+            {PERSONALITY_LIST.map((item) => {
               const isSelected = personalityValue === item.label
               return (
                 <div
@@ -148,15 +49,17 @@ const Behaviors: React.FC<BehaviorsProps> = ({ isBasicVersion }) => {
               )
             })}
           </div>
+        </div>
 
-          <div className="mb-4 mt-6 flex flex-col">
-            <span className="text-base-sb text-mercury-950">
-              Communication Style
-            </span>
-          </div>
+        <div>
+          <FieldLabel
+            text="Communication Style"
+            desc="Select the tone and style your agent should use when communicating."
+            containerClassName="mb-4"
+          />
 
           <div className="flex flex-wrap gap-2">
-            {COMMUNICATION_STYLE.map((item) => {
+            {COMMUNICATION_STYLE_LIST.map((item) => {
               const isSelected = personalityValue === item.label
               return (
                 <div
