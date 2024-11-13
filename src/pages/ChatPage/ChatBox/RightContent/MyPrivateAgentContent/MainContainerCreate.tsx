@@ -1,14 +1,13 @@
-import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
-import { Button } from "@nextui-org/react"
+import { desktopPrivateAgent } from "@assets/images"
+import { useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { createBot } from "services/chat"
 import { mapMyDataToBot } from "services/user"
+import { QueryDataKeys } from "types/queryDataKeys"
 import CollectingModal from "../Modal/CreatPrivateAgentModal/CollectingModal"
 import FYIModal from "../Modal/FYIModal"
-import { useQueryClient } from "@tanstack/react-query"
-import { QueryDataKeys } from "types/queryDataKeys"
 
 const MainContainerCreate: React.FC<{
   children: React.ReactNode
@@ -83,12 +82,17 @@ const MainContainerCreate: React.FC<{
   }
 
   return (
-    <>
+    <div
+      className="relative mx-auto h-full w-full flex-1 rounded-[22px] border border-white bg-white bg-cover bg-center bg-no-repeat font-barlow"
+      style={{
+        backgroundImage: `url(${desktopPrivateAgent})`,
+      }}
+    >
       <FormProvider {...methods}>
         <div className="relative h-full w-full flex-1 max-md:h-auto max-md:px-3 max-md:pb-[80px]">
           <div className="flex-items-center relative h-full w-full flex-col justify-between">
             {children}
-            <div className="absolute bottom-[100px] flex items-center gap-2 rounded-[22px] border border-mercury-200 bg-white p-4 text-center max-md:static max-md:bottom-[40px] max-md:mt-6 max-md:w-full max-md:flex-col">
+            {/* <div className="absolute bottom-[100px] flex items-center gap-2 rounded-[22px] border border-mercury-200 bg-white p-4 text-center max-md:static max-md:bottom-[40px] max-md:mt-6 max-md:w-full max-md:flex-col">
               <div>
                 <span className="text-base-14 text-mercury-800">
                   Your Private Agent is exclusively accessible to you unless you
@@ -112,7 +116,7 @@ const MainContainerCreate: React.FC<{
               >
                 <span className="">Connect data</span>
               </Button>
-            </div>
+            </div> */}
           </div>
         </div>
       </FormProvider>
@@ -126,7 +130,7 @@ const MainContainerCreate: React.FC<{
         }}
         isCollected={isCollected}
       />
-    </>
+    </div>
   )
 }
 

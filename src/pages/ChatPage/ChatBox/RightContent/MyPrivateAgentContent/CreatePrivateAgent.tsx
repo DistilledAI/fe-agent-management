@@ -1,15 +1,17 @@
 import DotLoading from "@components/DotLoading"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { DatabaseImportIcon } from "@components/Icons/DatabaseImportIcon"
-import { FilledExclamationCircleIcon } from "@components/Icons/FilledExclamationCircleIcon"
-import { ExploreFilledIcon } from "@components/Icons/MetamaskIcon"
+import { MessageFilledIcon } from "@components/Icons/Message"
 import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
 import { PhotoPlusIcon } from "@components/Icons/PhotoPlusIcon"
 import { ThreeDotsIcon } from "@components/Icons/SocialLinkIcon"
+import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import useWindowSize from "@hooks/useWindowSize"
+import { Button } from "@nextui-org/react"
+import { useNavigate } from "react-router-dom"
 import IntroVideo from "../Modal/CreatPrivateAgentModal/IntroVideo"
-import UploadDataButton from "../UploadDataButton"
+import AgentInitialization from "./AgentInitialization"
 import MainContainerCreate from "./MainContainerCreate"
 import UploadCustom from "./UploadCustom"
 import UploadSocialLink from "./UploadSocialLink"
@@ -36,55 +38,7 @@ const CreatePrivateAgent: React.FC<{
 }) => {
   const { isLogin, sessionAccessToken } = useAuthState()
   const { isMobile } = useWindowSize()
-
-  const renderCreateAccountAction = () => {
-    if (connectWalletLoading)
-      return (
-        <div className="absolute top-[15%] flex flex-col items-center gap-2">
-          <ExploreFilledIcon />
-          <div className="flex-items-center">
-            <DotLoading />
-            <span className="text-base font-medium">Creating your wallet</span>
-          </div>
-        </div>
-      )
-
-    return (
-      <>
-        <div className="flex-items-center absolute top-[15%] max-w-[390px] flex-col max-md:static">
-          <FilledExclamationCircleIcon />
-          <span
-            className="cursor-pointer text-center text-24 text-mercury-800 max-md:text-18"
-            onClick={() => connectWallet()}
-          >
-            <span className="font-semibold text-mercury-950">
-              Connect wallet
-            </span>
-            <br />
-            to start your own Private Agent.
-          </span>
-        </div>
-
-        <UploadDataButton
-          icon={
-            <div className="flex-items-center mb-2 gap-1">
-              <FilledBrainAIIcon color="#A2845E" size={24} />
-              <ThreeDotsIcon />
-              <DatabaseImportIcon />
-            </div>
-          }
-          label="Drag & drop files here"
-          isDisable
-          radiusFull={true}
-          customClassName="absolute max-md:static max-md:translate-y-0 top-[53%] -translate-y-1/2 w-[200px] h-[200px]"
-        />
-
-        <div className="absolute right-6 top-4 w-[240px] max-md:hidden">
-          <IntroVideo />
-        </div>
-      </>
-    )
-  }
+  const navigate = useNavigate()
 
   const renderContainerCreateContent = () => {
     if (isMobile) {
@@ -132,74 +86,70 @@ const CreatePrivateAgent: React.FC<{
       )
     }
 
-    return (
-      <>
-        <div className="absolute top-[53%] flex -translate-y-1/2 items-center justify-center text-center">
-          <span className="text-base text-mercury-800">
-            Max file size: 50MB
-          </span>
-        </div>
-        <div className="absolute top-[50px] h-full w-[650px]">
-          <div className="mb-12 flex flex-col items-center justify-center text-center">
-            <div className="flex-items-center gap-1">
-              <FilledBrainAIIcon color="#A2845E" size={24} />
-              <ThreeDotsIcon />
-              <DatabaseImportIcon />
-            </div>
-            <span className="text-24">
-              <span className="font-semibold">Start your Private Agent</span>
-              <br />
-              by connect your data:
-            </span>
-          </div>
-          <div className="">
-            <div className="grid grid-cols-2 gap-6">
-              <div>
-                <UploadSocialLink />
-                <UploadCustom
-                  fieldkey="uploadCV"
-                  fileKey={TYPE_DATA_KEY.CV_FILE}
-                  icon={<PDFTypeIcon />}
-                  label="CV"
-                />
-              </div>
-              <div className="flex flex-col gap-6">
-                <UploadCustom
-                  fieldkey="uploadPDFs"
-                  fileKey={TYPE_DATA_KEY.PDF_FILE}
-                  icon={<PDFTypeIcon />}
-                  label="PDFs"
-                />
-                <UploadCustom
-                  fieldkey="photosVideos"
-                  fileKey={TYPE_DATA_KEY.PHOTO_VIDEO_FILE}
-                  icon={<PhotoPlusIcon />}
-                  label="Photos & Videos"
-                  accept="image/*,video/*"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
-    )
+    return <AgentInitialization />
   }
 
   if (!isLogin || (isLogin && sessionAccessToken)) {
     return (
-      <MainContainerCreate>{renderCreateAccountAction()}</MainContainerCreate>
+      <MainContainerCreate>
+        <div className="absolute left-1/2 top-1/2 max-w-[768px] -translate-x-1/2 -translate-y-1/2">
+          {connectWalletLoading && (
+            <div className="mb-6 flex flex-col items-center gap-2">
+              <div className="flex-items-center">
+                <DotLoading />
+                <span className="text-base font-medium">
+                  Connecting your wallet
+                </span>
+              </div>
+            </div>
+          )}
+          <div className="flex h-fit w-full gap-2">
+            <div className="h-full w-full">
+              <IntroVideo />
+            </div>
+            <div className="flex w-full flex-col items-center rounded-[22px] border border-mercury-70 bg-mercury-30 p-6">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FC0]">
+                <FilledBrainAIIcon color="#363636" size={24} />
+              </div>
+              <span className="my-2 text-[24px] font-semibold text-mercury-950">
+                Start your own Private agent
+              </span>
+              <span className="text-base text-mercury-800">
+                Connect your encrypted wallet and private data.
+              </span>
+              <Button
+                className="mt-6 h-[56px] w-full rounded-full bg-mercury-950 text-[18px] text-white"
+                onClick={connectWallet}
+              >
+                Connect Wallet
+              </Button>
+            </div>
+          </div>
+
+          <div className="mt-6 flex w-full flex-col items-center rounded-[22px] border border-mercury-70 bg-mercury-30 p-6">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-mercury-200">
+              <MessageFilledIcon />
+            </div>
+            <span className="my-2 text-[24px] font-semibold text-mercury-950">
+              Start a new chat
+            </span>
+            <span className="text-base text-mercury-800">
+              Explore the <span className="font-bold">Marketplace</span> to chat
+              with a public agent, interact with an AI Companion and more
+            </span>
+            <Button
+              className="mt-6 h-[56px] w-full rounded-full bg-mercury-100 text-[18px] text-mercury-950"
+              onClick={() => navigate(PATH_NAMES.MARKETPLACE)}
+            >
+              Go to Marketplace
+            </Button>
+          </div>
+        </div>
+      </MainContainerCreate>
     )
   }
 
-  return (
-    <MainContainerCreate
-      setCreated={setCreated}
-      botId={botId}
-      onCallBack={onCallBack}
-    >
-      {renderContainerCreateContent()}
-    </MainContainerCreate>
-  )
+  return <div>{renderContainerCreateContent()}</div>
 }
 
 export default CreatePrivateAgent

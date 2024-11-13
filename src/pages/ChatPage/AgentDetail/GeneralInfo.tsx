@@ -5,7 +5,11 @@ import { Controller, useFormContext } from "react-hook-form"
 import CategoryLabel, { Divider, FieldLabel } from "./CategoryLabel"
 import ChangeAvatarContainer from "./ChangeAvatarContainer"
 
-const GeneralInfo: React.FC = () => {
+interface GeneralInfoProps {
+  isBasicVersion?: boolean
+}
+
+const GeneralInfo: React.FC<GeneralInfoProps> = ({ isBasicVersion }) => {
   const { control } = useFormContext()
 
   return (
@@ -60,7 +64,12 @@ const GeneralInfo: React.FC = () => {
 
       <div className="w-full">
         <div className="flex items-center justify-between">
-          <FieldLabel text="Description" />
+          <FieldLabel
+            text={
+              isBasicVersion ? "Describe your Agent’s purpose" : "Description"
+            }
+            required={isBasicVersion}
+          />
           <span className="text-base-md text-mercury-900">0/200</span>
         </div>
 
