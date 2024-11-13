@@ -153,6 +153,7 @@ const ChatWindow = ({
             index: "LAST",
             align: "end",
           }}
+          totalCount={messages.length}
           increaseViewportBy={increaseViewportBy}
           onScroll={messages.length >= LIMIT ? onScroll : undefined}
           components={{

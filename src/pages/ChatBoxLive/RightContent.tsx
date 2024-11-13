@@ -50,7 +50,7 @@ const RightContent = () => {
   return (
     <div
       className={twMerge(
-        "flex-1 transition-all duration-300 ease-linear",
+        "flex-1",
         "bg-white max-md:rounded-[14px] max-md:border-t max-md:border-t-white max-md:shadow-7",
         "md:px-10",
         "max-2xl:px-0",
@@ -58,25 +58,26 @@ const RightContent = () => {
       )}
     >
       {isMobile ? <ToggleActionsMobile /> : <></>}
+      {!isCloseLiveChat ? (
+        <ChatWindow
+          messages={messages}
+          itemContent={renderMessage}
+          isLoading={isLoading}
+          isFetched={isFetched}
+          hasPreviousMore={hasPreviousMore}
+          isFetchingPreviousPage={isFetchingPreviousPage}
+          onLoadPrevMessages={onLoadPrevMessages}
+          chatId={chatId}
+          isChatAction={false}
+          msgBoxClassName="p-0 px-4 pb-4"
+          className="md:max-h-[calc(100%-80px)]"
+          scrollBottomClassName="max-md:!bottom-[93px] max-md:bg-none"
+          increaseViewportBy={1000}
+        />
+      ) : (
+        <></>
+      )}
 
-      <ChatWindow
-        messages={messages}
-        itemContent={renderMessage}
-        isLoading={isLoading}
-        isFetched={isFetched}
-        hasPreviousMore={hasPreviousMore}
-        isFetchingPreviousPage={isFetchingPreviousPage}
-        onLoadPrevMessages={onLoadPrevMessages}
-        chatId={chatId}
-        isChatAction={false}
-        msgBoxClassName="p-0 px-4 pb-4"
-        className={twMerge(
-          "h-full md:max-h-[calc(100%-80px)]",
-          isCloseLiveChat && "opacity-0 delay-300",
-        )}
-        scrollBottomClassName="max-md:!bottom-[93px] max-md:bg-none"
-        increaseViewportBy={1500}
-      />
       <div
         className={twMerge(
           "relative pt-3 duration-300",
