@@ -170,6 +170,14 @@ export function renderIcon(opts: any, canvas: any) {
   return canvas
 }
 
+export const fileToBase64 = (file: File) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = reject
+  })
+
 export const isPassFileSize = (fileSize: number, maxSize: number) => {
   if (fileSize > maxSize) {
     toast.warning(`Max size: ${(maxSize / 1024 / 1024).toFixed(2)} MB`)
