@@ -84,14 +84,21 @@ const useConnectWallet = () => {
       setLoading(true)
       const timestamp = Math.floor(Date.now() / 1000) + 86400
       const provider = new ethers.providers.Web3Provider(window.ethereum)
+
       if (isOwallet) {
         try {
+          await window.ethereum.request!({
+            method: "wallet_switchEthereumChain",
+            chainId: "0x01",
+            params: [{ chainId: "0x01" }],
+          })
           //@ts-ignore
           await window?.owallet.enable("0x01")
         } catch (error) {
           console.log("🚀 ~ connectWal ~ error:", error)
         }
       }
+
       await provider.send("eth_requestAccounts", [])
       const signer = await provider.getSigner()
       const publicAddress = await getPublicAddress(signer)
