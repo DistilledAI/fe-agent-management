@@ -55,20 +55,21 @@ const useConnectWallet = () => {
 
   const connectWallet = async () => {
     const isOwallet = window.ethereum.isOwallet
-    if (!window.ethereum || !window.ethereum.isMetaMask || !isOwallet) {
-      if (isMobile) {
-        toast.info("Please open the application in metamask's browser")
-        setTimeout(() => {
-          window.open(
-            `https://metamask.app.link/dapp/${document.location.host}`,
-            "_blank",
-          )
-        }, 1000)
-        return
-      }
-      toast.warning("Please install MetaMask to continue!")
-      return
-    }
+    // if (!window.ethereum || !window.ethereum.isMetaMask || !isOwallet) {
+    //   if (isMobile) {
+    //     toast.info("Please open the application in metamask's browser")
+    //     setTimeout(() => {
+    //       window.open(
+    //         `https://metamask.app.link/dapp/${document.location.host}`,
+    //         "_blank",
+    //       )
+    //     }, 1000)
+    //     return
+    //   }
+
+    //   toast.warning("Please install MetaMask to continue!")
+    //   return
+    // }
 
     const isTrustWalletDefault =
       window.ethereum.isTrust || window.ethereum.isTrustWallet
