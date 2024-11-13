@@ -33,9 +33,11 @@ const AgentInitialization = () => {
   const onSubmit = async (data: any) => {
     try {
       setIsLoading(true)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { avatar, ...newData } = data
       const res = await createBot({
-        ...data,
-        name: data?.username,
+        ...newData,
+        name: newData?.username,
       })
       const botId = res?.data?.id
       if (res && botId) {

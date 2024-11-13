@@ -23,8 +23,11 @@ const AgentDetail: React.FC = () => {
   const descriptionData = agentData?.description
   const firstMsgData = agentData?.firstMsg
   const avatarData = agentData?.avatar
-  const agentPersonalData = agentData?.agentPersonal || []
-  const agentCommunicationData = agentData?.agentCommunication || []
+  const agentBehaviors = agentData?.agentBehaviors
+    ? JSON.parse(agentData?.agentBehaviors)
+    : {}
+  const agentPersonalData = agentBehaviors?.agentPersonal || []
+  const agentCommunicationData = agentBehaviors?.agentCommunication || []
 
   const methods = useForm<any>({
     defaultValues: {

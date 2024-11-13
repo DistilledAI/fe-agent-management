@@ -12,7 +12,8 @@ import { toast } from "react-toastify"
 
 const GeneralInfo: React.FC<{
   agentData?: IAgentData
-}> = ({ agentData }) => {
+  isHiddenUploadAva?: boolean
+}> = ({ agentData, isHiddenUploadAva }) => {
   const { control, watch, setValue } = useFormContext()
   const descLength = watch("description")?.length ?? 0
   const avatarWatch = watch("avatar")
@@ -65,32 +66,36 @@ const GeneralInfo: React.FC<{
           }}
         />
 
-        <div>
-          <FieldLabel text="Agent picture" />
-          <div className="flex items-center gap-[18px]">
-            <ChangeAvatarContainer handleUpload={handleUploadAvatar}>
-              <AvatarCustom
-                src={avatarWatch ?? undefined}
-                icon={!avatarWatch ? <FilledBrainAIIcon size={32} /> : null}
-                publicAddress={agentData?.publicAddress ?? agentData?.username}
-                className="h-[72px] w-[72px] cursor-pointer max-sm:h-[50px] max-sm:w-[50px]"
-              />
-            </ChangeAvatarContainer>
-            {/* <Button className="h-[44px] rounded-full border border-mercury-50 bg-mercury-950">
+        {isHiddenUploadAva && (
+          <div>
+            <FieldLabel text="Agent picture" />
+            <div className="flex items-center gap-[18px]">
+              <ChangeAvatarContainer handleUpload={handleUploadAvatar}>
+                <AvatarCustom
+                  src={avatarWatch ?? undefined}
+                  icon={!avatarWatch ? <FilledBrainAIIcon size={32} /> : null}
+                  publicAddress={
+                    agentData?.publicAddress ?? agentData?.username
+                  }
+                  className="h-[72px] w-[72px] cursor-pointer max-sm:h-[50px] max-sm:w-[50px]"
+                />
+              </ChangeAvatarContainer>
+              {/* <Button className="h-[44px] rounded-full border border-mercury-50 bg-mercury-950">
               <span className="text-base text-white">Use AI Generated</span>
             </Button> */}
-            <ChangeAvatarContainer handleUpload={handleUploadAvatar}>
-              <button
-                type="button"
-                className="h-[44px] w-[130px] rounded-full border border-mercury-50 bg-mercury-30 max-sm:h-[38px] max-sm:w-auto max-sm:bg-mercury-100 max-sm:px-3"
-              >
-                <span className="text-base text-mercury-950 max-sm:text-14">
-                  Upload picture
-                </span>
-              </button>
-            </ChangeAvatarContainer>
+              <ChangeAvatarContainer handleUpload={handleUploadAvatar}>
+                <button
+                  type="button"
+                  className="h-[44px] w-[130px] rounded-full border border-mercury-50 bg-mercury-30 max-sm:h-[38px] max-sm:w-auto max-sm:bg-mercury-100 max-sm:px-3"
+                >
+                  <span className="text-base text-mercury-950 max-sm:text-14">
+                    Upload picture
+                  </span>
+                </button>
+              </ChangeAvatarContainer>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div className="w-full">
