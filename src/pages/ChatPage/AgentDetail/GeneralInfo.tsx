@@ -9,8 +9,7 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 
 const GeneralInfo: React.FC<{
   agentData?: IAgentData
-  isBasicVersion?: boolean
-}> = ({ agentData, isBasicVersion }) => {
+}> = ({ agentData }) => {
   const { control, watch } = useFormContext()
   const descLength = watch("description")?.length ?? 0
 
@@ -19,7 +18,7 @@ const GeneralInfo: React.FC<{
   return (
     <div className="space-y-4">
       <CategoryLabel text="General info" icon={<ClipboardTextIcon />} />
-      <div className="flex w-full items-center justify-between gap-[56px]">
+      <div className="flex w-full items-center justify-between gap-[56px] max-sm:flex-col max-sm:items-start max-sm:gap-5">
         <Controller
           name="username"
           control={control}
@@ -27,7 +26,7 @@ const GeneralInfo: React.FC<{
             return (
               <div className="w-full">
                 <FieldLabel text="Agent name" required />
-                <div className="flex h-[72px] items-center">
+                <div className="flex h-[72px] items-center max-sm:h-auto">
                   <Input
                     key="agent-name"
                     value={value}
@@ -51,12 +50,12 @@ const GeneralInfo: React.FC<{
           <div className="flex items-center gap-[18px]">
             <ChangeAvatarContainer>
               <AvatarCustom
-                src={agentData?.avatar || undefined}
+                src={watch("avatar") ?? undefined}
                 icon={
                   !agentData?.avatar ? <FilledBrainAIIcon size={32} /> : <></>
                 }
-                publicAddress={agentData?.publicAddress || agentData?.username}
-                className="h-[72px] w-[72px] cursor-pointer"
+                publicAddress={agentData?.publicAddress ?? agentData?.username}
+                className="h-[72px] w-[72px] cursor-pointer max-sm:h-[50px] max-sm:w-[50px]"
               />
             </ChangeAvatarContainer>
             {/* <Button className="h-[44px] rounded-full border border-mercury-50 bg-mercury-950">
@@ -65,9 +64,11 @@ const GeneralInfo: React.FC<{
             <ChangeAvatarContainer>
               <button
                 type="button"
-                className="w-[130px] rounded-full border border-white bg-mercury-30 py-3 text-16 text-mercury-950"
+                className="h-[44px] w-[130px] rounded-full border border-mercury-50 bg-mercury-30 max-sm:h-[38px] max-sm:w-auto max-sm:bg-mercury-100 max-sm:px-3"
               >
-                Upload picture
+                <span className="text-base text-mercury-950 max-sm:text-14">
+                  Upload picture
+                </span>
               </button>
             </ChangeAvatarContainer>
           </div>
@@ -76,13 +77,8 @@ const GeneralInfo: React.FC<{
 
       <div className="w-full">
         <div className="flex items-center justify-between">
-          <FieldLabel
-            text={
-              isBasicVersion ? "Describe your Agent’s purpose" : "Description"
-            }
-            required={isBasicVersion}
-          />
-          <span className="text-base-md text-mercury-900">
+          <FieldLabel text="Description" />
+          <span className="text-base-md text-mercury-900 max-sm:text-14">
             {descLength}/{DESC_MAX_LENGTH}
           </span>
         </div>

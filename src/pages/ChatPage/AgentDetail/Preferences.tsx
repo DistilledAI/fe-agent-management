@@ -5,7 +5,7 @@ import {
   VoiceChatIcon,
   WorldIcon,
 } from "@components/Icons/AgentDetailIcon"
-import { Select, SelectItem, Switch } from "@nextui-org/react"
+import { Button, Select, SelectItem, Switch } from "@nextui-org/react"
 import { FieldLabel } from "./CategoryLabel"
 import { match } from "ts-pattern"
 
@@ -93,13 +93,15 @@ const Preferences: React.FC = () => {
 
   const renderFeature = () => {
     return (
-      <div className="flex w-full flex-wrap gap-5">
+      <div className="pointer-events-none flex w-full flex-wrap gap-5 opacity-50">
         {REFERENCES.map((item) => {
           return (
-            <div className="min-w-[240px] rounded-[22px] bg-mercury-30 p-4">
+            <div className="min-w-[240px] rounded-[22px] bg-mercury-30 p-4 max-sm:w-full">
               <div className="mb-4 flex items-center gap-2">
                 {item.icon}
-                <span className="text-base-md">{item.label}</span>
+                <span className="text-base-md max-sm:text-15">
+                  {item.label}
+                </span>
               </div>
               {renderAction(item.typeAction, item.key)}
             </div>
@@ -111,7 +113,16 @@ const Preferences: React.FC = () => {
 
   return (
     <div className="my-6">
-      <FieldLabel text="Preferences" />
+      <FieldLabel
+        text={
+          <div className="flex flex-wrap items-center gap-2">
+            <span>Preferences</span>
+            <Button className="text-base-14 h-auto rounded-full bg-mercury-800 py-[2px] font-bold text-mercury-30 max-sm:text-12">
+              COMING SOON
+            </Button>
+          </div>
+        }
+      />
       {renderFeature()}
     </div>
   )

@@ -1,5 +1,6 @@
 import { Upload, UploadFile, UploadProps } from "antd"
 import { useState } from "react"
+import { useFormContext } from "react-hook-form"
 import { toast } from "react-toastify"
 import { uploadMyData } from "services/user"
 
@@ -8,6 +9,7 @@ const maxSizeUpload = 50
 const ChangeAvatarContainer: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
+  const { setValue } = useFormContext()
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
   const handleChange: UploadProps["onChange"] = ({ fileList }) => {
@@ -27,7 +29,7 @@ const ChangeAvatarContainer: React.FC<{
       const response = await uploadMyData(formData)
       if (response) {
         onSuccess(response?.data?.[0])
-        toast.success(`${file.name} uploaded successfully.`)
+        setValue("avatar", response?.data?.[0]?.value)
       }
     } catch (error) {
       console.error(error)

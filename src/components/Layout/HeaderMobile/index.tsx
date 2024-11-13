@@ -29,7 +29,7 @@ const HeaderMobile: React.FC = () => {
           {pageTitle ? (
             <span className="text-base-sb">{pageTitle}</span>
           ) : (
-            <Link to="/">
+            <Link to={PATH_NAMES.HOME}>
               <DistilledIconNoText />
             </Link>
           )}
