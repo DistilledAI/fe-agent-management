@@ -10,8 +10,8 @@ const Header = ({ isLoading }: Props) => {
   const username = useWatch({ control, name: "username" })
 
   return (
-    <div className="bg-lgd-muted-beige-2 flex items-center justify-center p-3">
-      <div className="flex w-full max-w-[768px] items-center justify-between px-4">
+    <div className="sticky top-[67.98px] z-10 flex items-center justify-center bg-mercury-30 bg-lgd-muted-beige-2 p-3">
+      <div className="flex w-full max-w-[768px] items-center justify-between">
         <div className="flex flex-col">
           <span className="text-24 font-semibold text-mercury-950">
             Agent Initialization

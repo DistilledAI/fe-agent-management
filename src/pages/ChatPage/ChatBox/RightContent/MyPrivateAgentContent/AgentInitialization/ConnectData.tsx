@@ -7,15 +7,13 @@ import { TYPE_DATA_KEY } from "../CreatePrivateAgent"
 import UploadCustom from "../UploadCustom"
 import UploadSocialLink from "../UploadSocialLink"
 import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
 import { useQuery } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
-import { useEffect } from "react"
 
 const ConnectData = () => {
   const { botId } = useParams()
-  const navigate = useNavigate()
   const { data } = useQuery<any>({
     queryKey: [QueryDataKeys.MY_BOT_LIST],
     refetchOnWindowFocus: false,
@@ -25,12 +23,6 @@ const ConnectData = () => {
       ? data?.data?.items?.find((agent: any) => agent?.id?.toString() === botId)
       : null
   const showEstimateBanner = agent && agent?.status !== STATUS_AGENT.ACTIVE
-
-  useEffect(() => {
-    if (botId !== agent?.id?.toString()) {
-      navigate(PATH_NAMES.HOME)
-    }
-  }, [botId, agent?.id])
 
   return (
     <>
@@ -51,17 +43,17 @@ const ConnectData = () => {
           </span>
         </div>
         {showEstimateBanner ? (
-          <div className="bg-brown-50 border-brown-500 mb-6 flex items-center gap-6 rounded-lg border px-4 py-3">
+          <div className="mb-6 flex items-center gap-6 rounded-lg border border-brown-500 bg-brown-50 px-4 py-3">
             <div className="flex items-center gap-2">
               <InfoCircleIcon color="#83664B" />
-              <p className="text-brown-600 text-16 font-medium">
+              <p className="text-16 font-medium text-brown-600">
                 We appreciate your patience. This process typically takes around
                 6 hours.
               </p>
             </div>
             <Link
               to={`${PATH_NAMES.MARKETPLACE}`}
-              className="text-brown-600 text-16 font-bold hover:underline"
+              className="text-16 font-bold text-brown-600 hover:underline"
             >
               Chat with other agents
             </Link>
