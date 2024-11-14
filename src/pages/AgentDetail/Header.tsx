@@ -44,7 +44,7 @@ const Header: React.FC<{ agentData: IAgentData; submitLoading: boolean }> = ({
             {userNameData}
           </span>
           <span className="text-base font-medium text-mercury-500 max-sm:text-14">
-            No publish yet
+            {isPublished ? "Published" : "No publish yet"}
           </span>
         </div>
         <div className="flex gap-3 max-sm:mt-2 max-sm:flex-wrap max-sm:gap-1">

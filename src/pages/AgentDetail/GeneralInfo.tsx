@@ -8,6 +8,9 @@ import ChangeAvatarContainer from "./ChangeAvatarContainer"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { fileToBase64, isPassFileSize } from "@utils/index"
 import { toast } from "react-toastify"
+import { twMerge } from "tailwind-merge"
+
+export const DESC_MAX_LENGTH = 25
 
 const GeneralInfo: React.FC<{
   agentData?: IAgentData
@@ -15,8 +18,6 @@ const GeneralInfo: React.FC<{
   const { control, watch, setValue } = useFormContext()
   const descLength = watch("description")?.length ?? 0
   const avatarWatch = watch("avatar")
-
-  const DESC_MAX_LENGTH = 200
 
   const handleUploadAvatar = async (file: File) => {
     try {
@@ -92,7 +93,12 @@ const GeneralInfo: React.FC<{
       <div className="w-full">
         <div className="flex items-center justify-between">
           <FieldLabel text="Description" />
-          <span className="text-base-md text-mercury-900 max-sm:text-14">
+          <span
+            className={twMerge(
+              "text-base-md text-mercury-900 max-sm:text-14",
+              descLength > DESC_MAX_LENGTH && "text-red-500",
+            )}
+          >
             {descLength}/{DESC_MAX_LENGTH}
           </span>
         </div>
@@ -113,7 +119,6 @@ const GeneralInfo: React.FC<{
                   }}
                   value={value}
                   onChange={(e) => {
-                    if (descLength >= DESC_MAX_LENGTH) return
                     onChange(e.target.value)
                   }}
                 />
