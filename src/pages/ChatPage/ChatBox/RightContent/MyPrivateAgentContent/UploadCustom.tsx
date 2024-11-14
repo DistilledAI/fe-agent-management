@@ -1,12 +1,13 @@
 import { TablerPlusIcon } from "@components/Icons/TablerPlusIcon"
 import { TrashXIcon } from "@components/Icons/TrashXIcon"
 import { Spinner } from "@nextui-org/react"
+import useDeleteData from "@pages/MyData/DeleteData/useDelete"
 import type { UploadFile, UploadProps } from "antd"
 import { Upload } from "antd"
 import { UploadFileStatus } from "antd/es/upload/interface"
 import { useRef, useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { uploadMyData } from "services/user"
 import { styled } from "styled-components"
@@ -33,10 +34,12 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
   multiple,
   moreCustomRequest,
 }) => {
+  const { botId } = useParams()
   const messagesEndRef = useRef<any>()
   const { control, setValue, getValues } = useFormContext()
   const uploadCVValue = getValues(fieldkey)
   const [fileListValue, setFileList] = useState<UploadFile[]>([])
+  const { onDelete } = useDeleteData()
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -93,13 +96,13 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
     error: <TrashXIcon />,
   }
 
-  const handleRemoveFile = (record: any) => {
+  const handleRemoveFile = async (record: any) => {
+    await onDelete({ botId: Number(botId), ids: [record?.response?.id] })
     //set submit value
     const newUploadCVValue = uploadCVValue?.filter(
       (item: number) => item !== record?.response?.id,
     )
     setValue(fieldkey, newUploadCVValue)
-
     //set display value
     const newFileList = fileListValue?.filter(
       (item: any) => item.uid !== record?.uid,
@@ -137,6 +140,8 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
             <div className="flex max-h-[150px] flex-col overflow-auto p-3">
               {fileListValue.map((item: any) => {
                 const isError = item?.status === "error"
+
+                console.log("item", item)
 
                 return (
                   <div
