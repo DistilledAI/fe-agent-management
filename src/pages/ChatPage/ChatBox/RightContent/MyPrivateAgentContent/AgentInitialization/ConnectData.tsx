@@ -9,10 +9,10 @@ import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
 import { PhotoPlusIcon } from "@components/Icons/PhotoPlusIcon"
 import { TxtIcon } from "@components/Icons/TextIcon"
 import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
-import { Button, Spinner } from "@nextui-org/react"
+import { Spinner } from "@nextui-org/react"
 import useFetchMyData from "@pages/MyData/useFetch"
 import { useQuery } from "@tanstack/react-query"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { mapMyDataToBot } from "services/user"
 import { twMerge } from "tailwind-merge"
@@ -20,9 +20,11 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import { TYPE_DATA_KEY } from "../CreatePrivateAgent"
 import UploadCustom from "../UploadCustom"
 import UploadSocialLink from "../UploadSocialLink"
+import { CheckedIcon } from "@components/Icons/Checked"
 
 const ConnectData = () => {
   const { botId } = useParams()
+  const navigate = useNavigate()
   const { list: myDataList, isFetched } = useFetchMyData()
   const { data } = useQuery<any>({
     queryKey: [QueryDataKeys.MY_BOT_LIST],
@@ -42,21 +44,31 @@ const ConnectData = () => {
       }
       const res = await mapMyDataToBot(payload)
       if (res) {
-        toast.success(
-          <div className="">
-            <span className="tetx-base text-mercury-700">Connect success</span>
-            <br />
-            <span className="text-20 font-medium text-mercury-900">
-              {data?.length} data source(s) have been added to your data pod.
-            </span>
-            <br />
-            <span className="text-base-md text-[#F78500]">
+        toast(
+          <div className="p-4">
+            <div className="flex items-center gap-2">
+              <CheckedIcon size={18} /> Connect success
+            </div>
+            <div className="mt-2 text-16 font-medium leading-[1.2] text-mercury-900">
+              {data?.length} data source (s) have been added to your data pod.
+            </div>
+            <div className="text-base-md mt-2 text-14 leading-[1.2] text-[#F78500]">
               Please sync your private agents with the new data.
-            </span>
-            <Button className="h-[44px] rounded-full bg-mercury-950 text-white max-md:h-[52px] max-md:w-full">
-              <span className="">Go to My Data and Sync</span>
-            </Button>
+            </div>
+            <button
+              onClick={() => navigate(PATH_NAMES.MY_DATA)}
+              className="mt-4 flex h-[44px] w-full items-center justify-center gap-2 rounded-full bg-mercury-950 px-4 text-white"
+            >
+              <DatabaseIcon color="white" size={20} />
+              <span className="text-[15px]">Go to My Data and Sync</span>
+            </button>
           </div>,
+          {
+            position: "top-right",
+            autoClose: 5000,
+            pauseOnHover: true,
+            closeOnClick: true,
+          },
         )
         return "success"
       }
