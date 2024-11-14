@@ -1,25 +1,24 @@
+import { PATH_NAMES } from "@constants/index"
+import { Divider } from "@nextui-org/react"
+import { useQuery } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import { useNavigate, useParams } from "react-router-dom"
 import { toast } from "react-toastify"
-import { getAgentDetail, updateAgent } from "services/agent"
+import { getAgentDetail } from "services/agent"
+import { QueryDataKeys } from "types/queryDataKeys"
 import AIAgentGenerate from "./AIAgentGenerate"
 import AdvancedConfig from "./AdvancedConfig"
+import AgentBehaviors, { SelectedBehaviors } from "./AgentBehaviors"
 import GeneralInfo, { DESC_MAX_LENGTH } from "./GeneralInfo"
 import Header from "./Header"
-import Preferences from "./Preferences"
-import { Divider } from "@nextui-org/react"
-import ToxicPolicies from "./ToxicPolicies"
 import Monetization from "./Monetization"
-import { PATH_NAMES } from "@constants/index"
-import AgentBehaviors, { SelectedBehaviors } from "./AgentBehaviors"
-import { useQuery } from "@tanstack/react-query"
-import { QueryDataKeys } from "types/queryDataKeys"
-import { updateAvatarUser } from "services/user"
+import Preferences from "./Preferences"
+import ToxicPolicies from "./ToxicPolicies"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
-  const [loading, setLoading] = useState(false)
+  const [loading, _] = useState(false)
   const navigate = useNavigate()
 
   const fetchAgentDetail = async () => {
@@ -34,7 +33,7 @@ const AgentDetail: React.FC = () => {
     }
   }
 
-  const { data: agentData, refetch } = useQuery({
+  const { data: agentData } = useQuery({
     queryKey: [QueryDataKeys.AGENT_DETAIL],
     queryFn: fetchAgentDetail,
     refetchOnWindowFocus: false,
@@ -95,32 +94,35 @@ const AgentDetail: React.FC = () => {
   }
 
   const onSubmit = async (data: any) => {
-    if (!isPassRule(data)) return
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { avatar, avatarFile, ...newData } = data
-    const agentIdNumber = Number(agentId)
+    console.log("🚀 ~ onSubmit ~ data:", data)
 
-    try {
-      setLoading(true)
-      const res = await updateAgent({
-        ...newData,
-        botId: agentIdNumber,
-      })
-      if (data.avatarFile) {
-        const formData = new FormData()
-        formData.append("file", data.avatarFile)
-        formData.append("userId", agentData?.id?.toString() ?? "")
-        await updateAvatarUser(formData)
-      }
-      if (res.data) {
-        refetch()
-        toast.success("Updated successfully!")
-      }
-    } catch (error) {
-      console.log("error", error)
-    } finally {
-      setLoading(false)
-    }
+    return
+    // if (!isPassRule(data)) return
+    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // const { avatar, avatarFile, ...newData } = data
+    // const agentIdNumber = Number(agentId)
+
+    // try {
+    //   setLoading(true)
+    //   const res = await updateAgent({
+    //     ...newData,
+    //     botId: agentIdNumber,
+    //   })
+    //   if (data.avatarFile) {
+    //     const formData = new FormData()
+    //     formData.append("file", data.avatarFile)
+    //     formData.append("userId", agentData?.id?.toString() ?? "")
+    //     await updateAvatarUser(formData)
+    //   }
+    //   if (res.data) {
+    //     refetch()
+    //     toast.success("Updated successfully!")
+    //   }
+    // } catch (error) {
+    //   console.log("error", error)
+    // } finally {
+    //   setLoading(false)
+    // }
   }
 
   return (
