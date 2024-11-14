@@ -10,7 +10,7 @@ import { fileToBase64, isPassFileSize } from "@utils/index"
 import { toast } from "react-toastify"
 import { twMerge } from "tailwind-merge"
 
-export const DESC_MAX_LENGTH = 25
+export const DESC_MAX_LENGTH = 200
 
 const GeneralInfo: React.FC<{
   agentData?: IAgentData
