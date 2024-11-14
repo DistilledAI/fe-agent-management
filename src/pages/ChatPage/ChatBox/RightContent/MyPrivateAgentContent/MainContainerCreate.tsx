@@ -1,4 +1,6 @@
 import { desktopPrivateAgent } from "@assets/images"
+import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
+import { Button } from "@nextui-org/react"
 import { useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
@@ -7,8 +9,6 @@ import { mapMyDataToBot } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
 import CollectingModal from "../Modal/CreatPrivateAgentModal/CollectingModal"
 import FYIModal from "../Modal/FYIModal"
-import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
-import { Button } from "@nextui-org/react"
 
 const MainContainerCreate: React.FC<{
   children: React.ReactNode
@@ -26,6 +26,7 @@ const MainContainerCreate: React.FC<{
       uploadSocialLink: [],
       uploadPDFs: [],
       photosVideos: [],
+      txtFiles: [],
     },
   })
   const values = methods.watch()
@@ -35,12 +36,14 @@ const MainContainerCreate: React.FC<{
   const uploadPDFsValues = values.uploadPDFs.length > 0 ? values.uploadPDFs : []
   const photosVideosValues =
     values.photosVideos.length > 0 ? values.photosVideos : []
+  const txtFilesValues = values.txtFiles.length > 0 ? values.txtFiles : []
 
   const isDisabled =
     uploadCVValues.length > 0 ||
     uploadSocialLinkValues.length > 0 ||
     uploadPDFsValues.length > 0 ||
-    photosVideosValues.length > 0
+    photosVideosValues.length > 0 ||
+    txtFilesValues.length > 0
 
   const onSubmit = async () => {
     setOpenCollectingPopup(true)
@@ -49,6 +52,7 @@ const MainContainerCreate: React.FC<{
       ...uploadSocialLinkValues,
       ...uploadPDFsValues,
       ...photosVideosValues,
+      ...txtFilesValues,
     ]
 
     try {

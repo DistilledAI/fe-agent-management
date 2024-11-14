@@ -1,17 +1,17 @@
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { DatabaseImportIcon } from "@components/Icons/DatabaseImportIcon"
+import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
 import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
 import { PhotoPlusIcon } from "@components/Icons/PhotoPlusIcon"
 import { ThreeDotsIcon } from "@components/Icons/SocialLinkIcon"
+import { TxtIcon } from "@components/Icons/TextIcon"
+import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
+import { useQuery } from "@tanstack/react-query"
+import { Link, useParams } from "react-router-dom"
+import { QueryDataKeys } from "types/queryDataKeys"
 import { TYPE_DATA_KEY } from "../CreatePrivateAgent"
 import UploadCustom from "../UploadCustom"
 import UploadSocialLink from "../UploadSocialLink"
-import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
-import { Link, useParams } from "react-router-dom"
-import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
-import { useQuery } from "@tanstack/react-query"
-import { QueryDataKeys } from "types/queryDataKeys"
-import { TxtIcon } from "@components/Icons/TextIcon"
 
 const ConnectData = () => {
   const { botId } = useParams()
@@ -47,14 +47,14 @@ const ConnectData = () => {
           <div className="mb-6 flex items-center gap-6 rounded-lg border border-brown-500 bg-brown-50 px-4 py-3">
             <div className="flex items-center gap-2">
               <InfoCircleIcon color="#83664B" />
-              <p className="text-brown-600 text-16 font-medium">
+              <p className="text-16 font-medium text-brown-600">
                 We appreciate your patience. This process typically takes around
                 6 hours.
               </p>
             </div>
             <Link
               to={`${PATH_NAMES.MARKETPLACE}`}
-              className="text-brown-600 text-16 font-bold hover:underline"
+              className="text-16 font-bold text-brown-600 hover:underline"
             >
               Chat with other agents
             </Link>
@@ -97,7 +97,7 @@ const ConnectData = () => {
             </div>
             <div className="flex flex-col gap-6">
               <UploadCustom
-                fieldkey="photosVideos"
+                fieldkey="txtFiles"
                 fileKey={TYPE_DATA_KEY.TXT_FILE}
                 icon={<TxtIcon />}
                 label="Text files"
