@@ -2,7 +2,7 @@ import { CheckFilledIcon } from "@components/Icons/DefiLens"
 import { StarUserIconOutline } from "@components/Icons/UserIcon"
 import { COMMUNICATION_STYLE_LIST, PERSONALITY_LIST } from "@constants/index"
 import { Input } from "@nextui-org/react"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import CategoryLabel, { FieldLabel } from "./CategoryLabel"
 
@@ -20,15 +20,23 @@ export interface SelectedBehaviors {
 interface AgentBehaviorsProps {
   selectedBehaviors: SelectedBehaviors
   onSelectBehaviors: (selected: SelectedBehaviors) => void
+  valueCustomDefault?: any
 }
 
 const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
   selectedBehaviors,
   onSelectBehaviors,
+  valueCustomDefault,
 }) => {
   const [customFields, setCustomFields] = useState<{
     [key: string]: { value: string; isFocused: boolean }
   }>({})
+
+  useEffect(() => {
+    if (valueCustomDefault) {
+      setCustomFields(valueCustomDefault)
+    }
+  }, [valueCustomDefault])
 
   const handleSelect = (type: keyof SelectedBehaviors, item: string) => {
     const isAlreadySelected = selectedBehaviors[type].includes(item)
