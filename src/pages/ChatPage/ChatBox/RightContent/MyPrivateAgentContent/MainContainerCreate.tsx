@@ -5,6 +5,8 @@ import { useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import CollectingModal from "../Modal/CreatPrivateAgentModal/CollectingModal"
 import FYIModal from "../Modal/FYIModal"
+import { useNavigate } from "react-router-dom"
+import { PATH_NAMES } from "@constants/index"
 
 const MainContainerCreate: React.FC<{
   children: React.ReactNode
@@ -12,6 +14,7 @@ const MainContainerCreate: React.FC<{
   botId?: number | string
   onCallBack?: any
 }> = ({ children, setCreated, botId, onCallBack }) => {
+  const navigate = useNavigate()
   const [openFYIPopup, setOpenFYIPopupp] = useState<boolean>(false)
   const [openCollectingPopup, setOpenCollectingPopup] = useState<boolean>(false)
   const methods = useForm<any>({
@@ -59,7 +62,10 @@ const MainContainerCreate: React.FC<{
                   </div>
                 </div>
 
-                <Button className="h-14 min-w-[213px] rounded-full bg-mercury-950 px-6 text-[16px] text-mercury-30 max-md:h-[52px] max-md:w-full md:text-[18px]">
+                <Button
+                  onClick={() => navigate(PATH_NAMES.MY_DATA)}
+                  className="h-14 min-w-[213px] rounded-full bg-mercury-950 px-6 text-[16px] text-mercury-30 max-md:h-[52px] max-md:w-full md:text-[18px]"
+                >
                   <span className="">View Data Sync Status</span>
                 </Button>
               </div>

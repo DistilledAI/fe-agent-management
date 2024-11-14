@@ -130,7 +130,7 @@ const ConnectData = () => {
             <div className="flex justify-between gap-2 rounded-lg border border-brown-500 bg-brown-50 px-4 py-3">
               <div className="flex flex-1 items-center gap-2">
                 <InfoCircleIcon color="#83664B" size={16} />
-                <p className="text-16 font-medium text-brown-600">
+                <p className="text-brown-600 text-16 font-medium">
                   We appreciate your patience. Please join the whitelist to
                   activate.
                 </p>
@@ -139,13 +139,13 @@ const ConnectData = () => {
                 <Link
                   to="https://forms.gle/qGWWAnt3nWWAkxeE9"
                   target="_blank"
-                  className="whitespace-nowrap text-16 font-bold text-brown-600 hover:underline"
+                  className="text-brown-600 whitespace-nowrap text-16 font-bold hover:underline"
                 >
                   Enter waitlist
                 </Link>
                 <Link
                   to={`${PATH_NAMES.MARKETPLACE}`}
-                  className="whitespace-nowrap text-16 font-bold text-brown-600 hover:underline"
+                  className="text-brown-600 whitespace-nowrap text-16 font-bold hover:underline"
                 >
                   Chat with other agents
                 </Link>
@@ -161,11 +161,11 @@ const ConnectData = () => {
                 <InfoCircleIcon color="#83664B" size={16} />
               </div>
               <div>
-                <p className="text-16 font-medium text-brown-600">
+                <p className="text-brown-600 text-16 font-medium">
                   Since no data has been added, your agent lacks personalized
                   intelligence.
                 </p>
-                <p className="text-16 font-medium text-brown-600">
+                <p className="text-brown-600 text-16 font-medium">
                   Please add your data to help your agent learn more about you.
                 </p>
               </div>
@@ -176,13 +176,23 @@ const ConnectData = () => {
         </div>
 
         <div className="grid grid-cols-2 gap-6">
-          <div>
+          <div className="flex flex-col gap-6">
             <UploadSocialLink moreCustomRequest={onMoreCustomRequest} />
             <UploadCustom
               fieldkey="uploadCV"
               fileKey={TYPE_DATA_KEY.CV_FILE}
               icon={<PDFTypeIcon />}
               label="CV"
+              maxCount={3}
+              multiple
+              moreCustomRequest={onMoreCustomRequest}
+            />
+            <UploadCustom
+              fieldkey="txtFiles"
+              fileKey={TYPE_DATA_KEY.TXT_FILE}
+              icon={<TxtIcon />}
+              label="Text files"
+              accept=".txt,.md"
               maxCount={3}
               multiple
               moreCustomRequest={onMoreCustomRequest}
@@ -204,18 +214,6 @@ const ConnectData = () => {
               icon={<PhotoPlusIcon />}
               label="Photos & Videos"
               accept="image/*,video/*"
-              maxCount={3}
-              multiple
-              moreCustomRequest={onMoreCustomRequest}
-            />
-          </div>
-          <div className="flex flex-col gap-6">
-            <UploadCustom
-              fieldkey="txtFiles"
-              fileKey={TYPE_DATA_KEY.TXT_FILE}
-              icon={<TxtIcon />}
-              label="Text files"
-              accept=".txt,.md"
               maxCount={3}
               multiple
               moreCustomRequest={onMoreCustomRequest}

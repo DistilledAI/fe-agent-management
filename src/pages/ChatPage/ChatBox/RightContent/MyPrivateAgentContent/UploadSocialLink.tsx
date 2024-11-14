@@ -44,7 +44,6 @@ const UploadSocialLink: React.FC<{ moreCustomRequest: any }> = ({
             label="Website Links/Social Media"
             textClassName="text-base-14-b"
             onClick={() => setOpenPopup(true)}
-            customClassName="mb-6 max-md:mb-4"
           >
             {socialUrls.length > 0 && (
               <div className="max-h-[150px] overflow-auto p-3">

@@ -52,7 +52,7 @@ const SyncData: React.FC<SyncDataProps> = ({
         </div>
       ))
       .with(MY_DATA_STATUS.PROCESSING, () => (
-        <div className="flex items-center gap-1 font-semibold text-[#A2845E]">
+        <div className="flex items-center gap-1 font-semibold text-[#A2845E] hover:underline">
           Syncing...
         </div>
       ))
