@@ -11,6 +11,7 @@ import { Link, useParams } from "react-router-dom"
 import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
 import { useQuery } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
+import { TxtIcon } from "@components/Icons/TextIcon"
 
 const ConnectData = () => {
   const { botId } = useParams()
@@ -46,14 +47,14 @@ const ConnectData = () => {
           <div className="mb-6 flex items-center gap-6 rounded-lg border border-brown-500 bg-brown-50 px-4 py-3">
             <div className="flex items-center gap-2">
               <InfoCircleIcon color="#83664B" />
-              <p className="text-16 font-medium text-brown-600">
+              <p className="text-brown-600 text-16 font-medium">
                 We appreciate your patience. This process typically takes around
                 6 hours.
               </p>
             </div>
             <Link
               to={`${PATH_NAMES.MARKETPLACE}`}
-              className="text-16 font-bold text-brown-600 hover:underline"
+              className="text-brown-600 text-16 font-bold hover:underline"
             >
               Chat with other agents
             </Link>
@@ -94,15 +95,17 @@ const ConnectData = () => {
                 multiple
               />
             </div>
-            {/* <UploadCustom
-              fieldkey="photosVideos"
-              fileKey={TYPE_DATA_KEY.PHOTO_VIDEO_FILE}
-              icon={<PhotoPlusIcon />}
-              label="Text files"
-              accept=".txt"
-              maxCount={3}
-              multiple
-            /> */}
+            <div className="flex flex-col gap-6">
+              <UploadCustom
+                fieldkey="photosVideos"
+                fileKey={TYPE_DATA_KEY.TXT_FILE}
+                icon={<TxtIcon />}
+                label="Text files"
+                accept=".txt,.md"
+                maxCount={3}
+                multiple
+              />
+            </div>
           </div>
         </div>
       </div>

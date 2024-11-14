@@ -15,6 +15,7 @@ import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { useQuery } from "@tanstack/react-query"
 import { STATUS_AGENT } from "@constants/index"
+import TxtData from "./Txt"
 
 const MyData: React.FC = () => {
   const { isMobile } = useWindowSize()
@@ -81,6 +82,7 @@ const MyData: React.FC = () => {
         <FileData botId={botId} category={BotDataTypeKey.PDF_FILE} />
         <CvData botId={botId} category={BotDataTypeKey.CV_FILE} />
         <MediaData botId={botId} category={BotDataTypeKey.PHOTO_VIDEO_FILE} />
+        <TxtData botId={botId} category={BotDataTypeKey.TXT_FILE} />
       </div>
     </div>
   )
