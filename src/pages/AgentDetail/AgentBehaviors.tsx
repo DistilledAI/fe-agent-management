@@ -33,6 +33,17 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
   const handleSelect = (type: keyof SelectedBehaviors, item: string) => {
     const isAlreadySelected = selectedBehaviors[type].includes(item)
     const updatedSelection = isAlreadySelected ? [] : [item]
+    const customField = customFields[type]
+
+    if (customField && customField?.value) {
+      setCustomFields((prevState) => ({
+        ...prevState,
+        [type]: {
+          ...customField,
+          value: "",
+        },
+      }))
+    }
 
     onSelectBehaviors({
       ...selectedBehaviors,
