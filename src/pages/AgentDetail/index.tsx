@@ -1,4 +1,8 @@
-import { PATH_NAMES } from "@constants/index"
+import {
+  COMMUNICATION_STYLE_LIST,
+  PATH_NAMES,
+  PERSONALITY_LIST,
+} from "@constants/index"
 import { Divider } from "@nextui-org/react"
 import { useQuery } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
@@ -20,6 +24,7 @@ import ToxicPolicies from "./ToxicPolicies"
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
   const [loading, setLoading] = useState(false)
+  const [valueCustomDefault, setValueCustomDefault] = useState<any>()
   const navigate = useNavigate()
 
   const fetchAgentDetail = async () => {
@@ -49,6 +54,44 @@ const AgentDetail: React.FC = () => {
     : {}
   const agentPersonalData = agentBehaviors?.agentPersonal || []
   const agentCommunicationData = agentBehaviors?.agentCommunication || []
+
+  useEffect(() => {
+    if (agentPersonalData.length) {
+      const isPersonalCustom = !PERSONALITY_LIST.map(
+        (item) => item.value,
+      ).includes(agentPersonalData[0])
+
+      const value = isPersonalCustom
+        ? {
+            agentPersonal: {
+              value: agentPersonalData[0],
+              isFocused: false,
+            },
+          }
+        : undefined
+      setValueCustomDefault((prev: any) => ({ ...prev, ...value }))
+    }
+  }, [agentPersonalData.length])
+
+  useEffect(() => {
+    if (agentCommunicationData.length) {
+      const isCommunicationCustom = !COMMUNICATION_STYLE_LIST.map(
+        (item) => item.value,
+      ).includes(agentCommunicationData[0])
+
+      const value = isCommunicationCustom
+        ? {
+            agentCommunication: {
+              value: agentCommunicationData[0],
+              isFocused: false,
+            },
+          }
+        : undefined
+      setValueCustomDefault((prev: any) => ({ ...prev, ...value }))
+    }
+  }, [agentCommunicationData.length])
+
+  console.log("XXX", valueCustomDefault)
 
   const methods = useForm<any>({
     defaultValues: {
@@ -136,6 +179,7 @@ const AgentDetail: React.FC = () => {
               agentPersonal: methods.watch("agentPersonal"),
               agentCommunication: methods.watch("agentCommunication"),
             }}
+            valueCustomDefault={valueCustomDefault}
           />
           <Divider className="my-9" />
           <AdvancedConfig />
