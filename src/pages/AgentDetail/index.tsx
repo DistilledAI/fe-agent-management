@@ -5,7 +5,8 @@ import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import { useNavigate, useParams } from "react-router-dom"
 import { toast } from "react-toastify"
-import { getAgentDetail } from "services/agent"
+import { getAgentDetail, updateAgent } from "services/agent"
+import { updateAvatarUser } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
 import AIAgentGenerate from "./AIAgentGenerate"
 import AdvancedConfig from "./AdvancedConfig"
@@ -18,7 +19,7 @@ import ToxicPolicies from "./ToxicPolicies"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
-  const [loading, _] = useState(false)
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
   const fetchAgentDetail = async () => {
@@ -33,7 +34,7 @@ const AgentDetail: React.FC = () => {
     }
   }
 
-  const { data: agentData } = useQuery({
+  const { data: agentData, refetch } = useQuery({
     queryKey: [QueryDataKeys.AGENT_DETAIL],
     queryFn: fetchAgentDetail,
     refetchOnWindowFocus: false,
@@ -94,35 +95,32 @@ const AgentDetail: React.FC = () => {
   }
 
   const onSubmit = async (data: any) => {
-    console.log("🚀 ~ onSubmit ~ data:", data)
+    if (!isPassRule(data)) return
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { avatar, avatarFile, ...newData } = data
+    const agentIdNumber = Number(agentId)
 
-    return
-    // if (!isPassRule(data)) return
-    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // const { avatar, avatarFile, ...newData } = data
-    // const agentIdNumber = Number(agentId)
-
-    // try {
-    //   setLoading(true)
-    //   const res = await updateAgent({
-    //     ...newData,
-    //     botId: agentIdNumber,
-    //   })
-    //   if (data.avatarFile) {
-    //     const formData = new FormData()
-    //     formData.append("file", data.avatarFile)
-    //     formData.append("userId", agentData?.id?.toString() ?? "")
-    //     await updateAvatarUser(formData)
-    //   }
-    //   if (res.data) {
-    //     refetch()
-    //     toast.success("Updated successfully!")
-    //   }
-    // } catch (error) {
-    //   console.log("error", error)
-    // } finally {
-    //   setLoading(false)
-    // }
+    try {
+      setLoading(true)
+      const res = await updateAgent({
+        ...newData,
+        botId: agentIdNumber,
+      })
+      if (data.avatarFile) {
+        const formData = new FormData()
+        formData.append("file", data.avatarFile)
+        formData.append("userId", agentData?.id?.toString() ?? "")
+        await updateAvatarUser(formData)
+      }
+      if (res.data) {
+        refetch()
+        toast.success("Updated successfully!")
+      }
+    } catch (error) {
+      console.log("error", error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
