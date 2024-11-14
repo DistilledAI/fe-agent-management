@@ -152,7 +152,7 @@ export const PERSONALITY_LIST = [
     label: "⭐️ Custom",
     selected: false,
     value: "personality custom",
-    key: "custom",
+    type: "custom",
   },
 ]
 
@@ -192,6 +192,6 @@ export const COMMUNICATION_STYLE_LIST = [
     label: "⭐️ Custom",
     selected: false,
     value: "communication custom",
-    key: "custom",
+    type: "custom",
   },
 ]

@@ -9,7 +9,7 @@ import CategoryLabel, { FieldLabel } from "./CategoryLabel"
 interface BehaviorItem {
   value: string
   label: string
-  key?: string
+  type?: string
 }
 
 export interface SelectedBehaviors {
@@ -26,16 +26,9 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
   selectedBehaviors,
   onSelectBehaviors,
 }) => {
-  const [isSelectCustomField, setIsSelectCustomField] = useState<boolean>(false)
-
-  const toglleSelectCustomField = (type: keyof SelectedBehaviors) => {
-    onSelectBehaviors({
-      ...selectedBehaviors,
-      [type]: [],
-    })
-
-    setIsSelectCustomField(!isSelectCustomField)
-  }
+  const [customFields, setCustomFields] = useState<{
+    [key: string]: { value: string; isFocused: boolean }
+  }>({})
 
   const handleSelect = (type: keyof SelectedBehaviors, item: string) => {
     const isAlreadySelected = selectedBehaviors[type].includes(item)
@@ -50,11 +43,31 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
   const handleSelectCustomField = (
     type: keyof SelectedBehaviors,
     value: string,
+    key: string,
   ) => {
+    setCustomFields((prev) => ({
+      ...prev,
+      [key]: { ...prev[key], value },
+    }))
+
     onSelectBehaviors({
       ...selectedBehaviors,
       [type]: [value],
     })
+  }
+
+  const handleInputFocus = (key: string) => {
+    setCustomFields((prev) => ({
+      ...prev,
+      [key]: { ...prev[key], isFocused: true },
+    }))
+  }
+
+  const handleInputBlur = (key: string) => {
+    setCustomFields((prev) => ({
+      ...prev,
+      [key]: { ...prev[key], isFocused: false },
+    }))
   }
 
   const renderBehaviorItem = (
@@ -62,27 +75,36 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
     type: keyof SelectedBehaviors,
   ) => {
     const isSelected = selectedBehaviors[type].includes(item.value)
-    const isCustomField = item?.key && item.key === "custom"
+    const isCustomField = item?.type && item.type === "custom"
+    const customFieldState = customFields[item.value] || {
+      value: "",
+      isFocused: false,
+    }
 
     if (isCustomField) {
       return (
         <Input
           key={item.value}
+          value={customFieldState.value}
+          onValueChange={(value) => {
+            handleSelectCustomField(type, value, item.value)
+          }}
+          onFocus={() => handleInputFocus(item.value)}
+          onBlur={() => handleInputBlur(item.value)}
+          placeholder={
+            customFieldState.isFocused ? "Enter your text" : "Custom behavior"
+          }
           classNames={{
+            base: "w-fit",
+            mainWrapper: "w-fit",
             inputWrapper: twMerge(
-              "rounded-[14px] w-fit p-4 font-medium border-[2px] border-transparent",
-              isSelectCustomField && "border-brown-500 bg-brown-50",
+              "rounded-[14px] p-4 font-medium border-[2px] h-[64px] transition-all duration-300 ease-in-out hover:!bg-brown-50 focus:!bg-brown-50 focus-within:!bg-brown-50 border-transparent bg-mercury-30",
+              customFieldState.isFocused && "border-brown-500 bg-brown-50",
             ),
+            input: "text-[16px] font-medium text-mercury-700 w-[124px]",
           }}
           className="font-medium"
-          startContent={
-            <span className="text-[16px] font-medium transition-all duration-300 ease-in-out">
-              ⭐
-            </span>
-          }
-          onValueChange={(value) => handleSelectCustomField(type, value)}
-          onFocusChange={() => toglleSelectCustomField(type)}
-          placeholder="Custom"
+          startContent={<span>⭐</span>}
         />
       )
     }
