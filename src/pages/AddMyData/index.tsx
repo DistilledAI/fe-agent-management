@@ -1,4 +1,3 @@
-import { desktopPrivateAgent } from "@assets/images"
 import { PATH_NAMES } from "@constants/index"
 import ConnectData from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization/ConnectData"
 import MainContainerCreate from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/MainContainerCreate"
@@ -14,16 +13,9 @@ const AddMyData = () => {
   }
 
   return (
-    <div
-      className="relative mx-auto h-full w-full flex-1 rounded-[22px] border border-white bg-white bg-cover bg-center bg-no-repeat font-barlow"
-      style={{
-        backgroundImage: `url(${desktopPrivateAgent})`,
-      }}
-    >
-      <MainContainerCreate botId={botId} onCallBack={onCallBack}>
-        <ConnectData />
-      </MainContainerCreate>
-    </div>
+    <MainContainerCreate botId={botId} onCallBack={onCallBack}>
+      <ConnectData />
+    </MainContainerCreate>
   )
 }
 

@@ -38,7 +38,7 @@ const CreatePrivateAgent: React.FC<{
 
   return (
     <MainContainerCreate>
-      <div className="flex h-full w-full max-w-[768px] flex-col items-center pt-4 md:justify-center md:pt-0">
+      <div className="mx-auto flex h-full w-full max-w-[768px] flex-col items-center pt-4 max-xl:px-4 md:justify-center md:py-0">
         {connectWalletLoading && (
           <div className="mb-6 flex flex-col items-center gap-2">
             <div className="flex-items-center">

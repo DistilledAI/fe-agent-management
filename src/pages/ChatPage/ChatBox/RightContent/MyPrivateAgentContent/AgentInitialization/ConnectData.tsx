@@ -79,12 +79,12 @@ const ConnectData = () => {
 
   return (
     <>
-      <div className="absolute top-[65%] flex -translate-y-1/2 items-center justify-center text-center">
-        {/* <span className="text-base text-mercury-800">Max file size: 50MB</span> */}
-      </div>
-      <div className="absolute top-6 h-full w-full max-w-[800px]">
-        <div className="relative mx-auto mb-6 flex max-w-[484px] items-center justify-between gap-2">
-          <div className="flex flex-col items-center gap-1">
+      {/* <div className="absolute top-[65%] flex -translate-y-1/2 items-center justify-center text-center">
+        <span className="text-base text-mercury-800">Max file size: 50MB</span>
+      </div> */}
+      <div className="mx-auto h-auto w-full max-w-[800px] overflow-y-auto px-4 md:h-full md:px-0">
+        <div className="relative mx-auto mb-4 flex max-w-[684px] items-center justify-between md:mb-6">
+          <div className="flex flex-1 flex-col items-center gap-1">
             <div className="relative flex h-8 w-8 items-center justify-center rounded-full bg-[#FC0] md:h-10 md:w-10">
               <FilledBrainAIIcon color="#363636" size={24} />
               <div
@@ -107,16 +107,16 @@ const ConnectData = () => {
               </div>
             </div>
             <div className="flex flex-col">
-              <span className="text-18 font-semibold text-mercury-950">
+              <span className="text-14 font-semibold text-mercury-950 md:text-18">
                 Creating your
               </span>
-              <span className="text-18 font-semibold text-mercury-950">
+              <span className="text-14 font-semibold text-mercury-950 md:text-18">
                 Private Agent...
               </span>
             </div>
           </div>
 
-          <div className="absolute left-1/2 top-4 w-full max-w-[255px] -translate-x-[60%]">
+          <div className="absolute left-1/2 top-4 w-full max-w-[150px] -translate-x-1/2 md:max-w-[280px]">
             <img src={borderGdImg} />
             <div className="absolute -top-[9px] left-1/2">
               <div className="rotate-90">
@@ -125,39 +125,41 @@ const ConnectData = () => {
             </div>
           </div>
 
-          <div className="flex flex-col items-center gap-1">
+          <div className="flex flex-1 flex-col items-center gap-1">
             <div className="relative flex h-8 w-8 items-center justify-center rounded-full bg-mercury-200 md:h-10 md:w-10">
               <DatabaseIcon color="#363636" size={24} />
               <div className="absolute -bottom-1 -right-1">
                 <FilledShieldCheckedIcon color="#A2845E" />
               </div>
             </div>
-            <p className="max-w-[227px] text-18 font-semibold text-mercury-950">
+            <p className="max-w-[227px] text-14 font-semibold text-mercury-950 max-md:text-center md:text-18">
               Connect anything you want the Private Agent to learn
             </p>
           </div>
         </div>
-        <div className="mb-6 space-y-2">
+        <div className="mb-4 space-y-2 md:mb-6">
           {!isBotActive ? (
-            <div className="flex justify-between gap-2 rounded-lg border border-brown-500 bg-brown-50 px-4 py-3">
-              <div className="flex flex-1 items-center gap-2">
-                <InfoCircleIcon color="#83664B" size={16} />
-                <p className="text-brown-600 text-16 font-medium">
+            <div className="flex flex-col justify-between gap-2 rounded-lg border border-brown-500 bg-brown-50 px-4 py-3 md:flex-row">
+              <div className="flex items-center gap-2">
+                <div>
+                  <InfoCircleIcon color="#83664B" size={16} />
+                </div>
+                <p className="text-16 font-medium text-brown-600">
                   We appreciate your patience. Please join the whitelist to
                   activate.
                 </p>
               </div>
-              <div className="flex gap-4">
+              <div className="flex gap-4 max-md:ml-[22px]">
                 <Link
                   to="https://forms.gle/qGWWAnt3nWWAkxeE9"
                   target="_blank"
-                  className="text-brown-600 whitespace-nowrap text-16 font-bold hover:underline"
+                  className="text-16 font-bold text-brown-600 hover:underline"
                 >
                   Enter waitlist
                 </Link>
                 <Link
                   to={`${PATH_NAMES.MARKETPLACE}`}
-                  className="text-brown-600 whitespace-nowrap text-16 font-bold hover:underline"
+                  className="text-16 font-bold text-brown-600 hover:underline"
                 >
                   Chat with other agents
                 </Link>
@@ -173,11 +175,11 @@ const ConnectData = () => {
                 <InfoCircleIcon color="#83664B" size={16} />
               </div>
               <div>
-                <p className="text-brown-600 text-16 font-medium">
+                <p className="text-16 font-medium text-brown-600">
                   Since no data has been added, your agent lacks personalized
                   intelligence.
                 </p>
-                <p className="text-brown-600 text-16 font-medium">
+                <p className="text-16 font-medium text-brown-600">
                   Please add your data to help your agent learn more about you.
                 </p>
               </div>
@@ -187,8 +189,8 @@ const ConnectData = () => {
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-6">
-          <div className="flex flex-col gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="flex flex-col gap-4">
             <UploadSocialLink moreCustomRequest={onMoreCustomRequest} />
             <UploadCustom
               fieldkey="uploadCV"
@@ -210,7 +212,7 @@ const ConnectData = () => {
               moreCustomRequest={onMoreCustomRequest}
             />
           </div>
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-4">
             <UploadCustom
               fieldkey="uploadPDFs"
               fileKey={TYPE_DATA_KEY.PDF_FILE}

@@ -110,7 +110,7 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
             mainWrapper: "w-fit",
             inputWrapper: twMerge(
               "rounded-[14px] p-4 font-medium border-[2px] h-[64px] transition-all duration-300 ease-in-out hover:!bg-brown-50 focus:!bg-brown-50 focus-within:!bg-brown-50 border-transparent bg-mercury-30",
-              customFieldState.isFocused && "border-brown-500 bg-brown-50",
+              customFieldState.value && "border-brown-500 bg-brown-50",
             ),
             input: "text-[16px] font-medium text-mercury-700 w-[124px]",
           }}
