@@ -6,7 +6,9 @@ import { Link } from "react-router-dom"
 import CreatPrivateAgentModal from "../Modal/CreatPrivateAgentModal"
 import UploadDataButton from "../UploadDataButton"
 
-const UploadSocialLink = () => {
+const UploadSocialLink: React.FC<{ moreCustomRequest: any }> = ({
+  moreCustomRequest,
+}) => {
   const [socialUrls, setSocialUrls] = useState<string[]>([])
   const [openPopup, setOpenPopup] = useState<boolean>(false)
   const { control, getValues, setValue } = useFormContext()
@@ -89,6 +91,7 @@ const UploadSocialLink = () => {
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
         handlemSetSocialUrls={handlemSetSocialUrls}
+        moreCustomRequest={moreCustomRequest}
       />
     </>
   )

@@ -67,7 +67,6 @@ const useConnectWallet = () => {
   const connectOwallet = async () => {
     //@ts-ignore
     const isOwallet = window.owallet.isOwallet
-    console.log("🚀 ~ connectOwal ~ isOwallet:", isOwallet)
     if (!isOwallet) {
       if (isMobile) {
         const deepLinkApp = `owallet//`

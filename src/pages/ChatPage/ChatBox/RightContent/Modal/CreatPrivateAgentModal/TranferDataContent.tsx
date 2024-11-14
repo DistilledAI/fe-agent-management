@@ -15,11 +15,13 @@ const TranferDataContent: React.FC<{
   collectedData: any
   setOpenPopup: any
   handlemSetSocialUrls: any
+  moreCustomRequest: any
 }> = ({
   collectedData,
   setContentStep,
   setOpenPopup,
   handlemSetSocialUrls,
+  moreCustomRequest,
 }) => {
   const { setValue, getValues } = useFormContext()
   const profileType = collectedData?.profileType
@@ -59,7 +61,7 @@ const TranferDataContent: React.FC<{
           id: data?.id,
           uid,
         })
-        toast.success(`${profileLink} uploaded successfully.`)
+        moreCustomRequest([data?.id])
       }
     } catch (error) {
       handlemSetSocialUrls({

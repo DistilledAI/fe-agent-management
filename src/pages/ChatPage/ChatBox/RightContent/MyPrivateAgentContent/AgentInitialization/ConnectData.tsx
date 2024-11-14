@@ -1,23 +1,25 @@
+import { borderGdImg } from "@assets/images"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
+import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
+import { DatabaseIcon } from "@components/Icons/DatabaseImportIcon"
+import { CheckFilledIcon } from "@components/Icons/DefiLens"
+import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
+import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
 import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
 import { PhotoPlusIcon } from "@components/Icons/PhotoPlusIcon"
+import { TxtIcon } from "@components/Icons/TextIcon"
+import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
+import { Button, Spinner } from "@nextui-org/react"
+import useFetchMyData from "@pages/MyData/useFetch"
+import { useQuery } from "@tanstack/react-query"
+import { Link, useParams } from "react-router-dom"
+import { toast } from "react-toastify"
+import { mapMyDataToBot } from "services/user"
+import { twMerge } from "tailwind-merge"
+import { QueryDataKeys } from "types/queryDataKeys"
 import { TYPE_DATA_KEY } from "../CreatePrivateAgent"
 import UploadCustom from "../UploadCustom"
 import UploadSocialLink from "../UploadSocialLink"
-import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
-import { Link, useParams } from "react-router-dom"
-import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
-import { useQuery } from "@tanstack/react-query"
-import { QueryDataKeys } from "types/queryDataKeys"
-import { borderGdImg } from "@assets/images"
-import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
-import { DatabaseIcon } from "@components/Icons/DatabaseImportIcon"
-import { Spinner } from "@nextui-org/react"
-import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
-import useFetchMyData from "@pages/MyData/useFetch"
-import { CheckFilledIcon } from "@components/Icons/DefiLens"
-import { twMerge } from "tailwind-merge"
-import { TxtIcon } from "@components/Icons/TextIcon"
 
 const ConnectData = () => {
   const { botId } = useParams()
@@ -32,10 +34,40 @@ const ConnectData = () => {
       : null
   const isBotActive = agent && agent?.status === STATUS_AGENT.ACTIVE
 
+  const onMoreCustomRequest = async (data: any) => {
+    try {
+      const payload = {
+        botId,
+        data,
+      }
+      const res = await mapMyDataToBot(payload)
+      if (res) {
+        toast.success(
+          <div className="">
+            <span className="tetx-base text-mercury-700">Connect success</span>
+            <br />
+            <span className="text-20 font-medium text-mercury-900">
+              {data?.length} data source(s) have been added to your data pod.
+            </span>
+            <br />
+            <span className="text-base-md text-[#F78500]">
+              Please sync your private agents with the new data.
+            </span>
+            <Button className="h-[44px] rounded-full bg-mercury-950 text-white max-md:h-[52px] max-md:w-full">
+              <span className="">Go to My Data and Sync</span>
+            </Button>
+          </div>,
+        )
+      }
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message)
+    }
+  }
+
   return (
     <>
       <div className="absolute top-[65%] flex -translate-y-1/2 items-center justify-center text-center">
-        <span className="text-base text-mercury-800">Max file size: 50MB</span>
+        {/* <span className="text-base text-mercury-800">Max file size: 50MB</span> */}
       </div>
       <div className="absolute top-6 h-full w-full max-w-[800px]">
         <div className="relative mx-auto mb-6 flex max-w-[484px] items-center justify-between gap-2">
@@ -144,7 +176,7 @@ const ConnectData = () => {
 
         <div className="grid grid-cols-2 gap-6">
           <div>
-            <UploadSocialLink />
+            <UploadSocialLink moreCustomRequest={onMoreCustomRequest} />
             <UploadCustom
               fieldkey="uploadCV"
               fileKey={TYPE_DATA_KEY.CV_FILE}
@@ -152,6 +184,7 @@ const ConnectData = () => {
               label="CV"
               maxCount={3}
               multiple
+              moreCustomRequest={onMoreCustomRequest}
             />
           </div>
           <div className="flex flex-col gap-6">
@@ -162,6 +195,7 @@ const ConnectData = () => {
               label="PDFs"
               maxCount={3}
               multiple
+              moreCustomRequest={onMoreCustomRequest}
             />
             <UploadCustom
               fieldkey="photosVideos"
@@ -171,6 +205,7 @@ const ConnectData = () => {
               accept="image/*,video/*"
               maxCount={3}
               multiple
+              moreCustomRequest={onMoreCustomRequest}
             />
           </div>
           <div className="flex flex-col gap-6">
@@ -182,6 +217,7 @@ const ConnectData = () => {
               accept=".txt,.md"
               maxCount={3}
               multiple
+              moreCustomRequest={onMoreCustomRequest}
             />
           </div>
         </div>

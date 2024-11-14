@@ -19,6 +19,7 @@ interface UploadCustomProps {
   accept?: string
   maxCount?: number
   multiple?: boolean
+  moreCustomRequest?: any
 }
 
 const maxSizeUpload = 50
@@ -29,13 +30,13 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
   icon,
   label,
   accept = ".doc,.docx,application/pdf",
-  maxCount,
   multiple,
+  moreCustomRequest,
 }) => {
   const messagesEndRef = useRef<any>()
   const { control, setValue, getValues } = useFormContext()
   const uploadCVValue = getValues(fieldkey)
-  const [fileList, setFileList] = useState<UploadFile[]>([])
+  const [fileListValue, setFileList] = useState<UploadFile[]>([])
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -44,8 +45,8 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
   const handleChange: UploadProps["onChange"] = ({ fileList }) => {
     scrollToBottom()
     const newFileList = fileList.filter((item) => item.status !== undefined)
-    const fileListDone = newFileList.filter((item) => item?.status === "done")
-    const newFileListDone = fileListDone.map((item) => item?.response?.id)
+    const fileListDone = newFileList?.filter((item) => item?.status === "done")
+    const newFileListDone = fileListDone?.map((item) => item?.response?.id)
     setValue(fieldkey, newFileListDone)
     setFileList(newFileList)
   }
@@ -59,7 +60,8 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
       const response = await uploadMyData(formData)
       if (response) {
         onSuccess(response?.data?.[0])
-        toast.success(`${file.name} uploaded successfully.`)
+        const fileId = response?.data?.[0]?.id
+        moreCustomRequest([fileId])
       }
     } catch (error) {
       console.error(error)
@@ -80,7 +82,7 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
   const props: UploadProps = {
     name: "file",
     onChange: handleChange,
-    fileList: fileList,
+    fileList: fileListValue,
     customRequest: handleCustomRequest,
     beforeUpload,
   }
@@ -99,7 +101,7 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
     setValue(fieldkey, newUploadCVValue)
 
     //set display value
-    const newFileList = fileList?.filter(
+    const newFileList = fileListValue?.filter(
       (item: any) => item.uid !== record?.uid,
     )
     setFileList(newFileList)
@@ -119,7 +121,7 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
               width: "100%",
             }}
             className="!w-full"
-            maxCount={maxCount}
+            // maxCount={maxCount}
             multiple={multiple}
           >
             <div className="flex h-[50px] w-full min-w-[130px] cursor-pointer items-center justify-between gap-2 rounded-full border border-mercury-70 bg-mercury-30 p-4 shadow-6">
@@ -131,9 +133,9 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
             </div>
           </StyledUpload>
 
-          {fileList.length > 0 && (
+          {fileListValue.length > 0 && (
             <div className="flex max-h-[150px] flex-col overflow-auto p-3">
-              {fileList.map((item: any) => {
+              {fileListValue.map((item: any) => {
                 const isError = item?.status === "error"
 
                 return (
@@ -156,7 +158,6 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
                         <span className="text-base-14-sb">{item.name}</span>
                       </Link>
                     )}
-
                     <div
                       className="cursor-pointer"
                       onClick={() => handleRemoveFile(item)}

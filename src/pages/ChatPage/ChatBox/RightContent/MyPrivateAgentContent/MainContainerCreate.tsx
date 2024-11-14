@@ -1,12 +1,8 @@
 import { desktopPrivateAgent } from "@assets/images"
 import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
 import { Button } from "@nextui-org/react"
-import { useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
-import { toast } from "react-toastify"
-import { mapMyDataToBot } from "services/user"
-import { QueryDataKeys } from "types/queryDataKeys"
 import CollectingModal from "../Modal/CreatPrivateAgentModal/CollectingModal"
 import FYIModal from "../Modal/FYIModal"
 
@@ -16,10 +12,8 @@ const MainContainerCreate: React.FC<{
   botId?: number | string
   onCallBack?: any
 }> = ({ children, setCreated, botId, onCallBack }) => {
-  const [isCollected, setIsCollected] = useState(false)
   const [openFYIPopup, setOpenFYIPopupp] = useState<boolean>(false)
   const [openCollectingPopup, setOpenCollectingPopup] = useState<boolean>(false)
-  const queryClient = useQueryClient()
   const methods = useForm<any>({
     defaultValues: {
       uploadCV: [],
@@ -29,50 +23,6 @@ const MainContainerCreate: React.FC<{
       txtFiles: [],
     },
   })
-  const values = methods.watch()
-  const uploadCVValues = values.uploadCV.length > 0 ? values.uploadCV : []
-  const uploadSocialLinkValues =
-    values.uploadSocialLink.length > 0 ? values.uploadSocialLink : []
-  const uploadPDFsValues = values.uploadPDFs.length > 0 ? values.uploadPDFs : []
-  const photosVideosValues =
-    values.photosVideos.length > 0 ? values.photosVideos : []
-  const txtFilesValues = values.txtFiles.length > 0 ? values.txtFiles : []
-
-  const isDisabled =
-    uploadCVValues.length > 0 ||
-    uploadSocialLinkValues.length > 0 ||
-    uploadPDFsValues.length > 0 ||
-    photosVideosValues.length > 0 ||
-    txtFilesValues.length > 0
-
-  const onSubmit = async () => {
-    setOpenCollectingPopup(true)
-    const payloadData = [
-      ...uploadCVValues,
-      ...uploadSocialLinkValues,
-      ...uploadPDFsValues,
-      ...photosVideosValues,
-      ...txtFilesValues,
-    ]
-
-    try {
-      if (botId) {
-        const payload = {
-          botId,
-          data: payloadData,
-        }
-        await mapMyDataToBot(payload)
-        toast.success("Updated bot successfully")
-        queryClient.refetchQueries({ queryKey: [QueryDataKeys.MY_BOT_LIST] })
-        setIsCollected(true)
-        return
-      }
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message)
-      console.log("error", error)
-      setOpenCollectingPopup(false)
-    }
-  }
 
   return (
     <div
@@ -109,19 +59,13 @@ const MainContainerCreate: React.FC<{
                   </div>
                 </div>
 
-                <Button
-                  className="h-14 min-w-[213px] rounded-full bg-mercury-950 px-6 text-[16px] text-mercury-30 max-md:h-[52px] max-md:w-full md:text-[18px]"
-                  onClick={() => onSubmit()}
-                  isDisabled={!isDisabled}
-                >
+                <Button className="h-14 min-w-[213px] rounded-full bg-mercury-950 px-6 text-[16px] text-mercury-30 max-md:h-[52px] max-md:w-full md:text-[18px]">
                   <span className="">View Data Sync Status</span>
                 </Button>
               </div>
             ) : (
               <></>
             )}
-
-            <button onSubmit={onSubmit}></button>
           </div>
         </div>
       </FormProvider>
@@ -133,7 +77,6 @@ const MainContainerCreate: React.FC<{
           if (onCallBack) onCallBack()
           if (setCreated) setCreated(true)
         }}
-        isCollected={isCollected}
       />
     </div>
   )
