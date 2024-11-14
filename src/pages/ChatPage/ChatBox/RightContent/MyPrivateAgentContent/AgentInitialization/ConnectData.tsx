@@ -154,7 +154,7 @@ const ConnectData = () => {
             <></>
           )}
 
-          {myDataList.length && isFetched ? (
+          {!myDataList.length && isFetched ? (
             <div className="flex items-center gap-2 rounded-lg border border-brown-500 bg-brown-50 px-4 py-3">
               <div>
                 <InfoCircleIcon color="#83664B" size={16} />
