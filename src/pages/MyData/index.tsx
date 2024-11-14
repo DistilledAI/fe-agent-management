@@ -12,10 +12,8 @@ import MediaData from "./Media"
 import useFetchMyData from "./useFetch"
 import useUpdateStatus from "./useUpdateStatus"
 import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
-import { QueryDataKeys } from "types/queryDataKeys"
-import { useQuery } from "@tanstack/react-query"
-import { STATUS_AGENT } from "@constants/index"
 import TxtData from "./Txt"
+import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
 
 const MyData: React.FC = () => {
   const { isMobile } = useWindowSize()
@@ -23,11 +21,11 @@ const MyData: React.FC = () => {
   const { list, isLoading, isFetched, botId } = useFetchMyData()
   const lastCollected = getTimeLastCollected(list)
   useUpdateStatus(botId)
-  const { data: dtAgent }: { data: any } = useQuery({
-    queryKey: [QueryDataKeys.MY_BOT_LIST],
-    refetchOnWindowFocus: false,
-  })
-  const isBotActive = dtAgent?.data?.items?.[0]?.status === STATUS_AGENT.ACTIVE
+  // const { data: dtAgent }: { data: any } = useQuery({
+  //   queryKey: [QueryDataKeys.MY_BOT_LIST],
+  //   refetchOnWindowFocus: false,
+  // })
+  // const isBotActive = dtAgent?.data?.items?.[0]?.status === STATUS_AGENT.ACTIVE
 
   return (
     <div className="mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px]">
@@ -45,9 +43,11 @@ const MyData: React.FC = () => {
           <AddData botId={botId} />
         </div>
       ) : (
-        <div className="mb-7 flex items-center justify-between">
+        <div className="mb-10 flex items-center justify-between">
           <div className="text-mercury-950">
-            <h3 className="mb-1 text-24 font-semibold">My data</h3>
+            <h3 className="mb-1 flex items-center gap-2 text-24 font-semibold">
+              My data <FilledShieldCheckedIcon size={20} color="#A2845E" />
+            </h3>
             <div className="inline-flex items-center text-mercury-800">
               <span>Last collected:</span>
               <span className="ml-1 font-semibold">
@@ -64,15 +64,16 @@ const MyData: React.FC = () => {
           <span className="ml-1 font-semibold">{lastCollected}</span>
         </div>
       )}
-      {!isBotActive && list.length > 0 && (
-        <div className="mb-6 flex items-center gap-6 rounded-lg border border-brown-500 bg-brown-50 px-4 py-3">
+      {list.length === 0 && isFetched && (
+        <div className="mb-6 flex items-center gap-6 rounded-lg border border-brown-500 bg-brown-50 px-4 py-2">
           <div className="flex items-center gap-2">
             <div>
-              <InfoCircleIcon size={28} color="#83664B" />
+              <InfoCircleIcon size={16} color="#83664B" />
             </div>
             <p className="text-brown-600 text-14 font-medium md:text-16">
-              Your agent is in the process of being created, you can't sync data
-              for your agent yet
+              Since no data has been added, your agent lacks personalized
+              intelligence. <br /> Please add your data to help your agent learn
+              more about you.
             </p>
           </div>
         </div>

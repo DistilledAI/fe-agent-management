@@ -8,12 +8,10 @@ import React from "react"
 import TableData from "../Components/TableData"
 import TableDataMobile from "../Components/TableDataMobile"
 import DeleteData from "../DeleteData"
-import SyncData, { MY_DATA_STATUS, SyncLabel } from "../SyncData"
+import SyncData, { SyncLabel } from "../SyncData"
 import useFetchByCategory from "../useFetchByCategory"
-import { QueryDataKeys } from "types/queryDataKeys"
-import { STATUS_AGENT } from "@constants/index"
-import { useQuery } from "@tanstack/react-query"
 import { TxtIcon } from "@components/Icons/TextIcon"
+import { hasSyncData, hasSyncDataByStatus } from "../helpers"
 
 enum ColumnKey {
   Name = "name",
@@ -52,26 +50,6 @@ const TxtData: React.FC<{
     fetchNextPage,
   } = useFetchByCategory(category, botId)
 
-  const { data: dtAgent }: { data: any } = useQuery({
-    queryKey: [QueryDataKeys.MY_BOT_LIST],
-    refetchOnWindowFocus: false,
-  })
-  const isBotActive = dtAgent?.data?.items?.[0]?.status === STATUS_AGENT.ACTIVE
-
-  const hasSyncData = Boolean(
-    data.find(
-      (item) =>
-        item.status === MY_DATA_STATUS.ACTIVE ||
-        item.status === MY_DATA_STATUS.SUSPENDED,
-    ),
-  )
-
-  const hasSyncDataByStatus = (status: MY_DATA_STATUS) => {
-    return (
-      status === MY_DATA_STATUS.ACTIVE || status === MY_DATA_STATUS.SUSPENDED
-    )
-  }
-
   const renderCell = (item: Record<string, any>, columnKey: string) => {
     const dataId = item?.id
 
@@ -91,11 +69,7 @@ const TxtData: React.FC<{
       case ColumnKey.Action:
         return (
           <div className="flex items-center justify-end gap-4">
-            <div
-              className={!isBotActive ? "pointer-events-none opacity-45" : ""}
-            >
-              <SyncData botId={botId} dataId={dataId} status={item.status} />
-            </div>
+            <SyncData botId={botId} dataId={dataId} status={item.status} />
             <DeleteData
               botId={item.userId}
               ids={[item.id]}
@@ -153,7 +127,7 @@ const TxtData: React.FC<{
           title="Text files"
           addTitle="Add text files"
         />
-        {hasSyncData && <SyncLabel />}
+        {hasSyncData(data) && <SyncLabel />}
       </div>
 
       <div className="mt-4">

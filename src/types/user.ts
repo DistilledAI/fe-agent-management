@@ -1,5 +1,4 @@
-import { Publish } from "@constants/index"
-import { MY_DATA_STATUS } from "@pages/MyData/SyncData"
+import { MY_DATA_STATUS, Publish } from "@constants/index"
 import { BotDataTypeKey } from "@types"
 
 export interface IUserDetail {
