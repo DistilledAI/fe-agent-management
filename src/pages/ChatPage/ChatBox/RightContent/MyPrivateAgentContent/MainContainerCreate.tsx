@@ -86,25 +86,31 @@ const MainContainerCreate: React.FC<{
           <div className="relative flex h-full w-full flex-col items-center justify-between">
             {children}
             {botId ? (
-              <div className="absolute bottom-[100px] flex items-center gap-2 rounded-[22px] border border-mercury-200 bg-white p-4 text-center max-md:static max-md:bottom-[40px] max-md:mt-6 max-md:w-full max-md:flex-col">
+              <div className="absolute bottom-16 flex max-w-[800px] items-center gap-6 rounded-[22px] border border-mercury-200 bg-white p-4 max-md:static max-md:bottom-[40px] max-md:mt-6 max-md:w-full max-md:flex-col">
                 <div>
-                  <span className="text-base-14 text-mercury-800">
-                    Your Private Agent is exclusively accessible to you unless
-                    you choose to publish it on the Marketplace.
-                  </span>
+                  <p className="text-14 text-mercury-950">
+                    Your data is protected through{" "}
+                    <span className="font-bold">
+                      Confidential Computing (CC)
+                    </span>{" "}
+                    within a{" "}
+                    <span className="font-bold">
+                      Trusted Execution Environment (TEE).
+                    </span>
+                  </p>
                   <div
                     className="flex-items-center mt-2 cursor-pointer gap-2 max-md:mb-2 max-md:justify-center"
                     onClick={() => setOpenFYIPopupp(true)}
                   >
                     <FilledShieldCheckedIcon color="#A2845E" />
-                    <span className="text-base-14-md text-brown-10">
+                    <span className="text-16 font-medium text-brown-500">
                       How do we protect your private data?
                     </span>
                   </div>
                 </div>
 
                 <Button
-                  className="h-[44px] rounded-full bg-mercury-950 text-white max-md:h-[52px] max-md:w-full"
+                  className="h-14 min-w-[213px] rounded-full bg-mercury-950 px-6 text-[16px] text-mercury-30 max-md:h-[52px] max-md:w-full md:text-[18px]"
                   onClick={() => onSubmit()}
                   isDisabled={!isDisabled}
                 >
