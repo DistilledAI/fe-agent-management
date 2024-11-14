@@ -50,6 +50,14 @@ export const STATUS_AGENT = {
   PENDING: 4,
 }
 
+export enum MY_DATA_STATUS {
+  ACTIVE = 1,
+  PROCESSING = 0,
+  RESOLVED = 4,
+  SUSPENDED = 2,
+  DELETED = 3,
+}
+
 export enum TYPE_BOT {
   VOICE = 2,
   NONE = -1,

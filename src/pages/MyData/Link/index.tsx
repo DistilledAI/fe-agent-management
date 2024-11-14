@@ -11,11 +11,9 @@ import React from "react"
 import TableData from "../Components/TableData"
 import TableDataMobile from "../Components/TableDataMobile"
 import DeleteData from "../DeleteData"
-import SyncData, { MY_DATA_STATUS, SyncLabel } from "../SyncData"
+import SyncData, { SyncLabel } from "../SyncData"
 import useFetchByCategory from "../useFetchByCategory"
-import { useQuery } from "@tanstack/react-query"
-import { QueryDataKeys } from "types/queryDataKeys"
-import { STATUS_AGENT } from "@constants/index"
+import { hasSyncData, hasSyncDataByStatus } from "../helpers"
 
 enum ColumnKey {
   Name = "name",
@@ -54,26 +52,6 @@ const LinkData: React.FC<{
     fetchNextPage,
   } = useFetchByCategory(category, botId)
 
-  const { data: dtAgent }: { data: any } = useQuery({
-    queryKey: [QueryDataKeys.MY_BOT_LIST],
-    refetchOnWindowFocus: false,
-  })
-  const isBotActive = dtAgent?.data?.items?.[0]?.status === STATUS_AGENT.ACTIVE
-
-  const hasSyncData = Boolean(
-    data.find(
-      (item) =>
-        item.status === MY_DATA_STATUS.ACTIVE ||
-        item.status === MY_DATA_STATUS.SUSPENDED,
-    ),
-  )
-
-  const hasSyncDataByStatus = (status: MY_DATA_STATUS) => {
-    return (
-      status === MY_DATA_STATUS.ACTIVE || status === MY_DATA_STATUS.SUSPENDED
-    )
-  }
-
   const renderCell = (item: Record<string, any>, columnKey: string) => {
     const isSocialMediaType = item?.key === TYPE_DATA_KEY.SOCIAL_MEDIA
     const dataId = item?.id
@@ -98,11 +76,7 @@ const LinkData: React.FC<{
             {/* <div className="cursor-pointer hover:opacity-70">
               <EditPenFilledIcon color="#545454" />
             </div> */}
-            <div
-              className={!isBotActive ? "pointer-events-none opacity-45" : ""}
-            >
-              <SyncData botId={botId} dataId={dataId} status={item.status} />
-            </div>
+            <SyncData botId={botId} dataId={dataId} status={item.status} />
             <DeleteData
               botId={item.userId}
               ids={[item.id]}
@@ -160,7 +134,7 @@ const LinkData: React.FC<{
           title="Website Links/Social media"
           addTitle="Add link"
         />
-        {hasSyncData && <SyncLabel />}
+        {hasSyncData(data) && <SyncLabel />}
       </div>
       <div className="mt-4">
         {isMobile ? (

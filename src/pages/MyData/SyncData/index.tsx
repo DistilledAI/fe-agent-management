@@ -5,19 +5,15 @@ import React, { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { trainData } from "services/chat"
 import { match } from "ts-pattern"
+import useCheckBotActive from "../useCheckBotActive"
+import InfoWarningModal from "../Components/InfoWarningModal"
+import { getValueInfoWarning } from "../helpers"
+import { MY_DATA_STATUS } from "@constants/index"
 
 interface SyncDataProps {
   dataId: number
   botId: number
   status: MY_DATA_STATUS
-}
-
-export enum MY_DATA_STATUS {
-  ACTIVE = 1,
-  PROCESSING = 0,
-  RESOLVED = 4,
-  SUSPENDED = 2,
-  DELETED = 3,
 }
 
 const SyncData: React.FC<SyncDataProps> = ({
@@ -26,6 +22,7 @@ const SyncData: React.FC<SyncDataProps> = ({
   status: dataStatus,
 }) => {
   const [status, setStatus] = useState<MY_DATA_STATUS>(dataStatus)
+  const { isBotActive } = useCheckBotActive()
 
   useEffect(() => {
     setStatus(dataStatus)
@@ -33,6 +30,7 @@ const SyncData: React.FC<SyncDataProps> = ({
 
   const handleSyncData = async () => {
     try {
+      if (!isBotActive) return
       const response = await trainData({
         botId,
         id: dataId,
@@ -69,7 +67,15 @@ const SyncData: React.FC<SyncDataProps> = ({
       ))
   }
 
-  return <>{renderSyncStatus()}</>
+  return (
+    <InfoWarningModal
+      title={getValueInfoWarning(status).title}
+      description={getValueInfoWarning(status).description}
+      isShow={!isBotActive || status === MY_DATA_STATUS.PROCESSING}
+    >
+      {renderSyncStatus()}
+    </InfoWarningModal>
+  )
 }
 
 export const SyncLabel = () => {
