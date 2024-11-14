@@ -61,7 +61,7 @@ const CreatePrivateAgent: React.FC<{
             isFullScreenIcon
           />
           <div className="flex w-full flex-1 flex-col items-center rounded-[22px] border border-mercury-70 bg-mercury-30 p-4 md:p-6">
-            <div className="flex gap-2 max-md:items-center md:flex-col">
+            <div className="flex items-center gap-2 md:flex-col">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FC0] md:h-10 md:w-10">
                 <FilledBrainAIIcon color="#363636" size={24} />
               </div>
@@ -84,7 +84,7 @@ const CreatePrivateAgent: React.FC<{
         </div>
 
         <div className="mt-2 flex w-full flex-col items-center rounded-[22px] border border-mercury-70 bg-mercury-30 p-6 max-md:mb-4 md:mt-6">
-          <div className="flex gap-2 max-md:items-center md:flex-col">
+          <div className="flex items-center gap-2 md:flex-col">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-mercury-200 md:h-10 md:w-10">
               <MessageFilledIcon />
             </div>
