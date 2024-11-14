@@ -12,11 +12,11 @@ const UserAuthWrapper = () => {
   return (
     <div
       className={twMerge(
-        "fixed right-0 top-0 z-20 w-full bg-white pl-[345px] text-end duration-300",
-        sidebarCollapsed && "pl-[120px]",
+        "fixed right-0 top-0 z-20 w-full bg-white pl-[329px] text-end duration-300",
+        sidebarCollapsed && "pl-[104px]",
       )}
     >
-      <div className="pb-2 pr-4 pt-4">
+      <div className="px-4 pb-2 pt-4">
         <UserAuth connectWallet={connectMultipleWallet} />
       </div>
     </div>
