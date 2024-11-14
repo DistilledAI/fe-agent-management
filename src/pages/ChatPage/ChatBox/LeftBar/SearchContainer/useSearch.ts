@@ -1,4 +1,4 @@
-import { RoleUser } from "@constants/index"
+import { Publish, RoleUser, STATUS_AGENT } from "@constants/index"
 import { debounce } from "lodash"
 import { useEffect, useState } from "react"
 import { searchUsers } from "services/chat"
@@ -7,7 +7,6 @@ const useSearch = (inputRef: any, isAutoFocus = true) => {
   const [query, setQuery] = useState<string>("")
   const [data, setData] = useState<any[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const activeStatus = 1
 
   useEffect(() => {
     if (isAutoFocus) {
@@ -21,8 +20,9 @@ const useSearch = (inputRef: any, isAutoFocus = true) => {
       setLoading(true)
       const payloadData = {
         username: keyword,
-        status: activeStatus,
+        status: STATUS_AGENT.ACTIVE,
         role: keyword === "" ? RoleUser.BOT : role,
+        publish: Publish.Published,
       }
       const response = await searchUsers(JSON.stringify(payloadData))
       if (response) {
