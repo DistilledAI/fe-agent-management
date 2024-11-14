@@ -63,7 +63,7 @@ const MyData: React.FC = () => {
           <span className="ml-1 font-semibold">{lastCollected}</span>
         </div>
       )}
-      {!isBotActive && (
+      {!isBotActive && list.length > 0 && (
         <div className="mb-6 flex items-center gap-6 rounded-lg border border-brown-500 bg-brown-50 px-4 py-3">
           <div className="flex items-center gap-2">
             <div>
@@ -71,7 +71,7 @@ const MyData: React.FC = () => {
             </div>
             <p className="text-brown-600 text-14 font-medium md:text-16">
               Your agent is in the process of being created, you can't sync data
-              for your agent yet. This process typically takes around 6 hours.
+              for your agent yet
             </p>
           </div>
         </div>
