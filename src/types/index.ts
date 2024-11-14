@@ -3,6 +3,7 @@ export enum BotDataTypeKey {
   CV_FILE = "cv-file",
   PDF_FILE = "pdf-file",
   PHOTO_VIDEO_FILE = "photo-video-file",
+  TXT_FILE = "txt-file",
 }
 
 export enum ConfigBotType {
