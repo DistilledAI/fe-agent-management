@@ -16,10 +16,19 @@ import {
   PERSONALITY_LIST,
 } from "@constants/index"
 import { updateAvatarUser } from "services/user"
+import { useQuery } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const AgentInitialization = () => {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
+
+  const { data } = useQuery<any>({
+    queryKey: [QueryDataKeys.MY_BOT_LIST],
+    refetchOnWindowFocus: false,
+  })
+
+  const isBotCreated = data ? data.data.items.length > 0 : false
 
   const methods = useForm<any>({
     defaultValues: {
@@ -33,6 +42,8 @@ const AgentInitialization = () => {
 
   const onSubmit = async (data: any) => {
     try {
+      if (isBotCreated)
+        return toast.info("Your agent is created, please check again!")
       setIsLoading(true)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { avatar, avatarFile, ...newData } = data
