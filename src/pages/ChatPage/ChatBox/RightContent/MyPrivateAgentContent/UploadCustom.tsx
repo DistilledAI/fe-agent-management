@@ -42,13 +42,34 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
-  const handleChange: UploadProps["onChange"] = ({ fileList }) => {
+  const handleChange: UploadProps["onChange"] = async ({ fileList }) => {
     scrollToBottom()
     const newFileList = fileList.filter((item) => item.status !== undefined)
     const fileListDone = newFileList?.filter((item) => item?.status === "done")
     const newFileListDone = fileListDone?.map((item) => item?.response?.id)
     setValue(fieldkey, newFileListDone)
     setFileList(newFileList)
+
+    const isExistfileListUploading = newFileList
+      ?.map((item) => item?.status)
+      ?.includes("uploading")
+
+    if (!isExistfileListUploading) {
+      const newFileUploadDone = fileListDone?.filter(
+        (item: any) => !item?.connectedToAgent,
+      )
+      const newFileIdUploadDone = newFileUploadDone.map(
+        (item) => item?.response?.id,
+      )
+      const res = await moreCustomRequest(newFileIdUploadDone)
+      if (res) {
+        const newFileList = fileListDone?.map((item) => ({
+          ...item,
+          connectedToAgent: true,
+        }))
+        setFileList(newFileList)
+      }
+    }
   }
 
   const handleCustomRequest = async (options: any) => {
@@ -60,8 +81,6 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
       const response = await uploadMyData(formData)
       if (response) {
         onSuccess(response?.data?.[0])
-        const fileId = response?.data?.[0]?.id
-        moreCustomRequest([fileId])
       }
     } catch (error) {
       console.error(error)

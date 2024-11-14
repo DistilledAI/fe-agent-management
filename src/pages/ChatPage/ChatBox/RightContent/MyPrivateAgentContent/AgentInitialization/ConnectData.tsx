@@ -58,6 +58,7 @@ const ConnectData = () => {
             </Button>
           </div>,
         )
+        return "success"
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message)
