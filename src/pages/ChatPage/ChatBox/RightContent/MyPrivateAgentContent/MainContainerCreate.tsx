@@ -72,14 +72,14 @@ const MainContainerCreate: React.FC<{
 
   return (
     <div
-      className="relative mx-auto h-full w-full flex-1 rounded-[22px] border border-white bg-white bg-cover bg-center bg-no-repeat font-barlow"
+      className="relative mx-auto h-full w-full flex-1 overflow-y-auto bg-white bg-cover bg-center bg-no-repeat font-barlow"
       style={{
         backgroundImage: `url(${desktopPrivateAgent})`,
       }}
     >
       <FormProvider {...methods}>
-        <div className="relative h-full w-full flex-1 max-md:h-auto max-md:px-3 max-md:pb-[80px]">
-          <div className="flex-items-center relative h-full w-full flex-col justify-between">
+        <div className="relative h-full w-full flex-1 max-md:px-4">
+          <div className="relative flex h-full w-full flex-col items-center justify-between">
             {children}
             {botId ? (
               <div className="absolute bottom-[100px] flex items-center gap-2 rounded-[22px] border border-mercury-200 bg-white p-4 text-center max-md:static max-md:bottom-[40px] max-md:mt-6 max-md:w-full max-md:flex-col">

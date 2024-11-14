@@ -5,7 +5,7 @@ const MyPrivateAgentContentMobile: React.FC = () => {
   const { loading, connectMultipleWallet } = useConnectWallet()
 
   return (
-    <div className="h-[calc(100dvh-100px)]">
+    <div className="h-[calc(100dvh-110px)] w-dvw">
       <MyPrivateAgentContent
         connectWalletLoading={loading}
         connectWallet={connectMultipleWallet}

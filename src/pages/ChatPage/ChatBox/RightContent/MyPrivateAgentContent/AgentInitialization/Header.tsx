@@ -10,9 +10,9 @@ const Header = ({ isLoading }: Props) => {
   const username = useWatch({ control, name: "username" })
 
   return (
-    <div className="sticky top-[67.98px] z-10 flex items-center justify-center bg-mercury-30 bg-lgd-muted-beige-2 p-3">
-      <div className="flex w-full max-w-[768px] items-center justify-between">
-        <div className="flex flex-col">
+    <div className="sticky top-[50px] z-10 flex items-center justify-center bg-mercury-30 bg-lgd-muted-beige-2 p-3 md:top-[67.98px]">
+      <div className="flex w-full max-w-[768px] gap-2 max-md:flex-col md:items-center md:justify-between">
+        <div className="flex flex-col items-center">
           <span className="text-24 font-semibold text-mercury-950">
             Agent Initialization
           </span>
@@ -22,7 +22,7 @@ const Header = ({ isLoading }: Props) => {
         </div>
         <div className="flex gap-3">
           <Button
-            className="h-[44px] rounded-full bg-mercury-950 text-[16px] text-mercury-30"
+            className="h-[44px] rounded-full bg-mercury-950 text-[16px] text-mercury-30 max-md:w-full"
             type="submit"
             isLoading={isLoading}
             isDisabled={!username}
