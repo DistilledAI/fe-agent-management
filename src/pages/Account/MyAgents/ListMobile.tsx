@@ -1,18 +1,18 @@
 import AvatarCustom from "@components/AvatarCustom"
 import { ShareWithQrIcon } from "@components/Icons/Share"
+import PublishedOnMarket from "@components/PublishedOnMarket"
 import {
   MAP_DISPLAY_FROM_STATUS_MY_AGENT,
   PATH_NAMES,
   STATUS_AGENT,
 } from "@constants/index"
 import useLoadMoreByScroll from "@hooks/useLoadMoreByScroll"
+import { useDisclosure } from "@nextui-org/react"
 import React, { useRef, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { IAgentData } from "types/user"
 import ShareModal from "../../../components/ShareQRModal"
-import { useDisclosure } from "@nextui-org/react"
 import MyAgentAction from "./Action"
-import PublishedOnMarket from "@components/PublishedOnMarket"
 
 const ListAgentMobile: React.FC<{
   data: IAgentData[]
@@ -55,7 +55,10 @@ const ListAgentMobile: React.FC<{
                   {MAP_DISPLAY_FROM_STATUS_MY_AGENT[item.status]?.label ??
                     "- - -"}
                 </div>
-                <div key={item.id} className="flex flex-col gap-3">
+                <div
+                  key={item.id}
+                  className="flex flex-col gap-3 max-md:flex-row max-md:items-center max-md:justify-between"
+                >
                   <div className="flex gap-3">
                     <div>
                       <AvatarCustom

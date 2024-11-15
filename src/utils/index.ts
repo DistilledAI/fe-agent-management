@@ -186,3 +186,16 @@ export const isPassFileSize = (fileSize: number, maxSize: number) => {
 
   return true
 }
+
+export const calculateFileSize = (fileSize: number) => {
+  if (!fileSize) return ""
+  const units = ["bytes", "KB", "MB", "GB"]
+  let unitIndex = 0
+
+  while (fileSize >= 1024 && unitIndex < units.length - 1) {
+    fileSize /= 1024
+    unitIndex++
+  }
+
+  return `${Math.round(fileSize)} ${units[unitIndex]}`
+}

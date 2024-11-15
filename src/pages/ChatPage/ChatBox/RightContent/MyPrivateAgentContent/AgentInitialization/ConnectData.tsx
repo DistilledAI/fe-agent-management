@@ -1,5 +1,6 @@
 import { borderGdImg } from "@assets/images"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
+import { CheckedIcon } from "@components/Icons/Checked"
 import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { DatabaseIcon } from "@components/Icons/DatabaseImportIcon"
 import { CheckFilledIcon } from "@components/Icons/DefiLens"
@@ -20,7 +21,6 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import { TYPE_DATA_KEY } from "../CreatePrivateAgent"
 import UploadCustom from "../UploadCustom"
 import UploadSocialLink from "../UploadSocialLink"
-import { CheckedIcon } from "@components/Icons/Checked"
 
 const ConnectData = () => {
   const { botId } = useParams()
@@ -188,47 +188,38 @@ const ConnectData = () => {
             <></>
           )}
         </div>
-
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="flex flex-col gap-4">
             <UploadSocialLink moreCustomRequest={onMoreCustomRequest} />
             <UploadCustom
-              fieldkey="uploadCV"
               fileKey={TYPE_DATA_KEY.CV_FILE}
               icon={<PDFTypeIcon />}
               label="CV"
-              maxCount={3}
               multiple
               moreCustomRequest={onMoreCustomRequest}
             />
             <UploadCustom
-              fieldkey="txtFiles"
               fileKey={TYPE_DATA_KEY.TXT_FILE}
               icon={<TxtIcon />}
               label="Text files"
               accept=".txt,.md"
-              maxCount={3}
               multiple
               moreCustomRequest={onMoreCustomRequest}
             />
           </div>
           <div className="flex flex-col gap-4">
             <UploadCustom
-              fieldkey="uploadPDFs"
               fileKey={TYPE_DATA_KEY.PDF_FILE}
               icon={<PDFTypeIcon />}
               label="PDFs"
-              maxCount={3}
               multiple
               moreCustomRequest={onMoreCustomRequest}
             />
             <UploadCustom
-              fieldkey="photosVideos"
               fileKey={TYPE_DATA_KEY.PHOTO_VIDEO_FILE}
               icon={<PhotoPlusIcon />}
               label="Photos & Videos"
               accept="image/*,video/*"
-              maxCount={3}
               multiple
               moreCustomRequest={onMoreCustomRequest}
             />
