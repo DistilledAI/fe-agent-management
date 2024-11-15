@@ -11,9 +11,9 @@ import React from "react"
 import TableData from "../Components/TableData"
 import TableDataMobile from "../Components/TableDataMobile"
 import DeleteData from "../DeleteData"
+import { hasSyncData, hasSyncDataByStatus } from "../helpers"
 import SyncData, { SyncLabel } from "../SyncData"
 import useFetchByCategory from "../useFetchByCategory"
-import { hasSyncData, hasSyncDataByStatus } from "../helpers"
 
 enum ColumnKey {
   Name = "name",

@@ -1,4 +1,6 @@
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
+import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
+import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
 import useWindowSize from "@hooks/useWindowSize"
 import { Button } from "@nextui-org/react"
 import { BotDataTypeKey } from "@types"
@@ -6,26 +8,17 @@ import { useNavigate } from "react-router-dom"
 import AddData from "./AddData"
 import CvData from "./Cv"
 import FileData from "./File"
-import { getTimeLastCollected } from "./helpers"
 import LinkData from "./Link"
 import MediaData from "./Media"
+import TxtData from "./Txt"
 import useFetchMyData from "./useFetch"
 import useUpdateStatus from "./useUpdateStatus"
-import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
-import TxtData from "./Txt"
-import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
 
 const MyData: React.FC = () => {
   const { isMobile } = useWindowSize()
   const navigate = useNavigate()
-  const { list, isLoading, isFetched, botId } = useFetchMyData()
-  const lastCollected = getTimeLastCollected(list)
+  const { list, isFetched, botId } = useFetchMyData()
   useUpdateStatus(botId)
-  // const { data: dtAgent }: { data: any } = useQuery({
-  //   queryKey: [QueryDataKeys.MY_BOT_LIST],
-  //   refetchOnWindowFocus: false,
-  // })
-  // const isBotActive = dtAgent?.data?.items?.[0]?.status === STATUS_AGENT.ACTIVE
 
   return (
     <div className="mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px]">
@@ -48,20 +41,8 @@ const MyData: React.FC = () => {
             <h3 className="mb-1 flex items-center gap-2 text-24 font-semibold">
               My data <FilledShieldCheckedIcon size={20} color="#A2845E" />
             </h3>
-            <div className="inline-flex items-center text-mercury-800">
-              <span>Last collected:</span>
-              <span className="ml-1 font-semibold">
-                {!isLoading && isFetched ? lastCollected : "..."}
-              </span>
-            </div>
           </div>
           <AddData botId={botId} />
-        </div>
-      )}
-      {list.length > 0 && (
-        <div className="mb-5 inline-flex items-center text-mercury-800 md:hidden">
-          <span>Last collected:</span>
-          <span className="ml-1 font-semibold">{lastCollected}</span>
         </div>
       )}
       {list.length === 0 && isFetched && (
@@ -70,7 +51,7 @@ const MyData: React.FC = () => {
             <div>
               <InfoCircleIcon size={16} color="#83664B" />
             </div>
-            <p className="text-brown-600 text-14 font-medium md:text-16">
+            <p className="text-14 font-medium text-brown-600 md:text-16">
               Since no data has been added, your agent lacks personalized
               intelligence. <br /> Please add your data to help your agent learn
               more about you.
