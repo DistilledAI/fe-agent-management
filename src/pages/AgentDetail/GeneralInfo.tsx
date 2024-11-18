@@ -117,7 +117,7 @@ const GeneralInfo: React.FC<{
                   classNames={{
                     inputWrapper: "bg-mercury-70",
                   }}
-                  value={value}
+                  value={value || ""}
                   onChange={(e) => {
                     onChange(e.target.value)
                   }}

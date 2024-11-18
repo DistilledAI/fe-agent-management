@@ -30,7 +30,7 @@ const AdvancedConfig: React.FC = () => {
                 minRows={5}
                 maxRows={5}
                 onChange={(e) => onChange(e.target.value)}
-                value={value}
+                value={value || ""}
               />
             )
           }}

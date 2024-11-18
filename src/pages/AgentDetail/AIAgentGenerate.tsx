@@ -31,9 +31,12 @@ const AIAgentGenerate: React.FC = () => {
   const renderFeature = () => {
     return (
       <div className="pointer-events-none mt-5 flex w-full flex-wrap justify-between gap-5 opacity-50">
-        {TWITTER_FEATURE.map((item) => {
+        {TWITTER_FEATURE.map((item, index) => {
           return (
-            <div className="min-w-[240px] rounded-[22px] bg-mercury-30 p-4 max-sm:w-full">
+            <div
+              className="min-w-[240px] rounded-[22px] bg-mercury-30 p-4 max-sm:w-full"
+              key={index}
+            >
               <div className="mb-4 flex items-center gap-2">
                 {item.icon}
                 <span className="text-base-md max-sm:text-15">

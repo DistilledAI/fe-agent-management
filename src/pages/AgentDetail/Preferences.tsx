@@ -96,7 +96,10 @@ const Preferences: React.FC = () => {
       <div className="pointer-events-none flex w-full flex-wrap gap-5 opacity-50">
         {REFERENCES.map((item) => {
           return (
-            <div className="min-w-[240px] rounded-[22px] bg-mercury-30 p-4 max-sm:w-full">
+            <div
+              className="min-w-[240px] rounded-[22px] bg-mercury-30 p-4 max-sm:w-full"
+              key={item.key}
+            >
               <div className="mb-4 flex items-center gap-2">
                 {item.icon}
                 <span className="text-base-md max-sm:text-15">
