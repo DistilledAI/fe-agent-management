@@ -11,6 +11,7 @@ import { Link, useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { uploadMyData } from "services/user"
 import { styled } from "styled-components"
+import { twMerge } from "tailwind-merge"
 
 interface UploadCustomProps {
   fileKey: string
@@ -20,6 +21,7 @@ interface UploadCustomProps {
   maxCount?: number
   multiple?: boolean
   moreCustomRequest?: any
+  isComingSoon?: boolean
 }
 
 const maxSizeUpload = 5
@@ -37,6 +39,7 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
   accept = ".doc,.docx,application/pdf",
   multiple,
   moreCustomRequest,
+  isComingSoon = false,
 }) => {
   const { botId } = useParams()
   const messagesEndRef = useRef<any>()
@@ -48,6 +51,7 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
   }
 
   const handleChange: UploadProps["onChange"] = async ({ fileList }) => {
+    if (isComingSoon) return
     scrollToBottom()
     const newFileList = fileList.filter((item) => item.status !== undefined)
     const fileListDone = newFileList?.filter(
@@ -78,6 +82,7 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
   }
 
   const handleCustomRequest = async (options: any) => {
+    if (isComingSoon) return
     const { onSuccess, onError, file } = options
     const formData = new FormData()
     formData.append("file", file)
@@ -129,7 +134,12 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
   }
 
   return (
-    <div className="broder h-fit !w-full rounded-[32px] border-[1px] border-mercury-200 bg-mercury-50 p-1">
+    <div
+      className={twMerge(
+        "broder h-fit !w-full rounded-[32px] border-[1px] border-mercury-200 bg-mercury-50 p-1",
+        isComingSoon && "opacity-65",
+      )}
+    >
       <StyledUpload
         {...props}
         showUploadList={false}
@@ -140,11 +150,20 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
         className="!w-full"
         // maxCount={maxCount}
         multiple={multiple}
+        disabled={isComingSoon}
       >
-        <div className="flex h-[50px] w-full min-w-[130px] cursor-pointer items-center justify-between gap-2 rounded-full border border-mercury-70 bg-mercury-30 p-4 shadow-6">
+        <div
+          className={twMerge(
+            "flex h-[50px] w-full min-w-[130px] cursor-pointer items-center justify-between gap-2 rounded-full border border-mercury-70 bg-mercury-30 p-4 shadow-6",
+            isComingSoon && "cursor-default",
+          )}
+        >
           <div className="flex items-center gap-2">
             {icon}
-            <span className="text-base-14-b mr-2 text-center">{label}</span>
+            <span className="text-base-14-b text-center">{label}</span>
+            {isComingSoon && (
+              <span className="text-brown-600">(Coming Soon)</span>
+            )}
           </div>
           <TablerPlusIcon />
         </div>
