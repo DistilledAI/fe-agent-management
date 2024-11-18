@@ -45,7 +45,10 @@ const ListAgentMobile: React.FC<{
         ) : (
           data.map((item) => {
             return (
-              <div className="border-b-1 border-mercury-100 py-2 first:pt-0 last:border-none last:pb-0">
+              <div
+                key={item.id}
+                className="border-b-1 border-mercury-100 py-2 first:pt-0 last:border-none last:pb-0"
+              >
                 <div
                   style={{
                     color: MAP_DISPLAY_FROM_STATUS_MY_AGENT[item.status]?.color,

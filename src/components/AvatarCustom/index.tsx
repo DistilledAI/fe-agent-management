@@ -79,7 +79,6 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
           ) : (
             <img
               className="h-full w-full object-cover"
-              loading="lazy"
               ref={imageRef}
               src={src}
               {...props}
@@ -107,7 +106,6 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
       ) : (
         <img
           className="h-full w-full object-cover"
-          loading="lazy"
           ref={imageRef}
           src={src}
           {...props}

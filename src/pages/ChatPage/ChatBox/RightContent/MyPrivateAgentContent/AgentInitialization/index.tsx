@@ -77,7 +77,7 @@ const AgentInitialization = () => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} className="">
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
         <Header isLoading={isLoading} />
         <div className="mx-auto max-w-[768px] space-y-8 pb-[100px] pt-6 max-xl:px-4 max-md:min-h-dvh max-md:bg-mercury-70">
           <GeneralInfo />
