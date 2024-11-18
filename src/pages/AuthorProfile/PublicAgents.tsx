@@ -49,7 +49,7 @@ const PublicAgents = () => {
         <span className="font-semibold text-brown-10">
           {publicAgents.length || 0}
         </span>
-        <span>Public AI Agents</span>
+        <span>Public AI Agent(s)</span>
       </h4>
 
       <ScrollShadow

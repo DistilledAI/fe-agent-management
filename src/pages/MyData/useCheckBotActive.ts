@@ -7,6 +7,7 @@ const useCheckBotActive = () => {
     queryKey: [QueryDataKeys.MY_BOT_LIST],
     refetchOnWindowFocus: false,
   })
+
   const isBotActive = dtAgent?.data?.items?.[0]?.status === STATUS_AGENT.ACTIVE
 
   return { isBotActive }

@@ -9,7 +9,7 @@ import AddData from "./AddData"
 import CvData from "./Cv"
 import FileData from "./File"
 import LinkData from "./Link"
-import MediaData from "./Media"
+// import MediaData from "./Media"
 import TxtData from "./Txt"
 import useFetchMyData from "./useFetch"
 import useUpdateStatus from "./useUpdateStatus"
@@ -63,7 +63,7 @@ const MyData: React.FC = () => {
         <LinkData botId={botId} category={BotDataTypeKey.SOCIAL_MEDIA} />
         <FileData botId={botId} category={BotDataTypeKey.PDF_FILE} />
         <CvData botId={botId} category={BotDataTypeKey.CV_FILE} />
-        <MediaData botId={botId} category={BotDataTypeKey.PHOTO_VIDEO_FILE} />
+        {/* <MediaData botId={botId} category={BotDataTypeKey.PHOTO_VIDEO_FILE} /> */}
         <TxtData botId={botId} category={BotDataTypeKey.TXT_FILE} />
       </div>
     </div>
