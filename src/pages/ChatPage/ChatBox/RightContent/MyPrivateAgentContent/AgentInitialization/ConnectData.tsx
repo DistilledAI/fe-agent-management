@@ -4,31 +4,50 @@ import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
 import { PhotoPlusIcon } from "@components/Icons/PhotoPlusIcon"
 import { TxtIcon } from "@components/Icons/TextIcon"
 import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
-import useFetchMyData from "@pages/MyData/useFetch"
-import { useQuery } from "@tanstack/react-query"
+import { useQueries } from "@tanstack/react-query"
 import { useNavigate, useParams } from "react-router-dom"
 import { toast } from "react-toastify"
-import { mapMyDataToBot } from "services/user"
+import { getMyBotData, mapMyDataToBot } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { TYPE_DATA_KEY } from "../CreatePrivateAgent"
 import UploadCustom from "../UploadCustom"
 import UploadSocialLink from "../UploadSocialLink"
 import AgentSetupStatus from "./AgentSetupStatus"
 import AlertBox from "@components/AlertBox"
+import { IBotData } from "types/user"
 
 const ConnectData = () => {
   const { botId } = useParams()
   const navigate = useNavigate()
-  const { list: myDataList, isFetched } = useFetchMyData()
-  const { data } = useQuery<any>({
-    queryKey: [QueryDataKeys.MY_BOT_LIST],
-    refetchOnWindowFocus: false,
+
+  const [myAgentDataQuery, myAgentListQuery] = useQueries<
+    [
+      { data: { data: { items: IBotData[] } } },
+      { data: { data: { items: any[] } } },
+    ]
+  >({
+    queries: [
+      {
+        queryKey: [`${QueryDataKeys.MY_BOT_DATA}-${botId}`],
+        queryFn: () => getMyBotData(Number(botId), { limit: 1, offset: 0 }),
+        enabled: !!botId,
+        refetchOnWindowFocus: false,
+      },
+      {
+        queryKey: [QueryDataKeys.MY_BOT_LIST],
+        refetchOnWindowFocus: false,
+      },
+    ],
   })
-  const agent =
-    data?.data?.items?.length > 0
-      ? data?.data?.items?.find((agent: any) => agent?.id?.toString() === botId)
-      : null
-  const isBotActive = agent && agent?.status === STATUS_AGENT.ACTIVE
+
+  const { data: myAgentData, isFetched: isBotDataFetched } = myAgentDataQuery
+
+  const myDataList = myAgentData?.data?.items || []
+  const agentList = myAgentListQuery?.data?.data?.items || []
+
+  const currentAgent =
+    agentList.find((agent: any) => agent?.id?.toString() === botId) || null
+  const isBotActive = currentAgent?.status === STATUS_AGENT.ACTIVE
 
   const onMoreCustomRequest = async (data: any) => {
     try {
@@ -44,7 +63,7 @@ const ConnectData = () => {
               <CheckedIcon size={18} /> Connect success
             </div>
             <div className="mt-2 text-16 font-medium leading-[1.2] text-mercury-900">
-              {data?.length} data source (s) have been added to your data pod.
+              {data?.length} data source(s) have been added to your data pod.
             </div>
             <div className="text-base-md mt-2 text-14 leading-[1.2] text-[#F78500]">
               Please sync your private agents with the new data.
@@ -92,7 +111,7 @@ const ConnectData = () => {
           />
 
           <AlertBox
-            isVisible={!myDataList.length && isFetched}
+            isVisible={!myDataList.length && isBotDataFetched}
             messages={[
               "Since no data has been added, your agent lacks personalized intelligence.",
               "Please add your data to help your agent learn more about you.",
