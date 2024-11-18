@@ -15,11 +15,6 @@
     @apply text-16 text-mercury-900;
   }
 
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
   .text-base-md {
     @apply text-base font-medium;
   }
@@ -58,6 +53,13 @@
 
   .btn-primary {
     @apply !h-11 !rounded-full border !border-white !bg-mercury-30 !text-16 !text-mercury-900;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 
