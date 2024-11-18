@@ -55,43 +55,37 @@ const AgentDetail: React.FC = () => {
   const agentPersonalData = agentBehaviors?.agentPersonal || []
   const agentCommunicationData = agentBehaviors?.agentCommunication || []
 
+  const handleSetValueCustomDefaultDisplay = (
+    data: any,
+    list: any,
+    name: "agentPersonal" | "agentCommunication",
+  ) => {
+    const isDataCustom = !list.map((item: any) => item.value).includes(data)
+    const value = isDataCustom
+      ? {
+          [name]: {
+            value: data,
+            isFocused: false,
+          },
+        }
+      : undefined
+    setValueCustomDefault((prev: any) => ({ ...prev, ...value }))
+  }
+
   useEffect(() => {
-    if (agentPersonalData.length) {
-      const isPersonalCustom = !PERSONALITY_LIST.map(
-        (item) => item.value,
-      ).includes(agentPersonalData[0])
-
-      const value = isPersonalCustom
-        ? {
-            agentPersonal: {
-              value: agentPersonalData[0],
-              isFocused: false,
-            },
-          }
-        : undefined
-      setValueCustomDefault((prev: any) => ({ ...prev, ...value }))
-    }
-  }, [agentPersonalData.length])
-
-  useEffect(() => {
-    if (agentCommunicationData.length) {
-      const isCommunicationCustom = !COMMUNICATION_STYLE_LIST.map(
-        (item) => item.value,
-      ).includes(agentCommunicationData[0])
-
-      const value = isCommunicationCustom
-        ? {
-            agentCommunication: {
-              value: agentCommunicationData[0],
-              isFocused: false,
-            },
-          }
-        : undefined
-      setValueCustomDefault((prev: any) => ({ ...prev, ...value }))
-    }
-  }, [agentCommunicationData.length])
-
-  console.log("XXX", valueCustomDefault)
+    if (agentPersonalData.length)
+      handleSetValueCustomDefaultDisplay(
+        agentPersonalData[0],
+        PERSONALITY_LIST,
+        "agentPersonal",
+      )
+    if (agentCommunicationData.length)
+      handleSetValueCustomDefaultDisplay(
+        agentCommunicationData[0],
+        COMMUNICATION_STYLE_LIST,
+        "agentCommunication",
+      )
+  }, [agentPersonalData.length, agentCommunicationData.length])
 
   const methods = useForm<any>({
     defaultValues: {
