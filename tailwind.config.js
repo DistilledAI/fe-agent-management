@@ -56,9 +56,13 @@ export default {
         },
         brown: {
           10: "#A2845E",
+          50: "#F6F5F0",
+          500: "#A2845E",
+          600: "#83664B",
         },
         green: {
           10: "#34C759",
+          500: "#2CB34E",
         },
         primary: "#363636",
         code: {
@@ -90,11 +94,13 @@ export default {
           "linear-gradient(53deg, #7E7150 -2.17%, #8D7C4D 134.29%)",
         "lgd-code-hot-ramp": "linear-gradient(46deg, #FF075A 0%, #FF9035 100%)",
         "fading-orange":
-          "linear-gradient(65deg, #F5DCE2 16.01%, #F4E7DC 83.99%)",
+          "linear-gradien`t(65deg, #F5DCE2 16.01%, #F4E7DC 83.99%)",
         "fading-white":
           "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #FFF 100%)",
         "lgd-muted-beige":
           "linear-gradient(90deg, rgba(181, 141, 90, 0.10) 0%, rgba(162, 132, 94, 0.00) 100%)",
+        "lgd-muted-beige-2":
+          "linear-gradient(90deg, rgba(135, 135, 135, 0.10) 0%, rgba(128, 128, 128, 0.00) 100%)",
       },
       boxShadow: {
         1: "0px 0px 20px 0px rgba(0, 0, 0, 0.01)",
@@ -104,6 +110,7 @@ export default {
         5: "0px 16px 32px -4px rgba(24, 24, 25, 0.05), 0px 2px 4px 0px rgba(24, 24, 25, 0.04)",
         6: "0px 16px 32px -4px rgba(24, 24, 25, 0.10), 0px 2px 4px 0px rgba(24, 24, 25, 0.08)",
         7: "0px -16px 32px -4px rgba(24, 24, 25, 0.05), 0px -2px 4px 0px rgba(24, 24, 25, 0.04)",
+        8: "0px 16px 32px -4px rgba(24, 24, 25, 0.05), 0px 2px 4px 0px rgba(24, 24, 25, 0.08)",
       },
     },
   },

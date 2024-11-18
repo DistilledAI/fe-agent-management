@@ -11,7 +11,8 @@ const CreatPrivateAgentModal: React.FC<{
   openPopup: boolean
   setOpenPopup: any
   handlemSetSocialUrls: any
-}> = ({ openPopup, setOpenPopup, handlemSetSocialUrls }) => {
+  moreCustomRequest: any
+}> = ({ openPopup, setOpenPopup, handlemSetSocialUrls, moreCustomRequest }) => {
   const [contentStep, setContentStep] = useState<number>(1)
   const [collectedData, setCollectedData] = useState<any>(null)
   const isWordcloundStep = contentStep === 2
@@ -31,6 +32,7 @@ const CreatPrivateAgentModal: React.FC<{
             collectedData={collectedData}
             setOpenPopup={setOpenPopup}
             handlemSetSocialUrls={handlemSetSocialUrls}
+            moreCustomRequest={moreCustomRequest}
           />
         )
 

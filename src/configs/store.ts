@@ -1,16 +1,16 @@
 import { configureStore, Store } from "@reduxjs/toolkit"
 import { Persistor, persistReducer, persistStore } from "redux-persist"
 import rootReducer from "@reducers/index"
-import sessionStorage from "redux-persist/lib/storage/session"
+// import sessionStorage from "redux-persist/lib/storage/session"
 import localStorage from "redux-persist/lib/storage"
 
 let store: Store
 let persistor: Persistor
 
-const initStore = (isLocalStorage: boolean) => {
+const initStore = () => {
   const persistConfig = {
     key: "root",
-    storage: isLocalStorage ? localStorage : sessionStorage,
+    storage: localStorage,
     whitelist: ["agents", "sidebarCollapsed", "user"],
   }
 

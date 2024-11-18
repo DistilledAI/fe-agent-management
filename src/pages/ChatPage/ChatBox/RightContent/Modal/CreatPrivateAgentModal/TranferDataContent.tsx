@@ -1,7 +1,6 @@
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { Button } from "@nextui-org/react"
 import { useEffect } from "react"
-import { useFormContext } from "react-hook-form"
 import { toast } from "react-toastify"
 import { uploadMyData } from "services/user"
 import { v4 as uuidv4 } from "uuid"
@@ -15,13 +14,14 @@ const TranferDataContent: React.FC<{
   collectedData: any
   setOpenPopup: any
   handlemSetSocialUrls: any
+  moreCustomRequest: any
 }> = ({
   collectedData,
   setContentStep,
   setOpenPopup,
   handlemSetSocialUrls,
+  moreCustomRequest,
 }) => {
-  const { setValue, getValues } = useFormContext()
   const profileType = collectedData?.profileType
   const userName = collectedData?.userName
   const aboutValue = collectedData?.about || ""
@@ -36,8 +36,6 @@ const TranferDataContent: React.FC<{
       ? `https://linkedin.com/in/${userName}`
       : `https://x.com/${userName}`
 
-  const uploadSocialLinkValue = getValues("uploadSocialLink")
-
   const handleSubmit = async () => {
     const uid = uuidv4()
     try {
@@ -48,18 +46,13 @@ const TranferDataContent: React.FC<{
       const response = await uploadMyData(payload)
       if (response) {
         const data = response.data?.[0]
-        const newData =
-          uploadSocialLinkValue.length > 0
-            ? [...uploadSocialLinkValue, data?.id]
-            : [data?.id]
-        setValue("uploadSocialLink", newData)
         handlemSetSocialUrls({
           status: "done",
           link: profileLink,
           id: data?.id,
           uid,
         })
-        toast.success(`${profileLink} uploaded successfully.`)
+        moreCustomRequest([data?.id])
       }
     } catch (error) {
       handlemSetSocialUrls({

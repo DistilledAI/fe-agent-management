@@ -1,11 +1,12 @@
 import MyEcho from "./MyEcho"
-import Playground from "./Playground"
+// import Playground from "./Playground"
 import PrivateAI from "./PrivateAI"
 import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
 import SidebarCollapsed from "./SidebarCollapsed"
 import { useAppSelector } from "@hooks/useAppRedux"
 import { twMerge } from "tailwind-merge"
 import ButtonMarketplace from "@pages/Marketplace/ButtonMarketplace"
+import { Link } from "react-router-dom"
 
 const LeftBar = () => {
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
@@ -31,10 +32,12 @@ const LeftBar = () => {
               sidebarCollapsed && "flex-col justify-center gap-6",
             )}
           >
-            <DistilledAIIcon
-              baseClassName="w-fit h-fit rounded-none border-none flex-none"
-              iconClassName="w-[38px] h-5"
-            />
+            <Link to={"/"}>
+              <DistilledAIIcon
+                baseClassName="w-fit h-fit rounded-none border-none flex-none"
+                iconClassName="w-[38px] h-5"
+              />
+            </Link>
             <SidebarCollapsed />
           </div>
           <div className={twMerge("h-[calc(100%-44px)] flex-1")}>
@@ -47,7 +50,7 @@ const LeftBar = () => {
               sidebarCollapsed && "flex-shrink-0 flex-col justify-center",
             )}
           >
-            <Playground />
+            {/* <Playground /> */}
             <ButtonMarketplace />
           </div>
         </div>

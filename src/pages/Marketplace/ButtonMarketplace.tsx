@@ -12,7 +12,7 @@ const ButtonMarketplace = () => {
   return (
     <Button
       className={twMerge(
-        "btn-primary min-h-[60px]",
+        "btn-primary min-h-[60px] w-full",
         sidebarCollapsed && "min-h-14 min-w-14",
       )}
       onClick={() => navigate(PATH_NAMES.MARKETPLACE)}

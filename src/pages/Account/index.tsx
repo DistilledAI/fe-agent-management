@@ -1,5 +1,4 @@
 import { CopyIcon } from "@components/Icons/Copy"
-import { MetamaskIconSmall } from "@components/Icons/MetamaskIcon"
 import { LogoutIcon } from "@components/Icons/OutputIcon"
 import { PATH_NAMES } from "@constants/index"
 import useAuthAction from "@hooks/useAuthAction"
@@ -54,9 +53,6 @@ const Account = () => {
           className="ml-3 cursor-pointer"
         >
           <CopyIcon />
-        </div>
-        <div className="ml-3 hidden md:block">
-          <MetamaskIconSmall />
         </div>
         {renderLogoutBtn()}
       </div>

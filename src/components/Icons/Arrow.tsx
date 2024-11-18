@@ -141,3 +141,26 @@ export const ArrowsBarToUpIcon = ({
     </svg>
   )
 }
+
+export const ArrowsMaximizeIcon = ({
+  size = 24,
+  color = "#545454",
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M16 4H20M20 4V8M20 4L14 10M8 20H4M4 20V16M4 20L10 14M16 20H20M20 20V16M20 20L14 14M8 4H4M4 4V8M4 4L10 10"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}

@@ -21,7 +21,7 @@ const AuthorInfo = () => {
   return (
     <div className="w-full bg-lgd-muted-beige px-4 py-3">
       <div className="mx-auto flex w-full max-w-[768px] flex-wrap gap-x-4">
-        <div className="flex flex-1 items-center gap-x-4">
+        <div className="flex flex-1 gap-x-4">
           <Skeleton isLoaded={isFetched} className="rounded-full">
             <AvatarCustom
               publicAddress={authorInfo?.publicAddress}
@@ -38,7 +38,7 @@ const AuthorInfo = () => {
               isLoaded={isFetched}
               className={twMerge("rounded", !isFetched && "mt-1")}
             >
-              <p className="text-16 font-medium text-mercury-900">
+              <p className="line-clamp-4 text-16 font-medium text-mercury-900 md:line-clamp-6">
                 {authorInfo?.description || "-"}
               </p>
             </Skeleton>

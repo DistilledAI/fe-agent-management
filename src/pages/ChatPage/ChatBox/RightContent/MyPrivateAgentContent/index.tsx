@@ -1,4 +1,4 @@
-import { desktopPrivateAgent } from "@assets/images"
+import DotLoading from "@components/DotLoading"
 import { envConfig } from "@configs/env"
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
@@ -7,7 +7,6 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { checkGroupDirect, createGroupChat } from "services/chat"
 import CreatePrivateAgent from "./CreatePrivateAgent"
 import usePrivateAgent, { PRIVATE_AGENT_STATUS } from "./usePrivateAgent"
-import DotLoading from "@components/DotLoading"
 
 const MyPrivateAgentContent: React.FC<{
   connectWalletLoading: boolean
@@ -83,18 +82,11 @@ const MyPrivateAgentContent: React.FC<{
     )
 
   return (
-    <div
-      className="relative mx-auto h-full w-full flex-1 rounded-[22px] border border-white bg-white bg-cover bg-center bg-no-repeat font-barlow"
-      style={{
-        backgroundImage: `url(${desktopPrivateAgent})`,
-      }}
-    >
-      <CreatePrivateAgent
-        connectWalletLoading={connectWalletLoading}
-        connectWallet={connectWallet}
-        setCreated={setCreated}
-      />
-    </div>
+    <CreatePrivateAgent
+      connectWalletLoading={connectWalletLoading}
+      connectWallet={connectWallet}
+      setCreated={setCreated}
+    />
   )
 }
 export default MyPrivateAgentContent

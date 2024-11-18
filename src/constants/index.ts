@@ -50,8 +50,17 @@ export const STATUS_AGENT = {
   PENDING: 4,
 }
 
+export enum MY_DATA_STATUS {
+  ACTIVE = 1,
+  PROCESSING = 0,
+  RESOLVED = 4,
+  SUSPENDED = 2,
+  DELETED = 3,
+}
+
 export enum TYPE_BOT {
   VOICE = 2,
+  NONE = -1,
 }
 
 export const ACTIVE_COLORS = [
@@ -102,3 +111,87 @@ export const MAP_DISPLAY_FROM_STATUS_MY_AGENT = {
     color: "#34C759",
   },
 }
+
+export const PERSONALITY_LIST = [
+  {
+    label: "😊 Friendly",
+    selected: false,
+    value: "friendly",
+  },
+  {
+    label: "💼 Professional",
+    selected: false,
+    value: "professional",
+  },
+  {
+    label: "🤡 Humorous",
+    selected: false,
+    value: "humorous",
+  },
+  {
+    label: "🛟 Supportive",
+    selected: false,
+    value: "supportive",
+  },
+  {
+    label: "🥰 Empathetic",
+    selected: false,
+    value: "empathetic",
+  },
+  {
+    label: "🤓 Informative",
+    selected: false,
+    value: "informative",
+  },
+  {
+    label: "🤠 Adventurous",
+    selected: false,
+    value: "adventurous",
+  },
+  {
+    label: "⭐️ Custom",
+    selected: false,
+    value: "agentPersonal",
+    type: "custom",
+  },
+]
+
+export const COMMUNICATION_STYLE_LIST = [
+  {
+    label: "👔 Formal",
+    selected: false,
+    value: "formal",
+  },
+  {
+    label: "🧢 Casual",
+    selected: false,
+    value: "casual",
+  },
+  {
+    label: "🔥 Enthusiastic",
+    selected: false,
+    value: "enthusiastic",
+  },
+  {
+    label: "🍃 Calm",
+    selected: false,
+    value: "calm",
+  },
+  {
+    label: "👀 Direct",
+    selected: false,
+    value: "direct",
+  },
+  {
+    label: "📝 Storytelling",
+    icon: "",
+    selected: false,
+    value: "storytelling",
+  },
+  {
+    label: "⭐️ Custom",
+    selected: false,
+    value: "agentCommunication",
+    type: "custom",
+  },
+]

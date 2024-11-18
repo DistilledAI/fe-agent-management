@@ -4,14 +4,15 @@ import { ArrowBottomSquareOutlineIcon } from "@components/Icons/Arrow"
 import { CopyIcon } from "@components/Icons/Copy"
 import { Modal, ModalBody, ModalContent, ModalHeader } from "@nextui-org/react"
 import { copyClipboard } from "@utils/index"
-import { QRCodeCanvas } from "qrcode.react"
-import { IModalProps } from "types/modal"
 import { saveAs } from "file-saver"
+import { QRCodeCanvas } from "qrcode.react"
 import { useRef } from "react"
+import { IModalProps } from "types/modal"
 
 interface ShareModal extends IModalProps {
   shareUrl: string
   title?: string
+  onCLose?: any
 }
 
 const ShareQRModal = ({

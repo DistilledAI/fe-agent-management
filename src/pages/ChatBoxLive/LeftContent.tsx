@@ -1,15 +1,14 @@
 import bitcoinMaxIntro from "@assets/video/bitcoin-max-intro-ai.mp4"
-import { VolumeIcon, VolumeOffIcon } from "@components/Icons/Voice"
 import { Skeleton } from "@nextui-org/react"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import AgentDescription from "./AgentDescription"
 import TradeTokenButton from "./TradeTokenButton"
+import VideoCustom from "@components/VideoCustom"
 
 const LeftContent = () => {
-  const videoRef = useRef<any>(null)
   const queryClient = useQueryClient()
   const [isLoaded, setIsLoaded] = useState(false)
 
@@ -33,18 +32,8 @@ const LeftContent = () => {
   const isExpandLiveChat = !!queries[2].data
 
   useEffect(() => {
-    setTimeout(() => setIsLoaded(true), 500)
+    setTimeout(() => setIsLoaded(true), 200)
   }, [])
-
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted
-      queryClient.setQueryData(
-        [QueryDataKeys.AGENT_LIVE_VOLUME],
-        () => videoRef.current.muted,
-      )
-    }
-  }
 
   return (
     <div
@@ -55,35 +44,25 @@ const LeftContent = () => {
       )}
     >
       <div className="flex h-full flex-col md:h-fit">
-        <div className="relative h-full">
-          <Skeleton isLoaded={isLoaded} className="rounded-[32px]">
-            <video
-              ref={videoRef}
-              muted={isMuted}
-              autoPlay
-              playsInline
-              loop
-              className={twMerge(
-                "h-full w-full rounded-[32px] object-cover max-md:max-h-[350px] max-md:min-h-[350px] md:h-auto",
+        <Skeleton isLoaded={isLoaded} className="rounded-[32px]">
+          <VideoCustom
+            videoSrc={bitcoinMaxIntro}
+            classNames={{
+              video: twMerge(
+                "h-full min-h-[350px] w-full rounded-[32px] object-cover max-md:max-h-[350px] md:h-auto md:min-h-[426px]",
                 isCloseChatLive && "max-md:max-h-full",
-              )}
-            >
-              <source src={bitcoinMaxIntro} type="video/mp4" />
-              <track kind="captions"></track>
-            </video>
-          </Skeleton>
-          <button
-            type="button"
-            onClick={toggleMute}
-            className="absolute left-5 top-5 z-10 p-[1px]"
-          >
-            {isMuted ? (
-              <VolumeOffIcon color="white" />
-            ) : (
-              <VolumeIcon color="white" />
-            )}
-          </button>
-        </div>
+              ),
+            }}
+            isVolumeIcon
+            onMuteToggle={(muted) =>
+              queryClient.setQueryData<boolean>(
+                [QueryDataKeys.AGENT_LIVE_VOLUME],
+                () => muted,
+              )
+            }
+            muted={isMuted}
+          />
+        </Skeleton>
 
         <div className="mt-6 hidden items-center justify-between gap-2 md:flex">
           {/* <TwitterButton /> */}

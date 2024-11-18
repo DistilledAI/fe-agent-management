@@ -43,11 +43,14 @@ export const uploadMyData = async (file: any) => {
   })
 }
 
-export const mapMyDataToBot = async (data: any) => {
+export const mapMyDataToBot = async (payload: any) => {
+  const data = payload?.data
+  if (!data || data.length === 0) return
+
   return fetchApiAuth({
     method: "POST",
     url: endpoint.MAP_MY_DATA_TO_BOT,
-    data,
+    data: payload,
   })
 }
 

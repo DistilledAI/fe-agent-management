@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom"
 import { searchUsers } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 
-const AIAgents = () => {
+const AIAgentList = () => {
   const navigate = useNavigate()
   const { user } = useAuthState()
 
@@ -56,7 +56,7 @@ const AIAgents = () => {
 
   return agents.map((agent, index) => (
     <div
-      className="flex h-fit cursor-pointer justify-between rounded-[22px] border-b border-b-mercury-70 p-2 last:border-none hover:bg-mercury-200 md:border-b-[0px]"
+      className="flex h-fit cursor-pointer justify-between gap-2 rounded-[22px] border-b border-b-mercury-70 p-2 last:border-none hover:bg-mercury-200 md:border-b-[0px]"
       key={index}
       onClick={() => handleChatWithAgent(agent)}
     >
@@ -77,12 +77,10 @@ const AIAgents = () => {
           isLive={agent.configBot === "live"}
         />
         <div>
-          <div className="flex items-center gap-2">
-            <span className="text-base-b line-clamp-1 text-mercury-800">
-              {agent.username}
-            </span>
-          </div>
-          <p className="max-w-[187px] text-13 font-medium text-mercury-600">
+          <h4 className="text-base-b line-clamp-1 text-mercury-800">
+            {agent.username}
+          </h4>
+          <p className="line-clamp-4 text-13 font-medium text-mercury-600">
             {agent.description || "Distilled AI Agent"}
           </p>
         </div>
@@ -97,4 +95,4 @@ const AIAgents = () => {
   ))
 }
 
-export default AIAgents
+export default AIAgentList

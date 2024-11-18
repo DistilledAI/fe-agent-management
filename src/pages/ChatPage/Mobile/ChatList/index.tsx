@@ -48,11 +48,6 @@ const ChatList = () => {
       [QueryDataKeys.NOTIFICATION_GROUPS],
       (prev = []) => prev.filter((id) => id !== groupItem.groupId),
     )
-    const chatWindow = document.getElementById("chat-window")
-    if (chatWindow) {
-      chatWindow.style.scrollBehavior = "auto"
-      chatWindow.scrollTop = chatWindow.scrollHeight
-    }
 
     if (isBotLive) {
       return navigate(`${PATH_NAMES.LIVE}/${groupItem.groupId}`, {

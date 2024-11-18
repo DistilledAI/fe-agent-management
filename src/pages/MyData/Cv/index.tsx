@@ -11,6 +11,7 @@ import TableDataMobile from "../Components/TableDataMobile"
 import DeleteData from "../DeleteData"
 import SyncData, { SyncLabel } from "../SyncData"
 import useFetchByCategory from "../useFetchByCategory"
+import { hasSyncData, hasSyncDataByStatus } from "../helpers"
 
 enum ColumnKey {
   Name = "name",
@@ -67,22 +68,19 @@ const CvData: React.FC<{
         )
       case ColumnKey.Action:
         return (
-          <div className="flex items-center gap-4">
-            {/* <div className="cursor-pointer hover:opacity-70">
-              <EditPenFilledIcon color="#545454" />
-            </div> */}
+          <div className="flex items-center justify-end gap-4">
+            <SyncData botId={botId} dataId={dataId} status={item.status} />
             <DeleteData
               botId={item.userId}
               ids={[item.id]}
               category={category}
             />
-            <SyncData botId={botId} dataId={dataId} />
           </div>
         )
       case ColumnKey.Name:
         return (
           <div className="flex flex-row items-center gap-1">
-            <InfoCircleIcon />
+            {hasSyncDataByStatus(item.status) && <InfoCircleIcon />}
             <a
               className="max-w-[150px] truncate hover:underline"
               href={item.value}
@@ -107,13 +105,13 @@ const CvData: React.FC<{
   const getTdClassName = (key: string) => {
     switch (key) {
       case ColumnKey.Action:
-        return "w-[100px]"
+        return "w-[140px] text-right"
       case ColumnKey.Name:
         return "w-[200px]"
       case ColumnKey.Type:
-        return "w-[200px]"
+        return "w-[180px]"
       case ColumnKey.Date:
-        return "w-[150px]"
+        return "w-[180px]"
 
       default:
         return ""
@@ -129,7 +127,7 @@ const CvData: React.FC<{
           title="CV"
           addTitle="Add cv"
         />
-        {data.length > 0 && <SyncLabel />}
+        {hasSyncData(data) && <SyncLabel />}
       </div>
 
       <div className="mt-4">

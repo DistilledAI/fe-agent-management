@@ -5,15 +5,15 @@ import { getMyBotData } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { IBotData } from "types/user"
 
-const LIMIT = 10
+export const LIMIT_MY_DATA = 10
 
 const useFetchByCategory = (category: BotDataTypeKey, botId: number) => {
   const { isLogin } = useAuthState()
 
   const handleFetch = async ({ pageParam = 1 }) => {
-    const offset = (pageParam - 1) * LIMIT
+    const offset = (pageParam - 1) * LIMIT_MY_DATA
     const res = await getMyBotData(botId, {
-      limit: LIMIT,
+      limit: LIMIT_MY_DATA,
       offset,
       filter: JSON.stringify({ key: category }),
     })

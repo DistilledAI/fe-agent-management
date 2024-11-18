@@ -6,31 +6,35 @@ interface LabelCustomProps {
 }
 
 interface FieldLabelProps {
-  text: string
+  text: string | React.ReactNode
   required?: boolean
   containerClassName?: string
+  desc?: string
 }
 
 const CategoryLabel: React.FC<LabelCustomProps> = ({ text, icon }) => {
   return (
     <div className="flex items-center gap-2">
       {icon}
-      <span className="text-22 font-bold text-mercury-950">{text}</span>
+      <span className="text-22 font-bold text-mercury-950 max-sm:text-18">
+        {text}
+      </span>
     </div>
   )
 }
 
 export const FieldLabel: React.FC<FieldLabelProps> = ({
   text,
+  desc,
   required,
   containerClassName,
 }) => {
   return (
     <div className={twMerge("mb-2", containerClassName)}>
-      <span className="text-base-sb text-mercury-950">{text}</span>
-      {required && (
-        <span className="text-base-md ml-[2px] text-[#FF3B30]">*</span>
-      )}
+      <h4 className="text-16 font-semibold text-mercury-950">
+        {text} {required && <span className="text-[#FF3B30]">*</span>}
+      </h4>
+      <p className="text-16 text-mercury-700">{desc}</p>
     </div>
   )
 }

@@ -9,7 +9,7 @@ import AddMyData from "@pages/AddMyData"
 import AuthorProfile from "@pages/AuthorProfile"
 import ChatBoxLive from "@pages/ChatBoxLive"
 import ChatMyAgent from "@pages/ChatMyAgent"
-import AgentDetail from "@pages/ChatPage/AgentDetail"
+import AgentDetail from "@pages/AgentDetail"
 import ChatBox from "@pages/ChatPage/ChatBox"
 import ChatPageMobile from "@pages/ChatPage/Mobile"
 import MyPrivateAgentContentMobile from "@pages/ChatPage/Mobile/MyPrivateAgentContentMobile"
@@ -17,6 +17,7 @@ import Marketplace from "@pages/Marketplace"
 import MyData from "@pages/MyData"
 import PageNotFound from "@pages/NotFound"
 import { Route, Routes } from "react-router-dom"
+import AgentInitialization from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization"
 
 const AppRouter = () => {
   const { isMobile } = useWindowSize()
@@ -25,6 +26,7 @@ const AppRouter = () => {
     <Routes>
       <Route
         path={PATH_NAMES.HOME}
+        //connect wallet modal
         element={isMobile ? <MainLayout /> : <MainLayoutDesktop />}
       >
         {/* Route Regular */}
@@ -46,10 +48,6 @@ const AppRouter = () => {
           element={isMobile ? <ChatPageMobile /> : <ChatMyAgent />}
         />
         <Route path={PATH_NAMES.MARKETPLACE} element={<Marketplace />} />
-        <Route
-          path={`${PATH_NAMES.ADD_MY_DATA}/:botId`}
-          element={<AddMyData />}
-        />
         <Route path={PATH_NAMES.ADD_MY_DATA} element={<AddMyData />} />
         <Route
           path={`${PATH_NAMES.AUTHOR_PROFILE}/:authorId`}
@@ -68,11 +66,16 @@ const AppRouter = () => {
         <Route path={PATH_NAMES.HOME} element={<ProtectedByAuth />}>
           <Route path={PATH_NAMES.MY_DATA} element={<MyData />} />
           <Route path={PATH_NAMES.ACCOUNT} element={<Account />} />
+          <Route
+            path={`${PATH_NAMES.AGENT_DETAIL}/:agentId`}
+            element={<AgentDetail />}
+          />
+          <Route
+            path={`${PATH_NAMES.ADD_MY_DATA}/:botId`}
+            element={<AddMyData />}
+          />
+          <Route path={"/create-agent"} element={<AgentInitialization />} />
         </Route>
-        <Route
-          path={`${PATH_NAMES.AGENT_DETAIL}/:agentId`}
-          element={<AgentDetail />}
-        />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>

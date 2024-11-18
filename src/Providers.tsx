@@ -13,8 +13,8 @@ import { WagmiProvider } from "wagmi"
 
 const queryClient = new QueryClient()
 
-const accessToken = localStorage.getItem("accessToken")
-initStore(!!accessToken)
+// const accessToken = localStorage.getItem("accessToken")
+initStore()
 
 const Providers = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   return (

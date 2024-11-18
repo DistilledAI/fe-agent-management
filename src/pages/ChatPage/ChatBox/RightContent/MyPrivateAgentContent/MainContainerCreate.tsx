@@ -1,132 +1,62 @@
+import { desktopPrivateAgent } from "@assets/images"
 import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
+import { PATH_NAMES } from "@constants/index"
 import { Button } from "@nextui-org/react"
 import { useState } from "react"
-import { FormProvider, useForm } from "react-hook-form"
-import { toast } from "react-toastify"
-import { createBot } from "services/chat"
-import { mapMyDataToBot } from "services/user"
-import CollectingModal from "../Modal/CreatPrivateAgentModal/CollectingModal"
+import { useNavigate } from "react-router-dom"
 import FYIModal from "../Modal/FYIModal"
-import { useQueryClient } from "@tanstack/react-query"
-import { QueryDataKeys } from "types/queryDataKeys"
 
 const MainContainerCreate: React.FC<{
   children: React.ReactNode
-  setCreated?: any
   botId?: number | string
-  onCallBack?: any
-}> = ({ children, setCreated, botId, onCallBack }) => {
-  const [isCollected, setIsCollected] = useState(false)
+}> = ({ children, botId }) => {
+  const navigate = useNavigate()
   const [openFYIPopup, setOpenFYIPopupp] = useState<boolean>(false)
-  const [openCollectingPopup, setOpenCollectingPopup] = useState<boolean>(false)
-  const queryClient = useQueryClient()
-  const methods = useForm<any>({
-    defaultValues: {
-      uploadCV: [],
-      uploadSocialLink: [],
-      uploadPDFs: [],
-      photosVideos: [],
-    },
-  })
-  const values = methods.watch()
-  const uploadCVValues = values.uploadCV.length > 0 ? values.uploadCV : []
-  const uploadSocialLinkValues =
-    values.uploadSocialLink.length > 0 ? values.uploadSocialLink : []
-  const uploadPDFsValues = values.uploadPDFs.length > 0 ? values.uploadPDFs : []
-  const photosVideosValues =
-    values.photosVideos.length > 0 ? values.photosVideos : []
-
-  const isDisabled =
-    uploadCVValues.length > 0 ||
-    uploadSocialLinkValues.length > 0 ||
-    uploadPDFsValues.length > 0 ||
-    photosVideosValues.length > 0
-
-  const onSubmit = async () => {
-    setOpenCollectingPopup(true)
-    const payloadData = [
-      ...uploadCVValues,
-      ...uploadSocialLinkValues,
-      ...uploadPDFsValues,
-      ...photosVideosValues,
-    ]
-
-    try {
-      if (botId) {
-        const payload = {
-          botId,
-          data: payloadData,
-        }
-        await mapMyDataToBot(payload)
-        toast.success("Updated bot successfully")
-        setIsCollected(true)
-        return
-      }
-
-      const createBotResponse = await createBot({ name: "Unnamed" })
-      if (createBotResponse) {
-        const botIdResponse = createBotResponse?.data?.id
-        const payload = {
-          botId: botIdResponse,
-          data: payloadData,
-        }
-        await mapMyDataToBot(payload)
-        toast.success("Created bot successfully")
-        queryClient.refetchQueries({ queryKey: [QueryDataKeys.MY_BOT_LIST] })
-        setIsCollected(true)
-      }
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message)
-      console.log("error", error)
-      setOpenCollectingPopup(false)
-    }
-  }
 
   return (
-    <>
-      <FormProvider {...methods}>
-        <div className="relative h-full w-full flex-1 max-md:h-auto max-md:px-3 max-md:pb-[80px]">
-          <div className="flex-items-center relative h-full w-full flex-col justify-between">
-            {children}
-            <div className="absolute bottom-[100px] flex items-center gap-2 rounded-[22px] border border-mercury-200 bg-white p-4 text-center max-md:static max-md:bottom-[40px] max-md:mt-6 max-md:w-full max-md:flex-col">
-              <div>
-                <span className="text-base-14 text-mercury-800">
-                  Your Private Agent is exclusively accessible to you unless you
-                  choose to publish it on the Marketplace.
+    <div
+      className="relative mx-auto h-[calc(100dvh-110px)] w-full flex-1 overflow-y-auto bg-white bg-cover bg-center bg-no-repeat font-barlow md:h-[calc(100dvh-68px)]"
+      style={{
+        backgroundImage: `url(${desktopPrivateAgent})`,
+      }}
+    >
+      <>
+        {children}
+        {botId ? (
+          <div className="mx-auto flex w-[calc(100%-32px)] max-w-[800px] items-center gap-4 rounded-[22px] border border-mercury-200 bg-white p-4 max-md:bottom-[40px] max-md:mt-6 max-md:flex-col md:absolute md:bottom-10 md:left-1/2 md:w-full md:-translate-x-1/2 md:gap-6">
+            <div>
+              <p className="text-14 text-mercury-950">
+                Your data is protected through{" "}
+                <span className="font-bold">Confidential Computing (CC)</span>{" "}
+                within a{" "}
+                <span className="font-bold">
+                  Trusted Execution Environment (TEE).
                 </span>
-                <div
-                  className="flex-items-center mt-2 cursor-pointer gap-2 max-md:mb-2 max-md:justify-center"
-                  onClick={() => setOpenFYIPopupp(true)}
-                >
-                  <FilledShieldCheckedIcon color="#A2845E" />
-                  <span className="text-base-14-md text-brown-10">
-                    How do we protect your private data?
-                  </span>
-                </div>
-              </div>
-
-              <Button
-                className="h-[44px] rounded-full bg-mercury-950 text-white max-md:h-[52px] max-md:w-full"
-                onClick={() => onSubmit()}
-                isDisabled={!isDisabled}
+              </p>
+              <div
+                className="flex-items-center mt-2 cursor-pointer gap-2 max-md:mb-2 max-md:justify-center"
+                onClick={() => setOpenFYIPopupp(true)}
               >
-                <span className="">Connect data</span>
-              </Button>
+                <FilledShieldCheckedIcon color="#A2845E" />
+                <span className="text-16 font-medium text-brown-500">
+                  How do we protect your private data?
+                </span>
+              </div>
             </div>
+
+            <Button
+              onClick={() => navigate(PATH_NAMES.MY_DATA)}
+              className="h-14 min-w-[213px] rounded-full bg-mercury-950 px-6 text-[16px] text-mercury-30 max-md:h-[52px] max-md:w-full md:text-[18px]"
+            >
+              <span className="">View Data Sync Status</span>
+            </Button>
           </div>
-        </div>
-      </FormProvider>
+        ) : (
+          <></>
+        )}
+      </>
       <FYIModal openPopup={openFYIPopup} setOpenPopup={setOpenFYIPopupp} />
-      <CollectingModal
-        openPopup={openCollectingPopup}
-        setOpenPopup={setOpenCollectingPopup}
-        callbackChange={() => {
-          if (onCallBack) onCallBack()
-          if (setCreated) setCreated(true)
-        }}
-        isCollected={isCollected}
-      />
-    </>
+    </div>
   )
 }
 

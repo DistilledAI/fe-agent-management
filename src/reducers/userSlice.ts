@@ -1,11 +1,11 @@
-import { initStore } from "@configs/store"
+// import { initStore } from "@configs/store"
 import { TYPE_BOT } from "@constants/index"
 import { createSlice } from "@reduxjs/toolkit"
 import {
-  storageKey,
   cachedLocalStorage,
   cachedSessionStorage,
   getAccessToken,
+  storageKey,
 } from "@utils/storage"
 
 export interface IUser {
@@ -38,7 +38,7 @@ export interface IUserState {
   isLogin: boolean
 }
 
-const userInitState = {
+const userInitState: IUser = {
   id: 0,
   createdAt: "",
   publicAddress: "",
@@ -65,7 +65,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state, action: { payload: LoginSuccessPayload }) => {
-      initStore(true)
+      // initStore(true)
       cachedSessionStorage.removeItem(storageKey.ACCESS_TOKEN)
       setTimeout(() => {
         cachedSessionStorage.removeItem("persist:root")
@@ -86,7 +86,7 @@ const userSlice = createSlice({
     ) => {
       const { user, accessToken, expiry } = action.payload
 
-      initStore(false)
+      // initStore(false)
       setTimeout(() => {
         cachedLocalStorage.removeItem("persist:root")
       }, 1000)

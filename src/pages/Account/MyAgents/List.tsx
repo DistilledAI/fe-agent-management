@@ -64,6 +64,7 @@ const ListAgent: React.FC<{
           <div className="flex gap-3">
             <div>
               <AvatarCustom
+                src={item.avatar ?? undefined}
                 publicAddress={item.publicAddress || item.username}
                 className="h-6 w-6"
               />

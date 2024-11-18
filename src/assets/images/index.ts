@@ -11,4 +11,4 @@ export { default as microphoneAccess } from "./microphone-access.png"
 export { default as scaler } from "./scaler.png"
 export { default as stableDiffusionAIEx } from "./stable-diffusion-ai-ex.png"
 export { default as streamingContainerBg } from "./streaming-container-bg.png"
-
+export { default as borderGdImg } from "./border-gd.png"

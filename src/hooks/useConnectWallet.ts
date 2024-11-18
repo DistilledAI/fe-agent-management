@@ -1,3 +1,4 @@
+import { updateModalStatus } from "@reducers/connectWalletSlice"
 import { loginSuccess } from "@reducers/userSlice"
 import { ethers } from "ethers"
 import { useState } from "react"
@@ -5,17 +6,27 @@ import { useDispatch } from "react-redux"
 import { toast } from "react-toastify"
 import { IDataSignatureAuth, signatureAuth } from "services/auth"
 import { useAccount } from "wagmi"
-import useWindowSize from "./useWindowSize"
-import useAuthState from "./useAuthState"
 import useAuthAction from "./useAuthAction"
+import useAuthState from "./useAuthState"
+import useWindowSize from "./useWindowSize"
+
+export const WALLET_TYPE = {
+  META_MASK: "META_MASK",
+  OWALLET: "OWALLET",
+}
 
 const useConnectWallet = () => {
-  const [loading, setLoading] = useState(false)
+  const [loadingConnectMetamask, setLoadingConnectMetamask] = useState(false)
+  const [loadingConnectOwallet, setLoadingConnectOwallet] = useState(false)
   const dispatch = useDispatch()
   const { address } = useAccount()
   const { isMobile } = useWindowSize()
   const { isLogin } = useAuthState()
   const { logout } = useAuthAction()
+
+  const connectMultipleWallet = () => {
+    dispatch(updateModalStatus(true))
+  }
 
   const login = async (input: IDataSignatureAuth) => {
     const res = await signatureAuth(input)
@@ -53,34 +64,60 @@ const useConnectWallet = () => {
     }
   }
 
-  const connectWallet = async () => {
-    if (!window.ethereum || !window.ethereum.isMetaMask) {
+  const connectOwallet = async () => {
+    //@ts-ignore
+    const isOwallet = window.owallet.isOwallet
+    if (!isOwallet) {
       if (isMobile) {
-        toast.info("Please open the application in metamask's browser")
+        const deepLinkApp = `owallet//`
+        toast.info(`Please open the application in owallet's browser`)
         setTimeout(() => {
-          window.open(
-            `https://metamask.app.link/dapp/${document.location.host}`,
-            "_blank",
-          )
+          window.open(deepLinkApp, "_blank")
         }, 1000)
         return
       }
-      toast.warning("Please install MetaMask to continue!")
+
+      toast.warning(`Please install Owallet to continue!`)
       return
     }
+
     const isTrustWalletDefault =
       window.ethereum.isTrust || window.ethereum.isTrustWallet
+
     if (isTrustWalletDefault) {
       toast.warning(
         "Trust Wallet is set to default, please turn off and reload page to use MetaMask!",
       )
       return
     }
-    try {
-      setLoading(true)
 
+    try {
+      setLoadingConnectOwallet(true)
       const timestamp = Math.floor(Date.now() / 1000) + 86400
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      //@ts-ignore
+
+      const provider = new ethers.providers.Web3Provider(
+        //@ts-ignore
+        isMobile ? window.ethereum : window.eth_owallet,
+      )
+      //@ts-ignore
+      if (isMobile) {
+        await window.ethereum.request!({
+          method: "wallet_switchEthereumChain",
+          chainId: "0x01",
+          params: [{ chainId: "0x01" }],
+        })
+      } else {
+        //@ts-ignore
+        await window.eth_owallet.request!({
+          method: "wallet_switchEthereumChain",
+          chainId: "0x01",
+          params: [{ chainId: "0x01" }],
+        })
+      }
+      //@ts-ignore
+      await window?.owallet.enable("0x01")
+
       await provider.send("eth_requestAccounts", [])
       const signer = await provider.getSigner()
       const publicAddress = await getPublicAddress(signer)
@@ -99,7 +136,8 @@ const useConnectWallet = () => {
         timestamp,
       }
 
-      const signature = await signer._signTypedData(domain, types, value)
+      let signature = (await signer._signTypedData(domain, types, value)) as any
+      signature = signature?.result
       const digest = ethers.utils._TypedDataEncoder.hash(domain, types, value)
       const publicKey = ethers.utils.recoverPublicKey(digest, signature)
 
@@ -117,14 +155,97 @@ const useConnectWallet = () => {
       }
 
       await login(input)
+      dispatch(updateModalStatus(false))
     } catch (error) {
-      console.error(error)
+      console.error(error, "error")
     } finally {
-      setLoading(false)
+      setLoadingConnectOwallet(false)
     }
   }
 
-  return { loading, connectWallet }
+  const connectMetamaskWallet = async () => {
+    const isMetaMaskWallet = window.ethereum.isMetaMask
+    if (!isMetaMaskWallet) {
+      if (isMobile) {
+        const deepLinkApp = `https://metamask.app.link/dapp/${document.location.host}`
+        toast.info(`Please open the application in metamask's browser`)
+        setTimeout(() => {
+          window.open(deepLinkApp, "_blank")
+        }, 1000)
+        return
+      }
+
+      toast.warning(`Please install Metamask to continue!`)
+    }
+
+    const isTrustWalletDefault =
+      window.ethereum.isTrust || window.ethereum.isTrustWallet
+
+    if (isTrustWalletDefault) {
+      toast.warning(
+        "Trust Wallet is set to default, please turn off and reload page to use MetaMask!",
+      )
+      return
+    }
+
+    try {
+      setLoadingConnectMetamask(true)
+
+      const timestamp = Math.floor(Date.now() / 1000) + 86400
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+
+      await provider.send("eth_requestAccounts", [])
+      const signer = await provider.getSigner()
+      const publicAddress = await getPublicAddress(signer)
+
+      const domain = {}
+      const types = {
+        Data: [
+          { name: "action", type: "string" },
+          { name: "publicAddress", type: "address" },
+          { name: "timestamp", type: "uint256" },
+        ],
+      }
+      const value = {
+        action: "login",
+        publicAddress,
+        timestamp,
+      }
+
+      let signature = (await signer._signTypedData(domain, types, value)) as any
+      const digest = ethers.utils._TypedDataEncoder.hash(domain, types, value)
+      const publicKey = ethers.utils.recoverPublicKey(digest, signature)
+
+      const input: IDataSignatureAuth = {
+        data: {
+          action: "login",
+          publicAddress,
+          timestamp,
+        },
+        signData: {
+          signature,
+          publicKey,
+        },
+        typeLogin: "evm",
+      }
+
+      await login(input)
+      dispatch(updateModalStatus(false))
+    } catch (error) {
+      console.error(error, "error")
+    } finally {
+      setLoadingConnectMetamask(false)
+    }
+  }
+
+  return {
+    loading: loadingConnectMetamask || loadingConnectOwallet,
+    loadingConnectMetamask,
+    loadingConnectOwallet,
+    connectMetamaskWallet,
+    connectMultipleWallet,
+    connectOwallet,
+  }
 }
 
 export default useConnectWallet

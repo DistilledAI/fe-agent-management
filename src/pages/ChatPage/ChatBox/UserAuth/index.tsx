@@ -16,7 +16,7 @@ import { QueryDataKeys } from "types/queryDataKeys"
 
 interface UserAuthProps {
   connectWallet: any
-  loading: boolean
+  loading?: boolean
 }
 const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const user = useSelector((state: RootState) => state.user.user)

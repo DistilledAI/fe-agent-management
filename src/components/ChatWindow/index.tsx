@@ -99,7 +99,7 @@ const ChatWindow = ({
       return (
         <>
           {isFetchingPreviousPage && messages.length >= LIMIT ? (
-            <div className="flex h-full items-center justify-center py-4">
+            <div className="flex h-full items-center justify-center py-6">
               <DotLoading />
             </div>
           ) : (
@@ -150,9 +150,10 @@ const ChatWindow = ({
           ref={virtuosoRef}
           data={messages}
           initialTopMostItemIndex={{
-            index: messages.length - 1,
+            index: "LAST",
             align: "end",
           }}
+          totalCount={messages.length}
           increaseViewportBy={increaseViewportBy}
           onScroll={messages.length >= LIMIT ? onScroll : undefined}
           components={{

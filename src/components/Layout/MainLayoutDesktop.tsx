@@ -1,3 +1,4 @@
+import ConnectWalletModal from "@components/ConnectWalletModal"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useFetchMe from "@hooks/useFetchMe"
 import useInviteAgent from "@hooks/useInviteAgent"
@@ -15,22 +16,25 @@ const MainLayoutDesktop = () => {
   useMessageSocket()
 
   return (
-    <StyleSpacingProvider>
-      <div className="bg-white font-barlow">
-        <div className="flex">
-          <LeftBar />
-          <div
-            className={twMerge(
-              "relative min-h-dvh w-[calc(100%-329px)] pt-[68px] transition-all duration-300 ease-in-out",
-              sidebarCollapsed && "w-[calc(100%-104px)]",
-            )}
-          >
-            <UserAuthWrapper />
-            <Outlet />
+    <>
+      <StyleSpacingProvider>
+        <div className="bg-white font-barlow">
+          <div className="flex">
+            <LeftBar />
+            <div
+              className={twMerge(
+                "relative min-h-dvh w-[calc(100%-329px)] pt-[68px] transition-all duration-300 ease-in-out",
+                sidebarCollapsed && "w-[calc(100%-104px)]",
+              )}
+            >
+              <UserAuthWrapper />
+              <Outlet />
+            </div>
           </div>
         </div>
-      </div>
-    </StyleSpacingProvider>
+      </StyleSpacingProvider>
+      <ConnectWalletModal />
+    </>
   )
 }
 

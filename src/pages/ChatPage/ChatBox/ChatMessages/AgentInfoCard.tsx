@@ -66,7 +66,7 @@ const AgentInfoCard = ({ messages }: { messages: IMessageBox[] }) => {
                   </span>
                   <div className="flex items-center gap-x-1">
                     <AvatarCustom
-                      publicAddress={agentInfo?.publicAddress}
+                      publicAddress={agentOwner?.publicAddress}
                       src={agentOwner?.avatar}
                       className="h-[18px] w-[18px]"
                     />
@@ -99,8 +99,8 @@ const AgentInfoCard = ({ messages }: { messages: IMessageBox[] }) => {
             </div>
 
             <div className="flex items-center justify-between gap-x-2 md:gap-x-4">
-              <p className="line-clamp-2 max-w-[510px] text-14 font-medium text-mercury-600">
-                {agentOwner?.description || "Distilled AI Agent"}
+              <p className="line-clamp-3 max-w-[510px] text-14 font-medium text-mercury-600">
+                {agentInfo?.description || "Distilled AI Agent"}
               </p>
             </div>
           </div>

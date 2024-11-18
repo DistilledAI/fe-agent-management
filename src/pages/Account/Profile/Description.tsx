@@ -11,7 +11,7 @@ const AuthorDescription = () => {
   const { user } = useAuthState()
   const dispatch = useDispatch()
   const descriptionRef = useRef<any>()
-  const [value, setValue] = useState(user?.description)
+  const [value, setValue] = useState(user?.description ?? "")
 
   useEffect(() => {
     setValue(user?.description ?? "-")

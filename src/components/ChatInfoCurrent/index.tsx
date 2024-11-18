@@ -35,7 +35,10 @@ const ChatInfoCurrent: React.FC<{
         userName={groupDetail.group.name}
         badgeClassName={isLive ? "bg-lgd-code-hot-ramp" : ""}
         isLive={isLive}
-        usernameClassName={isLive ? "font-semibold" : ""}
+        usernameClassName={twMerge(
+          isLive &&
+            "bg-lgd-code-hot-ramp bg-clip-text text-transparent font-bold text-[16px]",
+        )}
       />
     )
 

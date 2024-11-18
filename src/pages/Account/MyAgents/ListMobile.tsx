@@ -1,18 +1,18 @@
 import AvatarCustom from "@components/AvatarCustom"
 import { ShareWithQrIcon } from "@components/Icons/Share"
+import PublishedOnMarket from "@components/PublishedOnMarket"
 import {
   MAP_DISPLAY_FROM_STATUS_MY_AGENT,
   PATH_NAMES,
   STATUS_AGENT,
 } from "@constants/index"
 import useLoadMoreByScroll from "@hooks/useLoadMoreByScroll"
+import { useDisclosure } from "@nextui-org/react"
 import React, { useRef, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { IAgentData } from "types/user"
 import ShareModal from "../../../components/ShareQRModal"
-import { useDisclosure } from "@nextui-org/react"
 import MyAgentAction from "./Action"
-import PublishedOnMarket from "@components/PublishedOnMarket"
 
 const ListAgentMobile: React.FC<{
   data: IAgentData[]
@@ -45,7 +45,10 @@ const ListAgentMobile: React.FC<{
         ) : (
           data.map((item) => {
             return (
-              <div className="border-b-1 border-mercury-100 py-2 first:pt-0 last:border-none last:pb-0">
+              <div
+                key={item.id}
+                className="border-b-1 border-mercury-100 py-2 first:pt-0 last:border-none last:pb-0"
+              >
                 <div
                   style={{
                     color: MAP_DISPLAY_FROM_STATUS_MY_AGENT[item.status]?.color,
@@ -57,11 +60,12 @@ const ListAgentMobile: React.FC<{
                 </div>
                 <div
                   key={item.id}
-                  className="flex items-center justify-between"
+                  className="flex flex-col gap-3 max-md:flex-row max-md:items-center max-md:justify-between"
                 >
                   <div className="flex gap-3">
                     <div>
                       <AvatarCustom
+                        src={item.avatar ?? undefined}
                         publicAddress={item.publicAddress || item.username}
                         className="h-6 w-6"
                       />
