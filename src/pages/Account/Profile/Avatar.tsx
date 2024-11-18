@@ -3,7 +3,6 @@ import { EditPenOutlineIcon } from "@components/Icons/Edit"
 import useAuthState from "@hooks/useAuthState"
 import useFetchMe from "@hooks/useFetchMe"
 import { Button } from "@nextui-org/react"
-import { isPassFileSize } from "@utils/index"
 import { useRef } from "react"
 import { toast } from "react-toastify"
 import { updateAvatarUser } from "services/user"
@@ -15,14 +14,13 @@ const AuthorAvatar = () => {
 
   const handleUploadAvatar = async (file: File) => {
     try {
-      const maxSize = 1 * 1024 * 1024
-      if (!isPassFileSize(file.size, maxSize)) return
       const formData = new FormData()
       formData.append("file", file)
       await updateAvatarUser(formData)
       toast.success("Updated successfully!")
       fetchData()
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message)
       console.error(error)
     }
   }

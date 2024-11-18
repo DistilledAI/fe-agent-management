@@ -119,7 +119,7 @@ const ConnectData = () => {
           />
         </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 max-md:order-2">
             <UploadSocialLink moreCustomRequest={onMoreCustomRequest} />
             <UploadCustom
               fileKey={TYPE_DATA_KEY.CV_FILE}
@@ -129,12 +129,13 @@ const ConnectData = () => {
               moreCustomRequest={onMoreCustomRequest}
             />
             <UploadCustom
-              fileKey={TYPE_DATA_KEY.TXT_FILE}
-              icon={<TxtIcon />}
-              label="Text files"
-              accept=".txt,.md"
+              fileKey={TYPE_DATA_KEY.PHOTO_VIDEO_FILE}
+              icon={<PhotoPlusIcon />}
+              label="Photos & Videos"
+              accept="image/*,video/*"
               multiple
               moreCustomRequest={onMoreCustomRequest}
+              isComingSoon
             />
           </div>
           <div className="flex flex-col gap-4">
@@ -146,10 +147,10 @@ const ConnectData = () => {
               moreCustomRequest={onMoreCustomRequest}
             />
             <UploadCustom
-              fileKey={TYPE_DATA_KEY.PHOTO_VIDEO_FILE}
-              icon={<PhotoPlusIcon />}
-              label="Photos & Videos"
-              accept="image/*,video/*"
+              fileKey={TYPE_DATA_KEY.TXT_FILE}
+              icon={<TxtIcon />}
+              label="Text files"
+              accept=".txt,.md"
               multiple
               moreCustomRequest={onMoreCustomRequest}
             />
