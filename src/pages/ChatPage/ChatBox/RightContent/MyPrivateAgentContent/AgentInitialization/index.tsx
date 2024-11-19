@@ -18,6 +18,7 @@ import {
 import { updateAvatarUser } from "services/user"
 import { useQuery } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
+import { isPassRuleAgentInfo } from "@pages/AgentDetail/helpers"
 
 const AgentInitialization = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -44,6 +45,8 @@ const AgentInitialization = () => {
     try {
       if (isBotCreated)
         return toast.info("Your agent is created, please check again!")
+      if (!isPassRuleAgentInfo(data)) return
+
       setIsLoading(true)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { avatar, avatarFile, ...newData } = data
@@ -65,6 +68,7 @@ const AgentInitialization = () => {
       }
     } catch (error) {
       console.log({ error })
+      toast.error("Something went wrong, please try again!")
     } finally {
       setIsLoading(false)
     }

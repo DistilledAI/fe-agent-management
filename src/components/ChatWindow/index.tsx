@@ -53,13 +53,13 @@ const ChatWindow = ({
   increaseViewportBy = 500,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
-  const [isAtBottom, setIsAtBottom] = useState<boolean>(true)
+  // const [isAtBottom, setIsAtBottom] = useState<boolean>(true)
   const [isScrollBottom, setIsScrollBottom] = useState<boolean>(false)
 
   useLayoutEffect(() => {
     if (chatId) {
       setIsScrollBottom(false)
-      setIsAtBottom(true)
+      // setIsAtBottom(true)
     }
   }, [chatId])
 
@@ -77,7 +77,7 @@ const ChatWindow = ({
     async (e: React.UIEvent<HTMLDivElement>) => {
       const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
       if (scrollTop === 0 && hasPreviousMore) {
-        setIsAtBottom(false)
+        // setIsAtBottom(false)
         const messagesIndex = await onLoadPrevMessages()
         if (messagesIndex) {
           virtuosoRef.current?.scrollToIndex({
@@ -160,8 +160,8 @@ const ChatWindow = ({
             Header: renderHeader,
             EmptyPlaceholder: () => renderEmptyPlaceholder(),
           }}
-          followOutput={isAtBottom ? "smooth" : false}
-          atBottomStateChange={setIsAtBottom}
+          followOutput={"auto"}
+          // atBottomStateChange={setIsAtBottom}
           atBottomThreshold={AT_BOTTOM_THRESHOLD}
           itemContent={renderRow}
         />

@@ -8,6 +8,7 @@ import ChatDetailHeader from "./Header"
 import useGetChatId from "./useGetChatId"
 import PrivateAgentChatContent from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/PrivateAgentChatContent"
 import ChatMessages from "@pages/ChatPage/ChatBox/ChatMessages"
+import { useQuery } from "@tanstack/react-query"
 
 const ChatDetail = () => {
   const { privateChatId } = useParams()
@@ -15,6 +16,11 @@ const ChatDetail = () => {
   const { isLogin } = useAuthState()
   const groupId = chatId || privateChatId
   const { mutation } = useSubmitChat(groupId, SpeechRecognition.stopListening)
+  const { data: isChatting } = useQuery<boolean>({
+    initialData: false,
+    queryKey: ["isChatting", groupId],
+    enabled: !!groupId,
+  })
 
   const isEnableTextInput = isLogin && (privateChatId || chatId)
 
@@ -33,7 +39,7 @@ const ChatDetail = () => {
           <ChatInput
             onSubmit={mutation.mutate}
             isPending={mutation.isPending}
-            isDisabledInput={!isEnableTextInput}
+            isDisabledInput={isChatting || !isEnableTextInput}
           />
         </div>
       </div>

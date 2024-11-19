@@ -15,11 +15,12 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import AIAgentGenerate from "./AIAgentGenerate"
 import AdvancedConfig from "./AdvancedConfig"
 import AgentBehaviors, { SelectedBehaviors } from "./AgentBehaviors"
-import GeneralInfo, { DESC_MAX_LENGTH } from "./GeneralInfo"
+import GeneralInfo from "./GeneralInfo"
 import Header from "./Header"
 import Monetization from "./Monetization"
 import Preferences from "./Preferences"
 import ToxicPolicies from "./ToxicPolicies"
+import { isPassRuleAgentInfo } from "./helpers"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
@@ -116,23 +117,8 @@ const AgentDetail: React.FC = () => {
     methods.reset(defaults)
   }, [agentData, methods.reset])
 
-  const isPassRule = (data: any) => {
-    const isUsernameLengthPass =
-      data["username"]?.length >= 4 && data["username"]?.length <= 30
-    const isDescLengthPass = data["description"]?.length <= DESC_MAX_LENGTH
-    if (!isUsernameLengthPass) {
-      toast.warning("Agent name within 4-30 characters")
-      return false
-    }
-    if (!isDescLengthPass) {
-      toast.warning(`Agent description max ${DESC_MAX_LENGTH} characters`)
-      return false
-    }
-    return true
-  }
-
   const onSubmit = async (data: any) => {
-    if (!isPassRule(data)) return
+    if (!isPassRuleAgentInfo(data)) return
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { avatar, avatarFile, ...newData } = data
     const agentIdNumber = Number(agentId)
