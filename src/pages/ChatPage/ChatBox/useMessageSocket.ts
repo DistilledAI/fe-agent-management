@@ -1,11 +1,11 @@
-import { TYPE_BOT } from "@constants/index"
+import { PATH_NAMES, TYPE_BOT } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { IUser } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
 import { makeId } from "@utils/index"
 import { useSocket } from "providers/SocketProvider"
 import { useEffect, useRef } from "react"
-import { useParams } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import { getVoiceToText } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 import useGetChatId from "../Mobile/ChatDetail/useGetChatId"
@@ -40,6 +40,7 @@ const useMessageSocket = () => {
   const indexResRef = useRef(-1)
   const queryClient = useQueryClient()
   const groupId = chatId || privateChatId
+  const { pathname } = useLocation()
 
   const setQueryIsChatting = (chattingId: string, status: boolean = false) => {
     return queryClient.setQueryData(["isChatting", chattingId], () => status)
@@ -231,7 +232,10 @@ const useMessageSocket = () => {
 
       socket.on(event, (e: IDataListen) => {
         if (e.event === StatusMessage.DONE || e.action === "group-not-bot") {
-          if (e?.user?.owner === user?.id) {
+          if (
+            e?.user?.owner === user?.id &&
+            pathname !== `${PATH_NAMES.PRIVATE_AGENT}/${groupId}`
+          ) {
             return setQueryIsChatting(e.group.toString(), true)
           }
 
@@ -246,7 +250,7 @@ const useMessageSocket = () => {
         socket.off(event)
       }
     }
-  }, [socket, user?.id, groupId, user?.owner])
+  }, [socket, user?.id, groupId, user?.owner, pathname])
 }
 
 export default useMessageSocket
