@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query"
 import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
+import useFetchMyData from "@pages/MyData/useFetch"
 
 const PrivateAgentChatContent: React.FC<{
   hasInputChat?: boolean
@@ -31,6 +32,7 @@ const PrivateAgentChatContent: React.FC<{
   const { chatId } = useGetChatId()
   const groupId = privateChatId || chatId
   const { mutation } = useSubmitChat(groupId, SpeechRecognition.stopListening)
+  const { list: listMyData, isFetched: isFetchedMyData } = useFetchMyData()
   const { data: isChatting } = useQuery<boolean>({
     initialData: false,
     queryKey: ["isChatting", groupId],
@@ -43,6 +45,8 @@ const PrivateAgentChatContent: React.FC<{
   })
   const agent = data?.data?.items?.[0]
   const isBotActive = agent && agent?.status === STATUS_AGENT.ACTIVE
+  const isShowAddData =
+    listMyData.length === 0 && isFetchedMyData && isBotActive
 
   const renderMessage = (_: number, message: IMessageBox) => {
     return (
@@ -94,7 +98,7 @@ const PrivateAgentChatContent: React.FC<{
               <div>
                 <InfoCircleIcon color="#83664B" size={16} />
               </div>
-              <p className="text-brown-600 text-13 font-medium md:text-16">
+              <p className="text-13 font-medium text-brown-600 md:text-16">
                 While your private agent is being created, you’ll be chatting
                 with a default agent that doesn’t have your personalized
                 intelligence.
@@ -103,9 +107,33 @@ const PrivateAgentChatContent: React.FC<{
             <div>
               <Link
                 to={`${PATH_NAMES.MARKETPLACE}`}
-                className="text-brown-600 ml-[22px] whitespace-nowrap text-13 font-bold hover:underline md:ml-0 md:text-16"
+                className="ml-[22px] whitespace-nowrap text-13 font-bold text-brown-600 hover:underline md:ml-0 md:text-16"
               >
                 Chat with other agents
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+      {isShowAddData && (
+        <div className="absolute bottom-[70px] left-1/2 w-[calc(100%-32px)] -translate-x-1/2 bg-white pb-0 md:bottom-[95px] md:pb-2">
+          <div className="mx-auto flex w-full max-w-[768px] flex-col justify-between gap-1 rounded-lg border border-brown-500 bg-brown-50 px-4 py-3 md:flex-row md:items-center md:gap-2">
+            <div className="flex items-center gap-2">
+              <div>
+                <InfoCircleIcon color="#83664B" size={16} />
+              </div>
+              <p className="text-13 font-medium text-brown-600 md:text-16">
+                Since no data has been added, your agent lacks personalized
+                intelligence. <br />
+                Please add your data to help your agent learn more about you.
+              </p>
+            </div>
+            <div>
+              <Link
+                to={`${PATH_NAMES.ADD_MY_DATA}`}
+                className="ml-[22px] whitespace-nowrap text-13 font-bold text-brown-600 hover:underline md:ml-0 md:text-16"
+              >
+                Add Data
               </Link>
             </div>
           </div>
