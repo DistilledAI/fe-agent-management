@@ -66,9 +66,9 @@ const AgentInitialization = () => {
         toast.success("Created agent successfully")
         navigate(`${PATH_NAMES.ADD_MY_DATA}/${botId}`)
       }
-    } catch (error) {
-      console.log({ error })
-      toast.error("Something went wrong, please try again!")
+    } catch (error: any) {
+      console.error({ error })
+      toast.error(error?.response?.data?.message)
     } finally {
       setIsLoading(false)
     }
