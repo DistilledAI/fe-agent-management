@@ -3,12 +3,13 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import { Button } from "@nextui-org/react"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useLayoutEffect } from "react"
 import { useParams } from "react-router-dom"
 import { changeStatusBotInGroup, checkStatusBotInGroup } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 
-const BOT_STATUS = {
+export const BOT_STATUS = {
   ENABLE: 1,
   DISABLE: 0,
 }
@@ -18,6 +19,7 @@ const DelegatePrivateAgent: React.FC = () => {
   const { chatId } = useGetChatId()
   //   const [isShowNotification, setShowNotification] = useState<boolean>(false)
   const groupId = chatId || privateChatId
+  const queryClient = useQueryClient()
 
   const callCheckStatusBotInGroup = async () => {
     const response = await checkStatusBotInGroup(groupId)
@@ -30,8 +32,7 @@ const DelegatePrivateAgent: React.FC = () => {
     queryKey: [QueryDataKeys.DELEGATE_PRIVATE_AGENT, groupId],
     queryFn: callCheckStatusBotInGroup,
     enabled: !!groupId,
-    refetchOnMount: false,
-    retry: false,
+    refetchOnWindowFocus: false,
     staleTime: 60 * 60 * 1000,
   })
 
@@ -39,6 +40,12 @@ const DelegatePrivateAgent: React.FC = () => {
   const myBotData = botInfo?.myBot
   const botId = myBotData?.id
   const isBotEnabled = botStatus === BOT_STATUS.ENABLE
+
+  useLayoutEffect(() => {
+    queryClient.setQueryData(["isChatting", groupId], () =>
+      botStatus && isBotEnabled ? isBotEnabled : false,
+    )
+  }, [isBotEnabled, botStatus])
 
   //   useEffect(() => {
   //     setTimeout(() => {

@@ -12,6 +12,8 @@ import { twMerge } from "tailwind-merge"
 import VoiceChat from "./Voice"
 import useWindowSize from "@hooks/useWindowSize"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
+import { BOT_STATUS } from "../ChatMessages/ChatActions/DelegatePrivateAgent"
 
 interface ChatInputProps {
   isDisabledInput: boolean
@@ -41,26 +43,35 @@ const ChatInput = ({
   const { chatId } = useGetChatId()
   const inputRef = useRef<any>(null)
   const queryClient = useQueryClient()
-
   const groupId = chatId || privateChatId
 
-  const { data: IsChatting } = useQuery({
+  const { data: isChatting } = useQuery({
     initialData: false,
     queryKey: ["isChatting", groupId],
     enabled: !!groupId,
   })
+  const { data: botInfo } = useQuery<any>({
+    queryKey: [QueryDataKeys.DELEGATE_PRIVATE_AGENT, groupId],
+    enabled: !!groupId,
+    refetchOnWindowFocus: false,
+    staleTime: 60 * 60 * 1000,
+  })
+
+  const isBotEnabled = botInfo?.status === BOT_STATUS.ENABLE
 
   useEffect(() => {
     if (!isMobile) {
       inputRef.current.focus()
     }
-  }, [pathname, isMobile, IsChatting])
+  }, [pathname, isMobile, isChatting])
 
   const handleSubmit = async () => {
     if (!message) return
 
     setMessage("")
-    queryClient.setQueryData(["isChatting", groupId], () => true)
+    queryClient.setQueryData(["isChatting", groupId], () =>
+      botInfo?.myBot ? isBotEnabled : true,
+    )
     onSubmit(message)
   }
 

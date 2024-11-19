@@ -80,7 +80,7 @@ const AIAgentList = () => {
           <h4 className="text-base-b line-clamp-1 text-mercury-800">
             {agent.username}
           </h4>
-          <p className="line-clamp-4 text-13 font-medium text-mercury-600">
+          <p className="line-clamp-2 text-13 font-medium text-mercury-600">
             {agent.description || "Distilled AI Agent"}
           </p>
         </div>
