@@ -1,21 +1,25 @@
 import { SocialLinkIcon } from "@components/Icons/SocialLinkIcon"
 import { TrashXIcon } from "@components/Icons/TrashXIcon"
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import CreatPrivateAgentModal from "../Modal/CreatPrivateAgentModal"
 import UploadDataButton from "../UploadDataButton"
+import useDeleteData from "@pages/MyData/DeleteData/useDelete"
 
 const UploadSocialLink: React.FC<{ moreCustomRequest: any }> = ({
   moreCustomRequest,
 }) => {
+  const { botId } = useParams()
   const [socialUrls, setSocialUrls] = useState<string[]>([])
   const [openPopup, setOpenPopup] = useState<boolean>(false)
+  const { onDelete } = useDeleteData()
 
   const handlemSetSocialUrls = (newUrl: string) => {
     setSocialUrls([...socialUrls, newUrl])
   }
 
-  const handleRemoveLink = (record: any) => {
+  const handleRemoveLink = async (record: any) => {
+    await onDelete({ botId: Number(botId), ids: [record?.id] })
     //set display value
     const newFileList = socialUrls?.filter(
       (item: any) => item.uid !== record?.uid,
