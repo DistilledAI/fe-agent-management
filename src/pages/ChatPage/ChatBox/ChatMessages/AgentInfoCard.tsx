@@ -45,7 +45,7 @@ const AgentInfoCard = ({ messages }: { messages: IMessageBox[] }) => {
   }
 
   return (
-    <>
+    <div className="px-4">
       <div className="mx-auto min-h-[111px] max-w-[768px] border border-mercury-100 bg-mercury-50 p-3 max-md:border-x-0 md:rounded-[14px] md:p-4">
         <div className="flex gap-x-3 md:gap-x-4">
           <AvatarCustom
@@ -112,7 +112,7 @@ const AgentInfoCard = ({ messages }: { messages: IMessageBox[] }) => {
         shareUrl={`${window.location.origin}${PATH_NAMES.INVITE}/${agentInfo?.id}`}
         title="Agent QR"
       />
-    </>
+    </div>
   )
 }
 

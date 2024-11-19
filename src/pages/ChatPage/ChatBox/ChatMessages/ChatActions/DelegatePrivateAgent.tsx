@@ -4,7 +4,7 @@ import { FilledUserIcon } from "@components/Icons/UserIcon"
 import { Button } from "@nextui-org/react"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { useLayoutEffect } from "react"
+import { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { changeStatusBotInGroup, checkStatusBotInGroup } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
@@ -32,8 +32,6 @@ const DelegatePrivateAgent: React.FC = () => {
     queryKey: [QueryDataKeys.DELEGATE_PRIVATE_AGENT, groupId],
     queryFn: callCheckStatusBotInGroup,
     enabled: !!groupId,
-    refetchOnWindowFocus: false,
-    staleTime: 60 * 60 * 1000,
   })
 
   const botStatus = botInfo?.status
@@ -41,11 +39,11 @@ const DelegatePrivateAgent: React.FC = () => {
   const botId = myBotData?.id
   const isBotEnabled = botStatus === BOT_STATUS.ENABLE
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     queryClient.setQueryData(["isChatting", groupId], () =>
       botStatus && isBotEnabled ? isBotEnabled : false,
     )
-  }, [isBotEnabled, botStatus])
+  }, [isBotEnabled, botInfo])
 
   //   useEffect(() => {
   //     setTimeout(() => {

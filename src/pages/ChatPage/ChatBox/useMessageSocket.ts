@@ -22,6 +22,7 @@ interface IDataListen {
   msgId: number
   index: number
   user: IUser
+  action: string
 }
 
 enum StatusMessage {
@@ -227,8 +228,13 @@ const useMessageSocket = () => {
   useEffect(() => {
     if (socket) {
       const event = "chat-group"
+
       socket.on(event, (e: IDataListen) => {
-        if (e.event === StatusMessage.DONE) {
+        if (e.event === StatusMessage.DONE || e.action === "group-not-bot") {
+          if (e?.user?.owner === user?.id) {
+            return setQueryIsChatting(e.group.toString(), true)
+          }
+
           setQueryIsChatting(e.group.toString(), false)
         }
 
@@ -240,7 +246,7 @@ const useMessageSocket = () => {
         socket.off(event)
       }
     }
-  }, [socket, user?.id, groupId])
+  }, [socket, user?.id, groupId, user?.owner])
 }
 
 export default useMessageSocket
