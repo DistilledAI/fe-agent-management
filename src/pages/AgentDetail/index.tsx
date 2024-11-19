@@ -139,8 +139,9 @@ const AgentDetail: React.FC = () => {
         refetch()
         toast.success("Updated successfully!")
       }
-    } catch (error) {
-      console.log("error", error)
+    } catch (error: any) {
+      console.error("error", error)
+      toast.error(error?.response?.data?.message)
     } finally {
       setLoading(false)
     }
