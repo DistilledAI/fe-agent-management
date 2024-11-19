@@ -98,6 +98,8 @@ export const searchUsers = async (payload: any) => {
     url: endpoint.SEARCH_USER,
     params: {
       filter: payload,
+      limit: 30,
+      offset: 0,
     },
   })
 }
