@@ -34,8 +34,6 @@ const ChatMessages = () => {
   const { data: myPrivateAgent } = useQuery({
     queryKey: [QueryDataKeys.DELEGATE_PRIVATE_AGENT, chatId],
     enabled: !!chatId,
-    staleTime: 60 * 60 * 1000,
-    refetchOnMount: false,
   })
 
   const { spacing } = useStyleSpacing()
