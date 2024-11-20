@@ -56,15 +56,15 @@ const AgentInitialization = () => {
       })
       const botId = res?.data?.id
       const isUpdateAvatar = botId && data.avatarFile
+      if (res && botId) {
+        toast.success("Created agent successfully")
+        navigate(`${PATH_NAMES.ADD_MY_DATA}/${botId}`)
+      }
       if (isUpdateAvatar) {
         const formData = new FormData()
         formData.append("file", data.avatarFile)
         formData.append("userId", botId.toString() ?? "")
         await updateAvatarUser(formData)
-      }
-      if (res && botId) {
-        toast.success("Created agent successfully")
-        navigate(`${PATH_NAMES.ADD_MY_DATA}/${botId}`)
       }
     } catch (error: any) {
       console.error({ error })
