@@ -1,15 +1,19 @@
 import ComingSoon from "@components/ComingSoon"
 import { useAppSelector } from "@hooks/useAppRedux"
-import { ScrollShadow } from "@nextui-org/react"
+import { Button, ScrollShadow } from "@nextui-org/react"
 import { useEffect, useRef } from "react"
 import { twMerge } from "tailwind-merge"
 import GenAITools from "./GenAITools"
 import Productivity from "./Productivity"
 import useScrollTabActive from "./useScrollTabActive"
 import AIAgentList from "./AIAgentList"
+import { CloudUpload } from "@components/Icons/CloudUpload"
+import { useNavigate } from "react-router-dom"
 
 const Marketplace = () => {
   const siderCollapsed = useAppSelector((state) => state.sidebarCollapsed)
+  const navigate = useNavigate()
+
   const CATEGORIES = [
     {
       id: "ai-agents",
@@ -101,9 +105,18 @@ const Marketplace = () => {
           siderCollapsed && "md:w-[calc(100%-104px)]",
         )}
       >
-        <h3 className="hidden text-24 font-semibold text-mercury-950 md:block">
-          Marketplace
-        </h3>
+        <div className="mx-auto flex w-full max-w-[768px] justify-between px-4 md:px-0 2xl:max-w-[940px]">
+          <h3 className="hidden text-24 font-semibold text-mercury-950 md:block">
+            Marketplace
+          </h3>
+          <Button
+            onClick={() => navigate("/my-agents")}
+            className="btn-primary !bg-mercury-950 !text-mercury-30 max-md:ml-auto"
+          >
+            <CloudUpload color="#FFFFFF" />
+            Publish My Agents
+          </Button>
+        </div>
         <ScrollShadow
           hideScrollBar
           size={80}
