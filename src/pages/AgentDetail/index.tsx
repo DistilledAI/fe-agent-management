@@ -4,7 +4,7 @@ import {
   PERSONALITY_LIST,
 } from "@constants/index"
 import { Divider } from "@nextui-org/react"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import { useNavigate, useParams } from "react-router-dom"
@@ -24,6 +24,7 @@ import { isPassRuleAgentInfo } from "./helpers"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
+  const queryClient = useQueryClient()
   const [loading, setLoading] = useState(false)
   const [valueCustomDefault, setValueCustomDefault] = useState<any>()
   const navigate = useNavigate()
@@ -137,6 +138,7 @@ const AgentDetail: React.FC = () => {
       }
       if (res.data) {
         refetch()
+        queryClient.invalidateQueries({ queryKey: [QueryDataKeys.MY_BOT_LIST] })
         toast.success("Updated successfully!")
       }
     } catch (error: any) {

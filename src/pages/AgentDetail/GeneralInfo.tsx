@@ -21,7 +21,7 @@ const GeneralInfo: React.FC<{
 
   const handleUploadAvatar = async (file: File) => {
     try {
-      const maxSize = 10 * 1024 * 1024
+      const maxSize = 5 * 1024 * 1024
       if (!isPassFileSize(file.size, maxSize)) return
       setValue("avatarFile", file)
       const fileBase64 = await fileToBase64(file)
