@@ -18,6 +18,7 @@ import MyData from "@pages/MyData"
 import PageNotFound from "@pages/NotFound"
 import { Route, Routes } from "react-router-dom"
 import AgentInitialization from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization"
+import MyAgentPage from "@pages/MyAgents"
 
 const AppRouter = () => {
   const { isMobile } = useWindowSize()
@@ -74,7 +75,11 @@ const AppRouter = () => {
             path={`${PATH_NAMES.ADD_MY_DATA}/:botId`}
             element={<AddMyData />}
           />
-          <Route path={"/create-agent"} element={<AgentInitialization />} />
+          <Route
+            path={PATH_NAMES.CREATE_AGENT}
+            element={<AgentInitialization />}
+          />
+          <Route path={PATH_NAMES.MY_AGENTS} element={<MyAgentPage />} />
         </Route>
       </Route>
       <Route path="*" element={<PageNotFound />} />

@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom"
 import { QueryDataKeys } from "types/queryDataKeys"
 import AgentInfo from "./AgentInfo"
 import MyCredits from "./Credits"
-import MyAgents from "./MyAgents"
 import AuthorProfile from "./Profile"
 
 const Account = () => {
@@ -67,9 +66,6 @@ const Account = () => {
         </div>
         <div>
           <AgentInfo agent={agents[0]} />
-        </div>
-        <div>
-          <MyAgents agents={agents} />
         </div>
       </div>
     </div>
