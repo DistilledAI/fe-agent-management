@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { getMyPrivateAgent } from "services/chat"
+import { SearchUserIconOutline } from "@components/Icons/UserIcon"
 
 interface Props {
   isOpen: boolean
@@ -39,6 +40,12 @@ const DrawerLeft: React.FC<Props> = ({ isOpen, onClose }) => {
       isComingSoon: false,
       url: PATH_NAMES.MY_DATA,
       hidden: isHiddenMyData,
+    },
+    {
+      name: "My agents",
+      icon: <SearchUserIconOutline />,
+      isComingSoon: false,
+      url: PATH_NAMES.MY_AGENTS,
     },
   ]
 
@@ -85,7 +92,10 @@ const DrawerLeft: React.FC<Props> = ({ isOpen, onClose }) => {
                   <Button
                     key={index}
                     className="btn-primary min-h-[60px] w-full justify-start"
-                    onClick={() => navigate(item.url)}
+                    onClick={() => {
+                      navigate(item.url)
+                      onClose()
+                    }}
                   >
                     <div>{item.icon}</div>
                     {item.name}

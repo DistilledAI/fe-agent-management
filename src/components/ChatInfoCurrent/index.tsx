@@ -14,6 +14,7 @@ import {
 } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import React from "react"
 import { twMerge } from "tailwind-merge"
+import MoreAction from "./MoreAction"
 
 const ChatInfoCurrent: React.FC<{
   groupDetail: UserGroup | null
@@ -28,22 +29,28 @@ const ChatInfoCurrent: React.FC<{
 
   if (isGroupPublic)
     return (
-      <AvatarContainer
-        badgeIcon={<LiveIcon />}
-        avatarUrl={groupDetail.group.image}
-        publicAddress={groupDetail.group.name}
-        userName={groupDetail.group.name}
-        badgeClassName={isLive ? "bg-lgd-code-hot-ramp" : ""}
-        isLive={isLive}
-        usernameClassName={twMerge(
-          isLive &&
-            "bg-lgd-code-hot-ramp bg-clip-text text-transparent font-bold text-[16px]",
-        )}
-      />
+      <div className="flex items-center gap-2">
+        <AvatarContainer
+          badgeIcon={<LiveIcon />}
+          avatarUrl={groupDetail.group.image}
+          publicAddress={groupDetail.group.name}
+          userName={groupDetail.group.name}
+          badgeClassName={isLive ? "bg-lgd-code-hot-ramp" : ""}
+          isLive={isLive}
+          usernameClassName={twMerge(
+            isLive &&
+              "bg-lgd-code-hot-ramp bg-clip-text text-transparent font-bold text-[16px]",
+          )}
+        />
+        <MoreAction
+          groupId={groupDetail.groupId}
+          groupType={groupDetail.group.typeGroup}
+        />
+      </div>
     )
 
   return (
-    <div>
+    <div className="flex items-center gap-2">
       {isGroup ? (
         <AvatarGroup groupName={groupDetail.group.name} />
       ) : (
@@ -75,6 +82,10 @@ const ChatInfoCurrent: React.FC<{
           </span>
         </div>
       )}
+      <MoreAction
+        groupId={groupDetail.groupId}
+        groupType={groupDetail.group.typeGroup}
+      />
     </div>
   )
 }

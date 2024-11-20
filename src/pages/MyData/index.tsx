@@ -1,10 +1,7 @@
-import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
 import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
 import useWindowSize from "@hooks/useWindowSize"
-import { Button } from "@nextui-org/react"
 import { BotDataTypeKey } from "@types"
-import { useNavigate } from "react-router-dom"
 import AddData from "./AddData"
 import CvData from "./Cv"
 import FileData from "./File"
@@ -13,28 +10,20 @@ import LinkData from "./Link"
 import TxtData from "./Txt"
 import useFetchMyData from "./useFetch"
 import useUpdateStatus from "./useUpdateStatus"
+import HeaderMobileBack from "@components/HeaderMobileBack"
 
 const MyData: React.FC = () => {
   const { isMobile } = useWindowSize()
-  const navigate = useNavigate()
   const { list, isFetched, botId } = useFetchMyData()
   useUpdateStatus(botId)
 
   return (
     <div className="mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px]">
       {isMobile ? (
-        <div className="fixed left-0 top-0 z-[1] flex h-[55px] w-full items-center justify-between bg-white px-4">
-          <Button
-            onClick={() => navigate(-1)}
-            className="h-9 w-9 min-w-0 rounded-full bg-mercury-70 p-0"
-          >
-            <ArrowLeftFilledIcon />
-          </Button>
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-base font-bold text-mercury-900">
-            My Data
-          </div>
-          <AddData botId={botId} />
-        </div>
+        <HeaderMobileBack
+          title="My Data"
+          rightContent={<AddData botId={botId} />}
+        />
       ) : (
         <div className="mb-10 flex items-center justify-between">
           <div className="text-mercury-950">

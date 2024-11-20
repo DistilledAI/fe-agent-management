@@ -39,7 +39,6 @@ const ListAgentMobile: React.FC<{
         ref={tableRef}
         className="max-h-[300px] overflow-y-auto rounded-[22px] border-1 border-white bg-white p-4"
       >
-        <div className="mb-2 w-full bg-white font-semibold">My Agents</div>
         {isEmpty ? (
           <span className="text-14 text-base text-mercury-600">Empty</span>
         ) : (
