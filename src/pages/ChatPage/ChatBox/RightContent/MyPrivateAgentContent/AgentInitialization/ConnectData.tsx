@@ -3,51 +3,21 @@ import { DatabaseIcon } from "@components/Icons/DatabaseImportIcon"
 import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
 import { PhotoPlusIcon } from "@components/Icons/PhotoPlusIcon"
 import { TxtIcon } from "@components/Icons/TextIcon"
-import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
-import { useQueries } from "@tanstack/react-query"
+import { PATH_NAMES } from "@constants/index"
 import { useNavigate, useParams } from "react-router-dom"
 import { toast } from "react-toastify"
-import { getMyBotData, mapMyDataToBot } from "services/user"
-import { QueryDataKeys } from "types/queryDataKeys"
+import { mapMyDataToBot } from "services/user"
 import { TYPE_DATA_KEY } from "../CreatePrivateAgent"
 import UploadCustom from "../UploadCustom"
 import UploadSocialLink from "../UploadSocialLink"
 import AgentSetupStatus from "./AgentSetupStatus"
 import AlertBox from "@components/AlertBox"
-import { IBotData } from "types/user"
+import useActiveAgent from "../useActiveAgent"
 
 const ConnectData = () => {
-  const { botId } = useParams()
   const navigate = useNavigate()
-
-  const [myAgentDataQuery, myAgentListQuery] = useQueries<
-    [
-      { data: { data: { items: IBotData[] } } },
-      { data: { data: { items: any[] } } },
-    ]
-  >({
-    queries: [
-      {
-        queryKey: [`${QueryDataKeys.MY_BOT_DATA}-${botId}`],
-        queryFn: () => getMyBotData(Number(botId), { limit: 1, offset: 0 }),
-        enabled: !!botId,
-        refetchOnWindowFocus: false,
-      },
-      {
-        queryKey: [QueryDataKeys.MY_BOT_LIST],
-        refetchOnWindowFocus: false,
-      },
-    ],
-  })
-
-  const { data: myAgentData, isFetched: isBotDataFetched } = myAgentDataQuery
-
-  const myDataList = myAgentData?.data?.items || []
-  const agentList = myAgentListQuery?.data?.data?.items || []
-
-  const currentAgent =
-    agentList.find((agent: any) => agent?.id?.toString() === botId) || null
-  const isBotActive = currentAgent?.status === STATUS_AGENT.ACTIVE
+  const { botId } = useParams()
+  const { isAgentActive, agentDataList, isAgentDataFetched } = useActiveAgent()
 
   const onMoreCustomRequest = async (data: any) => {
     try {
@@ -93,10 +63,10 @@ const ConnectData = () => {
   return (
     <>
       <div className="mx-auto h-auto w-full max-w-[800px] overflow-y-auto px-4 md:h-full md:px-0">
-        <AgentSetupStatus isBotActive={isBotActive} />
+        <AgentSetupStatus isAgentActive={isAgentActive} />
         <div className="mb-4 space-y-2 md:mb-6">
           <AlertBox
-            isVisible={!isBotActive}
+            isVisible={!isAgentActive}
             messages={[
               "We appreciate your patience. Please join the whitelist to activate.",
             ]}
@@ -111,7 +81,7 @@ const ConnectData = () => {
           />
 
           <AlertBox
-            isVisible={!myDataList.length && isBotDataFetched}
+            isVisible={!agentDataList.length && isAgentDataFetched}
             messages={[
               "Since no data has been added, your agent lacks personalized intelligence.",
               "Please add your data to help your agent learn more about you.",

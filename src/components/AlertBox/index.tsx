@@ -21,12 +21,14 @@ const AlertBox = ({
   return (
     <div
       className={twMerge(
-        "flex flex-col justify-between gap-2 rounded-lg border border-brown-500 bg-brown-50 px-4 py-3 md:flex-row",
+        "flex flex-col justify-between gap-2 rounded-lg border border-brown-500 bg-brown-50 px-4 py-3 md:flex-row md:items-center",
         className,
       )}
     >
       <div className="flex items-center gap-2">
-        <InfoCircleIcon color="#83664B" size={16} />
+        <div>
+          <InfoCircleIcon color="#83664B" size={16} />
+        </div>
         <div>
           {messages.map((message, index) => (
             <div key={index} className="text-16 font-medium text-brown-600">
@@ -42,7 +44,7 @@ const AlertBox = ({
               key={label}
               to={to}
               target={external ? "_blank" : "_self"}
-              className="text-16 font-bold text-brown-600 hover:underline"
+              className="whitespace-nowrap text-16 font-bold text-brown-600 hover:underline"
             >
               {label}
             </Link>

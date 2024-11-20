@@ -24,7 +24,7 @@ const useFetchMyData = () => {
     callGetMyPrivateAgent()
   }, [])
 
-  return { list, isLoading, isFetched, refetch, botId }
+  return { list, isLoading, isFetched, refetch, botId, privateAgentData }
 }
 
 export default useFetchMyData
