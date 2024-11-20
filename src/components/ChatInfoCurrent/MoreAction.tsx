@@ -1,28 +1,30 @@
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
-import { DotFilledIcon } from "@components/Icons/DotIcon"
 import {
   Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   Modal,
   ModalBody,
   ModalContent,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
   useDisclosure,
 } from "@nextui-org/react"
-import { useState } from "react"
+import {
+  TypeGroup,
+  UserGroup,
+} from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import { useQueryClient } from "@tanstack/react-query"
+import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { deleteGroup, leaveGroup } from "services/chat"
-import { TypeGroup, UserGroup } from "./useFetchGroups"
-import { useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 
-const MoreChatAction: React.FC<{
+const MoreAction: React.FC<{
   groupId: number
   groupType: TypeGroup
 }> = ({ groupId, groupType }) => {
   const [loading, setLoading] = useState(false)
-  const [isOpen, setIsOpen] = useState<boolean>(false)
   const { isOpen: openPopup, onOpen, onOpenChange, onClose } = useDisclosure()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
@@ -52,30 +54,20 @@ const MoreChatAction: React.FC<{
 
   return (
     <>
-      <Popover
-        isOpen={isOpen}
-        onOpenChange={(open) => setIsOpen(open)}
-        placement="bottom-start"
-        size="lg"
-      >
-        <PopoverTrigger>
-          <div className="flex-items-center absolute right-4 top-3 hidden h-8 w-8 cursor-pointer justify-center rounded-full bg-mercury-300 shadow-1 group-hover:flex">
-            <DotFilledIcon size={16} />
+      <Dropdown classNames={{ base: "mt-1" }}>
+        <DropdownTrigger>
+          <div className="group inline-flex w-4 cursor-pointer flex-col items-center justify-center gap-[2px]">
+            <span className="h-[3px] w-[3px] rounded-full bg-mercury-500 group-hover:bg-mercury-900"></span>
+            <span className="h-[3px] w-[3px] rounded-full bg-mercury-500 group-hover:bg-mercury-900"></span>
+            <span className="h-[3px] w-[3px] rounded-full bg-mercury-500 group-hover:bg-mercury-900"></span>
           </div>
-        </PopoverTrigger>
-        <PopoverContent className="bg-white">
-          <div
-            className="flex w-[150px] cursor-pointer items-center justify-center px-1 py-2"
-            onClick={() => {
-              setIsOpen(false)
-              onOpen()
-            }}
-          >
-            <span className="text-base-sb cursor-pointer">Leave</span>
-          </div>
-        </PopoverContent>
-      </Popover>
-
+        </DropdownTrigger>
+        <DropdownMenu aria-label="Dynamic Actions">
+          <DropdownItem onClick={onOpen} color="default" key="leave">
+            <span className="font-medium">Leave</span>
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
       <Modal
         isOpen={openPopup}
         onOpenChange={onOpenChange}
@@ -119,4 +111,5 @@ const MoreChatAction: React.FC<{
     </>
   )
 }
-export default MoreChatAction
+
+export default MoreAction
