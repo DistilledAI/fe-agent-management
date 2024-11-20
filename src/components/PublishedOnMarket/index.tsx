@@ -9,6 +9,7 @@ import { Button, Modal, ModalContent, useDisclosure } from "@nextui-org/react"
 import ShareModal from "@components/ShareQRModal"
 import React from "react"
 import { Link } from "react-router-dom"
+import useWindowSize from "@hooks/useWindowSize"
 
 interface PublishData {
   avatar?: string
@@ -24,6 +25,7 @@ const PublishedOnMarket: React.FC<{
   onClose: () => void
   data: PublishData
 }> = ({ isOpen, onClose, data }) => {
+  const { isMobile } = useWindowSize()
   const {
     isOpen: isOpenQR,
     onOpen: onOpenQR,
@@ -84,7 +86,7 @@ const PublishedOnMarket: React.FC<{
               <Button
                 onClick={onClose}
                 as={Link}
-                to={`${PATH_NAMES.HOME}`}
+                to={isMobile ? PATH_NAMES.PRIVATE_AGENT : PATH_NAMES.HOME}
                 className="rounded-full bg-mercury-950"
               >
                 <ChatIcon />
