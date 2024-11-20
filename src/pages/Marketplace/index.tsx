@@ -150,7 +150,7 @@ const Marketplace = () => {
             </h5>
             <ScrollShadow
               className={twMerge(
-                "grid h-[50dvh] grid-cols-1 justify-between gap-y-6 overflow-y-auto rounded-[22px] bg-mercury-30 px-1 py-3 md:grid-cols-2 md:gap-x-10 md:p-4",
+                "grid max-h-[75dvh] min-h-[50dvh] grid-cols-1 justify-between gap-y-6 overflow-y-auto rounded-[22px] bg-mercury-30 px-1 py-3 md:grid-cols-2 md:gap-x-10 md:p-4",
                 category.isComing && "overflow-y-visible",
               )}
               style={{ gridAutoRows: "max-content" }}
