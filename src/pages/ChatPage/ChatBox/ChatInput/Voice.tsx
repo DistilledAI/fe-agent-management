@@ -77,17 +77,17 @@ const VoiceChat: React.FC<{
   return (
     <>
       {isListening ? (
-        <div className="relative">
+        <div className="relative h-8 w-8">
           <span
             style={{ animation: "bounce .8s ease-in-out infinite .5s" }}
-            className="absolute z-[-1] h-10 w-10 rounded-full bg-gray-400 opacity-20"
+            className="absolute z-[-1] h-8 w-8 rounded-full bg-gray-400 opacity-20"
           />
           <button
             type="button"
             onClick={stopVoice}
-            className="relative h-10 w-10 min-w-10 rounded-full bg-code-agent-1 p-0"
+            className="relative flex h-8 w-8 min-w-8 items-center justify-center rounded-full bg-code-agent-1 p-0"
           >
-            <span className="h-3 w-3 rounded-sm bg-white" />
+            <div className="h-3 w-3 rounded-sm bg-white" />
           </button>
         </div>
       ) : (

@@ -153,7 +153,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
         </div>
       </div>
 
-      <div className="-mx-4 h-full max-h-[calc(100%-143px)]">
+      <div className="-mx-4 h-full max-h-[calc(100%-124px)]">
         <Virtuoso
           style={{ height: "100%" }}
           data={mapColorsToGroups(groups)}

@@ -31,7 +31,7 @@ const CreatePrivateAgent: React.FC<{
 
   const handleCreateAgent = () => {
     if (isLogin && !isAnonymous) {
-      return navigate("/create-agent")
+      return navigate(PATH_NAMES.CREATE_AGENT)
     }
     return connectWallet()
   }

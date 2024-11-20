@@ -46,6 +46,7 @@ const useActiveAgent = (): UseActiveAgentReturn => {
 
   const currentAgent =
     agentList.find((agent: IAgentData) => agent?.id?.toString() === botId) ||
+    agentList[0] ||
     null
   const isAgentActive = currentAgent?.status === STATUS_AGENT.ACTIVE
 

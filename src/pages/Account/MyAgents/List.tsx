@@ -26,7 +26,7 @@ enum ColumnKey {
 const columns = [
   {
     key: ColumnKey.Agent,
-    label: "My Agents",
+    label: "Agents name",
   },
   {
     key: ColumnKey.Address,
@@ -71,9 +71,6 @@ const ListAgent: React.FC<{
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <p className="line-clamp-1 font-bold text-mercury-950">
-                  {item.username}
-                </p>
                 {!isPending(item.status) && (
                   <div
                     onClick={() => {
@@ -88,8 +85,11 @@ const ListAgent: React.FC<{
                     <ShareWithQrIcon />
                   </div>
                 )}
+                <p className="line-clamp-1 max-w-[130px] font-bold text-mercury-950">
+                  {item.username}
+                </p>
               </div>
-              <p className="line-clamp-1 text-13 text-mercury-600">
+              <p className="line-clamp-1 max-w-[130px] text-13 text-mercury-600">
                 {item.description}
               </p>
             </div>
@@ -124,10 +124,10 @@ const ListAgent: React.FC<{
             onClick={(e) => copyClipboard(e, item.publicAddress)}
             className="inline-flex cursor-pointer items-center gap-1 hover:opacity-70"
           >
+            <CopyIcon />
             <span className="text-16 font-medium text-mercury-900">
               {centerTextEllipsis(item.publicAddress, 5)}
             </span>
-            <CopyIcon />
           </div>
         ) : (
           "- - -"

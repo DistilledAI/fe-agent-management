@@ -1,6 +1,7 @@
 import AvatarCustom from "@components/AvatarCustom"
 import ChatInfoCurrent from "@components/ChatInfoCurrent"
 import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
+import { SearchUserIconOutline } from "@components/Icons/UserIcon"
 import { WalletIcon } from "@components/Icons/Wallet"
 import { RootState } from "@configs/store"
 import { PATH_NAMES, RoleUser } from "@constants/index"
@@ -9,7 +10,7 @@ import useFetchDetail from "@pages/ChatPage/Mobile/ChatDetail/useFetch"
 import { useQuery } from "@tanstack/react-query"
 import { getActiveColorRandomById } from "@utils/index"
 import { useSelector } from "react-redux"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { getMyPrivateAgent } from "services/chat"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
@@ -22,7 +23,6 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const user = useSelector((state: RootState) => state.user.user)
   const navigate = useNavigate()
   const { groupDetail, chatId } = useFetchDetail()
-  const { pathname } = useLocation()
 
   const { data } = useQuery({
     queryKey: [QueryDataKeys.MY_BOT_LIST],
@@ -31,7 +31,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   })
   const hasBot = data ? data.data.items.length > 0 : false
   const { textColor } = getActiveColorRandomById(chatId)
-  const isHiddenMyData = pathname === PATH_NAMES.MY_DATA || !hasBot
+  const isHiddenMyData = !hasBot
   const isShowInfo =
     user && user.publicAddress && user.role !== RoleUser.ANONYMOUS
 
@@ -52,6 +52,15 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
             <div className="flex items-center gap-1">
               <DatabaseSearchIcon />
               <span className="text-base">My Data</span>
+            </div>
+          </Button>
+          <Button
+            onClick={() => navigate(PATH_NAMES.MY_AGENTS)}
+            className={twMerge("btn-primary hidden h-11 md:block")}
+          >
+            <div className="flex items-center gap-1">
+              <SearchUserIconOutline />
+              <span className="text-base">My Agents</span>
             </div>
           </Button>
           <Button
