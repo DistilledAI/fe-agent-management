@@ -8,10 +8,10 @@ import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
 import { borderGdImg } from "@assets/images"
 
 interface AgentSetupStatusProps {
-  isBotActive: boolean
+  isAgentActive: boolean
 }
 
-const AgentSetupStatus = ({ isBotActive }: AgentSetupStatusProps) => {
+const AgentSetupStatus = ({ isAgentActive }: AgentSetupStatusProps) => {
   return (
     <div className="relative mx-auto mb-4 flex max-w-[684px] items-center justify-between md:mb-6">
       {/* Agent Status */}
@@ -21,10 +21,10 @@ const AgentSetupStatus = ({ isBotActive }: AgentSetupStatusProps) => {
           <div
             className={twMerge(
               "absolute -bottom-1 -right-1 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-white shadow-8",
-              isBotActive && "bg-green-500",
+              isAgentActive && "bg-green-500",
             )}
           >
-            {!isBotActive ? (
+            {!isAgentActive ? (
               <Spinner
                 classNames={{
                   wrapper: "w-3 h-3",

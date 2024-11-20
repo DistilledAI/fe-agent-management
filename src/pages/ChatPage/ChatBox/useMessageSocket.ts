@@ -234,7 +234,8 @@ const useMessageSocket = () => {
         if (e.event === StatusMessage.DONE || e.action === "group-not-bot") {
           if (
             e?.user?.owner === user?.id &&
-            pathname !== `${PATH_NAMES.PRIVATE_AGENT}/${groupId}`
+            e.group.toString() === groupId &&
+            !pathname.includes(PATH_NAMES.PRIVATE_AGENT)
           ) {
             return setQueryIsChatting(e.group.toString(), true)
           }
