@@ -9,10 +9,12 @@ import useScrollTabActive from "./useScrollTabActive"
 import AIAgentList from "./AIAgentList"
 import { CloudUpload } from "@components/Icons/CloudUpload"
 import { useNavigate } from "react-router-dom"
+import useActiveAgent from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/useActiveAgent"
 
 const Marketplace = () => {
   const siderCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const navigate = useNavigate()
+  const { isAgentActive } = useActiveAgent()
 
   const CATEGORIES = [
     {
@@ -105,17 +107,24 @@ const Marketplace = () => {
           siderCollapsed && "md:w-[calc(100%-104px)]",
         )}
       >
-        <div className="mx-auto flex w-full max-w-[768px] justify-between px-4 md:px-0 2xl:max-w-[940px]">
+        <div
+          className={twMerge(
+            "mx-auto flex w-full max-w-[768px] justify-between px-4 md:px-0 2xl:max-w-[940px]",
+            !isAgentActive && "justify-center",
+          )}
+        >
           <h3 className="hidden text-24 font-semibold text-mercury-950 md:block">
             Marketplace
           </h3>
-          <Button
-            onClick={() => navigate("/my-agents")}
-            className="btn-primary !bg-mercury-950 !text-mercury-30 max-md:ml-auto"
-          >
-            <CloudUpload color="#FFFFFF" />
-            Publish My Agents
-          </Button>
+          {isAgentActive ? (
+            <Button
+              onClick={() => navigate("/my-agents")}
+              className="btn-primary !bg-mercury-950 !text-mercury-30 max-md:ml-auto"
+            >
+              <CloudUpload color="#FFFFFF" />
+              Publish My Agents
+            </Button>
+          ) : null}
         </div>
         <ScrollShadow
           hideScrollBar
