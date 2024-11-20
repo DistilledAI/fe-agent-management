@@ -16,8 +16,12 @@ export const WALLET_TYPE = {
 }
 
 const useConnectWallet = () => {
-  const [loadingConnectMetamask, setLoadingConnectMetamask] = useState(false)
-  const [loadingConnectOwallet, setLoadingConnectOwallet] = useState(false)
+  const [loadingConnectMetamask, setLoadingConnectMetamask] =
+    useState<boolean>(false)
+  const [loadingConnectPhantom, setLoadingConnectPhantom] =
+    useState<boolean>(false)
+  const [loadingConnectOwallet, setLoadingConnectOwallet] =
+    useState<boolean>(false)
   const dispatch = useDispatch()
   const { address } = useAccount()
   const { isMobile } = useWindowSize()
@@ -69,7 +73,7 @@ const useConnectWallet = () => {
     const isOwallet = window.owallet.isOwallet
     if (!isOwallet) {
       if (isMobile) {
-        const deepLinkApp = `owallet//`
+        const deepLinkApp = "https://owallet.io/"
         toast.info(`Please open the application in owallet's browser`)
         setTimeout(() => {
           window.open(deepLinkApp, "_blank")
@@ -238,12 +242,90 @@ const useConnectWallet = () => {
     }
   }
 
+  const connectPhantomWallet = async () => {
+    //@ts-ignore
+    const isPhantomWallet = window.phantom.ethereum.isPhantom
+    if (!isPhantomWallet) {
+      if (isMobile) {
+        const deepLinkApp = "https://phantom.app/download"
+        toast.info(`Please open the application in phantom's browser`)
+        setTimeout(() => {
+          window.open(deepLinkApp, "_blank")
+        }, 1000)
+        return
+      }
+
+      toast.warning(`Please install Phantom to continue!`)
+    }
+
+    const isTrustWalletDefault =
+      window.ethereum.isTrust || window.ethereum.isTrustWallet
+
+    if (isTrustWalletDefault) {
+      toast.warning(
+        "Trust Wallet is set to default, please turn off and reload page to use MetaMask!",
+      )
+      return
+    }
+
+    try {
+      setLoadingConnectPhantom(true)
+      const timestamp = Math.floor(Date.now() / 1000) + 86400
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+
+      await provider.send("eth_requestAccounts", [])
+      const signer = await provider.getSigner()
+      const publicAddress = await getPublicAddress(signer)
+
+      const domain = {}
+      const types = {
+        Data: [
+          { name: "action", type: "string" },
+          { name: "publicAddress", type: "address" },
+          { name: "timestamp", type: "uint256" },
+        ],
+      }
+      const value = {
+        action: "login",
+        publicAddress,
+        timestamp,
+      }
+
+      let signature = (await signer._signTypedData(domain, types, value)) as any
+      const digest = ethers.utils._TypedDataEncoder.hash(domain, types, value)
+      const publicKey = ethers.utils.recoverPublicKey(digest, signature)
+
+      const input: IDataSignatureAuth = {
+        data: {
+          action: "login",
+          publicAddress,
+          timestamp,
+        },
+        signData: {
+          signature,
+          publicKey,
+        },
+        typeLogin: "evm",
+      }
+
+      await login(input)
+      dispatch(updateModalStatus(false))
+    } catch (error) {
+      console.error(error, "error")
+    } finally {
+      setLoadingConnectPhantom(false)
+    }
+  }
+
   return {
-    loading: loadingConnectMetamask || loadingConnectOwallet,
+    loading:
+      loadingConnectMetamask || loadingConnectOwallet || loadingConnectPhantom,
     loadingConnectMetamask,
     loadingConnectOwallet,
+    loadingConnectPhantom,
     connectMetamaskWallet,
     connectMultipleWallet,
+    connectPhantomWallet,
     connectOwallet,
   }
 }

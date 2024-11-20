@@ -1,6 +1,10 @@
 import CloseButton from "@components/CloseButton"
 import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
-import { MetamaskIconSmall, OwalletIcon } from "@components/Icons/MetamaskIcon"
+import {
+  MetamaskIconSmall,
+  OwalletIcon,
+  PhantomIcon,
+} from "@components/Icons/MetamaskIcon"
 import { useAppDispatch, useAppSelector } from "@hooks/useAppRedux"
 import useConnectWallet from "@hooks/useConnectWallet"
 import {
@@ -16,11 +20,37 @@ const ConnectWalletModal = () => {
   const {
     loadingConnectMetamask,
     loadingConnectOwallet,
+    loadingConnectPhantom,
     connectMetamaskWallet,
     connectOwallet,
+    connectPhantomWallet,
   } = useConnectWallet()
   const dispatch = useAppDispatch()
   const isOpen = useAppSelector((state) => state.connectWalletReducer.isOpen)
+
+  const CONNECTORS = [
+    {
+      id: "owallet",
+      name: "OWallet",
+      icon: <OwalletIcon width={32} height={38} />,
+      loading: loadingConnectOwallet,
+      connect: connectOwallet,
+    },
+    {
+      id: "phantom",
+      name: "Phantom",
+      icon: <PhantomIcon />,
+      loading: loadingConnectPhantom,
+      connect: connectPhantomWallet,
+    },
+    {
+      id: "metamask",
+      name: "Metamask",
+      icon: <MetamaskIconSmall width={32} height={38} />,
+      loading: loadingConnectMetamask,
+      connect: connectMetamaskWallet,
+    },
+  ]
 
   const onClose = () => {
     dispatch(updateModalStatus(false))
@@ -61,33 +91,25 @@ const ConnectWalletModal = () => {
             </span>
           </div>
 
-          <div className="mb-2 flex h-16 w-full items-center justify-between rounded-[14px] bg-[rgba(244,_244,_245,_0.50)] p-4 outline outline-[1px] outline-white">
-            <div className="flex items-center gap-4">
-              <OwalletIcon width={40} height={38} />
-              <span className="text-base-md">OWallet</span>
-            </div>
-            <Button
-              className="group flex h-[40px] cursor-pointer items-center justify-center gap-4 rounded-full bg-mercury-950 p-2 px-6"
-              onClick={connectOwallet}
-              isLoading={loadingConnectOwallet}
-            >
-              <span className="text-20 text-white max-md:text-14">Connect</span>
-            </Button>
-          </div>
-
-          <div className="flex h-16 w-full items-center justify-between rounded-[14px] bg-[rgba(244,_244,_245,_0.50)] p-4 outline outline-[1px] outline-white">
-            <div className="flex items-center gap-4">
-              <MetamaskIconSmall width={40} height={38} />
-              <span className="text-base-md">Metamask</span>
-            </div>
-            <Button
-              className="group flex h-[40px] cursor-pointer items-center justify-center gap-4 rounded-full bg-mercury-950 p-2 px-6"
-              onClick={connectMetamaskWallet}
-              isLoading={loadingConnectMetamask}
-            >
-              <span className="text-20 text-white max-md:text-14">Connect</span>
-            </Button>
-          </div>
+          {CONNECTORS.map((connector) => {
+            return (
+              <div className="mb-2 flex h-16 w-full items-center justify-between rounded-[14px] bg-[rgba(244,_244,_245,_0.50)] p-4 outline outline-[1px] outline-white">
+                <div className="flex items-center gap-4">
+                  {connector.icon}
+                  <span className="text-base-md">{connector.name}</span>
+                </div>
+                <Button
+                  className="group flex h-[40px] cursor-pointer items-center justify-center gap-4 rounded-full bg-mercury-950 p-2 px-6"
+                  onClick={connector.connect}
+                  isLoading={connector.loading}
+                >
+                  <span className="text-18 text-white max-md:text-14">
+                    Connect
+                  </span>
+                </Button>
+              </div>
+            )
+          })}
         </ModalBody>
       </ModalContent>
     </Modal>
