@@ -25,27 +25,31 @@ const MyAgentPage = () => {
       <div className="md:hidden">
         <HeaderMobileBack title="My Agents" />
       </div>
-      <AgentStatus
-        classNames={{
-          wrapper: "flex-row justify-center gap-4",
-          textWrapper: "flex-row gap-1 items-center",
-        }}
-        isAgentActive={isAgentActive}
-      />
-      <AlertBox
-        isVisible={!isAgentActive}
-        messages={[
-          "We appreciate your patience. Please join the whitelist to activate.",
-        ]}
-        links={[
-          {
-            to: "https://forms.gle/qGWWAnt3nWWAkxeE9",
-            label: "Enter waitlist",
-            external: true,
-          },
-          { to: PATH_NAMES.MARKETPLACE, label: "Chat with other agents" },
-        ]}
-      />
+      {!!agent && (
+        <>
+          <AgentStatus
+            classNames={{
+              wrapper: "flex-row justify-center gap-4",
+              textWrapper: "flex-row gap-1 items-center",
+            }}
+            isAgentActive={isAgentActive}
+          />
+          <AlertBox
+            isVisible={!isAgentActive}
+            messages={[
+              "We appreciate your patience. Please join the whitelist to activate.",
+            ]}
+            links={[
+              {
+                to: "https://forms.gle/qGWWAnt3nWWAkxeE9",
+                label: "Enter waitlist",
+                external: true,
+              },
+              { to: PATH_NAMES.MARKETPLACE, label: "Chat with other agents" },
+            ]}
+          />
+        </>
+      )}
       <MyAgents agents={agents} />
     </div>
   )
