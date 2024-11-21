@@ -49,15 +49,16 @@ const ProfileLinkForm: React.FC<{
 
   const getUserName = (url: string) => {
     if (selectedKey === PROFILE_TYPE.LINKEDIN) {
-      let match = url.match(/in\/([^\/]+)/)
+      const match = url.match(/in\/([^\/]+)/)
       return match ? match[1] : null
     }
 
-    let match = url.match(/x.com\/([^\/]+)/)
+    const match = url.match(/x.com\/([^\/]+)/)
     return match ? match[1] : null
   }
 
   const callGetProfileInfo = async (data: any) => {
+    if (loading) return
     setLoading(true)
     const profileLink = data?.[selectedKey]
     const userName = getUserName(profileLink) as any
@@ -186,7 +187,7 @@ const ProfileLinkForm: React.FC<{
         className="mt-4 w-full rounded-full bg-mercury-950"
         size="lg"
         onClick={handleSubmit(onSubmit)}
-        isDisabled={!inputValue}
+        isDisabled={!inputValue || loading}
       >
         <span className="text-18 text-mercury-30">Connect</span>
       </Button>
