@@ -44,7 +44,7 @@ const MyEcho: React.FC = () => {
           sidebarCollapsed && "hidden",
         )}
       >
-        My Private Agent
+        Chat with My Private Agent
       </span>
 
       <ActiveEffect isActive={isActive} className="bg-mercury-950" />
