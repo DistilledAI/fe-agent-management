@@ -9,6 +9,7 @@ import useCheckBotActive from "../useCheckBotActive"
 import InfoWarningModal from "../Components/InfoWarningModal"
 import { getValueInfoWarning } from "../helpers"
 import { MY_DATA_STATUS } from "@constants/index"
+import { twMerge } from "tailwind-merge"
 
 interface SyncDataProps {
   dataId: number
@@ -22,6 +23,7 @@ const SyncData: React.FC<SyncDataProps> = ({
   status: dataStatus,
 }) => {
   const [status, setStatus] = useState<MY_DATA_STATUS>(dataStatus)
+  const [loading, setLoading] = useState(false)
   const { isBotActive } = useCheckBotActive()
 
   useEffect(() => {
@@ -30,7 +32,8 @@ const SyncData: React.FC<SyncDataProps> = ({
 
   const handleSyncData = async () => {
     try {
-      if (!isBotActive) return
+      if (!isBotActive || loading) return
+      setLoading(true)
       const response = await trainData({
         botId,
         id: dataId,
@@ -40,6 +43,8 @@ const SyncData: React.FC<SyncDataProps> = ({
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -58,7 +63,10 @@ const SyncData: React.FC<SyncDataProps> = ({
       ))
       .otherwise(() => (
         <div
-          className="flex cursor-pointer items-center gap-1 hover:underline"
+          className={twMerge(
+            "flex cursor-pointer items-center gap-1 hover:underline",
+            loading && "pointer-events-none opacity-60",
+          )}
           onClick={handleSyncData}
         >
           <RefreshIcon color="#F78500" />
