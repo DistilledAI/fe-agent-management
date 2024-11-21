@@ -2,25 +2,15 @@ import { desktopPrivateAgent } from "@assets/images"
 import DotLoading from "@components/DotLoading"
 import { FilledExclamationCircleIcon } from "@components/Icons/FilledExclamationCircleIcon"
 import { ExploreFilledIcon } from "@components/Icons/MetamaskIcon"
-import { PATH_NAMES } from "@constants/index"
 import useConnectWallet from "@hooks/useConnectWallet"
-import useWindowSize from "@hooks/useWindowSize"
 import IntroVideo from "@pages/ChatPage/ChatBox/RightContent/Modal/CreatPrivateAgentModal/IntroVideo"
-import { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
 
 const Login = () => {
   const { connectMultipleWallet, loading } = useConnectWallet()
-  const { isMobile } = useWindowSize()
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if (isMobile) navigate(PATH_NAMES.HOME)
-  }, [isMobile])
 
   return (
     <div
-      className="relative mx-auto flex h-full w-full flex-1 items-center justify-center rounded-[22px] border border-white bg-white bg-cover bg-center bg-no-repeat font-barlow max-md:h-dvh"
+      className="relative mx-auto flex h-full w-full flex-1 items-center justify-center rounded-[22px] border border-white bg-white bg-cover bg-center bg-no-repeat font-barlow max-md:h-[calc(100dvh-50px)]"
       style={{
         backgroundImage: `url(${desktopPrivateAgent})`,
       }}
