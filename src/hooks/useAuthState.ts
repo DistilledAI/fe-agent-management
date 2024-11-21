@@ -18,7 +18,7 @@ const useAuthState = () => {
     isAnonymous && isLoggedIn && !sessionAccessToken
   const isLogin = isOverStatusLoginWithAnonymous ? false : isLoggedIn
 
-  return { user, isLogin, sessionAccessToken }
+  return { user, isLogin, sessionAccessToken, isAnonymous }
 }
 
 export default useAuthState
