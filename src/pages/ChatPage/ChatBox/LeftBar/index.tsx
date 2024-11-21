@@ -1,15 +1,13 @@
 import MyEcho from "./MyEcho"
 // import Playground from "./Playground"
-import PrivateAI from "./PrivateAI"
 import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
-import SidebarCollapsed from "./SidebarCollapsed"
 import { useAppSelector } from "@hooks/useAppRedux"
-import { twMerge } from "tailwind-merge"
 import ButtonMarketplace from "@pages/Marketplace/ButtonMarketplace"
 import { Link } from "react-router-dom"
-import { ChartBarIcon } from "@components/Icons/Chart"
-import { TwitterIcon } from "@components/Icons/Twitter"
-import ComingSoon from "@components/ComingSoon"
+import { twMerge } from "tailwind-merge"
+import AnalyticsInfoWrap from "./AnalyticsInfoWrap"
+import PrivateAI from "./PrivateAI"
+import SidebarCollapsed from "./SidebarCollapsed"
 
 const LeftBar = () => {
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
@@ -56,41 +54,7 @@ const LeftBar = () => {
             {/* <Playground /> */}
             <ButtonMarketplace />
           </div>
-          <div
-            className={twMerge(
-              "flex items-center justify-between gap-4 transition-all duration-300 ease-in-out",
-              sidebarCollapsed && "flex-col",
-            )}
-          >
-            <ComingSoon wrapperClassName="w-fit">
-              <Link to="" target="_blank" className="flex items-center gap-1">
-                <ChartBarIcon />
-                <span
-                  className={twMerge(
-                    "whitespace-nowrap text-[13px] text-mercury-700",
-                    sidebarCollapsed && "hidden",
-                  )}
-                >
-                  Dune Analytics
-                </span>
-              </Link>
-            </ComingSoon>
-            <Link
-              to="https://x.com/distilled_AI"
-              target="_blank"
-              className="flex items-center gap-1"
-            >
-              <TwitterIcon size={16} />
-              <span
-                className={twMerge(
-                  "whitespace-nowrap text-[13px] text-mercury-700",
-                  sidebarCollapsed && "hidden",
-                )}
-              >
-                Twitter
-              </span>
-            </Link>
-          </div>
+          <AnalyticsInfoWrap />
         </div>
       </div>
     </div>

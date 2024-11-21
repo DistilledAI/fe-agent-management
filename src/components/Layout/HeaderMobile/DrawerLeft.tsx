@@ -1,15 +1,16 @@
-import React from "react"
 import { Button, Modal, ModalBody, ModalContent } from "@nextui-org/react"
+import React from "react"
 // import { FilledWindowIcon } from "@components/Icons/FilledWindowIcon"
-import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
 import CloseButton from "@components/CloseButton"
 import ComingSoon from "@components/ComingSoon"
-import { PATH_NAMES } from "@constants/index"
-import { useNavigate } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
-import { QueryDataKeys } from "types/queryDataKeys"
-import { getMyPrivateAgent } from "services/chat"
+import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
 import { SearchUserIconOutline } from "@components/Icons/UserIcon"
+import { PATH_NAMES } from "@constants/index"
+import AnalyticsInfoWrap from "@pages/ChatPage/ChatBox/LeftBar/AnalyticsInfoWrap"
+import { useQuery } from "@tanstack/react-query"
+import { useNavigate } from "react-router-dom"
+import { getMyPrivateAgent } from "services/chat"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 interface Props {
   isOpen: boolean
@@ -83,7 +84,7 @@ const DrawerLeft: React.FC<Props> = ({ isOpen, onClose }) => {
       }}
     >
       <ModalContent className="w-[80%] !rounded-br-[32px] !rounded-tr-[32px] border-r border-r-mercury-100 bg-mercury-70">
-        <ModalBody className="gap-4 px-3 pt-10">
+        <ModalBody className="gap-4 px-3 pb-4 pt-10">
           <CloseButton onClose={onClose} />
           {MENU.map(
             (item, index) =>
@@ -103,6 +104,9 @@ const DrawerLeft: React.FC<Props> = ({ isOpen, onClose }) => {
                 </ComingSoon>
               ),
           )}
+          <div className="flex h-full flex-col justify-end">
+            <AnalyticsInfoWrap />
+          </div>
         </ModalBody>
       </ModalContent>
     </Modal>
