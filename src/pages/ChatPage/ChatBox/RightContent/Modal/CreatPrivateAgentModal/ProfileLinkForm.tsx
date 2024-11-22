@@ -48,13 +48,22 @@ const ProfileLinkForm: React.FC<{
   const { isMobile } = useWindowSize()
 
   const getUserName = (url: string) => {
+    if (!url) return null
+
     if (selectedKey === PROFILE_TYPE.LINKEDIN) {
-      const match = url.match(/in\/([^\/]+)/)
+      const match = url.match(/linkedin\.com\/in\/([^\/]+)/)
       return match ? match[1] : null
     }
 
-    const match = url.match(/x.com\/([^\/]+)/)
-    return match ? match[1] : null
+    if (selectedKey === PROFILE_TYPE.TWITTER) {
+      const match = url.match(/x\.com\/([^\/]+)/)
+      if (match && match[1] !== "home") {
+        return match[1]
+      }
+      return null
+    }
+
+    return null
   }
 
   const callGetProfileInfo = async (data: any) => {
@@ -80,7 +89,15 @@ const ProfileLinkForm: React.FC<{
     }
   }
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = (data: any) => {
+    const profileLink = data[selectedKey]
+    const userName = getUserName(profileLink)
+
+    if (!userName) {
+      toast.error("Invalid profile link. Please provide a valid link.")
+      return
+    }
+
     if (data) callGetProfileInfo(data)
   }
 
@@ -135,9 +152,9 @@ const ProfileLinkForm: React.FC<{
     return (
       <>
         <IntroVideo />
-        <span className="flex items-center justify-center text-center text-[24px] font-semibold text-mercury-950">
+        <h3 className="flex items-center justify-center text-center text-[24px] font-semibold text-mercury-950">
           Website Links/Social Media
-        </span>
+        </h3>
         <Input
           placeholder="Enter your profile link"
           labelPlacement="outside"
@@ -166,9 +183,9 @@ const ProfileLinkForm: React.FC<{
 
   return (
     <div className="min-w-[400px]">
-      <span className="text-[24px] font-semibold text-mercury-950">
+      <h3 className="text-[24px] font-semibold text-mercury-950">
         Website Links/Social Media
-      </span>
+      </h3>
       <Input
         placeholder="Enter your profile link"
         labelPlacement="outside"
