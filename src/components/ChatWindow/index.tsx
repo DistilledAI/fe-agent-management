@@ -134,8 +134,7 @@ const ChatWindow = ({
     <div
       className={twMerge(
         "relative h-full overflow-hidden md:max-h-[calc(100%-100px)]",
-        // "max-h-[calc(100%-56px)]"
-        isChatAction && "md:max-h-[calc(100%-152px)]",
+        isChatAction && "max-h-[calc(100%-56px)] md:max-h-[calc(100%-152px)]",
         className,
       )}
       style={style}

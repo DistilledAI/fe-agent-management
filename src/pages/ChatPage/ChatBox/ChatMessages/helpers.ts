@@ -1,4 +1,4 @@
-import { RoleUser } from "@constants/index"
+import { CLEAR_CACHED_MESSAGE, RoleUser } from "@constants/index"
 import { TypeGroup } from "../LeftBar/useFetchGroups"
 import { IMessage } from "./useFetchMessages"
 
@@ -76,35 +76,38 @@ export const groupedMessages = (
 
   const prevTimeDiff = getTimeDiff(message?.createdAt, prevMsg?.createdAt)
   const nextTimeDiff = getTimeDiff(nextMsg?.createdAt, message?.createdAt)
+  const isPrevClearContextMsg = prevMsg?.content === CLEAR_CACHED_MESSAGE
+  const isNextClearContextMsg = nextMsg?.content === CLEAR_CACHED_MESSAGE
 
-  if (message.role === RoleChat.OWNER) {
-    if (prevMsg && prevMsg.role === RoleChat.OWNER) {
-      if (prevTimeDiff < TIME_BREAK) {
-        if (
-          nextMsg &&
-          nextMsg.role === RoleChat.OWNER &&
-          nextTimeDiff < TIME_BREAK
-        ) {
-          groupType = "middle"
-        } else {
-          groupType = "bottom"
-        }
+  if (prevMsg && prevMsg.role === RoleChat.OWNER && !isPrevClearContextMsg) {
+    if (prevTimeDiff < TIME_BREAK) {
+      if (
+        nextMsg &&
+        nextMsg.role === RoleChat.OWNER &&
+        nextTimeDiff < TIME_BREAK
+      ) {
+        groupType = "middle"
       } else {
-        groupType = "top"
-        if (
-          !nextMsg ||
-          nextMsg.role !== message.role ||
-          nextTimeDiff > TIME_BREAK
-        ) {
-          groupType = "none"
-        }
+        groupType = "bottom"
       }
     } else {
-      groupType =
-        nextMsg && nextMsg.role === RoleChat.OWNER && nextTimeDiff < TIME_BREAK
-          ? "top"
-          : "none"
+      groupType = "top"
+      if (
+        !nextMsg ||
+        nextMsg.role !== message.role ||
+        nextTimeDiff > TIME_BREAK
+      ) {
+        groupType = "none"
+      }
     }
+  } else {
+    groupType =
+      nextMsg &&
+      nextMsg.role === RoleChat.OWNER &&
+      nextTimeDiff < TIME_BREAK &&
+      !isNextClearContextMsg
+        ? "top"
+        : "none"
   }
 
   const borderRadiusStyle = {

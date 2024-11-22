@@ -197,3 +197,5 @@ export const COMMUNICATION_STYLE_LIST = [
     type: "custom",
   },
 ]
+
+export const CLEAR_CACHED_MESSAGE = "CLEAR_CACHED"

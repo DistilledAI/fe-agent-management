@@ -43,6 +43,10 @@ const endpoint = {
   GET_GROUP_DETAIL_FROM_LABEL: (label: string) =>
     withBaseURL(`/group/detail/label/${label}`),
 
+  // group
+  CLEAR_CACHED_BY_GROUP_ID: (groupId: number) =>
+    withBaseURL(`/group/clear-cached/${groupId}`),
+
   //my data
   UPLOAD_MY_DATA: withBaseURL("/my-data/upload"),
   MAP_MY_DATA_TO_BOT: withBaseURL("/my-data/map-bot"),
