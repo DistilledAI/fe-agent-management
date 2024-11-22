@@ -155,7 +155,12 @@ const Marketplace = () => {
         </ScrollShadow>
       </div>
 
-      <div className="mx-auto flex h-full w-full max-w-[768px] flex-col gap-y-6 overflow-hidden bg-mercury-70 px-4 pb-20 pt-[140px] md:items-center md:bg-white md:pb-4 md:pt-[124px] 2xl:max-w-[940px]">
+      <div
+        className={twMerge(
+          "mx-auto flex h-full w-full max-w-[768px] flex-col gap-y-6 overflow-hidden bg-mercury-70 px-4 pb-20 pt-[100px] md:items-center md:bg-white md:pb-4 md:pt-[124px] 2xl:max-w-[940px]",
+          isAgentActive && "pt-[140px]",
+        )}
+      >
         {CATEGORIES.map((category, index) => (
           <div
             className="w-full space-y-3 transition-all duration-500 ease-in-out"
