@@ -93,7 +93,10 @@ const ConnectWalletModal = () => {
 
           {CONNECTORS.map((connector) => {
             return (
-              <div className="mb-2 flex h-16 w-full items-center justify-between rounded-[14px] bg-[rgba(244,_244,_245,_0.50)] p-4 outline outline-[1px] outline-white">
+              <div
+                key={connector.id}
+                className="mb-2 flex h-16 w-full items-center justify-between rounded-[14px] bg-[rgba(244,_244,_245,_0.50)] p-4 outline outline-[1px] outline-white"
+              >
                 <div className="flex items-center gap-4">
                   {connector.icon}
                   <span className="text-base-md">{connector.name}</span>

@@ -54,9 +54,6 @@ const ClearContext = () => {
         },
       )
     },
-    onSuccess: () => {
-      console.log("Context cleared successfully!")
-    },
     onError: (error) => {
       console.error("Failed to clear chat context:", error)
       toast.error("Failed to clear context!")

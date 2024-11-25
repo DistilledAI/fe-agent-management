@@ -95,7 +95,7 @@ export const TelegramOulineIcon = ({
       <path
         d="M15.5 10.5L11.5 14.5L17.5 20.5L21.5 4.5L3.5 11.5L7.5 13.5L9.5 19.5L12.5 15.5"
         stroke={color}
-        stroke-width="1.5"
+        strokeWidth="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
@@ -137,7 +137,7 @@ export const TelegramOnlineIcon = () => {
       <path
         d="M12.5 8.83337L9.16667 12.1667L14.1667 17.1667L17.5 3.83337L2.5 9.66671L5.83333 11.3334L7.5 16.3334L10 13"
         stroke="#545454"
-        stroke-width="1.5"
+        strokeWidth="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
