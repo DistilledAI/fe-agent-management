@@ -3,7 +3,7 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
-import { CLEAR_CACHED_MESSAGES, RoleUser } from "@constants/index"
+import { CLEAR_CACHED_MESSAGE, RoleUser } from "@constants/index"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { getActiveColorRandomById } from "@utils/index"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
@@ -18,6 +18,10 @@ import {
 import useFetchMessages from "./useFetchMessages"
 import AgentInfoCard from "./AgentInfoCard"
 import ContextCleared from "@components/ContextCleared"
+import { useQuery } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
+import useAuthState from "@hooks/useAuthState"
+import { IAgentData } from "types/user"
 
 const ChatMessages = () => {
   const {
@@ -31,6 +35,15 @@ const ChatMessages = () => {
   const { chatId } = useGetChatId()
   const { bgColor, textColor } = getActiveColorRandomById(chatId)
   const { spacing } = useStyleSpacing()
+  const { user } = useAuthState()
+  const { data } = useQuery<any>({
+    queryKey: [QueryDataKeys.MY_BOT_LIST],
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  })
+  const isOwner = !!data?.data?.items?.find(
+    (agent: IAgentData) => agent?.owner === user?.id,
+  )
 
   const getBadgeIcon = (role: RoleUser) =>
     role === RoleUser.BOT ? (
@@ -46,7 +59,7 @@ const ChatMessages = () => {
       messages,
     )
 
-    if (message.content === CLEAR_CACHED_MESSAGES) {
+    if (message.content === CLEAR_CACHED_MESSAGE) {
       return (
         <ContextCleared
           wrapperClassName={twMerge(
@@ -105,7 +118,7 @@ const ChatMessages = () => {
         }}
         isChatActions={true}
       />
-      <ChatActions />
+      <ChatActions isClearContextBtn={!isOwner} />
     </>
   )
 }

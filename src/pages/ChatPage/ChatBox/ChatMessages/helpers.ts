@@ -1,4 +1,4 @@
-import { CLEAR_CACHED_MESSAGES, RoleUser } from "@constants/index"
+import { CLEAR_CACHED_MESSAGE, RoleUser } from "@constants/index"
 import { TypeGroup } from "../LeftBar/useFetchGroups"
 import { IMessage } from "./useFetchMessages"
 
@@ -76,8 +76,8 @@ export const groupedMessages = (
 
   const prevTimeDiff = getTimeDiff(message?.createdAt, prevMsg?.createdAt)
   const nextTimeDiff = getTimeDiff(nextMsg?.createdAt, message?.createdAt)
-  const isPrevClearContextMsg = prevMsg?.content === CLEAR_CACHED_MESSAGES
-  const isNextClearContextMsg = nextMsg?.content === CLEAR_CACHED_MESSAGES
+  const isPrevClearContextMsg = prevMsg?.content === CLEAR_CACHED_MESSAGE
+  const isNextClearContextMsg = nextMsg?.content === CLEAR_CACHED_MESSAGE
 
   if (prevMsg && prevMsg.role === RoleChat.OWNER && !isPrevClearContextMsg) {
     if (prevTimeDiff < TIME_BREAK) {

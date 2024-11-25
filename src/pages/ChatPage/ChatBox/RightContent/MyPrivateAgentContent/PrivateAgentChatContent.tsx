@@ -12,7 +12,7 @@ import useFetchMessages from "../../ChatMessages/useFetchMessages"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import {
-  CLEAR_CACHED_MESSAGES,
+  CLEAR_CACHED_MESSAGE,
   PATH_NAMES,
   STATUS_AGENT,
 } from "@constants/index"
@@ -58,7 +58,7 @@ const PrivateAgentChatContent: React.FC<{
     listMyData.length === 0 && isFetchedMyData && isBotActive
 
   const renderMessage = (index: number, message: IMessageBox) => {
-    if (message.content === CLEAR_CACHED_MESSAGES) {
+    if (message.content === CLEAR_CACHED_MESSAGE) {
       return (
         <ContextCleared
           wrapperClassName={twMerge(
@@ -114,9 +114,14 @@ const PrivateAgentChatContent: React.FC<{
         }
         isChatActions={isChatActions}
       />
-      {isChatActions ? <ChatActions isShowDelegateButton={false} /> : null}
-      {!isBotActive && (
-        <div className="absolute bottom-[70px] left-1/2 w-[calc(100%-32px)] -translate-x-1/2 bg-white pb-0 md:bottom-[95px] md:pb-2">
+      {isChatActions ? <ChatActions isDelegateBtn={false} /> : null}
+      <div
+        className={twMerge(
+          "absolute bottom-[70px] left-1/2 w-[calc(100%-32px)] -translate-x-1/2 bg-white pb-0 md:bottom-[95px] md:pb-2",
+          isChatActions && "bottom-[124px] md:bottom-[140px]",
+        )}
+      >
+        {!isBotActive ? (
           <AlertBox
             className="mx-auto max-w-[768px]"
             isVisible={true}
@@ -127,10 +132,8 @@ const PrivateAgentChatContent: React.FC<{
               { to: PATH_NAMES.MARKETPLACE, label: "Chat with other agents" },
             ]}
           />
-        </div>
-      )}
-      {isShowAddData && (
-        <div className="absolute bottom-[70px] left-1/2 w-[calc(100%-32px)] -translate-x-1/2 bg-white pb-0 md:bottom-[95px] md:pb-2">
+        ) : null}
+        {isShowAddData ? (
           <AlertBox
             className="mx-auto max-w-[768px]"
             isVisible={true}
@@ -140,8 +143,8 @@ const PrivateAgentChatContent: React.FC<{
             ]}
             links={[{ to: PATH_NAMES.ADD_MY_DATA, label: "Add Data" }]}
           />
-        </div>
-      )}
+        ) : null}
+      </div>
       {hasInputChat && (
         <ChatInput
           onSubmit={mutation.mutate}

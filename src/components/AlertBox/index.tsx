@@ -21,7 +21,7 @@ const AlertBox = ({
   return (
     <div
       className={twMerge(
-        "flex flex-col justify-between gap-2 rounded-lg border border-brown-500 bg-brown-50 px-4 py-3 md:flex-row md:items-center",
+        "flex flex-col justify-between gap-1 rounded-lg border border-brown-500 bg-brown-50 px-4 py-3 md:flex-row md:items-center md:gap-2",
         className,
       )}
     >
