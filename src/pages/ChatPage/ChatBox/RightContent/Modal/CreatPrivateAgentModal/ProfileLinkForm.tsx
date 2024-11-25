@@ -1,13 +1,7 @@
-import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
+import { BrandLinkedInIcon } from "@components/Icons/BrandLinkedInIcon"
+import { TwitterIcon } from "@components/Icons/Twitter"
 import useWindowSize from "@hooks/useWindowSize"
-import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Input,
-} from "@nextui-org/react"
+import { Button, Checkbox, Input } from "@nextui-org/react"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -28,10 +22,12 @@ const SOCIAL = [
   {
     key: PROFILE_TYPE.LINKEDIN,
     label: "LinkedIn",
+    icon: <BrandLinkedInIcon size={24} />,
   },
   {
     key: PROFILE_TYPE.TWITTER,
     label: "Twitter",
+    icon: <TwitterIcon />,
   },
 ]
 
@@ -106,33 +102,29 @@ const ProfileLinkForm: React.FC<{
     setValue(record.key, "")
   }
 
-  const renderDropdown = () => {
+  const renderSocialSelect = () => {
     return (
-      <Dropdown>
-        <DropdownTrigger>
-          <div className="flex-items-center cursor-pointer rounded-full bg-mercury-30 px-2 py-[6px]">
-            <span className="text-16 text-mercury-950">{selectedLabel}</span>
-            <ChevronDownIcon />
-          </div>
-        </DropdownTrigger>
-        <DropdownMenu
-          variant="flat"
-          disallowEmptySelection
-          selectionMode="single"
-          selectedKeys={[selectedKey]}
-        >
-          {SOCIAL.map((record) => {
-            return (
-              <DropdownItem
-                key={record.key}
-                onPressChange={() => onChangeProfileType(record)}
-              >
-                <span className="text-16 text-mercury-950">{record.label}</span>
-              </DropdownItem>
-            )
-          })}
-        </DropdownMenu>
-      </Dropdown>
+      <div className="flex items-center gap-4 py-2">
+        {SOCIAL.map((record) => {
+          const isSelected = record.key === selectedKey
+          return (
+            <div
+              key={record.key}
+              onClick={() => onChangeProfileType(record)}
+              aria-selected={isSelected}
+              className="flex w-full cursor-pointer items-center justify-between rounded-lg p-2 delay-100 duration-500 hover:bg-white aria-selected:bg-white aria-selected:max-md:bg-mercury-100"
+            >
+              <div className="flex items-center gap-2">
+                {record.icon}
+                <span className="text-base-md text-mercury-900">
+                  {record.label}
+                </span>
+              </div>
+              <Checkbox radius="full" isSelected={isSelected} />
+            </div>
+          )
+        })}
+      </div>
     )
   }
 
@@ -155,10 +147,10 @@ const ProfileLinkForm: React.FC<{
         <h3 className="flex items-center justify-center text-center text-[24px] font-semibold text-mercury-950">
           Website Links/Social Media
         </h3>
+        {renderSocialSelect()}
         <Input
           placeholder="Enter your profile link"
           labelPlacement="outside"
-          startContent={<>{renderDropdown()}</>}
           classNames={{
             inputWrapper:
               "!bg-mercury-200 rounded-full mt-4 !border !border-mercury-400 px-2",
@@ -186,13 +178,13 @@ const ProfileLinkForm: React.FC<{
       <h3 className="text-[24px] font-semibold text-mercury-950">
         Website Links/Social Media
       </h3>
+      {renderSocialSelect()}
       <Input
         placeholder="Enter your profile link"
         labelPlacement="outside"
-        startContent={<>{renderDropdown()}</>}
         classNames={{
           inputWrapper:
-            "!bg-mercury-200 rounded-full mt-4 !border !border-mercury-400 px-2",
+            "!bg-mercury-200 rounded-full mt-2 !border !border-mercury-400 px-2",
           innerWrapper: "!bg-mercury-200 rounded-full",
           input: "text-18 !text-mercury-950 caret-[#363636]",
         }}
