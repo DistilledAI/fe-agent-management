@@ -3,7 +3,6 @@ import {
   PATH_NAMES,
   PERSONALITY_LIST,
 } from "@constants/index"
-import { Divider } from "@nextui-org/react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
@@ -12,15 +11,19 @@ import { toast } from "react-toastify"
 import { getAgentDetail, updateAgent } from "services/agent"
 import { updateAvatarUser } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
-import AdvancedConfig from "./AdvancedConfig"
 import AgentBehaviors, { SelectedBehaviors } from "./AgentBehaviors"
 import Functions from "./Functions"
 import GeneralInfo from "./GeneralInfo"
 import Header from "./Header"
 import Monetization from "./Monetization"
-import Preferences from "./Preferences"
-import ToxicPolicies from "./ToxicPolicies"
 import { isPassRuleAgentInfo } from "./helpers"
+import SmoothScrollTo from "@components/SmoothScrollTo"
+import KnowledgeAgent from "./Knowledge"
+import TargetAudience from "./TargetAudience"
+import {
+  INTERACTION_FREQUENCY_KEY,
+  RESPONSE_LENGTH_KEY,
+} from "./AgentBehaviors/constants"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
@@ -56,6 +59,12 @@ const AgentDetail: React.FC = () => {
     : {}
   const agentPersonalData = agentBehaviors?.agentPersonal || []
   const agentCommunicationData = agentBehaviors?.agentCommunication || []
+  const agentInteractionFrequency =
+    agentBehaviors?.agentInteractionFrequency ||
+    INTERACTION_FREQUENCY_KEY.Occasionally
+  const agentToneAdaptation = agentBehaviors?.toneAdaptation || false
+  const agentResponseLength =
+    agentBehaviors?.responseLength || RESPONSE_LENGTH_KEY.Moderate
 
   const handleSetValueCustomDefaultDisplay = (
     data: any,
@@ -97,6 +106,9 @@ const AgentDetail: React.FC = () => {
       avatar: "",
       agentPersonal: [],
       agentCommunication: [],
+      interactionFrequency: INTERACTION_FREQUENCY_KEY.Occasionally,
+      toneAdaptation: false,
+      responseLength: RESPONSE_LENGTH_KEY.Moderate,
     },
   })
 
@@ -114,6 +126,9 @@ const AgentDetail: React.FC = () => {
       avatar: avatarData,
       agentPersonal: agentPersonalData,
       agentCommunication: agentCommunicationData,
+      interactionFrequency: agentInteractionFrequency,
+      toneAdaptation: agentToneAdaptation,
+      responseLength: agentResponseLength,
     }
     methods.reset(defaults)
   }, [agentData, methods.reset])
@@ -149,29 +164,56 @@ const AgentDetail: React.FC = () => {
     }
   }
 
+  const componentScrollTo = [
+    {
+      title: "Display Info",
+      content: <GeneralInfo agentData={agentData} />,
+    },
+    {
+      title: "Functions",
+      content: <Functions agentData={agentData} />,
+    },
+    {
+      title: "Behaviors",
+      content: (
+        <AgentBehaviors
+          onSelectBehaviors={handleSelectBehaviors}
+          selectedBehaviors={{
+            agentPersonal: methods.watch("agentPersonal"),
+            agentCommunication: methods.watch("agentCommunication"),
+          }}
+          valueCustomDefault={valueCustomDefault}
+        />
+      ),
+    },
+    {
+      title: "Knowledge",
+      content: <KnowledgeAgent />,
+    },
+    {
+      title: "Target Audience",
+      content: <TargetAudience />,
+    },
+    {
+      title: "Monetization",
+      content: <Monetization />,
+    },
+  ]
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <Header submitLoading={loading} agentData={agentData} />
-        <div className="mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6">
-          <GeneralInfo agentData={agentData} />
-          <Divider className="my-9" />
-          <Functions agentData={agentData} />
-          <Divider className="my-9" />
-          <AgentBehaviors
-            onSelectBehaviors={handleSelectBehaviors}
-            selectedBehaviors={{
-              agentPersonal: methods.watch("agentPersonal"),
-              agentCommunication: methods.watch("agentCommunication"),
+        <div className="sticky left-0 top-[192px] h-[1px] w-full bg-mercury-100"></div>
+        <div className="relative mx-auto max-w-[800px] px-4 pb-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6">
+          <SmoothScrollTo
+            components={componentScrollTo}
+            offsetAdjustment={220}
+            classNames={{
+              headerWrapper: "sticky -mt-[1px] top-[152px] bg-white z-10",
+              contentWrapper: "pt-5",
             }}
-            valueCustomDefault={valueCustomDefault}
           />
-          <Divider className="my-9" />
-          <AdvancedConfig />
-          <Preferences />
-          <ToxicPolicies />
-          <Divider className="my-9" />
-          <Monetization />
         </div>
       </form>
     </FormProvider>
