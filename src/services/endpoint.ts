@@ -53,6 +53,7 @@ const endpoint = {
   GET_MY_BOT_DATA: (botId: number) => withBaseURL(`/my-data/list/${botId}`),
   DELETE_MY_BOT_DATA: withBaseURL("/my-data/delete"),
   TRAIN_DATA_MY_DATA: withBaseURL("/my-data/train-data"),
+  TELEGRAM_MAP_AGENT: withBaseURL("/telegram/map-bot"),
 }
 
 export default endpoint

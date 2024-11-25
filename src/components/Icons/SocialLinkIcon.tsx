@@ -79,3 +79,115 @@ export const TelegramIcon = ({ size = 20, color = "#000" }: IconProps) => {
     </svg>
   )
 }
+
+export const TelegramOulineIcon = ({
+  size = 25,
+  color = "#545454",
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 25 25"
+      fill="none"
+    >
+      <path
+        d="M15.5 10.5L11.5 14.5L17.5 20.5L21.5 4.5L3.5 11.5L7.5 13.5L9.5 19.5L12.5 15.5"
+        stroke={color}
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  )
+}
+
+export const PlayVideoFilled = ({
+  size = 25,
+  color = "#A2845E",
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M10.0013 18.3333C11.0957 18.3333 12.1793 18.1177 13.1903 17.699C14.2014 17.2802 15.12 16.6663 15.8939 15.8925C16.6677 15.1187 17.2815 14.2 17.7003 13.189C18.1191 12.1779 18.3346 11.0943 18.3346 9.99996C18.3346 8.90561 18.1191 7.82198 17.7003 6.81093C17.2815 5.79988 16.6677 4.88122 15.8939 4.1074C15.12 3.33358 14.2014 2.71975 13.1903 2.30096C12.1793 1.88217 11.0957 1.66663 10.0013 1.66663C7.79116 1.66663 5.67155 2.5446 4.10875 4.1074C2.54594 5.67021 1.66797 7.78982 1.66797 9.99996C1.66797 12.2101 2.54594 14.3297 4.10875 15.8925C5.67155 17.4553 7.79116 18.3333 10.0013 18.3333ZM8.87445 6.287L14.1004 9.1907C14.2447 9.27091 14.3649 9.38824 14.4485 9.53053C14.5322 9.67281 14.5764 9.83488 14.5764 9.99996C14.5764 10.165 14.5322 10.3271 14.4485 10.4694C14.3649 10.6117 14.2447 10.729 14.1004 10.8092L8.87445 13.7129C8.70524 13.807 8.51439 13.8552 8.3208 13.8528C8.12722 13.8504 7.93763 13.7974 7.77081 13.6992C7.60399 13.6009 7.46573 13.4608 7.36974 13.2927C7.27374 13.1246 7.22334 12.9343 7.22352 12.7407V7.25922C7.22334 7.06562 7.27374 6.87534 7.36974 6.70722C7.46573 6.5391 7.60399 6.39898 7.77081 6.30074C7.93763 6.2025 8.12722 6.14955 8.3208 6.14714C8.51439 6.14473 8.70524 6.19294 8.87445 6.287Z"
+        fill={color}
+      />
+    </svg>
+  )
+}
+
+export const TelegramOnlineIcon = () => {
+  return (
+    <svg
+      width="23"
+      height="22"
+      viewBox="0 0 23 22"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12.5 8.83337L9.16667 12.1667L14.1667 17.1667L17.5 3.83337L2.5 9.66671L5.83333 11.3334L7.5 16.3334L10 13"
+        stroke="#545454"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <g filter="url(#filter0_d_3429_34352)">
+        <path
+          d="M12 15.5C12 12.7386 14.2386 10.5 17 10.5C19.7614 10.5 22 12.7386 22 15.5C22 18.2614 19.7614 20.5 17 20.5C14.2386 20.5 12 18.2614 12 15.5Z"
+          fill="#34C759"
+        />
+        <path
+          d="M12.5 15.5C12.5 13.0147 14.5147 11 17 11C19.4853 11 21.5 13.0147 21.5 15.5C21.5 17.9853 19.4853 20 17 20C14.5147 20 12.5 17.9853 12.5 15.5Z"
+          stroke="white"
+        />
+      </g>
+      <defs>
+        <filter
+          id="filter0_d_3429_34352"
+          x="11"
+          y="9.5"
+          width="12"
+          height="12"
+          filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB"
+        >
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation="0.5" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_3429_34352"
+          />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="effect1_dropShadow_3429_34352"
+            result="shape"
+          />
+        </filter>
+      </defs>
+    </svg>
+  )
+}

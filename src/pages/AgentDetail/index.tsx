@@ -12,9 +12,9 @@ import { toast } from "react-toastify"
 import { getAgentDetail, updateAgent } from "services/agent"
 import { updateAvatarUser } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
-import AIAgentGenerate from "./AIAgentGenerate"
 import AdvancedConfig from "./AdvancedConfig"
 import AgentBehaviors, { SelectedBehaviors } from "./AgentBehaviors"
+import Functions from "./Functions"
 import GeneralInfo from "./GeneralInfo"
 import Header from "./Header"
 import Monetization from "./Monetization"
@@ -156,6 +156,8 @@ const AgentDetail: React.FC = () => {
         <div className="mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6">
           <GeneralInfo agentData={agentData} />
           <Divider className="my-9" />
+          <Functions agentData={agentData} />
+          <Divider className="my-9" />
           <AgentBehaviors
             onSelectBehaviors={handleSelectBehaviors}
             selectedBehaviors={{
@@ -166,7 +168,6 @@ const AgentDetail: React.FC = () => {
           />
           <Divider className="my-9" />
           <AdvancedConfig />
-          <AIAgentGenerate />
           <Preferences />
           <ToxicPolicies />
           <Divider className="my-9" />

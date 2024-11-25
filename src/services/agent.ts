@@ -36,3 +36,15 @@ export const updateAgent = async (data: UploadAgentPayload) => {
     data,
   })
 }
+interface TelegramMapAgentPayload {
+  token: string
+  botId: number
+}
+
+export const telegramMapAgent = async (data: TelegramMapAgentPayload) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.TELEGRAM_MAP_AGENT,
+    data,
+  })
+}
