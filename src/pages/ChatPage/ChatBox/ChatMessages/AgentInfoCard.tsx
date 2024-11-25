@@ -54,28 +54,29 @@ const AgentInfoCard = ({ messages }: { messages: IMessageBox[] }) => {
             badgeClassName={getBadgeColor(RoleUser.BOT)}
             badgeIcon={<FilledBrainAIIcon />}
           />
-          <div className="flex-1 space-y-2">
+          <div className="flex-1 space-y-1">
             <div className="flex justify-between gap-x-2 md:gap-x-4">
               <div>
                 <h4 className="text-16 font-bold text-mercury-950">
                   {agentInfo?.username || "-"}
                 </h4>
                 <div className="flex items-center gap-x-1 max-[320px]:flex-wrap md:gap-x-2">
-                  <span className="text-14 font-medium text-mercury-600 md:text-16">
+                  <span className="text-14 font-medium text-mercury-600">
                     Created by
                   </span>
-                  <div className="flex items-center gap-x-1">
+                  <Link
+                    to={`${PATH_NAMES.AUTHOR_PROFILE}/${agentOwner?.id}`}
+                    className="group/item flex items-center gap-x-1"
+                  >
                     <AvatarCustom
                       publicAddress={agentOwner?.publicAddress}
                       src={agentOwner?.avatar}
                       className="h-[18px] w-[18px]"
                     />
-                    <Link to={`${PATH_NAMES.AUTHOR_PROFILE}/${agentOwner?.id}`}>
-                      <span className="line-clamp-1 text-16 font-bold text-brown-10 hover:text-brown-10/70">
-                        {agentOwner?.username}
-                      </span>
-                    </Link>
-                  </div>
+                    <span className="line-clamp-1 text-16 font-bold text-brown-10 group-hover/item:text-brown-10/70">
+                      {agentOwner?.username}
+                    </span>
+                  </Link>
                 </div>
               </div>
 
