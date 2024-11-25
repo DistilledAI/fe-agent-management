@@ -40,7 +40,6 @@ const ProfileLinkForm: React.FC<{
   const [selectedKey, setSelectedKey] = useState<string>(PROFILE_TYPE.LINKEDIN)
   const inputValue = watch(selectedKey as any)
   const [loading, setLoading] = useState<boolean>(false)
-  const selectedLabel = SOCIAL.find((item) => item.key == selectedKey)?.label
   const { isMobile } = useWindowSize()
 
   const getUserName = (url: string) => {
