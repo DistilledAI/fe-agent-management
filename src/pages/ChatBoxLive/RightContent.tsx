@@ -68,7 +68,7 @@ const RightContent = () => {
           isFetchingPreviousPage={isFetchingPreviousPage}
           onLoadPrevMessages={onLoadPrevMessages}
           chatId={chatId}
-          isChatAction={false}
+          isChatActions={false}
           msgBoxClassName="p-0 px-4 pb-4"
           className="md:max-h-[calc(100%-80px)]"
           scrollBottomClassName="max-md:!bottom-[93px] max-md:bg-none"

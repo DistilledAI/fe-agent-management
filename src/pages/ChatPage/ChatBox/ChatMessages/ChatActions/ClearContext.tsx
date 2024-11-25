@@ -6,7 +6,7 @@ import { ICachedMessageData, chatMessagesKey } from "../useFetchMessages"
 import { RefreshIcon } from "@components/Icons/RefreshIcon"
 import { clearContextByGroupId } from "services/group"
 import { toast } from "react-toastify"
-import { CLEAR_CACHED_MESSAGE } from "@constants/index"
+import { CLEAR_CACHED_MESSAGES } from "@constants/index"
 
 const getDefaultCachedData = (): ICachedMessageData => ({
   pageParams: [],
@@ -33,7 +33,7 @@ const ClearContext = () => {
         chatMessagesKey(groupId),
         (cachedData: ICachedMessageData | undefined) => {
           const newMessage = {
-            content: CLEAR_CACHED_MESSAGE,
+            content: CLEAR_CACHED_MESSAGES,
             createdAt: new Date().toISOString(),
           }
 
@@ -73,7 +73,7 @@ const ClearContext = () => {
 
     if (
       lastMessages.length &&
-      lastMessages[lastMessages.length - 1].content === CLEAR_CACHED_MESSAGE
+      lastMessages[lastMessages.length - 1].content === CLEAR_CACHED_MESSAGES
     ) {
       return
     }

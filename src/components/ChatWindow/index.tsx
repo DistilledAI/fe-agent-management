@@ -25,7 +25,7 @@ interface ChatWindowProps {
   isFetched?: boolean
   hasPreviousMore?: boolean
   isFetchingPreviousPage?: boolean
-  isChatAction?: boolean
+  isChatActions?: boolean
   style?: CSSProperties
   Header?: React.ReactNode
   scrollBottomClassName?: string
@@ -46,7 +46,7 @@ const ChatWindow = ({
   isFetched = false,
   hasPreviousMore,
   isFetchingPreviousPage,
-  isChatAction = false,
+  isChatActions = false,
   style,
   Header,
   scrollBottomClassName,
@@ -134,7 +134,7 @@ const ChatWindow = ({
     <div
       className={twMerge(
         "relative h-full overflow-hidden md:max-h-[calc(100%-100px)]",
-        isChatAction && "max-h-[calc(100%-56px)] md:max-h-[calc(100%-152px)]",
+        isChatActions && "max-h-[calc(100%-56px)] md:max-h-[calc(100%-152px)]",
         className,
       )}
       style={style}

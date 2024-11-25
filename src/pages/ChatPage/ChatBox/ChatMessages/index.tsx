@@ -3,7 +3,7 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
-import { CLEAR_CACHED_MESSAGE, RoleUser } from "@constants/index"
+import { CLEAR_CACHED_MESSAGES, RoleUser } from "@constants/index"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { getActiveColorRandomById } from "@utils/index"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
@@ -46,7 +46,7 @@ const ChatMessages = () => {
       messages,
     )
 
-    if (message.content === CLEAR_CACHED_MESSAGE) {
+    if (message.content === CLEAR_CACHED_MESSAGES) {
       return (
         <ContextCleared
           wrapperClassName={twMerge(
@@ -103,7 +103,7 @@ const ChatMessages = () => {
         style={{
           paddingBottom: `${spacing}px`,
         }}
-        isChatAction={true}
+        isChatActions={true}
       />
       <ChatActions />
     </>

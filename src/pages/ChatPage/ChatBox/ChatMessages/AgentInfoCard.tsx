@@ -62,7 +62,7 @@ const AgentInfoCard = ({ messages }: { messages: IMessageBox[] }) => {
                 </h4>
                 <div className="flex items-center gap-x-1 max-[320px]:flex-wrap md:gap-x-2">
                   <span className="text-14 font-medium text-mercury-600 md:text-16">
-                    Create by
+                    Created by
                   </span>
                   <div className="flex items-center gap-x-1">
                     <AvatarCustom
