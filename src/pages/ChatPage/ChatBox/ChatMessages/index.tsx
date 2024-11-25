@@ -38,8 +38,6 @@ const ChatMessages = () => {
   const { user } = useAuthState()
   const { data } = useQuery<any>({
     queryKey: [QueryDataKeys.MY_BOT_LIST],
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
   })
   const isOwner = !!data?.data?.items?.find(
     (agent: IAgentData) => agent?.owner === user?.id,
