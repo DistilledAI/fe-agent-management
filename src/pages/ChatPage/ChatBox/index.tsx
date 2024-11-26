@@ -8,6 +8,7 @@ import SpeechRecognition from "react-speech-recognition"
 import ChatInput from "./ChatInput"
 import ChatMessages from "./ChatMessages"
 import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const ChatBox = () => {
   const { loading, connectMultipleWallet } = useConnectWallet()
@@ -18,7 +19,7 @@ const ChatBox = () => {
   const { mutation } = useSubmitChat(groupId, SpeechRecognition.stopListening)
   const { data: isChatting } = useQuery<boolean>({
     initialData: false,
-    queryKey: ["isChatting", groupId],
+    queryKey: [QueryDataKeys.IS_CHATTING, groupId],
     enabled: !!groupId,
   })
 

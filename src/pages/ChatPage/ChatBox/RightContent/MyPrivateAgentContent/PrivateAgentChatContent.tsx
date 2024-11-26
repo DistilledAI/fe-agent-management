@@ -42,7 +42,7 @@ const PrivateAgentChatContent: React.FC<{
   const queryClient = useQueryClient()
   const { data: isChatting } = useQuery<boolean>({
     initialData: false,
-    queryKey: ["isChatting", groupId],
+    queryKey: [QueryDataKeys.IS_CHATTING, groupId],
     enabled: !!groupId,
   })
   const cachedData = queryClient.getQueryData([QueryDataKeys.MY_BOT_LIST])

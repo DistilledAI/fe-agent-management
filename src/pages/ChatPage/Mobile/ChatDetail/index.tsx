@@ -9,6 +9,7 @@ import useGetChatId from "./useGetChatId"
 import PrivateAgentChatContent from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/PrivateAgentChatContent"
 import ChatMessages from "@pages/ChatPage/ChatBox/ChatMessages"
 import { useQuery } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const ChatDetail = () => {
   const { privateChatId } = useParams()
@@ -18,7 +19,7 @@ const ChatDetail = () => {
   const { mutation } = useSubmitChat(groupId, SpeechRecognition.stopListening)
   const { data: isChatting } = useQuery<boolean>({
     initialData: false,
-    queryKey: ["isChatting", groupId],
+    queryKey: [QueryDataKeys.IS_CHATTING, groupId],
     enabled: !!groupId,
   })
 

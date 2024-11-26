@@ -3,7 +3,7 @@ import DotLoading from "@components/DotLoading"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { MessageFilledIcon } from "@components/Icons/Message"
 import VideoCustom from "@components/VideoCustom"
-import { PATH_NAMES, RoleUser } from "@constants/index"
+import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
 import { useNavigate } from "react-router-dom"
@@ -24,10 +24,9 @@ const CreatePrivateAgent: React.FC<{
   botId?: string | number
   onCallBack?: any
 }> = ({ connectWalletLoading, connectWallet }) => {
-  const { isLogin, user } = useAuthState()
+  const { isLogin, isAnonymous } = useAuthState()
   // const { isMobile } = useWindowSize()
   const navigate = useNavigate()
-  const isAnonymous = user.role === RoleUser.ANONYMOUS
 
   const handleCreateAgent = () => {
     if (isLogin && !isAnonymous) {
