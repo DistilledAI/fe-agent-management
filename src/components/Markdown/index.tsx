@@ -1,7 +1,12 @@
-import { isImageUrl } from "@utils/index"
+import { getActiveColorRandomById, isImageUrl } from "@utils/index"
 import Markdown from "react-markdown"
+import { useParams } from "react-router-dom"
+import { twMerge } from "tailwind-merge"
 
 const MarkdownMessage = ({ msg }: { msg: string }) => {
+  const { chatId } = useParams()
+  const { textColor } = getActiveColorRandomById(chatId)
+
   const breakLine = (text: string) => {
     let md = text
     // Support multiple linebreaks
@@ -36,6 +41,16 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
         alt={alt}
         className="h-auto max-w-[280px] rounded-3xl border border-mercury-100 object-cover shadow-1"
       />
+    ),
+    a: ({ href, children }: any) => (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={twMerge("underline", textColor)}
+      >
+        {children}
+      </a>
     ),
   }
 
