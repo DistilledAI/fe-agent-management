@@ -37,7 +37,7 @@ const Header: React.FC<{ agentData: IAgentData; submitLoading: boolean }> = ({
   const { onPublishOnMarket, loading } = usePublishOnMarket(callbackPublishDone)
 
   return (
-    <div className="sticky top-[50px] z-10 flex items-center justify-center bg-lgd-muted-beige p-3 backdrop-blur-3xl max-sm:px-4 md:top-[68px]">
+    <div className="sticky top-[50px] z-[11] flex items-center justify-center bg-lgd-muted-beige p-3 backdrop-blur-3xl max-sm:px-4 md:top-[68px]">
       <div className="flex w-full max-w-[800px] flex-wrap items-center justify-between px-4 max-sm:flex-col max-sm:items-start max-sm:px-0">
         <div className="flex flex-col">
           <span className="text-24 font-semibold text-mercury-950 max-sm:text-18">
@@ -49,6 +49,7 @@ const Header: React.FC<{ agentData: IAgentData; submitLoading: boolean }> = ({
         </div>
         <div className="flex gap-3 max-sm:mt-2 max-sm:flex-wrap max-sm:gap-1">
           <Button
+            isDisabled={!isActive}
             onClick={onOpen}
             className="h-[44px] rounded-full border border-mercury-50 bg-mercury-100 max-sm:h-[38px]"
           >
@@ -70,6 +71,7 @@ const Header: React.FC<{ agentData: IAgentData; submitLoading: boolean }> = ({
             </span>
           </Button>
           <Button
+            isDisabled={!isActive}
             isLoading={submitLoading}
             className="h-[44px] rounded-full border border-mercury-50 bg-mercury-950 max-sm:h-[38px]"
             type="submit"

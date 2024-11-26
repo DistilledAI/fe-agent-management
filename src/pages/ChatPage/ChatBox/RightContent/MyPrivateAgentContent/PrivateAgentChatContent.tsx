@@ -91,7 +91,7 @@ const PrivateAgentChatContent: React.FC<{
     )
   }
 
-  const isChatActions = isBotActive || !isShowAddData
+  const isChatActions = isBotActive && !isShowAddData
 
   return (
     <>

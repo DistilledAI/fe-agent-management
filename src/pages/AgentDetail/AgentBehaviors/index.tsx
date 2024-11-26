@@ -26,12 +26,14 @@ interface AgentBehaviorsProps {
   selectedBehaviors: SelectedBehaviors
   onSelectBehaviors: (selected: SelectedBehaviors) => void
   valueCustomDefault?: any
+  isCreate?: boolean
 }
 
 const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
   selectedBehaviors,
   onSelectBehaviors,
   valueCustomDefault,
+  isCreate = false,
 }) => {
   const { control } = useFormContext()
   const [customFields, setCustomFields] = useState<{
@@ -195,41 +197,45 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
           )}
         </div>
       </div>
-      <div>
-        <FieldLabel
-          text="Customization Instructions"
-          containerClassName="mb-4"
-        />
-        <Controller
-          name="customization"
-          control={control}
-          render={({ field: { value, onChange } }: any) => {
-            return (
-              <div className="w-full">
-                <Textarea
-                  placeholder="Additional notes on how to shape the Agent’s responses or behavior."
-                  minRows={3}
-                  maxRows={3}
-                  className="w-full rounded-xl border border-mercury-400"
-                  classNames={{
-                    inputWrapper: "bg-mercury-70",
-                  }}
-                  value={value || ""}
-                  onChange={(e) => {
-                    onChange(e.target.value)
-                  }}
-                />
-              </div>
-            )
-          }}
-        />
-      </div>
-      <div className="grid grid-cols-2 gap-10 max-md:grid-cols-1">
-        <InteractFrequency />
-        <ToneAdaptation />
-        <ResponseLength />
-        <SuggestReplies />
-      </div>
+      {!isCreate && (
+        <>
+          <div>
+            <FieldLabel
+              text="Customization Instructions"
+              containerClassName="mb-4"
+            />
+            <Controller
+              name="customization_instruction"
+              control={control}
+              render={({ field: { value, onChange } }: any) => {
+                return (
+                  <div className="w-full">
+                    <Textarea
+                      placeholder="Additional notes on how to shape the Agent’s responses or behavior."
+                      minRows={3}
+                      maxRows={3}
+                      className="w-full rounded-xl border border-mercury-400"
+                      classNames={{
+                        inputWrapper: "bg-mercury-70",
+                      }}
+                      value={value || ""}
+                      onChange={(e) => {
+                        onChange(e.target.value)
+                      }}
+                    />
+                  </div>
+                )
+              }}
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-10 max-md:grid-cols-1">
+            <InteractFrequency />
+            <ToneAdaptation />
+            <ResponseLength />
+            <SuggestReplies />
+          </div>
+        </>
+      )}
     </div>
   )
 }

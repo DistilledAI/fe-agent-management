@@ -15,3 +15,19 @@ export const isPassRuleAgentInfo = (data: any) => {
   }
   return true
 }
+
+export const getConfigAgentByDataForm = (data: any) => {
+  const LIST_KEYS = [
+    "customization_instruction",
+    "audience_profile",
+    "interaction_frequency",
+    "knowledge_domain",
+    "prohibited_topics",
+    "response_length",
+    "sample_prompts",
+    "tone_adaptation",
+  ]
+  return Object.entries(data)
+    .map(([key, val]) => ({ key, value: val ? val.toString() : "" }))
+    .filter((item) => LIST_KEYS.includes(item.key))
+}

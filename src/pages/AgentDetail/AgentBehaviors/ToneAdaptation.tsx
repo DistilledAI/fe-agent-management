@@ -5,7 +5,7 @@ import { useFormContext } from "react-hook-form"
 
 const ToneAdaptation: React.FC = () => {
   const { watch, setValue } = useFormContext()
-  const toneAdaptationValue = watch("toneAdaptation")
+  const toneAdaptationValue = watch("tone_adaptation")
 
   return (
     <div>
@@ -29,8 +29,10 @@ const ToneAdaptation: React.FC = () => {
         </div>
         <div className="mt-11 flex items-center gap-2">
           <Switch
-            value={toneAdaptationValue}
-            onValueChange={(val) => setValue("toneAdaptation", val)}
+            isSelected={toneAdaptationValue === "Yes" ? true : false}
+            onValueChange={(val) =>
+              setValue("tone_adaptation", val ? "Yes" : "No")
+            }
             aria-label="Adapt"
           />
         </div>

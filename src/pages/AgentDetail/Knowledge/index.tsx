@@ -10,8 +10,10 @@ import { useState } from "react"
 import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
 import { DislikeFillIcon, LikeFillIcon } from "@components/Icons"
 import { Textarea } from "@nextui-org/react"
+import { Controller, useFormContext } from "react-hook-form"
 
 const KnowledgeAgent: React.FC = () => {
+  const { control } = useFormContext()
   const [openFYIPopup, setOpenFYIPopup] = useState<boolean>(false)
   const navigate = useNavigate()
 
@@ -56,10 +58,26 @@ const KnowledgeAgent: React.FC = () => {
               List any specific areas of knowledge the Agent should specialize
               in
             </p>
-            <Textarea
-              classNames={{ inputWrapper: "border-1 border-mercury-400" }}
-              rows={3}
-              placeholder='eg., "finance, fitness, coding"'
+            <Controller
+              name="knowledge_domain"
+              control={control}
+              render={({ field: { value, onChange } }: any) => {
+                return (
+                  <div className="w-full">
+                    <Textarea
+                      classNames={{
+                        inputWrapper: "border-1 border-mercury-400",
+                      }}
+                      rows={3}
+                      value={value || ""}
+                      placeholder='eg., "finance, fitness, coding"'
+                      onChange={(e) => {
+                        onChange(e.target.value)
+                      }}
+                    />
+                  </div>
+                )
+              }}
             />
           </div>
           <div className="rounded-[22px] bg-[#FDF0EF] p-4">
@@ -70,10 +88,26 @@ const KnowledgeAgent: React.FC = () => {
             <p className="my-2 min-h-10 leading-5 text-mercury-700">
               Specify any topics the Agent should avoid
             </p>
-            <Textarea
-              classNames={{ inputWrapper: "border-1 border-mercury-400" }}
-              rows={3}
-              placeholder='eg., "politics, religion, violence"'
+            <Controller
+              name="prohibited_topics"
+              control={control}
+              render={({ field: { value, onChange } }: any) => {
+                return (
+                  <div className="w-full">
+                    <Textarea
+                      classNames={{
+                        inputWrapper: "border-1 border-mercury-400",
+                      }}
+                      rows={3}
+                      placeholder='eg., "politics, religion, violence"'
+                      onChange={(e) => {
+                        onChange(e.target.value)
+                      }}
+                      value={value || ""}
+                    />
+                  </div>
+                )
+              }}
             />
           </div>
         </div>
