@@ -1,7 +1,6 @@
 import { getActiveColorRandomById, isImageUrl } from "@utils/index"
 import Markdown from "react-markdown"
 import { useParams } from "react-router-dom"
-import { twMerge } from "tailwind-merge"
 
 const MarkdownMessage = ({ msg }: { msg: string }) => {
   const { chatId } = useParams()
@@ -47,7 +46,7 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className={twMerge("underline", textColor)}
+        className={textColor}
       >
         {children}
       </a>

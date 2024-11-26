@@ -1,10 +1,10 @@
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
+import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
-import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { useLayoutEffect } from "react"
+import React, { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { changeStatusBotInGroup, checkStatusBotInGroup } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
@@ -14,16 +14,17 @@ export const BOT_STATUS = {
   DISABLE: 0,
 }
 
-const DelegatePrivateAgent: React.FC = () => {
-  const { privateChatId } = useParams()
-  const { chatId } = useGetChatId()
-  const groupId = chatId || privateChatId
+const DelegatePrivateAgent = () => {
+  const { chatId: groupId } = useParams()
   const queryClient = useQueryClient()
+  const { isAnonymous } = useAuthState()
 
   const callCheckStatusBotInGroup = async () => {
-    const response = await checkStatusBotInGroup(groupId)
-    if (response?.data) {
-      return response?.data
+    if (!!groupId && !isAnonymous) {
+      const response = await checkStatusBotInGroup(groupId)
+      if (response?.data) {
+        return response?.data
+      }
     }
   }
 
@@ -38,8 +39,8 @@ const DelegatePrivateAgent: React.FC = () => {
   const botId = myBotData?.id
   const isBotEnabled = botStatus === BOT_STATUS.ENABLE
 
-  useLayoutEffect(() => {
-    queryClient.setQueryData(["isChatting", groupId], () =>
+  useEffect(() => {
+    queryClient.setQueryData([QueryDataKeys.IS_CHATTING, groupId], () =>
       botStatus && isBotEnabled ? isBotEnabled : false,
     )
   }, [isBotEnabled, botInfo])
@@ -55,7 +56,6 @@ const DelegatePrivateAgent: React.FC = () => {
       const response = await changeStatusBotInGroup(payloadData)
       if (response) {
         refetch()
-        // setShowNotification(true)
       }
     } catch (error) {
       console.error("error", error)
@@ -120,4 +120,4 @@ const DelegatePrivateAgent: React.FC = () => {
     </>
   )
 }
-export default DelegatePrivateAgent
+export default React.memo(DelegatePrivateAgent)

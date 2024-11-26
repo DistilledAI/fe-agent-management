@@ -4,7 +4,7 @@ import { IUser } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
 import { makeId } from "@utils/index"
 import { useSocket } from "providers/SocketProvider"
-import { useEffect, useRef } from "react"
+import { useLayoutEffect, useRef } from "react"
 import { useLocation, useParams } from "react-router-dom"
 import { getVoiceToText } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
@@ -43,7 +43,10 @@ const useMessageSocket = () => {
   const { pathname } = useLocation()
 
   const setQueryIsChatting = (chattingId: string, status: boolean = false) => {
-    return queryClient.setQueryData(["isChatting", chattingId], () => status)
+    return queryClient.setQueryData(
+      [QueryDataKeys.IS_CHATTING, chattingId],
+      () => status,
+    )
   }
 
   const isPassRuleMessage = (e: IDataListen) => {
@@ -226,7 +229,7 @@ const useMessageSocket = () => {
     )
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (socket) {
       const event = "chat-group"
 
