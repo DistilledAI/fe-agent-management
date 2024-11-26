@@ -135,7 +135,7 @@ const useConnectWallet = () => {
         ],
       }
       const value = {
-        action: "login",
+        action: "Login to Distilled",
         publicAddress,
         timestamp,
       }
@@ -147,7 +147,7 @@ const useConnectWallet = () => {
 
       const input: IDataSignatureAuth = {
         data: {
-          action: "login",
+          action: "Login to Distilled",
           publicAddress,
           timestamp,
         },
@@ -211,18 +211,22 @@ const useConnectWallet = () => {
         ],
       }
       const value = {
-        action: "login",
+        action: "Login to Distilled",
         publicAddress,
         timestamp,
       }
 
-      let signature = (await signer._signTypedData(domain, types, value)) as any
+      const signature = (await signer._signTypedData(
+        domain,
+        types,
+        value,
+      )) as any
       const digest = ethers.utils._TypedDataEncoder.hash(domain, types, value)
       const publicKey = ethers.utils.recoverPublicKey(digest, signature)
 
       const input: IDataSignatureAuth = {
         data: {
-          action: "login",
+          action: "Login to Distilled",
           publicAddress,
           timestamp,
         },
@@ -286,18 +290,22 @@ const useConnectWallet = () => {
         ],
       }
       const value = {
-        action: "login",
+        action: "Login to Distilled",
         publicAddress,
         timestamp,
       }
 
-      let signature = (await signer._signTypedData(domain, types, value)) as any
+      const signature = (await signer._signTypedData(
+        domain,
+        types,
+        value,
+      )) as any
       const digest = ethers.utils._TypedDataEncoder.hash(domain, types, value)
       const publicKey = ethers.utils.recoverPublicKey(digest, signature)
 
       const input: IDataSignatureAuth = {
         data: {
-          action: "login",
+          action: "Login to Distilled",
           publicAddress,
           timestamp,
         },
