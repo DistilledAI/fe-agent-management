@@ -41,7 +41,7 @@ const userInitState: IUser = {
   id: 0,
   createdAt: "",
   publicAddress: "",
-  role: -1,
+  role: 5,
   status: -1,
   typeLogin: "",
   username: "",

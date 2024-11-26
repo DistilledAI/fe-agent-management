@@ -14,7 +14,7 @@ const MyPrivateAgentContent: React.FC<{
 }> = ({ connectWalletLoading, connectWallet }) => {
   const groupDefaultForPrivateAgent = envConfig.groupDefaultForPrivateAgent
   const { privateAgentData, callGetMyPrivateAgent } = usePrivateAgent()
-  const { isLogin, user } = useAuthState()
+  const { isLogin, user, isAnonymous } = useAuthState()
   const navigate = useNavigate()
   const [isCreated, setCreated] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -58,8 +58,10 @@ const MyPrivateAgentContent: React.FC<{
   }
 
   useEffect(() => {
-    callGetMyPrivateAgent()
-  }, [isLogin, isCreated, pathname, user?.id])
+    if (isLogin && !isAnonymous) {
+      callGetMyPrivateAgent()
+    }
+  }, [isLogin, isCreated, pathname, user?.id, isAnonymous])
 
   useEffect(() => {
     if (privateAgentStatus) checkCreatedGroupAgent()

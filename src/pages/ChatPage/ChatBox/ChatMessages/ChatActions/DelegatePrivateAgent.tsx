@@ -17,10 +17,15 @@ export const BOT_STATUS = {
 const DelegatePrivateAgent = () => {
   const { chatId: groupId } = useParams()
   const queryClient = useQueryClient()
-  const { isAnonymous } = useAuthState()
+  const { isAnonymous, isLogin } = useAuthState()
+  const { data: myAgentList } = useQuery<any>({
+    queryKey: [QueryDataKeys.MY_BOT_LIST],
+    enabled: !isAnonymous && isLogin,
+  })
+  const isMyAgents = !!myAgentList?.data?.items?.length
 
   const callCheckStatusBotInGroup = async () => {
-    if (!!groupId && !isAnonymous) {
+    if (!!groupId && !isAnonymous && isMyAgents) {
       const response = await checkStatusBotInGroup(groupId)
       if (response?.data) {
         return response?.data
@@ -31,7 +36,7 @@ const DelegatePrivateAgent = () => {
   const { data: botInfo, refetch } = useQuery({
     queryKey: [QueryDataKeys.DELEGATE_PRIVATE_AGENT, groupId],
     queryFn: callCheckStatusBotInGroup,
-    enabled: !!groupId,
+    enabled: !!groupId && isMyAgents && !isAnonymous && isLogin,
   })
 
   const botStatus = botInfo?.status

@@ -4,7 +4,7 @@ import { IUser } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
 import { makeId } from "@utils/index"
 import { useSocket } from "providers/SocketProvider"
-import { useLayoutEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { useLocation, useParams } from "react-router-dom"
 import { getVoiceToText } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
@@ -229,7 +229,7 @@ const useMessageSocket = () => {
     )
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (socket) {
       const event = "chat-group"
 

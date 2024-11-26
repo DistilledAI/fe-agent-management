@@ -35,9 +35,10 @@ const ChatMessages = () => {
   const { chatId } = useGetChatId()
   const { bgColor, textColor } = getActiveColorRandomById(chatId)
   const { spacing } = useStyleSpacing()
-  const { user } = useAuthState()
+  const { user, isLogin, isAnonymous } = useAuthState()
   const { data } = useQuery<any>({
     queryKey: [QueryDataKeys.MY_BOT_LIST],
+    enabled: isLogin && !isAnonymous,
   })
   const isOwner = !!data?.data?.items?.find(
     (agent: IAgentData) => agent?.owner === user?.id,
