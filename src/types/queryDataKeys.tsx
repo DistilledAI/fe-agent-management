@@ -14,6 +14,4 @@ export enum QueryDataKeys {
   PUBLIC_AGENTS_BY_OWNER = "public-agents-by-owner",
   AGENT_DETAIL = "agent-detail",
   AGENT_DETAIL_CONFIG = "agent-detail-config",
-  IS_CHATTING = "is_chatting",
-  AGENT_DETAIL_CONFIG = "agent-detail-config",
 }
