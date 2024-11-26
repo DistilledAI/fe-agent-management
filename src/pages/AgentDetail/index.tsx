@@ -1,15 +1,14 @@
 import {
   COMMUNICATION_STYLE_LIST,
-  PATH_NAMES,
   PERSONALITY_LIST,
   STATUS_AGENT,
 } from "@constants/index"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { toast } from "react-toastify"
-import { getAgentDetail, updateAgent, updateAgentConfig } from "services/agent"
+import { updateAgent, updateAgentConfig } from "services/agent"
 import { updateAvatarUser } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
 import AgentBehaviors, { SelectedBehaviors } from "./AgentBehaviors"
@@ -17,7 +16,12 @@ import Functions from "./Functions"
 import GeneralInfo from "./GeneralInfo"
 import Header from "./Header"
 import Monetization from "./Monetization"
-import { getConfigAgentByDataForm, isPassRuleAgentInfo } from "./helpers"
+import {
+  getConfigAgentByDataForm,
+  getConfigAgentValueByKeys,
+  isPassRuleAgentInfo,
+  LIST_AGENT_CONFIG_KEYS,
+} from "./helpers"
 import SmoothScrollTo from "@components/SmoothScrollTo"
 import KnowledgeAgent from "./Knowledge"
 import TargetAudience from "./TargetAudience"
@@ -25,31 +29,17 @@ import {
   INTERACTION_FREQUENCY_KEY,
   RESPONSE_LENGTH_KEY,
 } from "./AgentBehaviors/constants"
+import useFetchDetail from "./useFetchDetail"
+import useFetchAgentConfig from "./useFetchAgentConfig"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
   const queryClient = useQueryClient()
   const [loading, setLoading] = useState(false)
   const [valueCustomDefault, setValueCustomDefault] = useState<any>()
-  const navigate = useNavigate()
 
-  const fetchAgentDetail = async () => {
-    try {
-      const agentIdNumber = Number(agentId)
-      const response = await getAgentDetail(agentIdNumber)
-      if (response?.data) return response.data
-      else navigate(PATH_NAMES.HOME)
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message)
-      navigate(PATH_NAMES.HOME)
-    }
-  }
-
-  const { data: agentData, refetch } = useQuery({
-    queryKey: [QueryDataKeys.AGENT_DETAIL],
-    queryFn: fetchAgentDetail,
-    refetchOnWindowFocus: false,
-  })
+  const { agentConfigs } = useFetchAgentConfig()
+  const { agentData, refetch } = useFetchDetail()
   const isActive = agentData?.status === STATUS_AGENT.ACTIVE
 
   const userNameData = agentData?.username
@@ -61,12 +51,6 @@ const AgentDetail: React.FC = () => {
     : {}
   const agentPersonalData = agentBehaviors?.agentPersonal || []
   const agentCommunicationData = agentBehaviors?.agentCommunication || []
-  const agentInteractionFrequency =
-    agentBehaviors?.agentInteractionFrequency ||
-    INTERACTION_FREQUENCY_KEY.Occasionally
-  const agentToneAdaptation = agentBehaviors?.toneAdaptation || "No"
-  const agentResponseLength =
-    agentBehaviors?.responseLength || RESPONSE_LENGTH_KEY.Moderate
 
   const handleSetValueCustomDefaultDisplay = (
     data: any,
@@ -111,6 +95,11 @@ const AgentDetail: React.FC = () => {
       interaction_frequency: INTERACTION_FREQUENCY_KEY.Occasionally,
       tone_adaptation: false,
       response_length: RESPONSE_LENGTH_KEY.Moderate,
+      knowledge_domain: "",
+      prohibited_topics: "",
+      audience_profile: "",
+      sample_prompts: "",
+      customization_instruction: "",
     },
   })
 
@@ -128,12 +117,10 @@ const AgentDetail: React.FC = () => {
       avatar: avatarData,
       agentPersonal: agentPersonalData,
       agentCommunication: agentCommunicationData,
-      interaction_frequency: agentInteractionFrequency,
-      tone_adaptation: agentToneAdaptation,
-      response_length: agentResponseLength,
+      ...getConfigAgentValueByKeys(agentConfigs, LIST_AGENT_CONFIG_KEYS),
     }
     methods.reset(defaults)
-  }, [agentData, methods.reset])
+  }, [agentData, methods.reset, agentConfigs])
 
   const onSubmit = async (data: any) => {
     if (!isPassRuleAgentInfo(data) || !isActive) return

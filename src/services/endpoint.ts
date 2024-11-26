@@ -23,6 +23,7 @@ const endpoint = {
   GET_AGENT_DETAIL: (botId: number) => withBaseURL(`/bot/detail/${botId}`),
   GET_BOT_PUBLIC_BY_OWNER: (ownerId: number) =>
     withBaseURL(`/bot/public/info/get-by-owner/${ownerId}`),
+  GET_AGENT_CONFIG: (botId: number) => withBaseURL(`/bot/config/${botId}`),
   UPDATE_AGENT: withBaseURL("/bot/update"),
   UPDATE_CONFIG_AGENT: withBaseURL("/bot/config"),
 
