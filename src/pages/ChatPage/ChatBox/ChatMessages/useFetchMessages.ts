@@ -98,6 +98,9 @@ const useFetchMessages = () => {
     queryClient.invalidateQueries({
       queryKey: chatMessagesKey(groupId),
     })
+    queryClient.invalidateQueries({
+      queryKey: [QueryDataKeys.DELEGATE_PRIVATE_AGENT, groupId],
+    })
   }
 
   useEffect(() => {

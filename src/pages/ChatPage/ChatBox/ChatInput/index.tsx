@@ -14,7 +14,7 @@ import useWindowSize from "@hooks/useWindowSize"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { BOT_STATUS } from "../ChatMessages/ChatActions/DelegatePrivateAgent"
-import useAuthState from "@hooks/useAuthState"
+import { PATH_NAMES } from "@constants/index"
 
 interface ChatInputProps {
   isDisabledInput: boolean
@@ -45,7 +45,6 @@ const ChatInput = ({
   const inputRef = useRef<any>(null)
   const queryClient = useQueryClient()
   const groupId = chatId || privateChatId
-  const { user } = useAuthState()
 
   const { data: isChatting } = useQuery({
     initialData: false,
@@ -67,11 +66,11 @@ const ChatInput = ({
 
   const handleSubmit = async () => {
     if (!message) return
-
     setMessage("")
-    queryClient.setQueryData(
-      ["isChatting", groupId, user?.id.toString()],
-      () => (botInfo?.myBot ? isBotEnabled : true),
+    queryClient.setQueryData(["isChatting", groupId], () =>
+      botInfo?.myBot && pathname !== PATH_NAMES.PRIVATE_AGENT
+        ? isBotEnabled
+        : true,
     )
     onSubmit(message)
   }

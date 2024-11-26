@@ -4,7 +4,7 @@ import { FilledUserIcon } from "@components/Icons/UserIcon"
 import { Button } from "@nextui-org/react"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { useEffect } from "react"
+import { useLayoutEffect } from "react"
 import { useParams } from "react-router-dom"
 import { changeStatusBotInGroup, checkStatusBotInGroup } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
@@ -17,7 +17,6 @@ export const BOT_STATUS = {
 const DelegatePrivateAgent: React.FC = () => {
   const { privateChatId } = useParams()
   const { chatId } = useGetChatId()
-  //   const [isShowNotification, setShowNotification] = useState<boolean>(false)
   const groupId = chatId || privateChatId
   const queryClient = useQueryClient()
 
@@ -39,17 +38,11 @@ const DelegatePrivateAgent: React.FC = () => {
   const botId = myBotData?.id
   const isBotEnabled = botStatus === BOT_STATUS.ENABLE
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     queryClient.setQueryData(["isChatting", groupId], () =>
       botStatus && isBotEnabled ? isBotEnabled : false,
     )
   }, [isBotEnabled, botInfo])
-
-  //   useEffect(() => {
-  //     setTimeout(() => {
-  //       setShowNotification(false)
-  //     }, 5000)
-  //   }, [isShowNotification])
 
   const handleSetDelegate = async () => {
     const status = isBotEnabled ? BOT_STATUS.DISABLE : BOT_STATUS.ENABLE
@@ -69,24 +62,10 @@ const DelegatePrivateAgent: React.FC = () => {
     }
   }
 
-  //   const renderNotification = () => {
-  //     if (isShowNotification && !isBotEnabled)
-  //       return (
-  //         <div className="mb-5 flex justify-center">
-  //           <span className="text-mercury-500 text-base">
-  //             You now delegate chat to your agent
-  //           </span>
-  //         </div>
-  //       )
-
-  //     return <div />
-  //   }
-
   if (!myBotData) return <></>
 
   return (
     <>
-      {/* {renderNotification()} */}
       <div className="hidden w-fit items-center justify-end md:flex">
         <Button
           className="flex h-11 w-fit cursor-pointer items-center gap-2 rounded-3xl bg-mercury-70 p-3"
