@@ -206,7 +206,7 @@ interface BadgeStepWrapProps {
   stepClassName?: string
 }
 
-const BadgeStepWrap = ({ step, stepClassName }: BadgeStepWrapProps) => {
+export const BadgeStepWrap = ({ step, stepClassName }: BadgeStepWrapProps) => {
   return (
     <div
       className={twMerge(
@@ -222,19 +222,21 @@ const BadgeStepWrap = ({ step, stepClassName }: BadgeStepWrapProps) => {
 }
 
 interface StepWrapProps {
-  label: string
-  desc?: string
+  label: string | React.ReactNode
+  desc?: string | React.ReactNode
   stepClassName?: string
   children?: React.ReactNode
   icon?: React.ReactNode
+  onClick?: any
 }
 
-const StepWrap = ({
+export const StepWrap = ({
   label,
   desc,
   stepClassName,
   children,
   icon,
+  onClick,
 }: StepWrapProps) => {
   return (
     <div
@@ -242,6 +244,7 @@ const StepWrap = ({
         "rounded-[22px] border-[1px] border-mercury-100 bg-mercury-70 p-4",
         stepClassName,
       )}
+      onClick={onClick}
     >
       <div className="flex w-full items-center justify-between">
         <div className="flex flex-col">

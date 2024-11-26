@@ -1,4 +1,3 @@
-import { LinkAccountIcon } from "@components/Icons"
 import {
   PencilBoltIcon,
   PhototBoltIcon,
@@ -9,7 +8,8 @@ import { TwitterIcon } from "@components/Icons/Twitter"
 import { StarUserIconOutline } from "@components/Icons/UserIcon"
 import { Button, Switch } from "@nextui-org/react"
 import { IAgentData } from "types/user"
-import BinYourBot from "./BinYourBot"
+import BindYourAccount from "./BindYourAccount"
+import BindYourBot from "./BindYourBot"
 import CategoryLabel, { FieldLabel } from "./CategoryLabel"
 
 const TWITTER_FEATURE = [
@@ -79,7 +79,7 @@ const Functions: React.FC<{ agentData: IAgentData }> = ({ agentData }) => {
               </Button>
             </div>
             <div>
-              <BinYourBot botWebhooks={botWebhooks} />
+              <BindYourBot botWebhooks={botWebhooks} />
             </div>
           </div>
         }
@@ -98,12 +98,7 @@ const Functions: React.FC<{ agentData: IAgentData }> = ({ agentData }) => {
               </Button>
             </div>
             <div>
-              <div className="flex cursor-pointer items-center gap-2 hover:underline">
-                <LinkAccountIcon />
-                <span className="text-base-md text-brown-500">
-                  Bind your Account
-                </span>
-              </div>
+              <BindYourAccount botWebhooks={botWebhooks} />
             </div>
           </div>
         }
