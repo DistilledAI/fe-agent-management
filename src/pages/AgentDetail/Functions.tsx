@@ -11,6 +11,7 @@ import { IAgentData } from "types/user"
 import BindYourAccount from "./BindYourAccount"
 import BindYourBot from "./BindYourBot"
 import CategoryLabel, { FieldLabel } from "./CategoryLabel"
+import { AgentConfig } from "./useFetchAgentConfig"
 
 const TWITTER_FEATURE = [
   {
@@ -30,7 +31,10 @@ const TWITTER_FEATURE = [
   },
 ]
 
-const Functions: React.FC<{ agentData: IAgentData }> = ({ agentData }) => {
+const Functions: React.FC<{
+  agentData: IAgentData
+  agentConfigs: AgentConfig[]
+}> = ({ agentData, agentConfigs }) => {
   const botWebhooks = agentData?.botWebhooks
 
   const renderFeature = () => {
@@ -98,7 +102,7 @@ const Functions: React.FC<{ agentData: IAgentData }> = ({ agentData }) => {
               </Button>
             </div>
             <div>
-              <BindYourAccount botWebhooks={botWebhooks} />
+              <BindYourAccount agentConfigs={agentConfigs} />
             </div>
           </div>
         }

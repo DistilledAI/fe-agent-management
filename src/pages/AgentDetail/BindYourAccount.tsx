@@ -3,10 +3,8 @@ import { LinkAccountIcon, XboxXFilled } from "@components/Icons"
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { CheckFilledIcon } from "@components/Icons/DefiLens"
 import { ExternalLink } from "@components/Icons/ExternalLink"
-import {
-  PlayVideoFilled,
-  TelegramOnlineIcon,
-} from "@components/Icons/SocialLinkIcon"
+import { PlayVideoFilled } from "@components/Icons/SocialLinkIcon"
+import { TwitterIcon } from "@components/Icons/Twitter"
 import {
   Button,
   Input,
@@ -24,10 +22,14 @@ import { toast } from "react-toastify"
 import { updateAgentConfig } from "services/agent"
 import { twMerge } from "tailwind-merge"
 import { BadgeStepWrap, StepWrap } from "./BindYourBot"
+import { AgentConfig } from "./useFetchAgentConfig"
 
-const BindYourAccount: React.FC<{ botWebhooks: any }> = ({ botWebhooks }) => {
-  const telegramBotData = botWebhooks?.find((bot: any) => bot.platform === "x")
-  const telegramBotUsername = telegramBotData?.usernamePlatform
+const BindYourAccount: React.FC<{
+  agentConfigs: AgentConfig[]
+}> = ({ agentConfigs }) => {
+  const telegramBotData = agentConfigs?.find(
+    (agent: any) => agent.key === "bindTwitterKey",
+  )
   const { agentId } = useParams()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [isBindSuccess, setIsBindSuccess] = useState<boolean>(false)
@@ -78,10 +80,10 @@ const BindYourAccount: React.FC<{ botWebhooks: any }> = ({ botWebhooks }) => {
 
   return (
     <>
-      {telegramBotUsername ? (
+      {telegramBotData ? (
         <div className="flex items-center gap-2">
-          <TelegramOnlineIcon />
-          <span className="text-base-b">{telegramBotUsername}</span>
+          <TwitterIcon />
+          {/* <span className="text-base-b">{telegramBotData}</span> */}
           <span
             className="text-base-md cursor-pointer text-brown-10 hover:underline"
             onClick={onOpen}
@@ -347,7 +349,6 @@ const InputField: React.FC<InputFieldProps> = ({
     navigator.clipboard
       .readText()
       .then((text) => {
-        console.log("🚀 ~ .then ~ text:", text)
         setValue(fieldKey, text)
       })
       .catch((err) => {

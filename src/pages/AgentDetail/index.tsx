@@ -1,3 +1,4 @@
+import SmoothScrollTo from "@components/SmoothScrollTo"
 import {
   COMMUNICATION_STYLE_LIST,
   PERSONALITY_LIST,
@@ -12,25 +13,24 @@ import { updateAgent, updateAgentConfig } from "services/agent"
 import { updateAvatarUser } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
 import AgentBehaviors, { SelectedBehaviors } from "./AgentBehaviors"
+import {
+  INTERACTION_FREQUENCY_KEY,
+  RESPONSE_LENGTH_KEY,
+} from "./AgentBehaviors/constants"
 import Functions from "./Functions"
 import GeneralInfo from "./GeneralInfo"
 import Header from "./Header"
+import KnowledgeAgent from "./Knowledge"
 import Monetization from "./Monetization"
+import TargetAudience from "./TargetAudience"
 import {
   getConfigAgentByDataForm,
   getConfigAgentValueByKeys,
   isPassRuleAgentInfo,
   LIST_AGENT_CONFIG_KEYS,
 } from "./helpers"
-import SmoothScrollTo from "@components/SmoothScrollTo"
-import KnowledgeAgent from "./Knowledge"
-import TargetAudience from "./TargetAudience"
-import {
-  INTERACTION_FREQUENCY_KEY,
-  RESPONSE_LENGTH_KEY,
-} from "./AgentBehaviors/constants"
-import useFetchDetail from "./useFetchDetail"
 import useFetchAgentConfig from "./useFetchAgentConfig"
+import useFetchDetail from "./useFetchDetail"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
@@ -164,7 +164,7 @@ const AgentDetail: React.FC = () => {
     },
     {
       title: "Functions",
-      content: <Functions agentData={agentData} />,
+      content: <Functions agentData={agentData} agentConfigs={agentConfigs} />,
     },
     {
       title: "Behaviors",
