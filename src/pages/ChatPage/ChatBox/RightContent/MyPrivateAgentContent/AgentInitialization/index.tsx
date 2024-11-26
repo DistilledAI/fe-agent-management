@@ -92,6 +92,7 @@ const AgentInitialization = () => {
               agentCommunication: methods.watch("agentCommunication"),
             }}
             onSelectBehaviors={handleSelectBehaviors}
+            isCreate
           />
           <Divider />
           <div className="flex items-center gap-2">

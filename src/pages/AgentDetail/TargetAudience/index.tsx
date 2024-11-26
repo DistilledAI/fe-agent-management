@@ -39,7 +39,7 @@ const TargetAudience: React.FC = () => {
         />
 
         <Controller
-          name=""
+          name="audience_profile"
           control={control}
           render={({ field: { value, onChange } }: any) => {
             return (
@@ -61,7 +61,7 @@ const TargetAudience: React.FC = () => {
         <FieldLabel text="Sample Prompts" />
 
         <Controller
-          name=""
+          name="sample_prompts"
           control={control}
           render={({ field: { value, onChange } }: any) => {
             return (

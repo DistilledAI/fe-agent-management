@@ -6,7 +6,8 @@ import { match } from "ts-pattern"
 
 const InteractFrequency: React.FC = () => {
   const { watch, setValue } = useFormContext()
-  const interactionFrequencyValue = watch("interactionFrequency")
+  const interactionFrequencyValue =
+    watch("interaction_frequency") || INTERACTION_FREQUENCY_KEY.Occasionally
 
   const frequencyLength = INTERACTION_FREQUENCY.length
   const frequencyCurrentIndex = INTERACTION_FREQUENCY.findIndex(
@@ -19,14 +20,14 @@ const InteractFrequency: React.FC = () => {
     if (type === "up") {
       if (isMax) return
       setValue(
-        "interactionFrequency",
+        "interaction_frequency",
         INTERACTION_FREQUENCY[frequencyCurrentIndex + 1]?.key,
       )
     }
     if (type === "down") {
       if (isMin) return
       setValue(
-        "interactionFrequency",
+        "interaction_frequency",
         INTERACTION_FREQUENCY[frequencyCurrentIndex - 1]?.key,
       )
     }

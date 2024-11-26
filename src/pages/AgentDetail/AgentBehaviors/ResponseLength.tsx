@@ -36,7 +36,7 @@ const ResponseLength: React.FC = () => {
           <SliderCustom
             defaultValue={
               RESPONSE_LENGTH.find(
-                (item) => item.key === watch("responseLength"),
+                (item) => item.key === watch("response_length"),
               )?.value
             }
             maxValue={6}
@@ -44,7 +44,7 @@ const ResponseLength: React.FC = () => {
             step={3}
             onChange={(val) =>
               setValue(
-                "responseLength",
+                "response_length",
                 RESPONSE_LENGTH.find((item) => item.value === val)?.key,
               )
             }

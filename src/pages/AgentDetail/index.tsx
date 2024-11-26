@@ -2,13 +2,14 @@ import {
   COMMUNICATION_STYLE_LIST,
   PATH_NAMES,
   PERSONALITY_LIST,
+  STATUS_AGENT,
 } from "@constants/index"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import { useNavigate, useParams } from "react-router-dom"
 import { toast } from "react-toastify"
-import { getAgentDetail, updateAgent } from "services/agent"
+import { getAgentDetail, updateAgent, updateAgentConfig } from "services/agent"
 import { updateAvatarUser } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
 import AgentBehaviors, { SelectedBehaviors } from "./AgentBehaviors"
@@ -16,7 +17,7 @@ import Functions from "./Functions"
 import GeneralInfo from "./GeneralInfo"
 import Header from "./Header"
 import Monetization from "./Monetization"
-import { isPassRuleAgentInfo } from "./helpers"
+import { getConfigAgentByDataForm, isPassRuleAgentInfo } from "./helpers"
 import SmoothScrollTo from "@components/SmoothScrollTo"
 import KnowledgeAgent from "./Knowledge"
 import TargetAudience from "./TargetAudience"
@@ -49,6 +50,7 @@ const AgentDetail: React.FC = () => {
     queryFn: fetchAgentDetail,
     refetchOnWindowFocus: false,
   })
+  const isActive = agentData?.status === STATUS_AGENT.ACTIVE
 
   const userNameData = agentData?.username
   const descriptionData = agentData?.description
@@ -62,7 +64,7 @@ const AgentDetail: React.FC = () => {
   const agentInteractionFrequency =
     agentBehaviors?.agentInteractionFrequency ||
     INTERACTION_FREQUENCY_KEY.Occasionally
-  const agentToneAdaptation = agentBehaviors?.toneAdaptation || false
+  const agentToneAdaptation = agentBehaviors?.toneAdaptation || "No"
   const agentResponseLength =
     agentBehaviors?.responseLength || RESPONSE_LENGTH_KEY.Moderate
 
@@ -106,9 +108,9 @@ const AgentDetail: React.FC = () => {
       avatar: "",
       agentPersonal: [],
       agentCommunication: [],
-      interactionFrequency: INTERACTION_FREQUENCY_KEY.Occasionally,
-      toneAdaptation: false,
-      responseLength: RESPONSE_LENGTH_KEY.Moderate,
+      interaction_frequency: INTERACTION_FREQUENCY_KEY.Occasionally,
+      tone_adaptation: false,
+      response_length: RESPONSE_LENGTH_KEY.Moderate,
     },
   })
 
@@ -126,18 +128,19 @@ const AgentDetail: React.FC = () => {
       avatar: avatarData,
       agentPersonal: agentPersonalData,
       agentCommunication: agentCommunicationData,
-      interactionFrequency: agentInteractionFrequency,
-      toneAdaptation: agentToneAdaptation,
-      responseLength: agentResponseLength,
+      interaction_frequency: agentInteractionFrequency,
+      tone_adaptation: agentToneAdaptation,
+      response_length: agentResponseLength,
     }
     methods.reset(defaults)
   }, [agentData, methods.reset])
 
   const onSubmit = async (data: any) => {
-    if (!isPassRuleAgentInfo(data)) return
+    if (!isPassRuleAgentInfo(data) || !isActive) return
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { avatar, avatarFile, ...newData } = data
     const agentIdNumber = Number(agentId)
+    const configData = getConfigAgentByDataForm(data)
 
     try {
       setLoading(true)
@@ -150,6 +153,9 @@ const AgentDetail: React.FC = () => {
         formData.append("file", data.avatarFile)
         formData.append("userId", agentData?.id?.toString() ?? "")
         await updateAvatarUser(formData)
+      }
+      if (configData.length > 0) {
+        await updateAgentConfig({ botId: agentIdNumber, data: configData })
       }
       if (res.data) {
         refetch()
@@ -210,7 +216,7 @@ const AgentDetail: React.FC = () => {
             components={componentScrollTo}
             offsetAdjustment={220}
             classNames={{
-              headerWrapper: "sticky -mt-[1px] top-[152px] bg-white z-10",
+              headerWrapper: "sticky -mt-[1px] top-[152px] bg-white z-[11]",
               contentWrapper: "pt-5",
             }}
           />
