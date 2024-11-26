@@ -62,3 +62,14 @@ export const updateAgentConfig = async (data: {
     data,
   })
 }
+
+export const getAgentConfig = async (botId: number) => {
+  return fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_AGENT_CONFIG(botId),
+    params: {
+      size: 50,
+      offset: 0,
+    },
+  })
+}

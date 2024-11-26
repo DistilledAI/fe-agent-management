@@ -34,14 +34,14 @@ const ResponseLength: React.FC = () => {
         </div>
         <div className="mt-6 flex items-center gap-2">
           <SliderCustom
-            defaultValue={
+            maxValue={6}
+            minValue={0}
+            step={3}
+            value={
               RESPONSE_LENGTH.find(
                 (item) => item.key === watch("response_length"),
               )?.value
             }
-            maxValue={6}
-            minValue={0}
-            step={3}
             onChange={(val) =>
               setValue(
                 "response_length",

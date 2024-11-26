@@ -8,7 +8,8 @@ const SliderCustom: React.FC<{
   minValue: number
   onChange?: (val: number | number[]) => void
   defaultValue?: number
-}> = ({ step, minValue, maxValue, defaultValue, onChange }) => {
+  value?: number
+}> = ({ step, minValue, maxValue, defaultValue, value, onChange }) => {
   return (
     <Slider
       size="lg"
@@ -17,6 +18,7 @@ const SliderCustom: React.FC<{
       maxValue={maxValue}
       minValue={minValue}
       defaultValue={defaultValue}
+      value={value}
       classNames={{
         track: "border-s-[#F6F5F0] bg-mercury-100 m-0",
         filler: "bg-[#F6F5F0]",
