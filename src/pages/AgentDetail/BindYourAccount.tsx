@@ -21,6 +21,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
 import { toast } from "react-toastify"
+import { updateAgentConfig } from "services/agent"
 import { twMerge } from "tailwind-merge"
 import { BadgeStepWrap, StepWrap } from "./BindYourBot"
 
@@ -29,9 +30,7 @@ const BindYourAccount: React.FC<{ botWebhooks: any }> = ({ botWebhooks }) => {
   const telegramBotUsername = telegramBotData?.usernamePlatform
   const { agentId } = useParams()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const [tokenKeyValue, setTokenKeyValue] = useState<string>("")
   const [isBindSuccess, setIsBindSuccess] = useState<boolean>(false)
-  const [isBindError, setIsBindError] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const { register, handleSubmit, watch, resetField, setValue } = useForm({
     defaultValues: {
@@ -41,10 +40,6 @@ const BindYourAccount: React.FC<{ botWebhooks: any }> = ({ botWebhooks }) => {
       accessTokenSecret: "",
     },
   })
-
-  // bindTwitterKey: {
-
-  // }
 
   const consumerKeyValue = watch("consumerKey")
   const consumerSecretValue = watch("consumerSecret")
@@ -57,21 +52,24 @@ const BindYourAccount: React.FC<{ botWebhooks: any }> = ({ botWebhooks }) => {
     accessTokenValue &&
     accessTokenSecretValue
 
-  const onBindAgentToTelegramBot = async (data) => {
-    console.log("🚀 ~ onBindAgentToTelegramBot ~ data:", data)
+  const onBindYourAccount = async (data: any) => {
     try {
       setLoading(true)
       const agentIdNumber = Number(agentId)
       const payload = {
-        token: tokenKeyValue,
         botId: agentIdNumber,
+        data: [
+          {
+            key: "bindTwitterKey",
+            value: JSON.stringify(data),
+          },
+        ],
       }
-      // const res = await telegramMapAgent(payload)
-      // if (res?.data) {
-      //   setIsBindSuccess(true)
-      // }
+      const res = await updateAgentConfig(payload)
+      if (res?.data) {
+        setIsBindSuccess(true)
+      }
     } catch (error: any) {
-      setIsBindError(true)
       toast.error(error?.response?.data?.message)
     } finally {
       setLoading(false)
@@ -306,13 +304,13 @@ const BindYourAccount: React.FC<{ botWebhooks: any }> = ({ botWebhooks }) => {
                 <Button
                   className="mt-4 w-full rounded-full bg-mercury-950"
                   size="lg"
-                  onClick={handleSubmit(onBindAgentToTelegramBot)}
-                  isDisabled={!isDisabled}
+                  onClick={handleSubmit(onBindYourAccount)}
+                  isDisabled={!isDisabled || isBindSuccess}
                   isLoading={loading}
                 >
                   {isBindSuccess && <CheckFilledIcon />}
                   <span className="text-18 text-mercury-30">
-                    {isBindSuccess ? "Bot Bound Successfully" : "Bind"}
+                    {isBindSuccess ? "Account binding successful" : "Bind"}
                   </span>
                 </Button>
               </form>

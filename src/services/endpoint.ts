@@ -24,6 +24,7 @@ const endpoint = {
   GET_BOT_PUBLIC_BY_OWNER: (ownerId: number) =>
     withBaseURL(`/bot/public/info/get-by-owner/${ownerId}`),
   UPDATE_AGENT: withBaseURL("/bot/update"),
+  UPDATE_AGENT_CONFIG: withBaseURL("/bot/config"),
 
   //chat
   GET_MY_CHAT_GROUP_LIST: withBaseURL("/chat/group/list"),

@@ -48,3 +48,11 @@ export const telegramMapAgent = async (data: TelegramMapAgentPayload) => {
     data,
   })
 }
+
+export const updateAgentConfig = async (data: any) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.UPDATE_AGENT_CONFIG,
+    data,
+  })
+}
