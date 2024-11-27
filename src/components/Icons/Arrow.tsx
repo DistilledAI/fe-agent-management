@@ -164,3 +164,23 @@ export const ArrowsMaximizeIcon = ({
     </svg>
   )
 }
+
+export const ArrowRightIcon = ({ size = 20, color = "#545454" }: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 20 21"
+      fill="none"
+    >
+      <path
+        d="M7.5 5.5L12.5 10.5L7.5 15.5"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
