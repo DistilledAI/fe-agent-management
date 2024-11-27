@@ -13,8 +13,12 @@ import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import MessageLive from "./MessageLive"
 import ToggleActionsMobile from "./ToggleActionsMobile"
+import React from "react"
+import ClanShortInfo from "@pages/AgentClanTemp/ClanShortInfo"
 
-const RightContent = () => {
+const RightContent: React.FC<{
+  isClan?: boolean
+}> = ({ isClan = false }) => {
   const { isMobile } = useWindowSize()
   const { isLogin } = useAuthState()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
@@ -58,6 +62,7 @@ const RightContent = () => {
       )}
     >
       {isMobile ? <ToggleActionsMobile /> : <></>}
+      {!isMobile && isClan && <ClanShortInfo />}
       {!isCloseLiveChat ? (
         <ChatWindow
           messages={messages}
@@ -70,7 +75,10 @@ const RightContent = () => {
           chatId={chatId}
           isChatActions={false}
           msgBoxClassName="p-0 px-4 pb-4"
-          className="md:max-h-[calc(100%-80px)]"
+          className={twMerge(
+            "md:max-h-[calc(100%-80px)]",
+            isClan && "md:max-h-[calc(100%-130px)]",
+          )}
           scrollBottomClassName="max-md:!bottom-[93px] max-md:bg-none"
           increaseViewportBy={1000}
         />
