@@ -13,6 +13,7 @@ interface AvatarContainerProps {
   avatarClassName?: string
   isLive?: boolean
   usernameClassName?: string
+  wrapperClassName?: string
 }
 const AvatarContainer: React.FC<AvatarContainerProps> = ({
   badgeIcon,
@@ -23,9 +24,10 @@ const AvatarContainer: React.FC<AvatarContainerProps> = ({
   avatarClassName,
   isLive = false,
   usernameClassName,
+  wrapperClassName,
 }) => {
   return (
-    <div className="flex items-center gap-x-3">
+    <div className={twMerge("flex items-center gap-x-3", wrapperClassName)}>
       <AvatarCustom
         badgeIcon={badgeIcon}
         src={avatarUrl}
