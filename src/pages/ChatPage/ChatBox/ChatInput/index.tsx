@@ -36,6 +36,7 @@ const ChatInput = ({
   const [message, setMessage] = useState("")
   const { pathname } = useLocation()
   const { isMobile } = useWindowSize()
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
   const heightBoxRef = useRef(0)
   const { setSpacing, spacing } = useStyleSpacing()
@@ -64,7 +65,7 @@ const ChatInput = ({
   }, [pathname, isMobile, isChatting])
 
   const handleSubmit = async () => {
-    if (!message || isChatting) return
+    if (!message) return
     setMessage("")
     queryClient.setQueryData([QueryDataKeys.IS_CHATTING, groupId], () =>
       botInfo?.myBot && pathname !== PATH_NAMES.PRIVATE_AGENT
@@ -79,10 +80,12 @@ const ChatInput = ({
     if (isSubmit) {
       e.preventDefault()
       //handle vi key double submit
-      if (!isChatting) {
+      if (!isSubmitting) {
+        setIsSubmitting(true)
         handleSubmit()
 
         setTimeout(() => {
+          setIsSubmitting(false)
           setMessage("")
           SpeechRecognition.stopListening()
         }, 1)
