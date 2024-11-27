@@ -26,6 +26,8 @@ const endpoint = {
   GET_AGENT_CONFIG: (botId: number) => withBaseURL(`/bot/config/${botId}`),
   UPDATE_AGENT: withBaseURL("/bot/update"),
   UPDATE_CONFIG_AGENT: withBaseURL("/bot/config"),
+  CONNECT_X: withBaseURL("/point/xDstl/connect-x"),
+  GET_TASK_SUCCESS: withBaseURL("/point/xDstl/user/task-success"),
 
   //chat
   GET_MY_CHAT_GROUP_LIST: withBaseURL("/chat/group/list"),

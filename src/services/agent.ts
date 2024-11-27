@@ -73,3 +73,21 @@ export const getAgentConfig = async (botId: number) => {
     },
   })
 }
+
+export const checkConnectDistilledX = async (data: {
+  code: string
+  redirectUri: string
+}) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.CONNECT_X,
+    data,
+  })
+}
+
+export const getTaskSuccess = async () => {
+  return fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_TASK_SUCCESS,
+  })
+}
