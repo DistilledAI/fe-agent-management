@@ -51,10 +51,10 @@ const AuthorUsername = () => {
 
   return (
     <div className="flex items-center justify-between">
-      <span className="text-mercury-600">Name:</span>
+      <span className="text-mercury-600">Display name:</span>
       <div className="flex items-center gap-2">
         <input
-          className="max-w-36 border-none bg-transparent text-right shadow-none outline-none"
+          className="text-base-md max-w-36 border-none bg-transparent text-right shadow-none outline-none"
           value={value}
           onChange={(e) => handleOnChange(e.target.value)}
           onKeyDown={handleKeyDown}

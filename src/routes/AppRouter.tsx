@@ -6,19 +6,20 @@ import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
 import Account from "@pages/Account"
 import AddMyData from "@pages/AddMyData"
+import AgentDetail from "@pages/AgentDetail"
 import AuthorProfile from "@pages/AuthorProfile"
 import ChatBoxLive from "@pages/ChatBoxLive"
 import ChatMyAgent from "@pages/ChatMyAgent"
-import AgentDetail from "@pages/AgentDetail"
 import ChatBox from "@pages/ChatPage/ChatBox"
+import AgentInitialization from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization"
 import ChatPageMobile from "@pages/ChatPage/Mobile"
 import MyPrivateAgentContentMobile from "@pages/ChatPage/Mobile/MyPrivateAgentContentMobile"
 import Marketplace from "@pages/Marketplace"
+import MyAgentPage from "@pages/MyAgents"
 import MyData from "@pages/MyData"
 import PageNotFound from "@pages/NotFound"
+import RewardsPage from "@pages/Rewards"
 import { Route, Routes } from "react-router-dom"
-import AgentInitialization from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization"
-import MyAgentPage from "@pages/MyAgents"
 
 const AppRouter = () => {
   const { isMobile } = useWindowSize()
@@ -80,6 +81,7 @@ const AppRouter = () => {
             element={<AgentInitialization />}
           />
           <Route path={PATH_NAMES.MY_AGENTS} element={<MyAgentPage />} />
+          <Route path={PATH_NAMES.REWARDS} element={<RewardsPage />} />
         </Route>
       </Route>
       <Route path="*" element={<PageNotFound />} />

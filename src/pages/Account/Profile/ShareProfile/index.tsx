@@ -1,8 +1,8 @@
 import { ShareWithQrIcon } from "@components/Icons/Share"
-import { Button, useDisclosure } from "@nextui-org/react"
+import ShareQRModal from "@components/ShareQRModal"
 import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
-import ShareQRModal from "@components/ShareQRModal"
+import { Button, useDisclosure } from "@nextui-org/react"
 
 const appUrl = window.location.origin
 
@@ -30,7 +30,7 @@ const ShareProfile = ({
         onClick={onOpen}
       >
         <ShareWithQrIcon />
-        <span className="font-medium text-mercury-950">{textButton}</span>
+        <span className="text-base-md text-mercury-950">{textButton}</span>
       </Button>
       {isOpen && (
         <ShareQRModal
