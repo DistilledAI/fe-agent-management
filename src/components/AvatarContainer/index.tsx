@@ -68,15 +68,17 @@ export const AvatarClan: React.FC<{
     return match(category)
       .with("first", () => (
         <div>
-          <span className="text-13 font-medium text-mercury-700">Clan</span>
-          <p className="line-clamp-1 text-16 font-bold text-mercury-950">
+          <p className="text-13 font-medium leading-[1.4] text-mercury-700">
+            Clan
+          </p>
+          <p className="line-clamp-1 text-16 font-semibold text-mercury-950">
             {name}
           </p>
         </div>
       ))
       .with("second", () => (
         <div>
-          <p className="line-clamp-1 text-16 font-bold text-mercury-950">
+          <p className="line-clamp-1 text-16 font-semibold text-mercury-950">
             {name}
           </p>
           <div className="flex items-center gap-1">
@@ -99,7 +101,7 @@ export const AvatarClan: React.FC<{
   }
 
   return (
-    <div className="flex items-center gap-x-3">
+    <div className="flex h-full items-center gap-x-3">
       <AvatarCustom
         badgeIcon={<LiveIcon />}
         src={avatarUrl}
@@ -118,7 +120,7 @@ export const AvatarMention: React.FC<{
   publicAddress?: string
 }> = ({ avatarUrl, name, publicAddress }) => {
   return (
-    <div className="flex items-center gap-x-3">
+    <div className="flex h-full items-center gap-x-3">
       <AvatarCustom
         src={avatarUrl}
         publicAddress={publicAddress}

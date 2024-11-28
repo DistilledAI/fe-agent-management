@@ -12,7 +12,7 @@ import useAuthState from "./useAuthState"
 const useJoinGroupLive = () => {
   const { pathname, state } = useLocation()
   const { chatId, originalChatId } = useGetChatId()
-  const isInvitePathName = pathname === `${PATH_NAMES.LIVE}/${originalChatId}`
+  const isInvitePathName = pathname === `${PATH_NAMES.CLAN}/${originalChatId}`
   const { isLogin, user } = useAuthState()
   const dispatch = useAppDispatch()
   const [isLogged, setIsLogged] = useState(false)
@@ -36,7 +36,7 @@ const useJoinGroupLive = () => {
         }
       : {}
     const res = await inviteUserJoinGroup(payload, headers)
-    navigate(`${PATH_NAMES.LIVE}/${res?.data?.group?.label}`)
+    navigate(`${PATH_NAMES.CLAN}/${res?.data?.group?.label}`)
     return !!res.data
   }
 
