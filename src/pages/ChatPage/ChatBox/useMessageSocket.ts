@@ -23,6 +23,14 @@ interface IDataListen {
   index: number
   user: IUser
   action: string
+  msg?: {
+    id: number
+  }
+  replyToData?: {
+    messages: string
+    user: IUser
+    id: number
+  }
 }
 
 enum StatusMessage {
@@ -194,8 +202,8 @@ const useMessageSocket = () => {
 
   const handleWithGroup = (e: IDataListen) => {
     if (e.messages === "...") return
-    const newMsg = {
-      id: makeId(),
+    const newMsg: IMessageBox = {
+      id: e.msg?.id ?? makeId(),
       role: RoleChat.CUSTOMER,
       content: e.messages,
       avatar: e.user.avatar,
@@ -203,6 +211,15 @@ const useMessageSocket = () => {
       createdAt: new Date().toISOString(),
       username: e.user.username,
       publicAddress: e.user.publicAddress,
+      reply: e.replyToData
+        ? {
+            message: e.replyToData.messages,
+            messageId: e.replyToData.id,
+            username: e.replyToData.user.username
+              ? `@${e.replyToData.user.username}`
+              : "@Unnamed",
+          }
+        : undefined,
     }
     addNewMsg(newMsg, e)
   }
