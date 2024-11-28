@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import { getGroupDetailFromLabel } from "services/chat"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const useGetChatId = () => {
   const { chatId: chatIdParam } = useParams()
@@ -19,7 +20,7 @@ const useGetChatId = () => {
   }
 
   const { data: chatId } = useQuery({
-    queryKey: ["chat-detail-live", chatIdParam],
+    queryKey: [QueryDataKeys.CHAT_ID_BY_USERNAME, chatIdParam],
     queryFn: getChatId,
     staleTime: 60 * 60 * 1000,
     enabled: !!chatIdParam,

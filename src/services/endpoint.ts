@@ -51,13 +51,21 @@ const endpoint = {
   CLEAR_CACHED_BY_GROUP_ID: (groupId: number) =>
     withBaseURL(`/group/clear-cached/${groupId}`),
 
-  //my data
+  // my data
   UPLOAD_MY_DATA: withBaseURL("/my-data/upload"),
   MAP_MY_DATA_TO_BOT: withBaseURL("/my-data/map-bot"),
   GET_MY_BOT_DATA: (botId: number) => withBaseURL(`/my-data/list/${botId}`),
   DELETE_MY_BOT_DATA: withBaseURL("/my-data/delete"),
   TRAIN_DATA_MY_DATA: withBaseURL("/my-data/train-data"),
   TELEGRAM_MAP_AGENT: withBaseURL("/telegram/map-bot"),
+
+  // point
+  GET_EXP_LEADERBOARD_BY_GROUP_ID: (groupId: number) =>
+    withBaseURL(`/point/exp/leaderboard/${groupId}`),
+  GET_EXP_TOTAL_POINT_GROUP: (groupId: number) =>
+    withBaseURL(`/point/exp/total-point/group/${groupId}`),
+  GET_EXP_TOTAL_POINT_USER: (groupId: number) =>
+    withBaseURL(`/point/exp/total-point/user/${groupId}`),
 }
 
 export default endpoint

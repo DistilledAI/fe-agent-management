@@ -14,7 +14,7 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import MessageLive from "./MessageLive"
 import ToggleActionsMobile from "./ToggleActionsMobile"
 import React from "react"
-import ClanShortInfo from "@pages/AgentClanTemp/ClanShortInfo"
+import ClanShortInfo from "@pages/AgentClan/ClanShortInfo"
 
 const RightContent: React.FC<{
   isClan?: boolean
