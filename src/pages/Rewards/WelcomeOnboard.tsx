@@ -58,7 +58,7 @@ const WelcomeOnboard: React.FC<{
         </>
       ),
       desc: "Found a logic error or factual inaccuracy? Let us know!",
-      point: "+10 xDSTL",
+      point: "+10 xDSTL (Weekly Distributed)",
       key: XDSTL_TASK_KEY.BUG_REPORT,
       repeatable: 20,
     },
@@ -193,6 +193,9 @@ const WelcomeOnboard: React.FC<{
       case XDSTL_TASK_KEY.CHAT_WITH_AGENT:
         return navigate(PATH_NAMES.MARKETPLACE)
 
+      case XDSTL_TASK_KEY.BUG_REPORT:
+        return window.open("https://forms.gle/482kYyJArVFzpYXR6")
+
       case XDSTL_TASK_KEY.CONNECT_X:
         return onFollowX()
 
@@ -207,13 +210,14 @@ const WelcomeOnboard: React.FC<{
   const renderAction = (actionKey: string) => {
     const isClaimed = listActionTaskSuccess?.includes(actionKey)
 
-    if (isClaimed)
+    if (isClaimed) {
       return (
         <div className="flex items-center gap-1">
           <CircleCheckFilled size={24} />
           <span className="text-base-14-b text-green-500">Claimed</span>
         </div>
       )
+    }
 
     return (
       <Button

@@ -25,7 +25,7 @@ const Objectives: React.FC<{
       defaultBg: objectiveCategory,
       activeBg: objectiveCategoryActive,
       key: "WELCOME_ONBOARD",
-      totalObjectives: 4,
+      totalObjectives: 5,
     },
     {
       label: "Autonomous AI Agents are just the beginning.",
