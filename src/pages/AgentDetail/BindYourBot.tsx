@@ -25,7 +25,10 @@ import { toast } from "react-toastify"
 import { telegramMapAgent } from "services/agent"
 import { twMerge } from "tailwind-merge"
 
-const BinYourBot: React.FC<{ botWebhooks: any }> = ({ botWebhooks }) => {
+const BinYourBot: React.FC<{ botWebhooks: any; refetch: any }> = ({
+  botWebhooks,
+  refetch,
+}) => {
   const telegramBotData = botWebhooks?.find(
     (bot: any) => bot.platform === "telegram",
   )
@@ -52,6 +55,7 @@ const BinYourBot: React.FC<{ botWebhooks: any }> = ({ botWebhooks }) => {
       const res = await telegramMapAgent(payload)
       if (res?.data) {
         setIsBindSuccess(true)
+        refetch()
       }
     } catch (error: any) {
       setIsBindError(true)

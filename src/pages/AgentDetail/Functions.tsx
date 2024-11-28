@@ -34,7 +34,8 @@ const TWITTER_FEATURE = [
 const Functions: React.FC<{
   agentData: IAgentData
   agentConfigs: AgentConfig[]
-}> = ({ agentData, agentConfigs }) => {
+  refetch: any
+}> = ({ agentData, agentConfigs, refetch }) => {
   const botWebhooks = agentData?.botWebhooks
 
   const renderFeature = () => {
@@ -83,7 +84,7 @@ const Functions: React.FC<{
               </Button>
             </div>
             <div>
-              <BindYourBot botWebhooks={botWebhooks} />
+              <BindYourBot botWebhooks={botWebhooks} refetch={refetch} />
             </div>
           </div>
         }
@@ -102,7 +103,7 @@ const Functions: React.FC<{
               </Button>
             </div>
             <div>
-              <BindYourAccount agentConfigs={agentConfigs} />
+              <BindYourAccount agentConfigs={agentConfigs} refetch={refetch} />
             </div>
           </div>
         }

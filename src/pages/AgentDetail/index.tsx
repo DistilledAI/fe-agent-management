@@ -164,7 +164,13 @@ const AgentDetail: React.FC = () => {
     },
     {
       title: "Functions",
-      content: <Functions agentData={agentData} agentConfigs={agentConfigs} />,
+      content: (
+        <Functions
+          agentData={agentData}
+          agentConfigs={agentConfigs}
+          refetch={refetch}
+        />
+      ),
     },
     {
       title: "Behaviors",

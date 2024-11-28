@@ -26,7 +26,8 @@ import { AgentConfig } from "./useFetchAgentConfig"
 
 const BindYourAccount: React.FC<{
   agentConfigs: AgentConfig[]
-}> = ({ agentConfigs }) => {
+  refetch: any
+}> = ({ agentConfigs, refetch }) => {
   const telegramBotData = agentConfigs?.find(
     (agent: any) => agent.key === "bindTwitterKey",
   )
@@ -70,6 +71,7 @@ const BindYourAccount: React.FC<{
       const res = await updateAgentConfig(payload)
       if (res?.data) {
         setIsBindSuccess(true)
+        refetch()
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message)
