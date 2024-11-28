@@ -13,7 +13,7 @@ import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import MessageLive from "./MessageLive"
 import ToggleActionsMobile from "./ToggleActionsMobile"
-import React from "react"
+import React, { useState } from "react"
 import ClanShortInfo from "@pages/AgentClanTemp/ClanShortInfo"
 
 const RightContent: React.FC<{
@@ -23,7 +23,29 @@ const RightContent: React.FC<{
   const { isLogin } = useAuthState()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const { chatId } = useGetChatId()
-  const { mutation } = useSubmitChat(chatId, SpeechRecognition.stopListening)
+  const [replyUsername, setReplyUsername] = useState<string | null>(null)
+  const [replyId, setReplyId] = useState<number>()
+  const [replyTxt, setReplyTxt] = useState<string>("")
+  const [hasFocus, setHasFocus] = useState(false)
+  const resetReply = () => {
+    setReplyId(undefined)
+    setReplyUsername(null)
+    setReplyTxt("")
+  }
+  const { mutation } = useSubmitChat({
+    callbackDone: () => {
+      SpeechRecognition.stopListening()
+      resetReply()
+    },
+    groupId: chatId,
+    reply: replyId
+      ? {
+          messageId: replyId,
+          message: replyTxt,
+          username: replyUsername ?? "",
+        }
+      : undefined,
+  })
   const isEnableTextInput = isLogin && chatId
   const { data: isCloseLiveChat = false } = useQuery<boolean>({
     queryKey: [QueryDataKeys.CLOSE_LIVE_CHAT],
@@ -46,7 +68,18 @@ const RightContent: React.FC<{
           index === messages.length - 1 && "pb-24 md:pb-0",
         )}
       >
-        <MessageLive key={index} message={message} />
+        <MessageLive
+          key={index}
+          message={message}
+          onReply={() => {
+            setHasFocus(true)
+            setReplyId(message.id as number)
+            setReplyTxt(message.content)
+            setReplyUsername(
+              message.username ? `@${message.username} ` : "@Unnamed ",
+            )
+          }}
+        />
       </div>
     )
   }
@@ -99,6 +132,10 @@ const RightContent: React.FC<{
           onSubmit={mutation.mutate}
           isPending={mutation.isPending}
           isDisabledInput={!isEnableTextInput}
+          replyUsername={replyUsername}
+          hasFocus={hasFocus}
+          setHasFocus={setHasFocus}
+          resetRely={resetReply}
           wrapperClassName="w-full static max-w-full"
         />
       </div>

@@ -3,7 +3,7 @@ import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
 import { Textarea } from "@nextui-org/react"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useLocation, useParams } from "react-router-dom"
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -15,6 +15,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { BOT_STATUS } from "../ChatMessages/ChatActions/DelegatePrivateAgent"
 import { PATH_NAMES } from "@constants/index"
+import MentionChatInput from "./Mention"
 
 interface ChatInputProps {
   isDisabledInput: boolean
@@ -22,6 +23,11 @@ interface ChatInputProps {
   isPending: boolean
   wrapperClassName?: string
   isDarkTheme?: boolean
+  hasMention?: boolean
+  replyUsername?: string | null
+  resetRely?: () => void
+  hasFocus?: boolean
+  setHasFocus?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const ChatInput = ({
@@ -30,10 +36,19 @@ const ChatInput = ({
   wrapperClassName,
   isDarkTheme,
   isPending,
+  hasMention = false,
+  replyUsername,
+  hasFocus,
+  setHasFocus,
+  resetRely,
 }: ChatInputProps) => {
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const [isFocus, setIsFocus] = useState(false)
   const [message, setMessage] = useState("")
+  const [showMention, setShowMention] = useState(false)
+  const [currentMentionIndex, setCurrentMentionIndex] = useState<number | null>(
+    null,
+  )
   const { pathname } = useLocation()
   const { isMobile } = useWindowSize()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -59,10 +74,23 @@ const ChatInput = ({
   const isBotEnabled = botInfo?.status === BOT_STATUS.ENABLE
 
   useEffect(() => {
+    if (replyUsername) {
+      setMessage(replyUsername)
+    }
+  }, [replyUsername])
+
+  useEffect(() => {
     if (!isMobile) {
       inputRef.current.focus()
     }
   }, [pathname, isMobile, isChatting])
+
+  useEffect(() => {
+    if (!isMobile && hasFocus) {
+      inputRef.current.focus()
+      if (setHasFocus) setHasFocus(false)
+    }
+  }, [hasFocus])
 
   const handleSubmit = async () => {
     if (!message) return
@@ -113,6 +141,29 @@ const ChatInput = ({
     )
   }
 
+  const handleOnChange = (e: any) => {
+    const value = e.target.value
+    if (replyUsername && !value.includes(replyUsername)) {
+      setMessage(value.replace(replyUsername.trim(), ""))
+      if (resetRely) resetRely()
+    } else setMessage(value)
+
+    if (!hasMention) return
+    const words = value.split(" ")
+    const lastWordIndex = words.length - 1
+    const lastWord = words[lastWordIndex]
+
+    const isShow =
+      lastWord.startsWith("@") && lastWord.length > 0 && !lastWord.includes(" ")
+    if (isShow) {
+      setShowMention(true)
+      setCurrentMentionIndex(lastWordIndex)
+    } else {
+      setShowMention(false)
+      setCurrentMentionIndex(null)
+    }
+  }
+
   return (
     <div
       ref={boxRef}
@@ -138,6 +189,12 @@ const ChatInput = ({
           color={isDarkTheme ? "rgba(84, 84, 84, 1)" : "#545454"}
         />
       </button>
+      <MentionChatInput
+        isOpen={showMention}
+        setMessage={setMessage}
+        onClose={() => setShowMention(false)}
+        currentMentionIndex={currentMentionIndex}
+      />
       <Textarea
         placeholder="Type your message"
         classNames={{
@@ -157,7 +214,7 @@ const ChatInput = ({
         onKeyUp={handleCheckHeight}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
-        onValueChange={setMessage}
+        onChange={handleOnChange}
         value={message}
         ref={inputRef}
         isDisabled={isDisabledInput}

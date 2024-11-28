@@ -37,7 +37,10 @@ const PrivateAgentChatContent: React.FC<{
   const { spacing } = useStyleSpacing()
   const { privateChatId } = useParams()
   const groupId = privateChatId
-  const { mutation } = useSubmitChat(groupId, SpeechRecognition.stopListening)
+  const { mutation } = useSubmitChat({
+    groupId,
+    callbackDone: SpeechRecognition.stopListening,
+  })
   const { list: listMyData, isFetched: isFetchedMyData } = useFetchMyData()
   const queryClient = useQueryClient()
   const { data: isChatting } = useQuery<boolean>({

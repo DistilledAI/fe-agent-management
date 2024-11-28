@@ -28,6 +28,7 @@ export const postChatSendToUser = async (data: IDataChatSendToUser) => {
 interface IDataChatToGroup {
   groupId: number
   messages: string
+  replyTo?: number
 }
 export const postChatToGroup = async (data: IDataChatToGroup) => {
   return fetchApiAuth({
