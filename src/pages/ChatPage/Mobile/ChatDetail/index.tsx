@@ -16,7 +16,10 @@ const ChatDetail = () => {
   const { chatId } = useGetChatId()
   const { isLogin } = useAuthState()
   const groupId = chatId || privateChatId
-  const { mutation } = useSubmitChat(groupId, SpeechRecognition.stopListening)
+  const { mutation } = useSubmitChat({
+    groupId: groupId,
+    callbackDone: SpeechRecognition.stopListening,
+  })
   const { data: isChatting } = useQuery<boolean>({
     initialData: false,
     queryKey: [QueryDataKeys.IS_CHATTING, groupId],

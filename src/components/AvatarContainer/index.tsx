@@ -1,5 +1,6 @@
 import AvatarCustom from "@components/AvatarCustom"
 import { LiveIcon } from "@components/Icons"
+import { centerTextEllipsis } from "@utils/index"
 import React, { ReactNode } from "react"
 import { twMerge } from "tailwind-merge"
 import { match } from "ts-pattern"
@@ -107,6 +108,29 @@ export const AvatarClan: React.FC<{
         isLive={true}
       />
       {renderInfoByCategory()}
+    </div>
+  )
+}
+
+export const AvatarMention: React.FC<{
+  avatarUrl?: string
+  name: string
+  publicAddress?: string
+}> = ({ avatarUrl, name, publicAddress }) => {
+  return (
+    <div className="flex items-center gap-x-3">
+      <AvatarCustom
+        src={avatarUrl}
+        publicAddress={publicAddress}
+        badgeClassName="bg-lgd-code-hot-ramp"
+        className="h-8 w-8"
+      />
+      <div className="flex items-center gap-2">
+        <p className="line-clamp-1 text-14 font-semibold">{name}</p>
+        <p className="text-14 text-mercury-600">
+          ({centerTextEllipsis(publicAddress ?? "", 4)})
+        </p>
+      </div>
     </div>
   )
 }

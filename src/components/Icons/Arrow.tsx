@@ -225,3 +225,23 @@ export const ArrowsTargetIcon = ({
     </svg>
   )
 }
+
+export const ArrowsRelyIcon = ({ size = 20, color = "#545454" }: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M15.0013 15V9.99996C15.0013 9.33692 14.7379 8.70103 14.2691 8.23219C13.8002 7.76335 13.1643 7.49996 12.5013 7.49996H4.16797M4.16797 7.49996L7.5013 4.16663M4.16797 7.49996L7.5013 10.8333"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
