@@ -3,6 +3,7 @@ import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { useQuery } from "@tanstack/react-query"
 import { getGroupChatDetail } from "services/chat"
 import useGetChatId from "./useGetChatId"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const useFetchDetail = () => {
   const { isLogin } = useAuthState()
@@ -14,7 +15,7 @@ const useFetchDetail = () => {
       : { filter: `{"groupId":${chatId}}` }
 
   const { data } = useQuery({
-    queryKey: ["chat-detail", chatId],
+    queryKey: [QueryDataKeys.GROUP_DETAIL, chatId?.toString()],
     queryFn: () => getGroupChatDetail(params),
     staleTime: 60 * 60 * 1000,
     enabled: !!chatId && !!isLogin,

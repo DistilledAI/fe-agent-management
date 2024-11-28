@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge"
 
 interface RankCardProps {
   rank: number
-  avatarUrl: string
+  avatarUrl?: string
   publicAddress?: string
   username: string
   exp: number | string
@@ -18,7 +18,7 @@ interface RankCardProps {
   }
 }
 
-const RankCard = ({
+const RankExpCard = ({
   rank,
   avatarUrl,
   publicAddress,
@@ -83,4 +83,4 @@ const RankCard = ({
   )
 }
 
-export default RankCard
+export default RankExpCard

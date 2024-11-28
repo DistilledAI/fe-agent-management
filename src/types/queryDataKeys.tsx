@@ -16,4 +16,6 @@ export enum QueryDataKeys {
   AGENT_DETAIL_CONFIG = "agent-detail-config",
   IS_CHATTING = "is_chatting",
   TOGGLE_LEADERBOARD_CLAN = "toggle-leaderboard-clan",
+  CHAT_ID_BY_USERNAME = "chat-id-by-username",
+  GROUP_DETAIL = "group-detail",
 }

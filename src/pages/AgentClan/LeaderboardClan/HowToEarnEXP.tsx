@@ -28,7 +28,7 @@ const HowToEarnEXP = () => {
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <ArrowsTargetIcon />
-            <h4 className="cursor-pointer text-16 font-medium text-mercury-800 hover:underline">
+            <h4 className="text-16 font-medium text-mercury-800">
               How to earn EXP
             </h4>
           </div>
@@ -41,11 +41,9 @@ const HowToEarnEXP = () => {
             </span>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1">
-                <button type="button">
-                  <RefreshIcon />
-                </button>
+                <RefreshIcon />
                 <span className="text-14 text-mercury-950">Repeatable:</span>
-                <span className="text-14 font-bold text-mercury-950">200</span>
+                <span className="text-14 font-bold text-mercury-950">100</span>
               </div>
               <XPBadge xpValue={1} operation="plus" />
             </div>
@@ -54,13 +52,13 @@ const HowToEarnEXP = () => {
             <span className="max-w-[96px] text-14 text-mercury-950">
               Agent Replied
             </span>
-            <XPBadge xpValue={1} operation="plus" />
+            <XPBadge xpValue={2} operation="plus" />
           </div>
           <div className="flex items-center justify-between">
             <span className="max-w-[96px] text-14 text-mercury-950">
               Others Replied
             </span>
-            <XPBadge xpValue={1} operation="plus" />
+            <XPBadge xpValue={0.5} operation="plus" />
           </div>
         </div>
       </div>

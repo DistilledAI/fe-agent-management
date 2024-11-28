@@ -17,7 +17,7 @@ const AgentInfoCard = ({ messages }: { messages: IMessageBox[] }) => {
   const { chatId } = useGetChatId()
 
   const { data: chatDetailResult } = useQuery<any>({
-    queryKey: ["chat-detail", chatId],
+    queryKey: [QueryDataKeys.GROUP_DETAIL, chatId?.toString()],
     enabled: !!chatId,
     staleTime: 60 * 60 * 1000,
     refetchOnMount: false,

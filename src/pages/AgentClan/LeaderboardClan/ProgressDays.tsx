@@ -1,7 +1,7 @@
 import { BoltIcon } from "@components/Icons"
 import { useRef, useState, useEffect } from "react"
 
-const ProgressDays = ({ progress = 50 }) => {
+const ProgressDays = ({ progress = 20 }) => {
   const pathRef = useRef<any>(null)
   const [totalLength, setTotalLength] = useState(0)
 
@@ -25,7 +25,7 @@ const ProgressDays = ({ progress = 50 }) => {
     >
       <div className="absolute -top-8 left-1/2 flex -translate-x-1/2 items-center gap-1">
         <BoltIcon />
-        <span className="text-14 text-mercury-950">5/7 days</span>
+        <span className="text-14 text-mercury-950">2/7 days</span>
       </div>
       {/* Background Path */}
       <svg
@@ -54,7 +54,7 @@ const ProgressDays = ({ progress = 50 }) => {
           position: "absolute",
           top: 0,
           left: 0,
-          zIndex: 1, // Solid progress dưới cùng
+          zIndex: 1,
         }}
       >
         <g filter="url(#progressFilter)">
