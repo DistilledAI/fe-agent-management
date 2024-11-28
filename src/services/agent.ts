@@ -91,3 +91,15 @@ export const getTaskSuccess = async () => {
     url: endpoint.GET_TASK_SUCCESS,
   })
 }
+
+export const checkRePostDistilledX = async (data: {
+  code: string
+  redirectUri: string
+  targetId: string
+}) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.REPOST_X,
+    data,
+  })
+}

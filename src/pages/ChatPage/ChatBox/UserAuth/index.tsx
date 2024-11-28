@@ -1,3 +1,4 @@
+import { xDSTL } from "@assets/images"
 import AvatarCustom from "@components/AvatarCustom"
 import ChatInfoCurrent from "@components/ChatInfoCurrent"
 import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
@@ -39,6 +40,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const isHiddenMyData = !hasBot
   const isShowInfo =
     user && user.publicAddress && user.role !== RoleUser.ANONYMOUS
+  const totalxDstlPoint = user?.xDstlPoint || 0
 
   return (
     <div className="flex items-center justify-between">
@@ -68,6 +70,18 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
               <span className="text-base">My Agents</span>
             </div>
           </Button>
+
+          <div
+            className="relative flex cursor-pointer items-center gap-1"
+            onClick={() => navigate(PATH_NAMES.REWARDS)}
+          >
+            <img src={xDSTL} width={24} height={24} />
+            <span className="text-base text-mercury-900">
+              <span className="font-bold">{totalxDstlPoint}</span> xDSTL
+            </span>
+            <div className="absolute -right-2 -top-2 h-3 w-3 rounded-full bg-[#FF3B30]" />
+          </div>
+
           <Button
             onClick={() => navigate(PATH_NAMES.ACCOUNT)}
             className="btn-primary h-11 w-fit max-md:!h-auto max-md:!w-auto max-md:min-w-0 max-md:gap-0 max-md:p-0"

@@ -20,6 +20,8 @@ export interface IUser {
   owner?: number
   typeBot?: TYPE_BOT
   configBot?: string
+  xDstlPoint?: number
+  code?: string
 }
 
 interface LoginSuccessPayload {

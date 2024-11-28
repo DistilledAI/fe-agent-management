@@ -1,92 +1,51 @@
 import { creditBg } from "@assets/images"
 import { CopyIcon } from "@components/Icons/Copy"
 import { QRCodeIcon } from "@components/Icons/QRCode"
-import { Button } from "@nextui-org/react"
-import { useEffect } from "react"
-import { useSearchParams } from "react-router-dom"
-import { toast } from "react-toastify"
-import { checkConnectDistilledX, getTaskSuccess } from "services/agent"
+import {
+  SpeakerPhoneIcon,
+  UsersGroupIcon,
+} from "@components/Icons/RewardsIcons"
+import useAuthState from "@hooks/useAuthState"
+import { Button, Divider } from "@nextui-org/react"
+import { copyClipboard } from "@utils/index"
+import { useEffect, useState } from "react"
+import { getTaskSuccess } from "services/agent"
+import Objectives from "./Objectives"
+
+export const XDSTL_TASK_KEY = {
+  LOGIN: "LOGIN",
+  CONNECT_X: "CONNECT_X",
+  RETWEET_X: "RETWEET_X",
+  CHAT_WITH_AGENT: "CHAT_WITH_AGENT",
+  BUG_REPORT: "BUG_REPORT",
+
+  PUBLISH_BOT: "PUBLISH_BOT",
+  BIND_TELE_FOR_BOT: "BIND_TELE_FOR_BOT",
+  BIND_X_FOR_BOT: "BIND_X_FOR_BOT",
+  TOKENIZE_AGENT: "TOKENIZE_AGENT",
+
+  JOIN_CLAN: "JOIN_CLAN",
+}
 
 const Rewards: React.FC = () => {
-  const [searchParams] = useSearchParams()
-  const code = searchParams.get("code")
-  const isCalling = localStorage.getItem("isCalling")
+  const { user } = useAuthState()
+  const referralCode = user?.code
+  const refLink = `${window.location.origin}/?invite=${referralCode}` as any
+  const [listTaskSuccess, setListTaskSuccess] = useState<any>([])
+  const listActionTaskSuccess = listTaskSuccess?.map((item: any) => item.action)
 
   const callGetTaskSuccess = async () => {
     try {
       const res = await getTaskSuccess()
-      console.log("🚀 ~ callGetTaskSuccess ~ res:", res)
-    } catch (error) {}
-  }
-
-  useEffect(() => {
-    callGetTaskSuccess()
-  }, [])
-
-  const onFollowTwitterNext = async () => {
-    try {
-      if (code) {
-        const response = await checkConnectDistilledX({
-          code,
-          redirectUri: "http://localhost:5173/rewards",
-        })
-        if (response?.status === 201) {
-          console.log("success")
-          localStorage.removeItem("isCalling")
-        }
-        console.log("response", response)
-      }
+      if (res) setListTaskSuccess(res?.data)
     } catch (error) {
       console.log("error", error)
     }
   }
 
   useEffect(() => {
-    if (isCalling && code) {
-      onFollowTwitterNext()
-    }
-  }, [isCalling, code])
-
-  const onFollowTwitter = async () => {
-    window.open(
-      "https://twitter.com/i/oauth2/authorize?response_type=code&client_id=V2wzbzlWcDFWZGg2U0l5VkZqRHg6MTpjaQ&redirect_uri=http://localhost:5173/rewards&scope=follows.read+follows.write+offline.access+users.read+tweet.read+tweet.write+like.read+like.write&state=optionalState123&code_challenge=codeChallenge&code_challenge_method=plain",
-    )
-    localStorage.setItem("isCalling", "1")
-    setTimeout(async () => {
-      try {
-        // const res = await getVerifyTwitter()
-        // if (res?.data === "success") {
-        //   doneMissions(res?.point)
-        //   updateSocialsMission("twitter")
-        // }
-      } catch (e: any) {
-        toast.error(
-          e?.response?.data?.message ||
-            "Something went wrong. Please try again!",
-        )
-      }
-    }, 2000)
-  }
-
-  // const onJoinTelegram = () => {
-  //   window.open("https://t.me/defi_lens", "_blank")
-  //   setVerifying("telegram")
-  //   setTimeout(async () => {
-  //     try {
-  //       setVerifying("")
-  //       // const res = await getVerifyTelegram()
-  //       // if (res?.data === "success") {
-  //       //   doneMissions(res?.point)
-  //       //   updateSocialsMission("telegram")
-  //       // }
-  //     } catch (e: any) {
-  //       toast.error(
-  //         e?.response?.data?.message ||
-  //           "Something went wrong. Please try again!",
-  //       )
-  //     }
-  //   }, 2000)
-  // }
+    callGetTaskSuccess()
+  }, [])
 
   return (
     <>
@@ -104,38 +63,46 @@ const Rewards: React.FC = () => {
         </div>
       </div>
 
-      <div className="relative mx-auto max-w-[800px] px-4 pb-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6">
+      <div className="relative mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6">
         <div className="mb-6 mt-[40px] flex flex-col">
-          <span className="text-24 font-semibold text-mercury-950 max-sm:text-18">
-            Share your code to Earn extra points!
-          </span>
-          <span className="text-base font-medium text-mercury-500 max-sm:text-14">
+          <div className="flex items-center gap-2">
+            <SpeakerPhoneIcon />
+            <span className="text-22 font-semibold text-mercury-950 max-sm:text-18">
+              Share your code to Earn extra points!
+            </span>
+          </div>
+          <span className="text-base font-medium text-mercury-800 max-sm:text-14">
             Earn 1000 xDSTL per friend who joins and completes the
-            <span className="font-bold text-brown-500">
-              {" "}
-              Welcome to Mesh
-            </span>{" "}
+            <span className="font-bold text-brown-500"> Welcome Gift</span>{" "}
             objective.
           </span>
         </div>
-
         <div
           style={{
             backgroundImage: `url(${creditBg})`,
           }}
-          className="h-full w-[75%] rounded-[22px] border-1 bg-cover bg-center bg-no-repeat px-6 py-8"
+          className="h-full w-[82%] rounded-[22px] border-1 bg-cover bg-center bg-no-repeat px-6 py-8"
         >
           <div className="mb-2 flex items-center justify-between leading-none">
             <span className="font-medium text-mercury-300">My Referred</span>
-            <span className="text-[32px] font-bold text-white">2/10</span>
+            <div className="flex items-center gap-2">
+              <UsersGroupIcon />
+              <span className="text-[32px] font-bold text-white">2/10</span>
+            </div>
           </div>
 
           <div className="my-4 grid grid-cols-8 gap-3">
-            <div className="col-span-6 flex items-center justify-between rounded-lg border-1 border-mercury-900 bg-[rgba(84,84,84,0.20)] px-3 py-2">
+            <div
+              className="col-span-6 flex cursor-pointer items-center justify-between rounded-lg border-1 border-mercury-900 bg-[rgba(84,84,84,0.20)] px-3 py-2"
+              onClick={(e) => copyClipboard(e, refLink)}
+            >
               <span className="text-base-md text-white">
-                https://mesh.distilled.ai/?invite=123ABCxyz
+                {window.location.origin}/?invite=
+                <span className="text-[#BCAA88]">{referralCode}</span>
               </span>
-              <CopyIcon color="#FFFFFF" />
+              <div className="cursor-pointer">
+                <CopyIcon color="#FFFFFF" />
+              </div>
             </div>
 
             <Button className="col-span-2 w-full rounded-full !border !border-mercury-900 bg-[rgba(195,195,195,0.20)] text-[14px] font-medium text-white max-md:min-h-12 md:text-[16px]">
@@ -149,8 +116,11 @@ const Rewards: React.FC = () => {
             <span className="text-base-md text-mercury-600">2000</span>
           </div>
         </div>
-
-        <Button onClick={onFollowTwitter}>Follow twitter</Button>
+        <Divider className="my-8" />
+        <Objectives
+          listActionTaskSuccess={listActionTaskSuccess}
+          callGetTaskSuccess={callGetTaskSuccess}
+        />
       </div>
     </>
   )
