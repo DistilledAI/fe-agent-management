@@ -19,8 +19,7 @@ const WelcomeOnboard: React.FC<{
   callGetTaskSuccess: any
 }> = ({ listActionTaskSuccess, callGetTaskSuccess }) => {
   const navigate = useNavigate()
-  const twitterAuthorizeLink =
-    "https://twitter.com/i/oauth2/authorize?response_type=code&client_id=V2wzbzlWcDFWZGg2U0l5VkZqRHg6MTpjaQ&redirect_uri=http://localhost:5173/rewards&scope=follows.read+follows.write+offline.access+users.read+tweet.read+tweet.write+like.read+like.write&state=optionalState123&code_challenge=codeChallenge&code_challenge_method=plain"
+  const twitterAuthorizeLink = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=V2wzbzlWcDFWZGg2U0l5VkZqRHg6MTpjaQ&redirect_uri=${window.location.origin}/rewards&scope=follows.read+follows.write+offline.access+users.read+tweet.read+tweet.write+like.read+like.write&state=optionalState123&code_challenge=codeChallenge&code_challenge_method=plain`
 
   const MISSION_LIST = [
     {
