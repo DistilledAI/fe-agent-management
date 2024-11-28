@@ -16,6 +16,9 @@ export const getLeaderboardExpByGroupId = async ({
     params: {
       offset,
       limit,
+      sort: JSON.stringify({
+        totalPointExp: "desc",
+      }),
     },
   })
   return res?.data
