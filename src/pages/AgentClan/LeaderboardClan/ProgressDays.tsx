@@ -1,9 +1,41 @@
 import { BoltIcon } from "@components/Icons"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { getRemainingDays, getRemainingDaysPercentage } from "@utils/index"
 import { useRef, useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
+import { QueryDataKeys } from "types/queryDataKeys"
 
-const ProgressDays = ({ progress = 20 }) => {
+const ProgressDays = () => {
+  const queryClient = useQueryClient()
   const pathRef = useRef<any>(null)
   const [totalLength, setTotalLength] = useState(0)
+  const { chatId } = useParams()
+  const groupId =
+    queryClient
+      .getQueryData([QueryDataKeys.CHAT_ID_BY_USERNAME, chatId])
+      ?.toString() || ""
+  const { data: groupDetail } = useQuery<any>({
+    queryKey: [QueryDataKeys.GROUP_DETAIL, groupId],
+    enabled: !!groupId,
+  })
+  const groupCreateDate = new Date(
+    groupDetail?.data?.group?.event?.createdAt,
+  ).getTime()
+  const groupEndDate = groupDetail?.data?.group?.event?.endDate
+  const { totalDays, remainingDays } = getRemainingDays(
+    groupCreateDate,
+    groupEndDate * 1000,
+  )
+  const { percentage } = getRemainingDaysPercentage(
+    groupCreateDate,
+    groupEndDate * 1000,
+  )
+
+  useEffect(() => {
+    if (remainingDays) {
+      queryClient.setQueryData(["earn-exp-remaining-days"], () => remainingDays)
+    }
+  }, [remainingDays])
 
   useEffect(() => {
     if (pathRef.current) {
@@ -11,7 +43,7 @@ const ProgressDays = ({ progress = 20 }) => {
     }
   }, [])
 
-  const dashOffset = totalLength - (progress / 100) * totalLength
+  const dashOffset = totalLength - (percentage / 100) * totalLength
 
   return (
     <div
@@ -25,7 +57,9 @@ const ProgressDays = ({ progress = 20 }) => {
     >
       <div className="absolute -top-8 left-1/2 flex -translate-x-1/2 items-center gap-1">
         <BoltIcon />
-        <span className="text-14 text-mercury-950">2/7 days</span>
+        <span className="text-14 text-mercury-950">
+          {totalDays - remainingDays}/{totalDays} days
+        </span>
       </div>
       {/* Background Path */}
       <svg

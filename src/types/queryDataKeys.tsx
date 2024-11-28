@@ -18,4 +18,6 @@ export enum QueryDataKeys {
   TOGGLE_LEADERBOARD_CLAN = "toggle-leaderboard-clan",
   CHAT_ID_BY_USERNAME = "chat-id-by-username",
   GROUP_DETAIL = "group-detail",
+  TOTAL_EXP_POINT_GROUP = "total-exp-point-group",
+  TOTAL_EXP_POINT_USER = "total-exp-point-user",
 }

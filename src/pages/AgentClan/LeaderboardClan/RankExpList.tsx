@@ -24,12 +24,12 @@ const RankExpList = () => {
   const queries = useQueries<[{ data: any }, { data: any }, { data: any }]>({
     queries: [
       {
-        queryKey: ["total-exp-point-group", groupId],
+        queryKey: [QueryDataKeys.TOTAL_EXP_POINT_GROUP, groupId],
         queryFn: () => getTotalExpPointGroup(Number(groupId)),
         enabled: !!groupId,
       },
       {
-        queryKey: ["total-exp-point-user", groupId],
+        queryKey: [QueryDataKeys.TOTAL_EXP_POINT_USER, groupId],
         enabled: !!groupId,
       },
       {
