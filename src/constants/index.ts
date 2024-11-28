@@ -3,6 +3,7 @@ export const PATH_NAMES = {
   LLM: "/chatbot",
   CHAT: "/chat",
   LIVE: "/live",
+  CLAN: "/clan",
   CHAT_DETAIL: "/chat/:chatId",
   INVITE: "/invite",
   NOT_FOUND: "/not-found",
