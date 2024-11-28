@@ -34,7 +34,11 @@ const XPBadge = ({ xpValue = "-", operation, classNames }: XPBadgeProps) => {
       >
         {displayValue}
       </span>
-      <img src={xpIcon} alt="xp icon" className={twMerge(classNames?.icon)} />
+      <img
+        src={xpIcon}
+        alt="xp icon"
+        className={twMerge("h-6 w-6", classNames?.icon)}
+      />
     </div>
   )
 }

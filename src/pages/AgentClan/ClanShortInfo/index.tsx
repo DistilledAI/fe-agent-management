@@ -82,7 +82,7 @@ const ClanShortInfo = () => {
                   </span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Image src={xpIcon} alt="xp" />
+                  <Image src={xpIcon} alt="xp" className="h-6 w-6" />
                   <span className="text-14 font-bold text-mercury-950">
                     {expPointUser?.totalPoint || "-"}
                   </span>
