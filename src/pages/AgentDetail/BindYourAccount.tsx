@@ -314,7 +314,7 @@ const BindYourAccount: React.FC<{
                 >
                   {isBindSuccess && <CheckFilledIcon />}
                   <span className="text-18 text-mercury-30">
-                    {isBindSuccess ? "Account binding successful" : "Bind"}
+                    {isBindSuccess ? "Account bound successfully" : "Bind"}
                   </span>
                 </Button>
               </form>

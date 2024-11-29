@@ -1,12 +1,13 @@
-import { creditBg } from "@assets/images"
+import { creditBg, xDSTL } from "@assets/images"
 import { CopyIcon } from "@components/Icons/Copy"
 import { QRCodeIcon } from "@components/Icons/QRCode"
 import {
   SpeakerPhoneIcon,
   UsersGroupIcon,
 } from "@components/Icons/RewardsIcons"
+import ShareModal from "@components/ShareQRModal"
 import useAuthState from "@hooks/useAuthState"
-import { Button, Divider } from "@nextui-org/react"
+import { Button, Divider, useDisclosure } from "@nextui-org/react"
 import { copyClipboard } from "@utils/index"
 import { useEffect, useState } from "react"
 import { getTaskSuccess } from "services/agent"
@@ -33,6 +34,12 @@ const Rewards: React.FC = () => {
   const refLink = `${window.location.origin}/?invite=${referralCode}` as any
   const [listTaskSuccess, setListTaskSuccess] = useState<any>([])
   const listActionTaskSuccess = listTaskSuccess?.map((item: any) => item.action)
+
+  const {
+    isOpen: isOpenQR,
+    onOpen: onOpenQR,
+    onClose: onCloseQR,
+  } = useDisclosure()
 
   const callGetTaskSuccess = async () => {
     try {
@@ -72,16 +79,18 @@ const Rewards: React.FC = () => {
             </span>
           </div>
           <span className="text-base font-medium text-mercury-800 max-sm:text-14">
-            Earn 1000 xDSTL per friend who joins and completes the
+            Earn 100 xDSTL per friend who joins and completes the
             <span className="font-bold text-brown-500"> Welcome Gift</span>{" "}
             objective.
+            <br />
+            Plus, your referred friend also earns 10 xDSTL!
           </span>
         </div>
         <div
           style={{
             backgroundImage: `url(${creditBg})`,
           }}
-          className="h-full w-[82%] rounded-[22px] border-1 bg-cover bg-center bg-no-repeat px-6 py-8"
+          className="h-full w-[88%] rounded-[22px] border-1 bg-cover bg-center bg-no-repeat px-6 py-8"
         >
           <div className="mb-2 flex items-center justify-between leading-none">
             <span className="font-medium text-mercury-300">My Referred</span>
@@ -90,7 +99,6 @@ const Rewards: React.FC = () => {
               <span className="text-[32px] font-bold text-white">2/10</span>
             </div>
           </div>
-
           <div className="my-4 grid grid-cols-8 gap-3">
             <div
               className="col-span-6 flex cursor-pointer items-center justify-between rounded-lg border-1 border-mercury-900 bg-[rgba(84,84,84,0.20)] px-3 py-2"
@@ -104,8 +112,10 @@ const Rewards: React.FC = () => {
                 <CopyIcon color="#FFFFFF" />
               </div>
             </div>
-
-            <Button className="col-span-2 w-full rounded-full !border !border-mercury-900 bg-[rgba(195,195,195,0.20)] text-[14px] font-medium text-white max-md:min-h-12 md:text-[16px]">
+            <Button
+              className="col-span-2 w-full rounded-full !border !border-mercury-900 bg-[rgba(195,195,195,0.20)] text-[14px] font-medium text-white max-md:min-h-12 md:text-[16px]"
+              onClick={onOpenQR}
+            >
               <QRCodeIcon color="#FFFF" />
               <span className="text-base-md text-white">Share</span>
             </Button>
@@ -113,13 +123,22 @@ const Rewards: React.FC = () => {
 
           <div className="flex items-center justify-between leading-none">
             <span className="text-base-md text-mercury-600">You got:</span>
-            <span className="text-base-md text-mercury-600">2000</span>
+
+            <div className="flex items-center gap-2">
+              <img src={xDSTL} width={16} height={16} />
+              <span className="text-base-md text-mercury-600">200 xDSTL</span>
+            </div>
           </div>
         </div>
         <Divider className="my-8" />
         <Objectives
           listActionTaskSuccess={listActionTaskSuccess}
           callGetTaskSuccess={callGetTaskSuccess}
+        />
+        <ShareModal
+          shareUrl={`${window.location.origin}/?invite=${referralCode}`}
+          isOpen={isOpenQR}
+          onClose={onCloseQR}
         />
       </div>
     </>

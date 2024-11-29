@@ -1,8 +1,15 @@
-import { creditBg } from "@assets/images"
+import { creditBg, xDSTL } from "@assets/images"
 import { CrowIcon } from "@components/Icons/Pencil"
+import { PATH_NAMES } from "@constants/index"
+import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
+import { useNavigate } from "react-router-dom"
 
 const MyPoints = () => {
+  const { user } = useAuthState()
+  const navigate = useNavigate()
+  const totalxDstlPoint = user?.xDstlPoint || 0
+
   return (
     <div
       style={{
@@ -12,11 +19,18 @@ const MyPoints = () => {
     >
       <div className="mb-2 flex items-center justify-between leading-none">
         <span className="font-medium text-mercury-300">My Points</span>
-        <span className="text-[32px] font-bold text-white">0</span>
+        <div className="flex items-center gap-2">
+          <img src={xDSTL} width={24} height={24} />
+          <span className="text-[32px] font-bold text-white">
+            {totalxDstlPoint}
+          </span>
+        </div>
       </div>
       <div className="mb-6 flex items-center justify-between leading-none">
         <span className="font-medium text-mercury-600">Balance:</span>
-        <span className="font-medium text-mercury-600">($-)</span>
+        <span className="font-medium text-mercury-600">
+          {totalxDstlPoint} xDSTL ($-)
+        </span>
       </div>
 
       <div className="my-6 flex items-center justify-between leading-none">
@@ -25,7 +39,10 @@ const MyPoints = () => {
       </div>
 
       <div className="flex items-center justify-between gap-1">
-        <Button className="w-full rounded-full border border-mercury-900 bg-mercury-900/20 text-[14px] font-medium text-white max-md:min-h-12 md:text-[16px]">
+        <Button
+          className="w-full rounded-full border border-mercury-900 bg-mercury-900/20 text-[14px] font-medium text-white max-md:min-h-12 md:text-[16px]"
+          onClick={() => navigate(PATH_NAMES.REWARDS)}
+        >
           Earn more points
         </Button>
         <Button className="w-full rounded-full !border !border-mercury-900 bg-[rgba(195,195,195,0.20)] text-[14px] font-medium text-white max-md:min-h-12 md:text-[16px]">

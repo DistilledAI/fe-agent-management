@@ -21,19 +21,22 @@ const ProgressDays = () => {
   const groupCreateDate = new Date(
     groupDetail?.data?.group?.event?.createdAt,
   ).getTime()
-  const groupEndDate = groupDetail?.data?.group?.event?.endDate
+  const groupEndDate = groupDetail?.data?.group?.event?.endDate * 1000
   const { totalDays, remainingDays } = getRemainingDays(
     groupCreateDate,
-    groupEndDate * 1000,
+    groupEndDate,
   )
   const { percentage } = getRemainingDaysPercentage(
     groupCreateDate,
-    groupEndDate * 1000,
+    groupEndDate,
   )
 
   useEffect(() => {
     if (remainingDays) {
-      queryClient.setQueryData(["earn-exp-remaining-days"], () => remainingDays)
+      queryClient.setQueryData(
+        [QueryDataKeys.EARN_EXP_REMAINING_DAYS],
+        () => remainingDays,
+      )
     }
   }, [remainingDays])
 

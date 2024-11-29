@@ -9,6 +9,7 @@ import {
 import { Indicator } from "@components/Icons/Indicator"
 import { TargetArrowIcon } from "@components/Icons/RewardsIcons"
 import { useState } from "react"
+import { XDSTL_TASK_KEY } from "."
 import AutonomousAIAgent from "./AutonomousAIAgent"
 import GrowClan from "./GrowClan"
 import WelcomeOnboard from "./WelcomeOnboard"
@@ -17,6 +18,33 @@ const Objectives: React.FC<{
   listActionTaskSuccess: any[]
   callGetTaskSuccess: any
 }> = ({ listActionTaskSuccess, callGetTaskSuccess }) => {
+  const welcomTaskKeys = [
+    XDSTL_TASK_KEY.LOGIN,
+    XDSTL_TASK_KEY.CONNECT_X,
+    XDSTL_TASK_KEY.RETWEET_X,
+    XDSTL_TASK_KEY.CHAT_WITH_AGENT,
+    XDSTL_TASK_KEY.BUG_REPORT,
+  ]
+
+  const autonomousTaskKeys = [
+    XDSTL_TASK_KEY.PUBLISH_BOT,
+    XDSTL_TASK_KEY.BIND_TELE_FOR_BOT,
+    XDSTL_TASK_KEY.BIND_X_FOR_BOT,
+    XDSTL_TASK_KEY.TOKENIZE_AGENT,
+  ]
+
+  const welcomeTaskDoneCount = listActionTaskSuccess.filter((taskKey) =>
+    welcomTaskKeys.includes(taskKey),
+  ).length
+
+  const autonomousTaskDoneCount = listActionTaskSuccess.filter((taskKey) =>
+    autonomousTaskKeys.includes(taskKey),
+  ).length
+
+  const clanTaskDoneCount = listActionTaskSuccess.filter((taskKey) =>
+    [XDSTL_TASK_KEY.JOIN_CLAN].includes(taskKey),
+  ).length
+
   const [activeKey, setActiveKey] = useState<string>("WELCOME_ONBOARD")
 
   const OBJECTIVES_LIST = [
@@ -26,6 +54,7 @@ const Objectives: React.FC<{
       activeBg: objectiveCategoryActive,
       key: "WELCOME_ONBOARD",
       totalObjectives: 5,
+      taskDoneCount: welcomeTaskDoneCount,
     },
     {
       label: "Autonomous AI Agents are just the beginning.",
@@ -33,6 +62,7 @@ const Objectives: React.FC<{
       activeBg: objectiveCategoryAIActive,
       key: "AUTONOMOUS",
       totalObjectives: 4,
+      taskDoneCount: autonomousTaskDoneCount,
     },
     {
       label: "Grow the Clan together!",
@@ -40,6 +70,7 @@ const Objectives: React.FC<{
       activeBg: objectiveCategoryClanActive,
       key: "CLAN",
       totalObjectives: 1,
+      taskDoneCount: clanTaskDoneCount,
     },
   ]
 
@@ -99,7 +130,7 @@ const Objectives: React.FC<{
                   aria-selected={isObjectiveActive}
                 >
                   <span className="text-14 text-white">
-                    {objective.totalObjectives}
+                    {objective.taskDoneCount || 0}/{objective.totalObjectives}
                   </span>
                 </div>
               </div>

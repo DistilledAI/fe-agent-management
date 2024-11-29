@@ -2,8 +2,8 @@ import { TrophyFilledIcon } from "@components/Icons"
 import { Virtuoso } from "react-virtuoso"
 import DotLoading from "@components/DotLoading"
 import { twMerge } from "tailwind-merge"
-import { useQueries, useQueryClient } from "@tanstack/react-query"
-import { getTotalExpPointGroup } from "services/point"
+import { useQueries, useQuery } from "@tanstack/react-query"
+import { getTotalExpPointGroup, getTotalExpPointUser } from "services/point"
 import { useParams } from "react-router-dom"
 import { QueryDataKeys } from "types/queryDataKeys"
 import RankExpCard from "./RankExpCard"
@@ -11,13 +11,13 @@ import useRankExpList from "./useRankExpList"
 import useAuthState from "@hooks/useAuthState"
 
 const RankExpList = () => {
-  const queryClient = useQueryClient()
   const { user } = useAuthState()
   const { chatId } = useParams()
-  const groupId =
-    queryClient
-      .getQueryData([QueryDataKeys.CHAT_ID_BY_USERNAME, chatId])
-      ?.toString() || ""
+  const { data: chatIdParam } = useQuery({
+    queryKey: [QueryDataKeys.CHAT_ID_BY_USERNAME, chatId],
+    enabled: !!chatId,
+  })
+  const groupId = chatIdParam?.toString() || ""
   const { rankList, isLoading } = useRankExpList({
     groupId,
   })
@@ -25,11 +25,12 @@ const RankExpList = () => {
     queries: [
       {
         queryKey: [QueryDataKeys.TOTAL_EXP_POINT_GROUP, groupId],
-        queryFn: () => getTotalExpPointGroup(Number(groupId)),
+        queryFn: async () => await getTotalExpPointGroup(Number(groupId)),
         enabled: !!groupId,
       },
       {
         queryKey: [QueryDataKeys.TOTAL_EXP_POINT_USER, groupId],
+        queryFn: async () => await getTotalExpPointUser(Number(groupId)),
         enabled: !!groupId,
       },
       {
@@ -38,7 +39,6 @@ const RankExpList = () => {
       },
     ],
   })
-
   const expPointGroup = queries[0]?.data
   const expPointUser = queries[1]?.data
   const xDSTLTotalPoint = queries[2]?.data?.data?.group?.event?.totalPoint
