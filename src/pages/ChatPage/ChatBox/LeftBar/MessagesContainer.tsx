@@ -25,9 +25,9 @@ import {
   getPublicAddressGroupChat,
   getRoleUser,
 } from "./helpers"
-import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroups, { LIMIT, TypeGroup, UserGroup } from "./useFetchGroups"
+import TotalMemberBadge from "@components/TotalMemberBadge"
 
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
@@ -176,7 +176,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                 aria-selected={isActive}
                 onClick={() => handleGroupClick(groupItem, isBotLive)}
                 className={twMerge(
-                  "hover-light-effect group/item group relative mx-4 mb-2 h-14 gap-2 rounded-full px-2 py-2",
+                  "hover-light-effect group/item group relative mx-4 mb-2 flex h-14 items-center justify-between gap-1 gap-2 rounded-full px-2 py-2",
                   isActive && "bg-mercury-100",
                   sidebarCollapsed &&
                     "flex w-14 items-center justify-center p-0",
@@ -193,13 +193,16 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                   }
                 />
                 <DotNotification groupId={groupItem.groupId} />
-                {sidebarCollapsed ? (
+                {/* {sidebarCollapsed ? (
                   <></>
                 ) : (
                   <MoreChatAction
                     groupId={groupItem.groupId}
                     groupType={groupItem.group.typeGroup}
                   />
+                )} */}
+                {isActive && isBotLive && !sidebarCollapsed && (
+                  <TotalMemberBadge groupId={chatId} />
                 )}
               </div>
             )
