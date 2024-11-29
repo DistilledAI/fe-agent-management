@@ -10,7 +10,6 @@ import { PATH_NAMES } from "@constants/index"
 import { Button } from "@nextui-org/react"
 import { useEffect } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
-import { toast } from "react-toastify"
 import { checkConnectDistilledX, checkRePostDistilledX } from "services/agent"
 import { XDSTL_TASK_KEY } from "."
 
@@ -131,10 +130,7 @@ const WelcomeOnboard: React.FC<{
         }
       }
     } catch (error: any) {
-      toast.error(
-        error?.response?.data?.message ||
-          "Something went wrong. Please try again!",
-      )
+      console.log("error", error)
     }
   }
 
@@ -152,10 +148,7 @@ const WelcomeOnboard: React.FC<{
         }
       }
     } catch (error: any) {
-      toast.error(
-        error?.response?.data?.message ||
-          "Something went wrong. Please try again!",
-      )
+      console.log("error", error)
     }
   }
 
