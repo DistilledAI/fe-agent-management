@@ -1,6 +1,7 @@
 import useAuthState from "@hooks/useAuthState"
 import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query"
 import { getLeaderboardExpByGroupId } from "services/point"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 interface LeaderboardEntry {
   userId: number
@@ -36,14 +37,13 @@ const useRankExpList = ({ groupId }: { groupId: string }) => {
     isFetched,
     isLoading,
     isFetchingNextPage,
+    refetch,
   } = useInfiniteQuery({
-    queryKey: ["exp-rank-list-by-group", groupId],
+    queryKey: [QueryDataKeys.EXP_RANK_LIST_BY_GROUP, groupId],
     queryFn: fetchRankList,
     enabled: isLogin && !!groupId,
     getNextPageParam: (lastPage) => lastPage?.nextOffset,
     getPreviousPageParam: (firstPage) => firstPage?.nextOffset,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
     initialPageParam: 0,
   })
 
@@ -61,6 +61,7 @@ const useRankExpList = ({ groupId }: { groupId: string }) => {
     isFetchingNextPage,
     fetchNextPage,
     groupId,
+    refetch,
   }
 }
 
