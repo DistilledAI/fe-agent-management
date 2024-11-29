@@ -71,9 +71,9 @@ const Rewards: React.FC = () => {
   }
 
   useEffect(() => {
+    callGetUserClaimTaskSuccess()
     callGetTaskSuccess()
     callGetReferralCode()
-    callGetUserClaimTaskSuccess()
   }, [])
 
   return (
