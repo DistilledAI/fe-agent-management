@@ -17,7 +17,7 @@ const ClanAgents = () => {
     return navigate(inviteUrl)
   }
 
-  const { data: clans = [], error } = useQuery({
+  const { data, error } = useQuery({
     queryKey: [QueryDataKeys.PUBLIC_GROUP_AGENT],
     queryFn: getListGroupAgentPublic,
     staleTime: 5 * 60 * 1000,
@@ -27,6 +27,8 @@ const ClanAgents = () => {
   if (error) {
     console.log({ error })
   }
+
+  const clans = data?.data?.items || []
 
   return clans.map((clan: IGroupDetail, index: number) => (
     <div
