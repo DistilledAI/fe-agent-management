@@ -31,6 +31,7 @@ export const XDSTL_TASK_KEY = {
 const Rewards: React.FC = () => {
   const { user } = useAuthState()
   const referralCode = user?.code
+  const totalxDstlPoint = user?.xDstlPoint || 0
   const refLink = `${window.location.origin}/?invite=${referralCode}` as any
   const [listTaskSuccess, setListTaskSuccess] = useState<any>([])
   const listActionTaskSuccess = listTaskSuccess?.map((item: any) => item.action)
@@ -134,6 +135,7 @@ const Rewards: React.FC = () => {
         <Objectives
           listActionTaskSuccess={listActionTaskSuccess}
           callGetTaskSuccess={callGetTaskSuccess}
+          totalxDstlPoint={totalxDstlPoint}
         />
         <ShareModal
           shareUrl={`${window.location.origin}/?invite=${referralCode}`}

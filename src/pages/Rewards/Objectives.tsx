@@ -5,10 +5,13 @@ import {
   objectiveCategoryAIActive,
   objectiveCategoryClan,
   objectiveCategoryClanActive,
+  xDSTL,
 } from "@assets/images"
 import { Indicator } from "@components/Icons/Indicator"
 import { TargetArrowIcon } from "@components/Icons/RewardsIcons"
+import { Progress } from "@nextui-org/react"
 import { useState } from "react"
+import { twMerge } from "tailwind-merge"
 import { XDSTL_TASK_KEY } from "."
 import AutonomousAIAgent from "./AutonomousAIAgent"
 import GrowClan from "./GrowClan"
@@ -17,7 +20,8 @@ import WelcomeOnboard from "./WelcomeOnboard"
 const Objectives: React.FC<{
   listActionTaskSuccess: any[]
   callGetTaskSuccess: any
-}> = ({ listActionTaskSuccess, callGetTaskSuccess }) => {
+  totalxDstlPoint: number
+}> = ({ listActionTaskSuccess, callGetTaskSuccess, totalxDstlPoint }) => {
   const welcomTaskKeys = [
     XDSTL_TASK_KEY.LOGIN,
     XDSTL_TASK_KEY.CONNECT_X,
@@ -44,8 +48,8 @@ const Objectives: React.FC<{
   const clanTaskDoneCount = listActionTaskSuccess.filter((taskKey) =>
     [XDSTL_TASK_KEY.JOIN_CLAN].includes(taskKey),
   ).length
-
   const [activeKey, setActiveKey] = useState<string>("WELCOME_ONBOARD")
+  const progressValue = Math.round((totalxDstlPoint / 1600) * 100)
 
   const OBJECTIVES_LIST = [
     {
@@ -95,10 +99,46 @@ const Objectives: React.FC<{
 
   return (
     <>
-      <div className="flex items-center gap-2">
-        <TargetArrowIcon />
-        <span className="text-22 font-bold text-mercury-950">Objectives</span>
+      <div className="mt-6 flex w-full justify-between gap-3">
+        <div className="flex w-[30%] items-center gap-2">
+          <TargetArrowIcon />
+          <span className="text-22 font-bold text-mercury-950">Objectives</span>
+        </div>
+
+        <div className="flex w-[70%] items-center justify-between gap-2">
+          <div className="w-[20%]">
+            <span className="text-base-md text-mercury-700">You earned</span>
+          </div>
+
+          <div className="relative flex-1">
+            <Progress
+              size="sm"
+              aria-label="Loading..."
+              value={progressValue}
+              classNames={{
+                base: "max-w-md",
+                indicator: "bg-gradient-to-r from-[#83664B] to-[#A2835E]",
+              }}
+              isStriped
+            />
+            <div
+              className={twMerge(`absolute top-1/2 -translate-y-1/2`)}
+              style={{
+                left: progressValue + 16,
+              }}
+            >
+              <img src={xDSTL} width={24} height={24} />
+            </div>
+          </div>
+
+          <div className="w-[30%] text-end">
+            <span className="text-base-b text-mercury-950">
+              Up to 1600 xDSTL
+            </span>
+          </div>
+        </div>
       </div>
+
       <div className="mt-6 flex gap-3">
         <div>
           {OBJECTIVES_LIST.map((objective) => {
