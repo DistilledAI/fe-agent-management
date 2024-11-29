@@ -8,11 +8,9 @@ import LeaderboardClan from "../LeaderboardClan"
 import { useParams } from "react-router-dom"
 import { formatNumberWithComma } from "@utils/index"
 import useTimerProgress from "@hooks/useTimerProgress"
-import { useLayoutEffect } from "react"
 
 const ClanShortInfo = () => {
   const queryClient = useQueryClient()
-  const { timerProgress, setTimerProgress } = useTimerProgress(60000)
   const { chatId } = useParams()
   const { data: chatIdParam } = useQuery({
     queryKey: [QueryDataKeys.CHAT_ID_BY_USERNAME, chatId],
@@ -46,11 +44,11 @@ const ClanShortInfo = () => {
     setTimerProgress(0)
   }
 
-  useLayoutEffect(() => {
-    if (!timerProgress) {
-      handleRefetchXpPoint()
-    }
-  }, [timerProgress, groupId])
+  const { timerProgress, setTimerProgress } = useTimerProgress(
+    60000,
+    true,
+    handleRefetchXpPoint,
+  )
 
   const toggleLeaderboardClan = () => {
     queryClient.setQueryData(

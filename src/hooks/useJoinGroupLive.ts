@@ -19,12 +19,14 @@ const useJoinGroupLive = () => {
   const isAnonymous = user?.role === RoleUser.ANONYMOUS
   const { fetchGroups } = useFetchGroups()
   const navigate = useNavigate()
+  const [isInvited, setIsInvited] = useState(false)
 
   useEffect(() => {
     if (!isAnonymous) setIsLogged(false)
   }, [isAnonymous])
 
   const joinGroupLive = async (user: IUser, accessToken: string = "") => {
+    setIsInvited(false)
     const groupId = chatId
     const payload = {
       groupId,
@@ -37,6 +39,7 @@ const useJoinGroupLive = () => {
       : {}
     const res = await inviteUserJoinGroup(payload, headers)
     navigate(`${PATH_NAMES.CLAN}/${res?.data?.group?.label}`)
+    setIsInvited(true)
     return !!res.data
   }
 
@@ -91,7 +94,7 @@ const useJoinGroupLive = () => {
     })()
   }, [isInvitePathName, chatId, isLogin, isLogged, state?.isGroupJoined])
 
-  return {}
+  return { isInvited }
 }
 
 export default useJoinGroupLive

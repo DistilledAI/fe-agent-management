@@ -7,9 +7,9 @@ import { twMerge } from "tailwind-merge"
 import useFetchDetail from "@pages/ChatPage/Mobile/ChatDetail/useFetch"
 
 const ChatBoxLive = () => {
-  useJoinGroupLive()
+  const { isInvited } = useJoinGroupLive()
   const { isMobile } = useWindowSize()
-  const { groupDetail, isFetched } = useFetchDetail()
+  const { groupDetail, isFetched } = useFetchDetail(isInvited)
 
   return (
     <div
@@ -19,7 +19,7 @@ const ChatBoxLive = () => {
     >
       {isMobile ? <ChatLiveHeader groupDetail={groupDetail} /> : <></>}
 
-      <div className="flex h-full gap-2 pb-4 max-lg:flex-col md:gap-10">
+      <div className="flex h-full gap-2 pb-4 max-lg:flex-col md:gap-5">
         <LeftContent groupDetail={groupDetail} isFetched={isFetched} />
         <RightContent isClan />
       </div>
