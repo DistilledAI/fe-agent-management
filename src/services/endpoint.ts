@@ -30,7 +30,9 @@ const endpoint = {
   UPDATE_CONFIG_AGENT: withBaseURL("/bot/config"),
   CONNECT_X: withBaseURL("/point/xDstl/connect-x"),
   GET_TASK_SUCCESS: withBaseURL("/point/xDstl/user/task-success"),
-  GET_USER_CLAIM_TASK_SUCCESS: withBaseURL("/user/claim-task-success"),
+  GET_USER_CLAIM_TASK_SUCCESS: withBaseURL(
+    "/point/xDstl/user/claim-task-success",
+  ),
   REPOST_X: withBaseURL("/point/xDstl/retweet-x"),
 
   //chat
