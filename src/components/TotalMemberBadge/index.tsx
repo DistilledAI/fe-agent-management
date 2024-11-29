@@ -2,6 +2,7 @@ import { FilledUserIcon } from "@components/Icons/UserIcon"
 import { useQuery } from "@tanstack/react-query"
 import { shortenNumber } from "@utils/index"
 import { getTotalMemberGroup } from "services/group"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 interface TotalMemberBadgeProps {
   groupId: string
@@ -9,7 +10,7 @@ interface TotalMemberBadgeProps {
 
 const TotalMemberBadge = ({ groupId }: TotalMemberBadgeProps) => {
   const { data } = useQuery({
-    queryKey: ["total-member-group", groupId],
+    queryKey: [QueryDataKeys.TOTAL_MEMBER_GROUP, groupId],
     queryFn: () => getTotalMemberGroup(Number(groupId)),
     enabled: !!groupId,
   })

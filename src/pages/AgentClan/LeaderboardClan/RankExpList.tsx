@@ -9,16 +9,24 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import RankExpCard from "./RankExpCard"
 import useRankExpList from "./useRankExpList"
 import useAuthState from "@hooks/useAuthState"
+import { useEffect } from "react"
 
 const RankExpList = () => {
   const { user } = useAuthState()
   const { chatId } = useParams()
+  const { data: isToggleLeaderboard } = useQuery<boolean>({
+    queryKey: [QueryDataKeys.TOGGLE_LEADERBOARD_CLAN],
+  })
   const { data: chatIdParam } = useQuery({
     queryKey: [QueryDataKeys.CHAT_ID_BY_USERNAME, chatId],
     enabled: !!chatId,
   })
   const groupId = chatIdParam?.toString() || ""
-  const { rankList, isLoading } = useRankExpList({
+  const {
+    rankList,
+    isLoading,
+    refetch: refetchRankList,
+  } = useRankExpList({
     groupId,
   })
   const queries = useQueries<[{ data: any }, { data: any }, { data: any }]>({
@@ -52,6 +60,10 @@ const RankExpList = () => {
     }
     return "0"
   }
+
+  useEffect(() => {
+    if (isToggleLeaderboard) refetchRankList()
+  }, [isToggleLeaderboard])
 
   return (
     <div className="h-full space-y-2 py-4">
