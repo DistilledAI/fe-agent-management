@@ -9,7 +9,8 @@ import {
 } from "@assets/images"
 import { Indicator } from "@components/Icons/Indicator"
 import { TargetArrowIcon } from "@components/Icons/RewardsIcons"
-import { Progress } from "@nextui-org/react"
+import useWindowSize from "@hooks/useWindowSize"
+import { Progress, ScrollShadow } from "@nextui-org/react"
 import { useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { XDSTL_TASK_KEY } from "."
@@ -22,6 +23,8 @@ const Objectives: React.FC<{
   callGetTaskSuccess: any
   totalxDstlPoint: number
 }> = ({ listActionTaskSuccess, callGetTaskSuccess, totalxDstlPoint }) => {
+  const { isMobile } = useWindowSize()
+
   const welcomTaskKeys = [
     XDSTL_TASK_KEY.LOGIN,
     XDSTL_TASK_KEY.CONNECT_X,
@@ -61,7 +64,12 @@ const Objectives: React.FC<{
       taskDoneCount: welcomeTaskDoneCount,
     },
     {
-      label: "Autonomous AI Agents are just the beginning.",
+      label: (
+        <span>
+          Autonomous AI Agents <br />
+          are just the beginning.
+        </span>
+      ),
       defaultBg: objectiveCategoryAI,
       activeBg: objectiveCategoryAIActive,
       key: "AUTONOMOUS",
@@ -77,6 +85,72 @@ const Objectives: React.FC<{
       taskDoneCount: clanTaskDoneCount,
     },
   ]
+
+  const renderListObjectives = () => {
+    return (
+      <div className="max-md:flex max-md:gap-4">
+        {OBJECTIVES_LIST.map((objective) => {
+          const isObjectiveActive = activeKey === objective.key
+          const imageSrc = isObjectiveActive
+            ? objective.activeBg
+            : objective.defaultBg
+
+          return (
+            <div
+              className="relative w-[220px] cursor-pointer py-2 max-md:p-0"
+              onClick={() => setActiveKey(objective.key)}
+            >
+              <img className="w-full" src={imageSrc} />
+              {isObjectiveActive && (
+                <div
+                  className={twMerge(
+                    isMobile
+                      ? "z-100 absolute -bottom-[20px] left-1/2 -translate-x-1/2"
+                      : "absolute -right-[30px] top-1/2 -translate-y-1/2 -rotate-90",
+                  )}
+                >
+                  <Indicator />
+                </div>
+              )}
+
+              <span
+                aria-selected={isObjectiveActive}
+                className="text-base-sb absolute left-4 top-6 aria-selected:text-white max-md:top-4"
+              >
+                {objective.label}
+              </span>
+
+              <div
+                className="outline-3 absolute bottom-6 left-4 flex h-[46px] w-[46px] items-center justify-center rounded-full border-2 border-white bg-[rgba(0,0,0,0.15)] outline outline-[rgba(0,0,0,0.15)] backdrop-blur-sm aria-selected:border-[#656865] max-md:bottom-4"
+                aria-selected={isObjectiveActive}
+              >
+                <span className="text-14 text-white">
+                  {objective.taskDoneCount || 0}/{objective.totalObjectives}
+                </span>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+
+  const renderObjectivesOptions = () => {
+    if (isMobile) {
+      return (
+        <ScrollShadow
+          hideScrollBar
+          size={40}
+          orientation="horizontal"
+          className="z-10 flex max-w-full items-center overflow-x-auto overflow-y-hidden whitespace-nowrap p-0 pb-4 backdrop-blur-[10px]"
+        >
+          {renderListObjectives()}
+        </ScrollShadow>
+      )
+    }
+
+    return renderListObjectives()
+  }
 
   const renderOBjectiveRightContent = () => {
     switch (activeKey) {
@@ -99,7 +173,7 @@ const Objectives: React.FC<{
 
   return (
     <>
-      <div className="mt-6 flex w-full justify-between gap-3 max-md:flex-col">
+      <div className="flex w-full justify-between gap-3 max-md:flex-col">
         <div className="flex w-[30%] items-center gap-2">
           <TargetArrowIcon />
           <span className="text-22 font-bold text-mercury-950">Objectives</span>
@@ -141,44 +215,8 @@ const Objectives: React.FC<{
         </div>
       </div>
 
-      <div className="mt-6 flex gap-3">
-        <div>
-          {OBJECTIVES_LIST.map((objective) => {
-            const isObjectiveActive = activeKey === objective.key
-            const imageSrc = isObjectiveActive
-              ? objective.activeBg
-              : objective.defaultBg
-
-            return (
-              <div
-                className="relative w-[220px] cursor-pointer py-2"
-                onClick={() => setActiveKey(objective.key)}
-              >
-                <img className="w-full" src={imageSrc} />
-                {isObjectiveActive && (
-                  <div className="absolute -right-[26px] top-1/2 -translate-y-1/2">
-                    <Indicator />
-                  </div>
-                )}
-                <span
-                  aria-selected={isObjectiveActive}
-                  className="text-base-sb absolute left-4 top-6 aria-selected:text-white"
-                >
-                  {objective.label}
-                </span>
-
-                <div
-                  className="outline-3 absolute bottom-6 left-4 flex h-[46px] w-[46px] items-center justify-center rounded-full border-2 border-white bg-[rgba(0,0,0,0.15)] outline outline-[rgba(0,0,0,0.15)] backdrop-blur-sm aria-selected:border-[#656865]"
-                  aria-selected={isObjectiveActive}
-                >
-                  <span className="text-14 text-white">
-                    {objective.taskDoneCount || 0}/{objective.totalObjectives}
-                  </span>
-                </div>
-              </div>
-            )
-          })}
-        </div>
+      <div className="mt-6 flex gap-5 max-md:flex-col max-md:gap-2">
+        {renderObjectivesOptions()}
         {renderOBjectiveRightContent()}
       </div>
     </>

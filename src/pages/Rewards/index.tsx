@@ -69,7 +69,7 @@ const Rewards: React.FC = () => {
 
   return (
     <>
-      <div className="sticky top-[50px] z-[11] flex items-center justify-center bg-lgd-muted-beige p-3 backdrop-blur-3xl max-sm:px-4 md:top-[68px]">
+      <div className="sticky top-[50px] z-[11] flex items-center justify-center bg-white bg-lgd-muted-beige p-3 max-sm:px-4 md:top-[68px]">
         <div className="flex w-full max-w-[800px] flex-wrap items-center justify-between px-4 max-sm:flex-col max-sm:items-start max-sm:px-0">
           <div className="flex flex-col">
             <span className="text-24 font-semibold text-mercury-950 max-sm:text-18">
@@ -84,7 +84,7 @@ const Rewards: React.FC = () => {
       </div>
 
       <div className="relative mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6">
-        <div className="mb-6 mt-[40px] flex flex-col">
+        <div className="mb-6 mt-[40px] flex flex-col max-md:mb-4 max-md:mt-0">
           <div className="flex items-center gap-2">
             <SpeakerPhoneIcon />
             <span className="text-22 font-semibold text-mercury-950 max-sm:text-18">
@@ -103,13 +103,13 @@ const Rewards: React.FC = () => {
           style={{
             backgroundImage: `url(${creditBg})`,
           }}
-          className="h-full w-[88%] rounded-[22px] border-1 bg-cover bg-center bg-no-repeat px-6 py-8"
+          className="h-full w-[88%] rounded-[22px] border-1 bg-cover bg-center bg-no-repeat px-6 py-8 max-md:w-full max-md:p-4"
         >
           <div className="mb-2 flex items-center justify-between leading-none">
             <span className="font-medium text-mercury-300">My Referred</span>
             <div className="flex items-center gap-2">
               <UsersGroupIcon />
-              <span className="text-[32px] font-bold text-white">
+              <span className="text-[32px] font-bold text-white max-md:text-[22px]">
                 {totalReferral}/1000
               </span>
             </div>
@@ -145,7 +145,7 @@ const Rewards: React.FC = () => {
             </div>
           </div> */}
         </div>
-        <Divider className="my-8" />
+        <Divider className="my-8 max-md:my-4" />
         <Objectives
           listActionTaskSuccess={listActionTaskSuccess}
           callGetTaskSuccess={callGetTaskSuccess}
