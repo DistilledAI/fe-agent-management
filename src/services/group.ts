@@ -15,3 +15,11 @@ export const getTotalMemberGroup = async (groupId: number) => {
   })
   return res?.data
 }
+
+export const getListGroupAgentPublic = async () => {
+  const res = await fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_LIST_GROUP_PUBLIC,
+  })
+  return res.data?.items
+}

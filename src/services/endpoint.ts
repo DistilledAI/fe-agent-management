@@ -51,6 +51,7 @@ const endpoint = {
     withBaseURL(`/group/detail/label/${label}`),
 
   // group
+  GET_LIST_GROUP_PUBLIC: withBaseURL("/group/public"),
   CLEAR_CACHED_BY_GROUP_ID: (groupId: number) =>
     withBaseURL(`/group/clear-cached/${groupId}`),
   GET_TOTAL_MEMBER_GROUP: (groupId: number) =>
