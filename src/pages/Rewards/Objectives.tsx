@@ -22,7 +22,13 @@ const Objectives: React.FC<{
   listActionTaskSuccess: any[]
   callGetTaskSuccess: any
   totalxDstlPoint: number
-}> = ({ listActionTaskSuccess, callGetTaskSuccess, totalxDstlPoint }) => {
+  listTaskSuccess: any[]
+}> = ({
+  listActionTaskSuccess,
+  callGetTaskSuccess,
+  totalxDstlPoint,
+  listTaskSuccess,
+}) => {
   const { isMobile } = useWindowSize()
 
   const welcomTaskKeys = [
@@ -159,6 +165,7 @@ const Objectives: React.FC<{
           <WelcomeOnboard
             listActionTaskSuccess={listActionTaskSuccess}
             callGetTaskSuccess={callGetTaskSuccess}
+            listTaskSuccess={listTaskSuccess}
           />
         )
       case "AUTONOMOUS":

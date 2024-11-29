@@ -1,5 +1,4 @@
 import { CircleCheckFilled } from "@components/Icons"
-import { RefreshIcon } from "@components/Icons/RefreshIcon"
 import {
   BugReportIcon,
   GiftIcon,
@@ -16,7 +15,8 @@ import { XDSTL_TASK_KEY } from "."
 const WelcomeOnboard: React.FC<{
   listActionTaskSuccess: any
   callGetTaskSuccess: any
-}> = ({ listActionTaskSuccess, callGetTaskSuccess }) => {
+  listTaskSuccess: any[]
+}> = ({ listActionTaskSuccess, callGetTaskSuccess, listTaskSuccess }) => {
   const navigate = useNavigate()
   const twitterAuthorizeLink = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=V2wzbzlWcDFWZGg2U0l5VkZqRHg6MTpjaQ&redirect_uri=${window.location.origin}/rewards&scope=follows.read+follows.write+offline.access+users.read+tweet.read+tweet.write+like.read+like.write&state=optionalState123&code_challenge=codeChallenge&code_challenge_method=plain`
 
@@ -44,7 +44,7 @@ const WelcomeOnboard: React.FC<{
       desc: "Explore AI Agents on the Marketplace, select an agent, and chat with the ones you’re interested in.",
       point: "+1 xDSTL",
       key: XDSTL_TASK_KEY.CHAT_WITH_AGENT,
-      repeatable: 499,
+      repeatable: 500,
     },
     {
       label: (
@@ -225,6 +225,7 @@ const WelcomeOnboard: React.FC<{
   return (
     <div className="w-full">
       {MISSION_LIST.map((item: any) => {
+        const record = listTaskSuccess.find((task) => task.action === item.key)
         return (
           <div className="flex items-center justify-between border-b-1 border-mercury-100 px-4 py-[14px] pr-0 max-md:px-0">
             <div className="w-full">
@@ -240,12 +241,12 @@ const WelcomeOnboard: React.FC<{
 
                 {item.repeatable && (
                   <div className="flex items-center gap-1">
-                    <RefreshIcon />
+                    {/* <RefreshIcon />
                     <span className="text-base-14 text-mercury-950">
                       Repeatable:
-                    </span>
+                    </span> */}
                     <span className="text-base-14-b text-mercury-950">
-                      {item.repeatable}
+                      {record?.point || 0}/{item.repeatable}
                     </span>
                   </div>
                 )}

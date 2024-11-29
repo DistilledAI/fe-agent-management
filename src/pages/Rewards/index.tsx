@@ -84,7 +84,7 @@ const Rewards: React.FC = () => {
       </div>
 
       <div className="relative mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6">
-        <div className="mb-6 mt-[40px] flex flex-col max-md:mb-4 max-md:mt-0">
+        <div className="mb-6 mt-2 flex flex-col max-md:mb-4 max-md:mt-0">
           <div className="flex items-center gap-2">
             <SpeakerPhoneIcon />
             <span className="text-22 font-semibold text-mercury-950 max-sm:text-18">
@@ -150,6 +150,7 @@ const Rewards: React.FC = () => {
           listActionTaskSuccess={listActionTaskSuccess}
           callGetTaskSuccess={callGetTaskSuccess}
           totalxDstlPoint={totalxDstlPoint}
+          listTaskSuccess={listTaskSuccess}
         />
         <ShareModal
           shareUrl={`${window.location.origin}/?invite=${referralCode}`}
