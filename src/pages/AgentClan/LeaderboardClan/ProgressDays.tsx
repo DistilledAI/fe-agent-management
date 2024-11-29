@@ -32,12 +32,10 @@ const ProgressDays = () => {
   )
 
   useEffect(() => {
-    if (remainingDays) {
-      queryClient.setQueryData(
-        [QueryDataKeys.EARN_EXP_REMAINING_DAYS],
-        () => remainingDays,
-      )
-    }
+    queryClient.setQueryData(
+      [QueryDataKeys.EARN_EXP_REMAINING_DAYS],
+      () => remainingDays,
+    )
   }, [remainingDays])
 
   useEffect(() => {

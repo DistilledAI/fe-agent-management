@@ -1,5 +1,6 @@
 import AvatarCustom from "@components/AvatarCustom"
 import { LiveIcon } from "@components/Icons"
+import { useAppSelector } from "@hooks/useAppRedux"
 import { centerTextEllipsis } from "@utils/index"
 import React, { ReactNode } from "react"
 import { twMerge } from "tailwind-merge"
@@ -64,10 +65,12 @@ export const AvatarClan: React.FC<{
     publicAddress: string
   }
 }> = ({ avatarUrl, publicAddress, name, category = "first", owner }) => {
+  const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
+
   const renderInfoByCategory = () => {
     return match(category)
       .with("first", () => (
-        <div>
+        <div className={twMerge(sidebarCollapsed && "hidden")}>
           <p className="text-13 font-medium leading-[1.4] text-mercury-700">
             Clan
           </p>
