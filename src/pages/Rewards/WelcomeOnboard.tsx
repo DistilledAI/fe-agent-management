@@ -199,10 +199,10 @@ const WelcomeOnboard: React.FC<{
     }
   }
 
-  const renderAction = (actionKey: string) => {
+  const renderAction = (actionKey: string, record: any) => {
     const isClaimed = listActionTaskSuccess?.includes(actionKey)
 
-    if (isClaimed) {
+    if (isClaimed && record?.point > 0) {
       return (
         <div className="flex items-center gap-1">
           <CircleCheckFilled size={24} />
@@ -252,7 +252,7 @@ const WelcomeOnboard: React.FC<{
                 )}
               </div>
             </div>
-            <div>{renderAction(item.key)}</div>
+            <div>{renderAction(item.key, record)}</div>
           </div>
         )
       })}
