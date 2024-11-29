@@ -12,7 +12,7 @@ import useAuthState from "@hooks/useAuthState"
 import { useEffect } from "react"
 
 const RankExpList = () => {
-  const { user } = useAuthState()
+  const { user, isAnonymous } = useAuthState()
   const { chatId } = useParams()
   const { data: isToggleLeaderboard } = useQuery<boolean>({
     queryKey: [QueryDataKeys.TOGGLE_LEADERBOARD_CLAN],
@@ -77,17 +77,20 @@ const RankExpList = () => {
         </p>
       </div>
       <div className="h-[calc(100dvh-400px)] space-y-2">
-        <RankExpCard
-          classNames={{
-            wrapper: "border border-brown-500 bg-brown-50 mx-6 pt-2",
-          }}
-          rank={expPointUser?.rank}
-          avatarUrl={user?.avatar}
-          publicAddress={user?.publicAddress}
-          username={user?.username}
-          exp={expPointUser?.totalPoint}
-          xDSTL={getXDSTL(expPointUser?.totalPoint)}
-        />
+        {!isAnonymous && (
+          <RankExpCard
+            classNames={{
+              wrapper: "border border-brown-500 bg-brown-50 mx-6 pt-2",
+            }}
+            rank={expPointUser?.rank}
+            avatarUrl={user?.avatar}
+            publicAddress={user?.publicAddress}
+            username={user?.username}
+            exp={expPointUser?.totalPoint}
+            xDSTL={getXDSTL(expPointUser?.totalPoint)}
+          />
+        )}
+
         <Virtuoso
           style={{ height: "100%" }}
           data={rankList}
