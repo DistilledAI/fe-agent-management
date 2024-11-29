@@ -1,24 +1,27 @@
+import { bgClanDefault } from "@assets/images"
 import bitcoinMaxIntro from "@assets/video/bitcoin-max-intro-ai.mp4"
+import AvatarCustom from "@components/AvatarCustom"
+import VideoCustom from "@components/VideoCustom"
 import { Image, Skeleton } from "@nextui-org/react"
+import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
 import React, { useEffect, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import AgentDescription from "./AgentDescription"
 import TradeTokenButton from "./TradeTokenButton"
-import VideoCustom from "@components/VideoCustom"
-import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
-import { bgClanDefault } from "@assets/images"
-import AvatarCustom from "@components/AvatarCustom"
 // import TotalMemberBadge from "@components/TotalMemberBadge"
 
 const LeftContent: React.FC<{
   groupDetail: UserGroup | null
   isFetched: boolean
 }> = ({ groupDetail, isFetched }) => {
+  console.log("🚀 ~ groupDetail:", groupDetail)
   const queryClient = useQueryClient()
   const [isLoaded, setIsLoaded] = useState(false)
-  const isMaxi = groupDetail?.group.label === "@maxisbuyin"
+  const isMaxi =
+    groupDetail?.group.label === "@maxisbuyin" ||
+    groupDetail?.group.label === "@maxisbuyin_"
 
   const [agentLiveVolume, closeLiveChat, expandLiveChat] = useQueries({
     queries: [
@@ -102,7 +105,7 @@ const LeftContent: React.FC<{
         </div>
       </div>
       <div className="mt-6 hidden md:block">
-        <AgentDescription groupDetail={groupDetail} />
+        <AgentDescription groupDetail={groupDetail} isMaxi={isMaxi} />
       </div>
     </div>
   )
