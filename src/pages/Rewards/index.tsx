@@ -1,4 +1,4 @@
-import { creditBg, xDSTL } from "@assets/images"
+import { creditBg } from "@assets/images"
 import { CopyIcon } from "@components/Icons/Copy"
 import { QRCodeIcon } from "@components/Icons/QRCode"
 import {
@@ -11,6 +11,7 @@ import { Button, Divider, useDisclosure } from "@nextui-org/react"
 import { copyClipboard } from "@utils/index"
 import { useEffect, useState } from "react"
 import { getTaskSuccess } from "services/agent"
+import { getReferralCode } from "services/user"
 import Objectives from "./Objectives"
 
 export const XDSTL_TASK_KEY = {
@@ -35,12 +36,22 @@ const Rewards: React.FC = () => {
   const refLink = `${window.location.origin}/?invite=${referralCode}` as any
   const [listTaskSuccess, setListTaskSuccess] = useState<any>([])
   const listActionTaskSuccess = listTaskSuccess?.map((item: any) => item.action)
+  const [totalReferral, setTotalReferral] = useState<number>(0)
 
   const {
     isOpen: isOpenQR,
     onOpen: onOpenQR,
     onClose: onCloseQR,
   } = useDisclosure()
+
+  const callGetReferralCode = async () => {
+    try {
+      const res = await getReferralCode()
+      setTotalReferral(res?.data?.total)
+    } catch (error) {
+      console.log("error", error)
+    }
+  }
 
   const callGetTaskSuccess = async () => {
     try {
@@ -53,6 +64,7 @@ const Rewards: React.FC = () => {
 
   useEffect(() => {
     callGetTaskSuccess()
+    callGetReferralCode()
   }, [])
 
   return (
@@ -97,7 +109,9 @@ const Rewards: React.FC = () => {
             <span className="font-medium text-mercury-300">My Referred</span>
             <div className="flex items-center gap-2">
               <UsersGroupIcon />
-              <span className="text-[32px] font-bold text-white">2/10</span>
+              <span className="text-[32px] font-bold text-white">
+                {totalReferral}/1000
+              </span>
             </div>
           </div>
           <div className="my-4 grid grid-cols-8 gap-3">
@@ -122,14 +136,14 @@ const Rewards: React.FC = () => {
             </Button>
           </div>
 
-          <div className="flex items-center justify-between leading-none">
+          {/* <div className="flex items-center justify-between leading-none">
             <span className="text-base-md text-mercury-600">You got:</span>
 
             <div className="flex items-center gap-2">
               <img src={xDSTL} width={16} height={16} />
               <span className="text-base-md text-mercury-600">200 xDSTL</span>
             </div>
-          </div>
+          </div> */}
         </div>
         <Divider className="my-8" />
         <Objectives

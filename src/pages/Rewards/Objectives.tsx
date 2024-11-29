@@ -99,15 +99,17 @@ const Objectives: React.FC<{
 
   return (
     <>
-      <div className="mt-6 flex w-full justify-between gap-3">
+      <div className="mt-6 flex w-full justify-between gap-3 max-md:flex-col">
         <div className="flex w-[30%] items-center gap-2">
           <TargetArrowIcon />
           <span className="text-22 font-bold text-mercury-950">Objectives</span>
         </div>
 
-        <div className="flex w-[70%] items-center justify-between gap-2">
+        <div className="flex w-[70%] items-center justify-between gap-2 max-md:w-full">
           <div className="w-[20%]">
-            <span className="text-base-md text-mercury-700">You earned</span>
+            <span className="text-base-md max-md:text-base-14-md text-mercury-700">
+              You earned
+            </span>
           </div>
 
           <div className="relative flex-1">
@@ -124,7 +126,7 @@ const Objectives: React.FC<{
             <div
               className={twMerge(`absolute top-1/2 -translate-y-1/2`)}
               style={{
-                left: progressValue + 16,
+                left: `${progressValue}%`,
               }}
             >
               <img src={xDSTL} width={24} height={24} />
@@ -132,7 +134,7 @@ const Objectives: React.FC<{
           </div>
 
           <div className="w-[30%] text-end">
-            <span className="text-base-b text-mercury-950">
+            <span className="text-base-b max-md:text-base-14-b text-mercury-950">
               Up to 1600 xDSTL
             </span>
           </div>

@@ -3,8 +3,10 @@ import { loginSuccess } from "@reducers/userSlice"
 import { ethers } from "ethers"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
+import { useSearchParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { IDataSignatureAuth, signatureAuth } from "services/auth"
+import { postReferralCode } from "services/user"
 import { useAccount } from "wagmi"
 import useAuthAction from "./useAuthAction"
 import useAuthState from "./useAuthState"
@@ -16,6 +18,8 @@ export const WALLET_TYPE = {
 }
 
 const useConnectWallet = () => {
+  const [searchParams] = useSearchParams()
+  const referralCode = searchParams.get("invite") || ""
   const [loadingConnectMetamask, setLoadingConnectMetamask] =
     useState<boolean>(false)
   const [loadingConnectPhantom, setLoadingConnectPhantom] =
@@ -44,6 +48,7 @@ const useConnectWallet = () => {
         }),
       )
     }
+    await postReferralCode(referralCode)
   }
 
   const withTimeout = (promise: any, timeoutMs: number) => {

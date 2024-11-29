@@ -87,3 +87,19 @@ export const getUserPublicDetail = async (userId: number) => {
     },
   })
 }
+
+export const getReferralCode = async () => {
+  return fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_REFERRAL_CODE,
+  })
+}
+
+export const postReferralCode = async (refByUserCode: string) => {
+  if (!refByUserCode) return
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.POST_REFERRAL_CODE,
+    data: { refByUserCode },
+  })
+}

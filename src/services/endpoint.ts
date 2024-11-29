@@ -11,6 +11,8 @@ const endpoint = {
   UPDATE_AVATAR_USER: withBaseURL("/user/update-avatar"),
   CREATE_ANONYMOUS: withBaseURL("/user/create-anonymous"),
   GET_USER_PUBLIC_DETAIL: withBaseURL("/user/public/detail"),
+  GET_REFERRAL_CODE: withBaseURL("/user/referral/total-referral"),
+  POST_REFERRAL_CODE: withBaseURL("/user/referral/add-referral"),
 
   //bot
   CREATE_BOT: withBaseURL("/bot/create-bot"),
