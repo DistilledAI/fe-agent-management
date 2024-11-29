@@ -142,7 +142,7 @@ const WelcomeOnboard: React.FC<{
         const response = await checkRePostDistilledX({
           code,
           redirectUri: `${window.location.origin}/rewards`,
-          targetId: "1856344532461277316",
+          targetId: "1853838286105481575",
         })
         if (response?.status === 201) {
           localStorage.removeItem("isCallingRePostX")
