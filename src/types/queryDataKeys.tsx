@@ -4,6 +4,7 @@ export enum QueryDataKeys {
   NOTIFICATION_GROUPS = "notification-groups",
   MY_LIST_CHAT = "my-list-chat",
   PRIVATE_AGENTS_MKL = "private-agents-marketplace",
+  PUBLIC_GROUP_AGENT = "public-group-agent",
   MY_BOT_DATA = "my-bot-data",
   MY_BOT_LIST = "my-bot-list",
   DELEGATE_PRIVATE_AGENT = "delegate-private-agent",

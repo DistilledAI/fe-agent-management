@@ -13,7 +13,8 @@ import AvatarCustom from "@components/AvatarCustom"
 
 const LeftContent: React.FC<{
   groupDetail: UserGroup | null
-}> = ({ groupDetail }) => {
+  isFetched: boolean
+}> = ({ groupDetail, isFetched }) => {
   const queryClient = useQueryClient()
   const [isLoaded, setIsLoaded] = useState(false)
   const isMaxi = groupDetail?.group.label === "@maxisbuyin"
@@ -50,26 +51,26 @@ const LeftContent: React.FC<{
       )}
     >
       <div className="flex h-full flex-col md:h-fit">
-        {isMaxi ? (
-          <Skeleton isLoaded={isLoaded} className="rounded-[32px]">
-            <VideoCustom
-              videoSrc={bitcoinMaxIntro}
-              classNames={{
-                video: twMerge(
-                  "h-full min-h-[350px] w-full rounded-[32px] object-cover max-md:max-h-[350px] md:h-auto md:min-h-[426px]",
-                  isCloseChatLive && "max-md:max-h-full",
-                ),
-              }}
-              isVolumeIcon
-              onMuteToggle={(muted) =>
-                queryClient.setQueryData<boolean>(
-                  [QueryDataKeys.AGENT_LIVE_VOLUME],
-                  () => muted,
-                )
-              }
-              muted={isMuted}
-            />
-          </Skeleton>
+        {!isLoaded || !isFetched ? (
+          <Skeleton className="h-[427px] rounded-[32px]"></Skeleton>
+        ) : isMaxi ? (
+          <VideoCustom
+            videoSrc={bitcoinMaxIntro}
+            classNames={{
+              video: twMerge(
+                "h-full min-h-[350px] w-full rounded-[32px] object-cover max-md:max-h-[350px] md:h-auto md:min-h-[426px]",
+                isCloseChatLive && "max-md:max-h-full",
+              ),
+            }}
+            isVolumeIcon
+            onMuteToggle={(muted) =>
+              queryClient.setQueryData<boolean>(
+                [QueryDataKeys.AGENT_LIVE_VOLUME],
+                () => muted,
+              )
+            }
+            muted={isMuted}
+          />
         ) : (
           <div className="relative max-h-[427px] overflow-hidden rounded-[32px]">
             <Image

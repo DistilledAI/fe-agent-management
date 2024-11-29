@@ -14,7 +14,7 @@ const useFetchDetail = () => {
       ? { filter: `{"label":"${chatId}"}` }
       : { filter: `{"groupId":${chatId}}` }
 
-  const { data } = useQuery({
+  const { data, isLoading, isFetched } = useQuery({
     queryKey: [QueryDataKeys.GROUP_DETAIL, chatId?.toString()],
     queryFn: () => getGroupChatDetail(params),
     staleTime: 60 * 60 * 1000,
@@ -22,7 +22,7 @@ const useFetchDetail = () => {
   })
   const result: UserGroup | null = data?.data || null
 
-  return { groupDetail: result, chatId }
+  return { groupDetail: result, chatId, isLoading, isFetched }
 }
 
 export default useFetchDetail
