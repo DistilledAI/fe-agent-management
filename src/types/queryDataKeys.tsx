@@ -20,4 +20,5 @@ export enum QueryDataKeys {
   GROUP_DETAIL = "group-detail",
   TOTAL_EXP_POINT_GROUP = "total-exp-point-group",
   TOTAL_EXP_POINT_USER = "total-exp-point-user",
+  EARN_EXP_REMAINING_DAYS = "earn-exp-remaining-days",
 }

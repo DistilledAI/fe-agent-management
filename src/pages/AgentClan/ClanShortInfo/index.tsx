@@ -2,25 +2,24 @@ import { xDSTL, xpIcon } from "@assets/images"
 import { BoltIcon, TrophyIcon } from "@components/Icons"
 import { ArrowRightIcon } from "@components/Icons/Arrow"
 import { Image } from "@nextui-org/react"
-import { useQueries, useQueryClient } from "@tanstack/react-query"
+import { useQueries, useQuery, useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import LeaderboardClan from "../LeaderboardClan"
 import { useParams } from "react-router-dom"
-import { getTotalExpPointUser } from "services/point"
 import { formatNumberWithComma } from "@utils/index"
 
 const ClanShortInfo = () => {
   const queryClient = useQueryClient()
   const { chatId } = useParams()
-  const groupId =
-    queryClient
-      .getQueryData([QueryDataKeys.CHAT_ID_BY_USERNAME, chatId])
-      ?.toString() || ""
+  const { data: chatIdParam } = useQuery({
+    queryKey: [QueryDataKeys.CHAT_ID_BY_USERNAME, chatId],
+    enabled: !!chatId,
+  })
+  const groupId = chatIdParam ? chatIdParam?.toString() : ""
   const queries = useQueries<[{ data: any }, { data: any }, { data: any }]>({
     queries: [
       {
         queryKey: [QueryDataKeys.TOTAL_EXP_POINT_USER, groupId],
-        queryFn: () => getTotalExpPointUser(Number(groupId)),
         enabled: !!groupId,
       },
       {
@@ -28,8 +27,8 @@ const ClanShortInfo = () => {
         enabled: !!groupId,
       },
       {
-        queryKey: ["earn-exp-remaining-days"],
-        enabled: !!groupId,
+        queryKey: [QueryDataKeys.EARN_EXP_REMAINING_DAYS],
+        enabled: true,
       },
     ],
   })
