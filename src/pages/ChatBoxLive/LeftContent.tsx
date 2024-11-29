@@ -1,18 +1,24 @@
 import bitcoinMaxIntro from "@assets/video/bitcoin-max-intro-ai.mp4"
-import { Skeleton } from "@nextui-org/react"
+import { Image, Skeleton } from "@nextui-org/react"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import AgentDescription from "./AgentDescription"
 import TradeTokenButton from "./TradeTokenButton"
 import VideoCustom from "@components/VideoCustom"
+import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import { bgClanDefault } from "@assets/images"
+import AvatarCustom from "@components/AvatarCustom"
 
-const LeftContent = () => {
+const LeftContent: React.FC<{
+  groupDetail: UserGroup | null
+}> = ({ groupDetail }) => {
   const queryClient = useQueryClient()
   const [isLoaded, setIsLoaded] = useState(false)
+  const isMaxi = groupDetail?.group.label === "@maxisbuyin"
 
-  const queries = useQueries({
+  const [agentLiveVolume, closeLiveChat, expandLiveChat] = useQueries({
     queries: [
       {
         initialData: true,
@@ -27,9 +33,9 @@ const LeftContent = () => {
       },
     ],
   })
-  const isMuted = !!queries[0].data
-  const isCloseChatLive = !!queries[1].data
-  const isExpandLiveChat = !!queries[2].data
+  const isMuted = !!agentLiveVolume.data
+  const isCloseChatLive = !!closeLiveChat.data
+  const isExpandLiveChat = !!expandLiveChat.data
 
   useEffect(() => {
     setTimeout(() => setIsLoaded(true), 200)
@@ -44,25 +50,47 @@ const LeftContent = () => {
       )}
     >
       <div className="flex h-full flex-col md:h-fit">
-        <Skeleton isLoaded={isLoaded} className="rounded-[32px]">
-          <VideoCustom
-            videoSrc={bitcoinMaxIntro}
-            classNames={{
-              video: twMerge(
-                "h-full min-h-[350px] w-full rounded-[32px] object-cover max-md:max-h-[350px] md:h-auto md:min-h-[426px]",
-                isCloseChatLive && "max-md:max-h-full",
-              ),
-            }}
-            isVolumeIcon
-            onMuteToggle={(muted) =>
-              queryClient.setQueryData<boolean>(
-                [QueryDataKeys.AGENT_LIVE_VOLUME],
-                () => muted,
-              )
-            }
-            muted={isMuted}
-          />
-        </Skeleton>
+        {isMaxi ? (
+          <Skeleton isLoaded={isLoaded} className="rounded-[32px]">
+            <VideoCustom
+              videoSrc={bitcoinMaxIntro}
+              classNames={{
+                video: twMerge(
+                  "h-full min-h-[350px] w-full rounded-[32px] object-cover max-md:max-h-[350px] md:h-auto md:min-h-[426px]",
+                  isCloseChatLive && "max-md:max-h-full",
+                ),
+              }}
+              isVolumeIcon
+              onMuteToggle={(muted) =>
+                queryClient.setQueryData<boolean>(
+                  [QueryDataKeys.AGENT_LIVE_VOLUME],
+                  () => muted,
+                )
+              }
+              muted={isMuted}
+            />
+          </Skeleton>
+        ) : (
+          <div className="relative max-h-[427px] overflow-hidden rounded-[32px]">
+            <Image
+              classNames={{ wrapper: "w-full h-full !max-w-full" }}
+              className="h-full w-full object-cover"
+              src={bgClanDefault}
+              alt="clan"
+              disableAnimation
+            />
+            <div className="absolute left-1/2 top-1/2 z-[11] h-[70px] w-[70px] -translate-x-1/2 -translate-y-1/2 rounded-full">
+              {/* <div
+                style={{ animation: "bounce .8s ease-in-out infinite .5s" }}
+                className="absolute z-[-1] h-[70px] w-[70px] rounded-full bg-gray-400 opacity-20"
+              ></div> */}
+              <AvatarCustom
+                className="h-full w-full object-cover"
+                src={groupDetail?.group.image}
+              />
+            </div>
+          </div>
+        )}
 
         <div className="mt-6 hidden items-center justify-between gap-2 md:flex">
           {/* <TwitterButton /> */}
@@ -70,7 +98,7 @@ const LeftContent = () => {
         </div>
       </div>
       <div className="mt-6 hidden md:block">
-        <AgentDescription />
+        <AgentDescription groupDetail={groupDetail} />
       </div>
     </div>
   )

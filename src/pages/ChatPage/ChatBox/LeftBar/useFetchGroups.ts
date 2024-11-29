@@ -24,6 +24,7 @@ export interface IGroup {
   typeGroup: TypeGroup
   live?: number
   label?: string
+  description?: string
 }
 
 export interface UserGroup {

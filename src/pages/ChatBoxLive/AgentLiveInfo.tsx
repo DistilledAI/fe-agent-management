@@ -11,8 +11,12 @@ import {
 } from "@nextui-org/react"
 import AgentDescription from "./AgentDescription"
 import TwitterButton from "./TwitterButton"
+import React from "react"
+import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 
-const AgentLiveInfo = () => {
+const AgentLiveInfo: React.FC<{
+  groupDetail: UserGroup | null
+}> = ({ groupDetail }) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
 
   return (
@@ -46,7 +50,7 @@ const AgentLiveInfo = () => {
           </ModalHeader>
           <ModalBody className="gap-4 px-3 py-4">
             <TwitterButton />
-            <AgentDescription />
+            <AgentDescription groupDetail={groupDetail} />
           </ModalBody>
           <ModalFooter className="px-3">
             <Button
