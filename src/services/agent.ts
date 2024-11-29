@@ -92,6 +92,13 @@ export const getTaskSuccess = async () => {
   })
 }
 
+export const getUserClaimTaskSuccess = async () => {
+  return fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_USER_CLAIM_TASK_SUCCESS,
+  })
+}
+
 export const checkRePostDistilledX = async (data: {
   code: string
   redirectUri: string

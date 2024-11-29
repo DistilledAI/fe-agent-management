@@ -10,7 +10,7 @@ import useAuthState from "@hooks/useAuthState"
 import { Button, Divider, useDisclosure } from "@nextui-org/react"
 import { copyClipboard } from "@utils/index"
 import { useEffect, useState } from "react"
-import { getTaskSuccess } from "services/agent"
+import { getTaskSuccess, getUserClaimTaskSuccess } from "services/agent"
 import { getReferralCode } from "services/user"
 import Objectives from "./Objectives"
 
@@ -62,9 +62,18 @@ const Rewards: React.FC = () => {
     }
   }
 
+  const callGetUserClaimTaskSuccess = async () => {
+    try {
+      await getUserClaimTaskSuccess()
+    } catch (error) {
+      console.log("error", error)
+    }
+  }
+
   useEffect(() => {
     callGetTaskSuccess()
     callGetReferralCode()
+    callGetUserClaimTaskSuccess()
   }, [])
 
   return (
