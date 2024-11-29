@@ -1,7 +1,6 @@
-import AvatarContainer from "@components/AvatarContainer"
+import AvatarContainer, { AvatarClan } from "@components/AvatarContainer"
 import AvatarGroup from "@components/AvatarGroup"
 import DotLoading from "@components/DotLoading"
-import { LiveIcon } from "@components/Icons"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { FilledUserIcon, FilledUsersPlusIcon } from "@components/Icons/UserIcon"
@@ -26,9 +25,9 @@ import {
   getPublicAddressGroupChat,
   getRoleUser,
 } from "./helpers"
-import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroups, { LIMIT, TypeGroup, UserGroup } from "./useFetchGroups"
+import TotalMemberBadge from "@components/TotalMemberBadge"
 
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
@@ -61,8 +60,6 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
 
   const renderInfoGroup = (groupItem: UserGroup) => {
     const typeGroup = groupItem.group.typeGroup
-    const isLive = groupItem.group.live === 1
-    const isActive = Number(chatId) === groupItem.groupId
 
     return match(typeGroup)
       .returnType<React.ReactNode>()
@@ -70,14 +67,10 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
         <AvatarGroup groupName={sidebarCollapsed ? "" : groupItem.group.name} />
       ))
       .with(TypeGroup.PUBLIC_GROUP, () => (
-        <AvatarContainer
-          badgeIcon={<LiveIcon />}
+        <AvatarClan
           avatarUrl={groupItem.group.image}
           publicAddress={groupItem.group.name}
-          userName={sidebarCollapsed ? "" : groupItem.group.name}
-          badgeClassName={isLive ? "bg-lgd-code-hot-ramp" : ""}
-          isLive={isLive}
-          usernameClassName={isLive && isActive ? "font-semibold" : ""}
+          name={sidebarCollapsed ? "" : groupItem.group.name}
         />
       ))
       .otherwise(() => (
@@ -118,7 +111,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
     )
 
     if (isBotLive) {
-      return navigate(`${PATH_NAMES.LIVE}/${groupItem?.group?.label}`, {
+      return navigate(`${PATH_NAMES.CLAN}/${groupItem?.group?.label}`, {
         state: {
           isGroupJoined: true,
         },
@@ -183,11 +176,13 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                 aria-selected={isActive}
                 onClick={() => handleGroupClick(groupItem, isBotLive)}
                 className={twMerge(
-                  "hover-light-effect group/item group relative mx-4 mb-2 h-14 gap-2 rounded-full px-2 py-2",
+                  "hover-light-effect group/item group relative mx-4 mb-2 flex h-14 items-center justify-between gap-1 gap-2 rounded-full px-2 py-2",
                   isActive && "bg-mercury-100",
                   sidebarCollapsed &&
                     "flex w-14 items-center justify-center p-0",
-                  isActive && isBotLive && "bg-fading-orange",
+                  isActive &&
+                    isBotLive &&
+                    "bg-fading-orange hover:border-code-agent-1",
                 )}
               >
                 {renderInfoGroup(groupItem)}
@@ -198,13 +193,16 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                   }
                 />
                 <DotNotification groupId={groupItem.groupId} />
-                {sidebarCollapsed ? (
+                {/* {sidebarCollapsed ? (
                   <></>
                 ) : (
                   <MoreChatAction
                     groupId={groupItem.groupId}
                     groupType={groupItem.group.typeGroup}
                   />
+                )} */}
+                {isActive && isBotLive && !sidebarCollapsed && (
+                  <TotalMemberBadge groupId={chatId} />
                 )}
               </div>
             )

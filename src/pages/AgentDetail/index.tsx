@@ -1,51 +1,46 @@
+import SmoothScrollTo from "@components/SmoothScrollTo"
 import {
   COMMUNICATION_STYLE_LIST,
-  PATH_NAMES,
   PERSONALITY_LIST,
+  STATUS_AGENT,
 } from "@constants/index"
-import { Divider } from "@nextui-org/react"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { toast } from "react-toastify"
-import { getAgentDetail, updateAgent } from "services/agent"
+import { updateAgent, updateAgentConfig } from "services/agent"
 import { updateAvatarUser } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
-import AIAgentGenerate from "./AIAgentGenerate"
-import AdvancedConfig from "./AdvancedConfig"
 import AgentBehaviors, { SelectedBehaviors } from "./AgentBehaviors"
+import {
+  INTERACTION_FREQUENCY_KEY,
+  RESPONSE_LENGTH_KEY,
+} from "./AgentBehaviors/constants"
+import Functions from "./Functions"
 import GeneralInfo from "./GeneralInfo"
 import Header from "./Header"
+import KnowledgeAgent from "./Knowledge"
 import Monetization from "./Monetization"
-import Preferences from "./Preferences"
-import ToxicPolicies from "./ToxicPolicies"
-import { isPassRuleAgentInfo } from "./helpers"
+import TargetAudience from "./TargetAudience"
+import {
+  getConfigAgentByDataForm,
+  getConfigAgentValueByKeys,
+  isPassRuleAgentInfo,
+  LIST_AGENT_CONFIG_KEYS,
+} from "./helpers"
+import useFetchAgentConfig from "./useFetchAgentConfig"
+import useFetchDetail from "./useFetchDetail"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
   const queryClient = useQueryClient()
   const [loading, setLoading] = useState(false)
   const [valueCustomDefault, setValueCustomDefault] = useState<any>()
-  const navigate = useNavigate()
 
-  const fetchAgentDetail = async () => {
-    try {
-      const agentIdNumber = Number(agentId)
-      const response = await getAgentDetail(agentIdNumber)
-      if (response?.data) return response.data
-      else navigate(PATH_NAMES.HOME)
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message)
-      navigate(PATH_NAMES.HOME)
-    }
-  }
-
-  const { data: agentData, refetch } = useQuery({
-    queryKey: [QueryDataKeys.AGENT_DETAIL],
-    queryFn: fetchAgentDetail,
-    refetchOnWindowFocus: false,
-  })
+  const { agentConfigs } = useFetchAgentConfig()
+  const { agentData, refetch } = useFetchDetail()
+  const isActive = agentData?.status === STATUS_AGENT.ACTIVE
 
   const userNameData = agentData?.username
   const descriptionData = agentData?.description
@@ -97,6 +92,14 @@ const AgentDetail: React.FC = () => {
       avatar: "",
       agentPersonal: [],
       agentCommunication: [],
+      interaction_frequency: INTERACTION_FREQUENCY_KEY.Occasionally,
+      tone_adaptation: false,
+      response_length: RESPONSE_LENGTH_KEY.Moderate,
+      knowledge_domain: "",
+      prohibited_topics: "",
+      audience_profile: "",
+      sample_prompts: "",
+      customization_instruction: "",
     },
   })
 
@@ -114,15 +117,17 @@ const AgentDetail: React.FC = () => {
       avatar: avatarData,
       agentPersonal: agentPersonalData,
       agentCommunication: agentCommunicationData,
+      ...getConfigAgentValueByKeys(agentConfigs, LIST_AGENT_CONFIG_KEYS),
     }
     methods.reset(defaults)
-  }, [agentData, methods.reset])
+  }, [agentData, methods.reset, agentConfigs])
 
   const onSubmit = async (data: any) => {
-    if (!isPassRuleAgentInfo(data)) return
+    if (!isPassRuleAgentInfo(data) || !isActive) return
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { avatar, avatarFile, ...newData } = data
     const agentIdNumber = Number(agentId)
+    const configData = getConfigAgentByDataForm(data)
 
     try {
       setLoading(true)
@@ -135,6 +140,9 @@ const AgentDetail: React.FC = () => {
         formData.append("file", data.avatarFile)
         formData.append("userId", agentData?.id?.toString() ?? "")
         await updateAvatarUser(formData)
+      }
+      if (configData.length > 0) {
+        await updateAgentConfig({ botId: agentIdNumber, data: configData })
       }
       if (res.data) {
         refetch()
@@ -149,28 +157,62 @@ const AgentDetail: React.FC = () => {
     }
   }
 
+  const componentScrollTo = [
+    {
+      title: "Display Info",
+      content: <GeneralInfo agentData={agentData} />,
+    },
+    {
+      title: "Functions",
+      content: (
+        <Functions
+          agentData={agentData}
+          agentConfigs={agentConfigs}
+          refetch={refetch}
+        />
+      ),
+    },
+    {
+      title: "Behaviors",
+      content: (
+        <AgentBehaviors
+          onSelectBehaviors={handleSelectBehaviors}
+          selectedBehaviors={{
+            agentPersonal: methods.watch("agentPersonal"),
+            agentCommunication: methods.watch("agentCommunication"),
+          }}
+          valueCustomDefault={valueCustomDefault}
+        />
+      ),
+    },
+    {
+      title: "Knowledge",
+      content: <KnowledgeAgent />,
+    },
+    {
+      title: "Target Audience",
+      content: <TargetAudience />,
+    },
+    {
+      title: "Monetization",
+      content: <Monetization />,
+    },
+  ]
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <Header submitLoading={loading} agentData={agentData} />
-        <div className="mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6">
-          <GeneralInfo agentData={agentData} />
-          <Divider className="my-9" />
-          <AgentBehaviors
-            onSelectBehaviors={handleSelectBehaviors}
-            selectedBehaviors={{
-              agentPersonal: methods.watch("agentPersonal"),
-              agentCommunication: methods.watch("agentCommunication"),
+        <div className="sticky left-0 top-[192px] h-[1px] w-full bg-mercury-100"></div>
+        <div className="relative mx-auto max-w-[800px] px-4 pb-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6">
+          <SmoothScrollTo
+            components={componentScrollTo}
+            offsetAdjustment={220}
+            classNames={{
+              headerWrapper: "sticky -mt-[1px] top-[152px] bg-white z-[11]",
+              contentWrapper: "pt-5",
             }}
-            valueCustomDefault={valueCustomDefault}
           />
-          <Divider className="my-9" />
-          <AdvancedConfig />
-          <AIAgentGenerate />
-          <Preferences />
-          <ToxicPolicies />
-          <Divider className="my-9" />
-          <Monetization />
         </div>
       </form>
     </FormProvider>

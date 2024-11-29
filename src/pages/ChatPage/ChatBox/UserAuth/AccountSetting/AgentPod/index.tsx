@@ -14,12 +14,12 @@ const PrivateAgentPod = () => {
       </div>
       <div className="flex items-center justify-between">
         <span className="text-mercury-600">Security level:</span>
-        <div className="text-green-10 flex items-center gap-2 font-medium">
+        <div className="flex items-center gap-2 font-medium text-green-10">
           <div className="flex w-[13px] flex-col gap-[1px]">
-            <span className="bg-green-10 h-[1px] w-full"></span>
-            <span className="bg-green-10 h-[2px] w-full"></span>
-            <span className="bg-green-10 h-[3px] w-full"></span>
-            <span className="bg-green-10 h-[4px] w-full"></span>
+            <span className="h-[1px] w-full bg-green-10"></span>
+            <span className="h-[2px] w-full bg-green-10"></span>
+            <span className="h-[3px] w-full bg-green-10"></span>
+            <span className="h-[4px] w-full bg-green-10"></span>
           </div>
           HIGH
         </div>

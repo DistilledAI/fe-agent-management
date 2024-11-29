@@ -1,4 +1,4 @@
-import { RoleUser } from "@constants/index"
+import { CLEAR_CACHED_MESSAGE, RoleUser } from "@constants/index"
 import { TypeGroup } from "../LeftBar/useFetchGroups"
 import { IMessage } from "./useFetchMessages"
 
@@ -20,8 +20,14 @@ export interface IMessageBox {
   publicAddress?: string
   isChatCleared?: boolean
   username?: string
+  userId?: number
   agentId?: number
   ownerId?: number
+  reply?: {
+    messageId: number
+    message: string
+    username: string
+  }
 }
 
 const isOwner = (currentUserId: number, userId: number) => {
@@ -31,6 +37,26 @@ const isOwner = (currentUserId: number, userId: number) => {
 const getRole = (isOwner: boolean): RoleChat =>
   isOwner ? RoleChat.OWNER : RoleChat.CUSTOMER
 
+export const replaceMentions = (data: {
+  messages: string
+  mentions: {
+    userId: number
+    user: {
+      id: number
+      username: string
+    }
+  }[]
+}) => {
+  let messages = data.messages
+
+  data.mentions.forEach(({ userId, user }) => {
+    const mentionTag = `<${userId}>`
+    messages = messages.replace(mentionTag, `**@${user.username}**`)
+  })
+
+  return messages
+}
+
 export const convertDataFetchToMessage = (
   data: IMessage[],
   currentUserId: number,
@@ -39,7 +65,10 @@ export const convertDataFetchToMessage = (
     .map((mess) => ({
       id: mess.id,
       role: getRole(isOwner(currentUserId, mess.user?.id)),
-      content: mess.messages,
+      content:
+        mess.mentions && mess.mentions.length > 0
+          ? replaceMentions(mess as any)
+          : mess.messages,
       avatar: mess.user?.avatar,
       roleOwner: mess.user.role,
       typeGroup: mess.group.typeGroup,
@@ -47,8 +76,18 @@ export const convertDataFetchToMessage = (
       publicAddress: mess.user?.publicAddress,
       isChatCleared: false,
       username: mess?.user?.username,
+      userId: mess?.userId,
       agentId: mess.user.id,
       ownerId: mess.user.owner,
+      reply: mess.relyTo
+        ? {
+            messageId: mess.relyTo,
+            message: mess.relyToMessage?.messages ?? "",
+            username: mess.relyToMessage?.user?.username
+              ? `@${mess.relyToMessage.user.username}`
+              : "@Unnamed",
+          }
+        : undefined,
     }))
     .reverse()
 }
@@ -76,35 +115,38 @@ export const groupedMessages = (
 
   const prevTimeDiff = getTimeDiff(message?.createdAt, prevMsg?.createdAt)
   const nextTimeDiff = getTimeDiff(nextMsg?.createdAt, message?.createdAt)
+  const isPrevClearContextMsg = prevMsg?.content === CLEAR_CACHED_MESSAGE
+  const isNextClearContextMsg = nextMsg?.content === CLEAR_CACHED_MESSAGE
 
-  if (message.role === RoleChat.OWNER) {
-    if (prevMsg && prevMsg.role === RoleChat.OWNER) {
-      if (prevTimeDiff < TIME_BREAK) {
-        if (
-          nextMsg &&
-          nextMsg.role === RoleChat.OWNER &&
-          nextTimeDiff < TIME_BREAK
-        ) {
-          groupType = "middle"
-        } else {
-          groupType = "bottom"
-        }
+  if (prevMsg && prevMsg.role === RoleChat.OWNER && !isPrevClearContextMsg) {
+    if (prevTimeDiff < TIME_BREAK) {
+      if (
+        nextMsg &&
+        nextMsg.role === RoleChat.OWNER &&
+        nextTimeDiff < TIME_BREAK
+      ) {
+        groupType = "middle"
       } else {
-        groupType = "top"
-        if (
-          !nextMsg ||
-          nextMsg.role !== message.role ||
-          nextTimeDiff > TIME_BREAK
-        ) {
-          groupType = "none"
-        }
+        groupType = "bottom"
       }
     } else {
-      groupType =
-        nextMsg && nextMsg.role === RoleChat.OWNER && nextTimeDiff < TIME_BREAK
-          ? "top"
-          : "none"
+      groupType = "top"
+      if (
+        !nextMsg ||
+        nextMsg.role !== message.role ||
+        nextTimeDiff > TIME_BREAK
+      ) {
+        groupType = "none"
+      }
     }
+  } else {
+    groupType =
+      nextMsg &&
+      nextMsg.role === RoleChat.OWNER &&
+      nextTimeDiff < TIME_BREAK &&
+      !isNextClearContextMsg
+        ? "top"
+        : "none"
   }
 
   const borderRadiusStyle = {

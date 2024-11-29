@@ -11,6 +11,8 @@ const endpoint = {
   UPDATE_AVATAR_USER: withBaseURL("/user/update-avatar"),
   CREATE_ANONYMOUS: withBaseURL("/user/create-anonymous"),
   GET_USER_PUBLIC_DETAIL: withBaseURL("/user/public/detail"),
+  GET_REFERRAL_CODE: withBaseURL("/user/referral/total-referral"),
+  POST_REFERRAL_CODE: withBaseURL("/user/referral/add-referral"),
 
   //bot
   CREATE_BOT: withBaseURL("/bot/create-bot"),
@@ -23,7 +25,12 @@ const endpoint = {
   GET_AGENT_DETAIL: (botId: number) => withBaseURL(`/bot/detail/${botId}`),
   GET_BOT_PUBLIC_BY_OWNER: (ownerId: number) =>
     withBaseURL(`/bot/public/info/get-by-owner/${ownerId}`),
+  GET_AGENT_CONFIG: (botId: number) => withBaseURL(`/bot/config/${botId}`),
   UPDATE_AGENT: withBaseURL("/bot/update"),
+  UPDATE_CONFIG_AGENT: withBaseURL("/bot/config"),
+  CONNECT_X: withBaseURL("/point/xDstl/connect-x"),
+  GET_TASK_SUCCESS: withBaseURL("/point/xDstl/user/task-success"),
+  REPOST_X: withBaseURL("/point/xDstl/retweet-x"),
 
   //chat
   GET_MY_CHAT_GROUP_LIST: withBaseURL("/chat/group/list"),
@@ -43,12 +50,28 @@ const endpoint = {
   GET_GROUP_DETAIL_FROM_LABEL: (label: string) =>
     withBaseURL(`/group/detail/label/${label}`),
 
-  //my data
+  // group
+  GET_LIST_GROUP_PUBLIC: withBaseURL("/group/public"),
+  CLEAR_CACHED_BY_GROUP_ID: (groupId: number) =>
+    withBaseURL(`/group/clear-cached/${groupId}`),
+  GET_TOTAL_MEMBER_GROUP: (groupId: number) =>
+    withBaseURL(`/group/total-member/${groupId}`),
+
+  // my data
   UPLOAD_MY_DATA: withBaseURL("/my-data/upload"),
   MAP_MY_DATA_TO_BOT: withBaseURL("/my-data/map-bot"),
   GET_MY_BOT_DATA: (botId: number) => withBaseURL(`/my-data/list/${botId}`),
   DELETE_MY_BOT_DATA: withBaseURL("/my-data/delete"),
   TRAIN_DATA_MY_DATA: withBaseURL("/my-data/train-data"),
+  TELEGRAM_MAP_AGENT: withBaseURL("/telegram/map-bot"),
+
+  // point
+  GET_EXP_LEADERBOARD_BY_GROUP_ID: (groupId: number) =>
+    withBaseURL(`/point/exp/leaderboard/${groupId}`),
+  GET_EXP_TOTAL_POINT_GROUP: (groupId: number) =>
+    withBaseURL(`/point/exp/total-point/group/${groupId}`),
+  GET_EXP_TOTAL_POINT_USER: (groupId: number) =>
+    withBaseURL(`/point/exp/total-point/user/${groupId}`),
 }
 
 export default endpoint

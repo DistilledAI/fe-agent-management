@@ -36,3 +36,70 @@ export const updateAgent = async (data: UploadAgentPayload) => {
     data,
   })
 }
+interface TelegramMapAgentPayload {
+  token: string
+  botId: number
+}
+
+export const telegramMapAgent = async (data: TelegramMapAgentPayload) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.TELEGRAM_MAP_AGENT,
+    data,
+  })
+}
+
+export const updateAgentConfig = async (data: {
+  botId: number
+  data: {
+    key: string
+    value: string
+  }[]
+}) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.UPDATE_CONFIG_AGENT,
+    data,
+  })
+}
+
+export const getAgentConfig = async (botId: number) => {
+  return fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_AGENT_CONFIG(botId),
+    params: {
+      size: 50,
+      offset: 0,
+    },
+  })
+}
+
+export const checkConnectDistilledX = async (data: {
+  code: string
+  redirectUri: string
+}) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.CONNECT_X,
+    data,
+  })
+}
+
+export const getTaskSuccess = async () => {
+  return fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_TASK_SUCCESS,
+  })
+}
+
+export const checkRePostDistilledX = async (data: {
+  code: string
+  redirectUri: string
+  targetId: string
+}) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.REPOST_X,
+    data,
+  })
+}

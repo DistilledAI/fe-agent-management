@@ -32,7 +32,7 @@ const PublicAgents = () => {
     const isBotLive = agent?.configBot === ConfigBotType.LIVE
     if (isBotLive) {
       const groupId = envConfig.groupIdMax
-      return navigate(`${PATH_NAMES.LIVE}/${groupId}`)
+      return navigate(`${PATH_NAMES.CLAN}/${groupId}`)
     }
 
     if (user && user.id === agent.owner) {

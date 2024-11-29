@@ -56,4 +56,5 @@ export interface IAgentData {
   status: number
   createdAt: string
   publish: Publish
+  botWebhooks?: any
 }

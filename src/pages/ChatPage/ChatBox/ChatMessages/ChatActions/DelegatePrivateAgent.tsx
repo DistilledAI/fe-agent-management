@@ -1,10 +1,10 @@
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
+import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
-import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { changeStatusBotInGroup, checkStatusBotInGroup } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
@@ -14,24 +14,29 @@ export const BOT_STATUS = {
   DISABLE: 0,
 }
 
-const DelegatePrivateAgent: React.FC = () => {
-  const { privateChatId } = useParams()
-  const { chatId } = useGetChatId()
-  //   const [isShowNotification, setShowNotification] = useState<boolean>(false)
-  const groupId = chatId || privateChatId
+const DelegatePrivateAgent = () => {
+  const { chatId: groupId } = useParams()
   const queryClient = useQueryClient()
+  const { isAnonymous, isLogin } = useAuthState()
+  const { data: myAgentList } = useQuery<any>({
+    queryKey: [QueryDataKeys.MY_BOT_LIST],
+    enabled: !isAnonymous && isLogin,
+  })
+  const isMyAgents = !!myAgentList?.data?.items?.length
 
   const callCheckStatusBotInGroup = async () => {
-    const response = await checkStatusBotInGroup(groupId)
-    if (response?.data) {
-      return response?.data
+    if (!!groupId && !isAnonymous && isMyAgents) {
+      const response = await checkStatusBotInGroup(groupId)
+      if (response?.data) {
+        return response?.data
+      }
     }
   }
 
   const { data: botInfo, refetch } = useQuery({
     queryKey: [QueryDataKeys.DELEGATE_PRIVATE_AGENT, groupId],
     queryFn: callCheckStatusBotInGroup,
-    enabled: !!groupId,
+    enabled: !!groupId && isMyAgents && !isAnonymous && isLogin,
   })
 
   const botStatus = botInfo?.status
@@ -40,16 +45,10 @@ const DelegatePrivateAgent: React.FC = () => {
   const isBotEnabled = botStatus === BOT_STATUS.ENABLE
 
   useEffect(() => {
-    queryClient.setQueryData(["isChatting", groupId], () =>
+    queryClient.setQueryData([QueryDataKeys.IS_CHATTING, groupId], () =>
       botStatus && isBotEnabled ? isBotEnabled : false,
     )
   }, [isBotEnabled, botInfo])
-
-  //   useEffect(() => {
-  //     setTimeout(() => {
-  //       setShowNotification(false)
-  //     }, 5000)
-  //   }, [isShowNotification])
 
   const handleSetDelegate = async () => {
     const status = isBotEnabled ? BOT_STATUS.DISABLE : BOT_STATUS.ENABLE
@@ -62,31 +61,16 @@ const DelegatePrivateAgent: React.FC = () => {
       const response = await changeStatusBotInGroup(payloadData)
       if (response) {
         refetch()
-        // setShowNotification(true)
       }
     } catch (error) {
       console.error("error", error)
     }
   }
 
-  //   const renderNotification = () => {
-  //     if (isShowNotification && !isBotEnabled)
-  //       return (
-  //         <div className="mb-5 flex justify-center">
-  //           <span className="text-mercury-500 text-base">
-  //             You now delegate chat to your agent
-  //           </span>
-  //         </div>
-  //       )
-
-  //     return <div />
-  //   }
-
   if (!myBotData) return <></>
 
   return (
     <>
-      {/* {renderNotification()} */}
       <div className="hidden w-fit items-center justify-end md:flex">
         <Button
           className="flex h-11 w-fit cursor-pointer items-center gap-2 rounded-3xl bg-mercury-70 p-3"
@@ -141,4 +125,4 @@ const DelegatePrivateAgent: React.FC = () => {
     </>
   )
 }
-export default DelegatePrivateAgent
+export default React.memo(DelegatePrivateAgent)

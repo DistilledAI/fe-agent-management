@@ -8,7 +8,7 @@ import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { useNavigate } from "react-router-dom"
 import { QueryDataKeys } from "types/queryDataKeys"
 import AgentInfo from "./AgentInfo"
-import MyCredits from "./Credits"
+import MyPoints from "./MyPoints"
 import AuthorProfile from "./Profile"
 
 const Account = () => {
@@ -55,10 +55,11 @@ const Account = () => {
         </div>
         {renderLogoutBtn()}
       </div>
+
       <div className="mt-10 flex flex-col gap-4 max-md:mt-7">
         <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
           <div>
-            <MyCredits />
+            <MyPoints />
           </div>
           <div>
             <AuthorProfile />

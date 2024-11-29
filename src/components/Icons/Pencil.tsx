@@ -19,3 +19,20 @@ export const PencilCogIcon = ({ size = 24, color = "#545454" }: IconProps) => {
     </svg>
   )
 }
+
+export const CrowIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M10 5L13.3333 10L17.5 6.66667L15.8333 15H4.16667L2.5 6.66667L6.66667 10L10 5Z"
+        fill="#BCAA88"
+      />
+    </svg>
+  )
+}

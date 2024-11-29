@@ -13,13 +13,39 @@ import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import MessageLive from "./MessageLive"
 import ToggleActionsMobile from "./ToggleActionsMobile"
+import React, { useState } from "react"
+import ClanShortInfo from "@pages/AgentClan/ClanShortInfo"
 
-const RightContent = () => {
+const RightContent: React.FC<{
+  isClan?: boolean
+}> = ({ isClan = false }) => {
   const { isMobile } = useWindowSize()
   const { isLogin } = useAuthState()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const { chatId } = useGetChatId()
-  const { mutation } = useSubmitChat(chatId, SpeechRecognition.stopListening)
+  const [replyUsername, setReplyUsername] = useState<string | null>(null)
+  const [replyId, setReplyId] = useState<number>()
+  const [replyTxt, setReplyTxt] = useState<string>("")
+  const [hasFocus, setHasFocus] = useState(false)
+  const resetReply = () => {
+    setReplyId(undefined)
+    setReplyUsername(null)
+    setReplyTxt("")
+  }
+  const { mutation } = useSubmitChat({
+    callbackDone: () => {
+      SpeechRecognition.stopListening()
+      resetReply()
+    },
+    groupId: chatId,
+    reply: replyId
+      ? {
+          messageId: replyId,
+          message: replyTxt,
+          username: replyUsername ?? "",
+        }
+      : undefined,
+  })
   const isEnableTextInput = isLogin && chatId
   const { data: isCloseLiveChat = false } = useQuery<boolean>({
     queryKey: [QueryDataKeys.CLOSE_LIVE_CHAT],
@@ -42,7 +68,18 @@ const RightContent = () => {
           index === messages.length - 1 && "pb-24 md:pb-0",
         )}
       >
-        <MessageLive key={index} message={message} />
+        <MessageLive
+          key={index}
+          message={message}
+          onReply={() => {
+            setHasFocus(true)
+            setReplyId(message.id as number)
+            setReplyTxt(message.content)
+            setReplyUsername(
+              message.username ? `@${message.username} ` : "@Unnamed ",
+            )
+          }}
+        />
       </div>
     )
   }
@@ -58,6 +95,7 @@ const RightContent = () => {
       )}
     >
       {isMobile ? <ToggleActionsMobile /> : <></>}
+      {!isMobile && isClan && <ClanShortInfo />}
       {!isCloseLiveChat ? (
         <ChatWindow
           messages={messages}
@@ -68,9 +106,12 @@ const RightContent = () => {
           isFetchingPreviousPage={isFetchingPreviousPage}
           onLoadPrevMessages={onLoadPrevMessages}
           chatId={chatId}
-          isChatAction={false}
+          isChatActions={false}
           msgBoxClassName="p-0 px-4 pb-4"
-          className="md:max-h-[calc(100%-80px)]"
+          className={twMerge(
+            "md:max-h-[calc(100%-80px)]",
+            isClan && "md:max-h-[calc(100%-130px)]",
+          )}
           scrollBottomClassName="max-md:!bottom-[93px] max-md:bg-none"
           increaseViewportBy={1000}
         />
@@ -91,6 +132,10 @@ const RightContent = () => {
           onSubmit={mutation.mutate}
           isPending={mutation.isPending}
           isDisabledInput={!isEnableTextInput}
+          replyUsername={replyUsername}
+          hasFocus={hasFocus}
+          setHasFocus={setHasFocus}
+          resetRely={resetReply}
           wrapperClassName="w-full static max-w-full"
         />
       </div>

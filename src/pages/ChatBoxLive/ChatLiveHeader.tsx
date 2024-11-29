@@ -3,15 +3,17 @@ import { Button } from "@nextui-org/react"
 import { useNavigate } from "react-router-dom"
 import TradeTokenButton from "./TradeTokenButton"
 import AgentLiveInfo from "./AgentLiveInfo"
-import useFetchDetail from "@pages/ChatPage/Mobile/ChatDetail/useFetch"
 import AvatarContainer from "@components/AvatarContainer"
 import { LiveIcon } from "@components/Icons"
 import { twMerge } from "tailwind-merge"
 import { PATH_NAMES } from "@constants/index"
+import React from "react"
+import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 
-const ChatLiveHeader = () => {
+const ChatLiveHeader: React.FC<{
+  groupDetail: UserGroup | null
+}> = ({ groupDetail }) => {
   const navigate = useNavigate()
-  const { groupDetail } = useFetchDetail()
   const isLive = groupDetail ? groupDetail.group.live === 1 : false
 
   return (
@@ -42,7 +44,7 @@ const ChatLiveHeader = () => {
       </div>
 
       <div className="flex items-center gap-3">
-        <AgentLiveInfo />
+        <AgentLiveInfo groupDetail={groupDetail} />
         <TradeTokenButton />
       </div>
     </div>

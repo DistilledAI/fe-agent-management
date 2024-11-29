@@ -14,6 +14,14 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import { IGroup } from "../LeftBar/useFetchGroups"
 import { convertDataFetchToMessage, IMessageBox } from "./helpers"
 
+export interface IMentions {
+  id: number
+  msgId: number
+  user: IUser
+  userId: number
+  createdAt: string
+}
+
 export interface IMessage {
   id: number
   groupId: number
@@ -23,6 +31,12 @@ export interface IMessage {
   createdAt: string
   group: IGroup
   user: IUser
+  relyTo?: number
+  relyToMessage?: {
+    messages: string
+    user: IUser
+  }
+  mentions?: IMentions[]
 }
 
 export interface ICachedMessageData {
@@ -97,6 +111,9 @@ const useFetchMessages = () => {
     })
     queryClient.invalidateQueries({
       queryKey: chatMessagesKey(groupId),
+    })
+    queryClient.invalidateQueries({
+      queryKey: [QueryDataKeys.DELEGATE_PRIVATE_AGENT, groupId],
     })
   }
 

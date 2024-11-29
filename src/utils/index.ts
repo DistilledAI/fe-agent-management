@@ -199,3 +199,63 @@ export const calculateFileSize = (fileSize: number) => {
 
   return `${Math.round(fileSize)} ${units[unitIndex]}`
 }
+
+export const getRemainingDays = (createdAt: number, endDate: number) => {
+  const now = Date.now()
+
+  if (endDate <= createdAt) {
+    return { totalDays: 0, remainingDays: 0, message: "Invalid date range." }
+  }
+
+  const totalDays =
+    Math.ceil((endDate - createdAt) / (1000 * 60 * 60 * 24)) || 0
+
+  if (now < createdAt) {
+    return { totalDays, remainingDays: totalDays, message: "Not started yet." }
+  }
+
+  const remainingTime = endDate - now || 0
+  if (remainingTime <= 0) {
+    return { totalDays, remainingDays: 0, message: "Expired." }
+  }
+
+  const remainingDays = Math.ceil(remainingTime / (1000 * 60 * 60 * 24))
+  return { totalDays, remainingDays, message: "Active." }
+}
+
+export const getRemainingDaysPercentage = (
+  createdAt: number,
+  endDate: number,
+) => {
+  const { totalDays, remainingDays, message } = getRemainingDays(
+    createdAt,
+    endDate,
+  )
+
+  if (totalDays === 0 || message !== "Active.") {
+    return { percentage: 0, message }
+  }
+
+  const percentage = 100 - Math.round((remainingDays / totalDays) * 100)
+  return { percentage, message }
+}
+
+export const formatNumberWithComma = (num: number) => {
+  if (num) {
+    return num.toLocaleString("en-US")
+  }
+  return 0
+}
+
+export const shortenNumber = (number: number) => {
+  if (number >= 1000000000000) {
+    return (number / 1000000000000).toFixed(1).replace(".0", "") + "T"
+  } else if (number >= 1000000000) {
+    return (number / 1000000000).toFixed(1).replace(".0", "") + "B"
+  } else if (number >= 1000000) {
+    return (number / 1000000).toFixed(1).replace(".0", "") + "M"
+  } else if (number >= 1000) {
+    return (number / 1000).toFixed(1).replace(".0", "") + "k"
+  }
+  return number.toString()
+}

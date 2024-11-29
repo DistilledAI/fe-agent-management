@@ -57,6 +57,7 @@ export default {
         brown: {
           10: "#A2845E",
           50: "#F6F5F0",
+          100: "#E9E3D8",
           500: "#A2845E",
           600: "#83664B",
         },
@@ -94,7 +95,7 @@ export default {
           "linear-gradient(53deg, #7E7150 -2.17%, #8D7C4D 134.29%)",
         "lgd-code-hot-ramp": "linear-gradient(46deg, #FF075A 0%, #FF9035 100%)",
         "fading-orange":
-          "linear-gradien`t(65deg, #F5DCE2 16.01%, #F4E7DC 83.99%)",
+          "linear-gradient(65deg, #F5DCE2 16.01%, #F4E7DC 83.99%)",
         "fading-white":
           "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #FFF 100%)",
         "lgd-muted-beige":
@@ -111,6 +112,7 @@ export default {
         6: "0px 16px 32px -4px rgba(24, 24, 25, 0.10), 0px 2px 4px 0px rgba(24, 24, 25, 0.08)",
         7: "0px -16px 32px -4px rgba(24, 24, 25, 0.05), 0px -2px 4px 0px rgba(24, 24, 25, 0.04)",
         8: "0px 16px 32px -4px rgba(24, 24, 25, 0.05), 0px 2px 4px 0px rgba(24, 24, 25, 0.08)",
+        9: "0px 16px 40px 0px rgba(24, 24, 25, 0.08), 0px 2px 4px 0px rgba(24, 24, 25, 0.05)",
       },
     },
   },

@@ -3,13 +3,11 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
-import { RoleUser } from "@constants/index"
+import { CLEAR_CACHED_MESSAGE, RoleUser } from "@constants/index"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
-import { useQuery } from "@tanstack/react-query"
 import { getActiveColorRandomById } from "@utils/index"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import { twMerge } from "tailwind-merge"
-import { QueryDataKeys } from "types/queryDataKeys"
 import ChatActions from "./ChatActions"
 import {
   getBadgeColor,
@@ -19,6 +17,11 @@ import {
 } from "./helpers"
 import useFetchMessages from "./useFetchMessages"
 import AgentInfoCard from "./AgentInfoCard"
+import ContextCleared from "@components/ContextCleared"
+import { useQuery } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
+import useAuthState from "@hooks/useAuthState"
+import { IAgentData } from "types/user"
 
 const ChatMessages = () => {
   const {
@@ -30,13 +33,16 @@ const ChatMessages = () => {
     isFetchingPreviousPage,
   } = useFetchMessages()
   const { chatId } = useGetChatId()
-  const { bgColor } = getActiveColorRandomById(chatId)
-  const { data: myPrivateAgent } = useQuery({
-    queryKey: [QueryDataKeys.DELEGATE_PRIVATE_AGENT, chatId],
-    enabled: !!chatId,
-  })
-
+  const { bgColor, textColor } = getActiveColorRandomById(chatId)
   const { spacing } = useStyleSpacing()
+  const { user, isLogin, isAnonymous } = useAuthState()
+  const { data } = useQuery<any>({
+    queryKey: [QueryDataKeys.MY_BOT_LIST],
+    enabled: isLogin && !isAnonymous,
+  })
+  const isOwner = !!data?.data?.items?.find(
+    (agent: IAgentData) => agent?.owner === user?.id,
+  )
 
   const getBadgeIcon = (role: RoleUser) =>
     role === RoleUser.BOT ? (
@@ -52,10 +58,21 @@ const ChatMessages = () => {
       messages,
     )
 
+    if (message.content === CLEAR_CACHED_MESSAGE) {
+      return (
+        <ContextCleared
+          wrapperClassName={twMerge(
+            "max-w-[768px] mx-auto pb-4 px-3 md:px-0",
+            messages.length - 1 === index && "pb-10",
+          )}
+          textClassName={textColor}
+        />
+      )
+    }
     return (
       <div
         className={twMerge(
-          "mx-auto w-full max-w-[768px] scroll-smooth px-3 pb-4",
+          "mx-auto w-full max-w-[768px] px-3 pb-4",
           message.role === RoleChat.OWNER && paddingBottomStyle,
         )}
         key={index}
@@ -95,12 +112,12 @@ const ChatMessages = () => {
         onLoadPrevMessages={onLoadPrevMessages}
         chatId={chatId}
         msgBoxClassName="p-0 md:px-4"
-        isChatAction={!!myPrivateAgent}
         style={{
           paddingBottom: `${spacing}px`,
         }}
+        isChatActions={true}
       />
-      <ChatActions />
+      <ChatActions isClearContextBtn={!isOwner} />
     </>
   )
 }

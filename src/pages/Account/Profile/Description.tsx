@@ -53,9 +53,9 @@ const AuthorDescription = () => {
   return (
     <div className="flex items-center justify-between">
       <span className="text-mercury-600">Bio:</span>
-      <div className="flex items-center gap-2">
-        <input
-          className="border-none bg-transparent text-right shadow-none outline-none"
+      <div className="line-clamp-2 flex items-center gap-2">
+        <textarea
+          className="text-base-md border-none bg-transparent text-right shadow-none outline-none"
           value={value}
           onChange={(e) => handleOnChange(e.target.value)}
           onKeyDown={handleKeyDown}

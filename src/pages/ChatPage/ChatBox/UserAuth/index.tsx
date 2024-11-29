@@ -1,15 +1,15 @@
+import { xDSTL } from "@assets/images"
 import AvatarCustom from "@components/AvatarCustom"
 import ChatInfoCurrent from "@components/ChatInfoCurrent"
 import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
 import { SearchUserIconOutline } from "@components/Icons/UserIcon"
 import { WalletIcon } from "@components/Icons/Wallet"
-import { RootState } from "@configs/store"
 import { PATH_NAMES, RoleUser } from "@constants/index"
+import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
 import useFetchDetail from "@pages/ChatPage/Mobile/ChatDetail/useFetch"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById } from "@utils/index"
-import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { getMyPrivateAgent } from "services/chat"
 import { twMerge } from "tailwind-merge"
@@ -20,20 +20,27 @@ interface UserAuthProps {
   loading?: boolean
 }
 const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
-  const user = useSelector((state: RootState) => state.user.user)
+  const { isAnonymous, user, isLogin } = useAuthState()
   const navigate = useNavigate()
   const { groupDetail, chatId } = useFetchDetail()
-
-  const { data } = useQuery({
+  const queryClient = useQueryClient()
+  const cachedData = queryClient.getQueryData([QueryDataKeys.MY_BOT_LIST])
+  const { data } = useQuery<any>({
     queryKey: [QueryDataKeys.MY_BOT_LIST],
-    queryFn: getMyPrivateAgent,
-    refetchOnWindowFocus: false,
+    queryFn: async () => {
+      if (!cachedData) {
+        return await getMyPrivateAgent()
+      }
+    },
+    enabled: !isAnonymous && isLogin,
   })
-  const hasBot = data ? data.data.items.length > 0 : false
+  const hasBot = data ? data.data.items?.length > 0 : false
+
   const { textColor } = getActiveColorRandomById(chatId)
   const isHiddenMyData = !hasBot
   const isShowInfo =
     user && user.publicAddress && user.role !== RoleUser.ANONYMOUS
+  const totalxDstlPoint = user?.xDstlPoint || 0
 
   return (
     <div className="flex items-center justify-between">
@@ -63,6 +70,18 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
               <span className="text-base">My Agents</span>
             </div>
           </Button>
+
+          <div
+            className="relative flex cursor-pointer items-center gap-1"
+            onClick={() => navigate(PATH_NAMES.REWARDS)}
+          >
+            <img src={xDSTL} width={24} height={24} />
+            <span className="text-base text-mercury-900">
+              <span className="font-bold">{totalxDstlPoint}</span> xDSTL
+            </span>
+            <div className="absolute -right-2 -top-2 h-3 w-3 rounded-full bg-[#FF3B30]" />
+          </div>
+
           <Button
             onClick={() => navigate(PATH_NAMES.ACCOUNT)}
             className="btn-primary h-11 w-fit max-md:!h-auto max-md:!w-auto max-md:min-w-0 max-md:gap-0 max-md:p-0"

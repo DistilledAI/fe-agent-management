@@ -1,4 +1,5 @@
 import { STATUS_AGENT } from "@constants/index"
+import useAuthState from "@hooks/useAuthState"
 import { useQueries } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import { getMyBotData } from "services/user"
@@ -20,6 +21,7 @@ interface UseActiveAgentReturn {
 
 const useActiveAgent = (): UseActiveAgentReturn => {
   const { botId } = useParams<{ botId: string }>()
+  const { isLogin, isAnonymous } = useAuthState()
 
   const [agentDataQuery, agentListQuery] = useQueries<
     [
@@ -35,6 +37,7 @@ const useActiveAgent = (): UseActiveAgentReturn => {
       },
       {
         queryKey: [QueryDataKeys.MY_BOT_LIST],
+        enabled: isLogin && !isAnonymous,
       },
     ],
   })

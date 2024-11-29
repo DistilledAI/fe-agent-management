@@ -9,11 +9,19 @@ import SpeechRecognition from "react-speech-recognition"
 import ChatInput from "../../ChatInput"
 import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
 import useFetchMessages from "../../ChatMessages/useFetchMessages"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
-import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
+import {
+  CLEAR_CACHED_MESSAGE,
+  PATH_NAMES,
+  STATUS_AGENT,
+} from "@constants/index"
 import useFetchMyData from "@pages/MyData/useFetch"
 import AlertBox from "@components/AlertBox"
+import ChatActions from "../../ChatMessages/ChatActions"
+import ContextCleared from "@components/ContextCleared"
+import { twMerge } from "tailwind-merge"
+import { getMyPrivateAgent } from "services/chat"
 
 const PrivateAgentChatContent: React.FC<{
   hasInputChat?: boolean
@@ -29,24 +37,41 @@ const PrivateAgentChatContent: React.FC<{
   const { spacing } = useStyleSpacing()
   const { privateChatId } = useParams()
   const groupId = privateChatId
-  const { mutation } = useSubmitChat(groupId, SpeechRecognition.stopListening)
+  const { mutation } = useSubmitChat({
+    groupId,
+    callbackDone: SpeechRecognition.stopListening,
+  })
   const { list: listMyData, isFetched: isFetchedMyData } = useFetchMyData()
+  const queryClient = useQueryClient()
   const { data: isChatting } = useQuery<boolean>({
     initialData: false,
-    queryKey: ["isChatting", groupId],
+    queryKey: [QueryDataKeys.IS_CHATTING, groupId],
     enabled: !!groupId,
   })
-
+  const cachedData = queryClient.getQueryData([QueryDataKeys.MY_BOT_LIST])
   const { data } = useQuery<any>({
     queryKey: [QueryDataKeys.MY_BOT_LIST],
+    queryFn: getMyPrivateAgent,
     refetchOnWindowFocus: false,
+    enabled: !cachedData,
   })
   const agent = data?.data?.items?.[0]
   const isBotActive = agent && agent?.status === STATUS_AGENT.ACTIVE
   const isShowAddData =
     listMyData.length === 0 && isFetchedMyData && isBotActive
 
-  const renderMessage = (_: number, message: IMessageBox) => {
+  const renderMessage = (index: number, message: IMessageBox) => {
+    if (message.content === CLEAR_CACHED_MESSAGE) {
+      return (
+        <ContextCleared
+          wrapperClassName={twMerge(
+            "max-w-[768px] mx-auto pb-4 px-3 md:px-0",
+            messages.length - 1 === index && "pb-10",
+          )}
+        />
+      )
+    }
+
     return (
       <div className="mx-auto w-full max-w-[768px] px-3 pb-4 max-md:px-4">
         {message.role === RoleChat.CUSTOMER ? (
@@ -69,6 +94,8 @@ const PrivateAgentChatContent: React.FC<{
     )
   }
 
+  const isChatActions = isBotActive && !isShowAddData
+
   return (
     <>
       <ChatWindow
@@ -84,13 +111,20 @@ const PrivateAgentChatContent: React.FC<{
           paddingBottom: `${spacing}px`,
         }}
         className={
-          !isBotActive
+          !isBotActive && !isChatActions
             ? "max-h-[calc(100%-120px)] md:max-h-[calc(100%-190px)]"
             : ""
         }
+        isChatActions={isChatActions}
       />
-      {!isBotActive && (
-        <div className="absolute bottom-[70px] left-1/2 w-[calc(100%-32px)] -translate-x-1/2 bg-white pb-0 md:bottom-[95px] md:pb-2">
+      {isChatActions ? <ChatActions isDelegateBtn={false} /> : null}
+      <div
+        className={twMerge(
+          "absolute bottom-[70px] left-1/2 w-[calc(100%-32px)] -translate-x-1/2 bg-white pb-0 md:bottom-[95px] md:pb-2",
+          isChatActions && "bottom-[124px] md:bottom-[140px]",
+        )}
+      >
+        {!isBotActive ? (
           <AlertBox
             className="mx-auto max-w-[768px]"
             isVisible={true}
@@ -101,10 +135,8 @@ const PrivateAgentChatContent: React.FC<{
               { to: PATH_NAMES.MARKETPLACE, label: "Chat with other agents" },
             ]}
           />
-        </div>
-      )}
-      {isShowAddData && (
-        <div className="absolute bottom-[70px] left-1/2 w-[calc(100%-32px)] -translate-x-1/2 bg-white pb-0 md:bottom-[95px] md:pb-2">
+        ) : null}
+        {isShowAddData ? (
           <AlertBox
             className="mx-auto max-w-[768px]"
             isVisible={true}
@@ -114,8 +146,8 @@ const PrivateAgentChatContent: React.FC<{
             ]}
             links={[{ to: PATH_NAMES.ADD_MY_DATA, label: "Add Data" }]}
           />
-        </div>
-      )}
+        ) : null}
+      </div>
       {hasInputChat && (
         <ChatInput
           onSubmit={mutation.mutate}

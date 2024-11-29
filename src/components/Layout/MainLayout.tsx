@@ -9,6 +9,7 @@ import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { Outlet, useLocation, useParams } from "react-router-dom"
 import FooterMobile from "./FooterMobile"
 import HeaderMobile from "./HeaderMobile"
+import useAuthState from "@hooks/useAuthState"
 
 const MainLayout = () => {
   useInviteAgent()
@@ -17,6 +18,7 @@ const MainLayout = () => {
   useMessageSocket()
 
   const { screenWidth } = useWindowSize()
+  const { isLogin, isAnonymous } = useAuthState()
   const { pathname } = useLocation()
   const { inviteAgentId, privateChatId } = useParams()
   const { chatId } = useGetChatId()
@@ -25,11 +27,14 @@ const MainLayout = () => {
     `${PATH_NAMES.INVITE}/${inviteAgentId}`,
     `${PATH_NAMES.MY_DATA}`,
     `${PATH_NAMES.PRIVATE_AGENT}/${privateChatId}`,
-    `${PATH_NAMES.LIVE}`,
+    `${PATH_NAMES.CLAN}`,
     `${PATH_NAMES.MY_AGENTS}`,
   ]
 
-  const isIgnoreLayout = ignoreLayout.some((path) => pathname.startsWith(path))
+  const isIgnoreLayout =
+    ignoreLayout.some((path) => pathname.startsWith(path)) &&
+    isLogin &&
+    !isAnonymous
   const isHeader = !isIgnoreLayout
   const isFooter = !isIgnoreLayout
 

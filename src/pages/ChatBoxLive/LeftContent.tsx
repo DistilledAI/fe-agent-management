@@ -1,18 +1,26 @@
 import bitcoinMaxIntro from "@assets/video/bitcoin-max-intro-ai.mp4"
-import { Skeleton } from "@nextui-org/react"
+import { Image, Skeleton } from "@nextui-org/react"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import AgentDescription from "./AgentDescription"
 import TradeTokenButton from "./TradeTokenButton"
 import VideoCustom from "@components/VideoCustom"
+import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import { bgClanDefault } from "@assets/images"
+import AvatarCustom from "@components/AvatarCustom"
+// import TotalMemberBadge from "@components/TotalMemberBadge"
 
-const LeftContent = () => {
+const LeftContent: React.FC<{
+  groupDetail: UserGroup | null
+  isFetched: boolean
+}> = ({ groupDetail, isFetched }) => {
   const queryClient = useQueryClient()
   const [isLoaded, setIsLoaded] = useState(false)
+  const isMaxi = groupDetail?.group.label === "@maxisbuyin"
 
-  const queries = useQueries({
+  const [agentLiveVolume, closeLiveChat, expandLiveChat] = useQueries({
     queries: [
       {
         initialData: true,
@@ -27,9 +35,9 @@ const LeftContent = () => {
       },
     ],
   })
-  const isMuted = !!queries[0].data
-  const isCloseChatLive = !!queries[1].data
-  const isExpandLiveChat = !!queries[2].data
+  const isMuted = !!agentLiveVolume.data
+  const isCloseChatLive = !!closeLiveChat.data
+  const isExpandLiveChat = !!expandLiveChat.data
 
   useEffect(() => {
     setTimeout(() => setIsLoaded(true), 200)
@@ -44,7 +52,9 @@ const LeftContent = () => {
       )}
     >
       <div className="flex h-full flex-col md:h-fit">
-        <Skeleton isLoaded={isLoaded} className="rounded-[32px]">
+        {!isLoaded || !isFetched ? (
+          <Skeleton className="h-[427px] rounded-[32px]"></Skeleton>
+        ) : isMaxi ? (
           <VideoCustom
             videoSrc={bitcoinMaxIntro}
             classNames={{
@@ -62,7 +72,29 @@ const LeftContent = () => {
             }
             muted={isMuted}
           />
-        </Skeleton>
+        ) : (
+          <div className="relative max-h-[427px] overflow-hidden rounded-[32px]">
+            <Image
+              classNames={{ wrapper: "w-full h-full !max-w-full" }}
+              className="h-full w-full object-cover"
+              src={bgClanDefault}
+              alt="clan"
+              disableAnimation
+            />
+            <div className="absolute left-1/2 top-1/2 z-[11] h-[70px] w-[70px] -translate-x-1/2 -translate-y-1/2 rounded-full">
+              <AvatarCustom
+                className="h-full w-full object-cover"
+                src={groupDetail?.group.image}
+                publicAddress={groupDetail?.group?.name}
+              />
+            </div>
+            {/* <div className="absolute right-4 top-4 z-[11]">
+              <TotalMemberBadge
+                groupId={groupDetail?.groupId?.toString() ?? ""}
+              />
+            </div> */}
+          </div>
+        )}
 
         <div className="mt-6 hidden items-center justify-between gap-2 md:flex">
           {/* <TwitterButton /> */}
@@ -70,7 +102,7 @@ const LeftContent = () => {
         </div>
       </div>
       <div className="mt-6 hidden md:block">
-        <AgentDescription />
+        <AgentDescription groupDetail={groupDetail} />
       </div>
     </div>
   )

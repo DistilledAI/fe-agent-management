@@ -3,6 +3,7 @@ export const PATH_NAMES = {
   LLM: "/chatbot",
   CHAT: "/chat",
   LIVE: "/live",
+  CLAN: "/clan",
   CHAT_DETAIL: "/chat/:chatId",
   INVITE: "/invite",
   NOT_FOUND: "/not-found",
@@ -15,6 +16,7 @@ export const PATH_NAMES = {
   AGENT_DETAIL: "/agent",
   CREATE_AGENT: "/create-agent",
   MY_AGENTS: "/my-agents",
+  REWARDS: "/rewards",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {
@@ -197,3 +199,5 @@ export const COMMUNICATION_STYLE_LIST = [
     type: "custom",
   },
 ]
+
+export const CLEAR_CACHED_MESSAGE = "CLEAR_CACHED"

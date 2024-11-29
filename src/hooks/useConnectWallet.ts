@@ -3,8 +3,10 @@ import { loginSuccess } from "@reducers/userSlice"
 import { ethers } from "ethers"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
+import { useSearchParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { IDataSignatureAuth, signatureAuth } from "services/auth"
+import { postReferralCode } from "services/user"
 import { useAccount } from "wagmi"
 import useAuthAction from "./useAuthAction"
 import useAuthState from "./useAuthState"
@@ -16,6 +18,8 @@ export const WALLET_TYPE = {
 }
 
 const useConnectWallet = () => {
+  const [searchParams] = useSearchParams()
+  const referralCode = searchParams.get("invite") || ""
   const [loadingConnectMetamask, setLoadingConnectMetamask] =
     useState<boolean>(false)
   const [loadingConnectPhantom, setLoadingConnectPhantom] =
@@ -44,6 +48,7 @@ const useConnectWallet = () => {
         }),
       )
     }
+    await postReferralCode(referralCode)
   }
 
   const withTimeout = (promise: any, timeoutMs: number) => {
@@ -135,7 +140,7 @@ const useConnectWallet = () => {
         ],
       }
       const value = {
-        action: "login",
+        action: "Login to Distilled",
         publicAddress,
         timestamp,
       }
@@ -147,7 +152,7 @@ const useConnectWallet = () => {
 
       const input: IDataSignatureAuth = {
         data: {
-          action: "login",
+          action: "Login to Distilled",
           publicAddress,
           timestamp,
         },
@@ -211,18 +216,22 @@ const useConnectWallet = () => {
         ],
       }
       const value = {
-        action: "login",
+        action: "Login to Distilled",
         publicAddress,
         timestamp,
       }
 
-      let signature = (await signer._signTypedData(domain, types, value)) as any
+      const signature = (await signer._signTypedData(
+        domain,
+        types,
+        value,
+      )) as any
       const digest = ethers.utils._TypedDataEncoder.hash(domain, types, value)
       const publicKey = ethers.utils.recoverPublicKey(digest, signature)
 
       const input: IDataSignatureAuth = {
         data: {
-          action: "login",
+          action: "Login to Distilled",
           publicAddress,
           timestamp,
         },
@@ -286,18 +295,22 @@ const useConnectWallet = () => {
         ],
       }
       const value = {
-        action: "login",
+        action: "Login to Distilled",
         publicAddress,
         timestamp,
       }
 
-      let signature = (await signer._signTypedData(domain, types, value)) as any
+      const signature = (await signer._signTypedData(
+        domain,
+        types,
+        value,
+      )) as any
       const digest = ethers.utils._TypedDataEncoder.hash(domain, types, value)
       const publicKey = ethers.utils.recoverPublicKey(digest, signature)
 
       const input: IDataSignatureAuth = {
         data: {
-          action: "login",
+          action: "Login to Distilled",
           publicAddress,
           timestamp,
         },

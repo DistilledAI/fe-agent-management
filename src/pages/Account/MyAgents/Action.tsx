@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { publishMarketplace } from "services/chat"
+import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { IAgentData } from "types/user"
 
@@ -23,6 +24,7 @@ const MyAgentAction: React.FC<{
   const agentId = data.id
 
   const onRedirectEditAgentPage = () => {
+    if (!isActive) return
     navigate(`${PATH_NAMES.AGENT_DETAIL}/${agentId}`)
   }
 
@@ -60,7 +62,10 @@ const MyAgentAction: React.FC<{
         {isPublished ? "Unpublish" : "Publish"}
       </Button>
       <div
-        className="inline-flex cursor-pointer items-center gap-1 font-medium text-[#A2845E] hover:opacity-70 max-sm:text-14"
+        className={twMerge(
+          "inline-flex cursor-pointer items-center gap-1 font-medium text-[#A2845E] hover:opacity-70 max-sm:text-14",
+          !isActive && "pointer-events-none cursor-default opacity-65",
+        )}
         onClick={onRedirectEditAgentPage}
       >
         <SettingIcon /> Edit

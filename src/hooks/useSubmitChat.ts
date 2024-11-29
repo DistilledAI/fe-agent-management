@@ -13,10 +13,19 @@ import { postChatToGroup } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 import useAuthState from "./useAuthState"
 
-const useSubmitChat = (
-  groupId: string | undefined,
-  callbackDone?: () => void,
-) => {
+const useSubmitChat = ({
+  groupId,
+  callbackDone,
+  reply,
+}: {
+  groupId: string | undefined
+  callbackDone?: () => void
+  reply?: {
+    messageId: number
+    message: string
+    username: string
+  }
+}) => {
   const { user } = useAuthState()
   const queryClient = useQueryClient()
 
@@ -25,11 +34,16 @@ const useSubmitChat = (
     mutationFn: (message: string) =>
       postChatToGroup({
         groupId: Number(groupId),
-        messages: message,
+        messages: reply?.username
+          ? message.replace(reply.username, "")
+          : message,
+        replyTo: reply?.messageId,
       }),
     onMutate: (variables) => {
       const newMessage: IMessageBox = {
-        content: variables,
+        content: reply?.username
+          ? variables.replace(reply.username, "")
+          : variables,
         role: RoleChat.OWNER,
         id: makeId(),
         roleOwner: RoleUser.USER,
@@ -37,7 +51,9 @@ const useSubmitChat = (
         isChatCleared: false,
         publicAddress: user?.publicAddress,
         avatar: user?.avatar,
+        userId: user?.id,
         username: user?.username ?? "Anonymous",
+        reply,
       }
 
       queryClient.setQueryData(

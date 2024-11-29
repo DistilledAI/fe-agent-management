@@ -1,10 +1,15 @@
 import { CheckFilledIcon } from "@components/Icons/DefiLens"
 import { StarUserIconOutline } from "@components/Icons/UserIcon"
 import { COMMUNICATION_STYLE_LIST, PERSONALITY_LIST } from "@constants/index"
-import { Input } from "@nextui-org/react"
+import { Input, Textarea } from "@nextui-org/react"
 import React, { useEffect, useState } from "react"
 import { twMerge } from "tailwind-merge"
-import CategoryLabel, { FieldLabel } from "./CategoryLabel"
+import CategoryLabel, { FieldLabel } from "../CategoryLabel"
+import { Controller, useFormContext } from "react-hook-form"
+import InteractFrequency from "./InteractFrequency"
+import ToneAdaptation from "./ToneAdaptation"
+import ResponseLength from "./ResponseLength"
+import SuggestReplies from "./SuggestReplies"
 
 interface BehaviorItem {
   value: string
@@ -21,13 +26,16 @@ interface AgentBehaviorsProps {
   selectedBehaviors: SelectedBehaviors
   onSelectBehaviors: (selected: SelectedBehaviors) => void
   valueCustomDefault?: any
+  isCreate?: boolean
 }
 
 const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
   selectedBehaviors,
   onSelectBehaviors,
   valueCustomDefault,
+  isCreate = false,
 }) => {
+  const { control } = useFormContext()
   const [customFields, setCustomFields] = useState<{
     [key: string]: { value: string; isFocused: boolean }
   }>({})
@@ -189,6 +197,45 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
           )}
         </div>
       </div>
+      {!isCreate && (
+        <>
+          <div>
+            <FieldLabel
+              text="Customization Instructions"
+              containerClassName="mb-4"
+            />
+            <Controller
+              name="customization_instruction"
+              control={control}
+              render={({ field: { value, onChange } }: any) => {
+                return (
+                  <div className="w-full">
+                    <Textarea
+                      placeholder="Additional notes on how to shape the Agent’s responses or behavior."
+                      minRows={3}
+                      maxRows={3}
+                      className="w-full rounded-xl border border-mercury-400"
+                      classNames={{
+                        inputWrapper: "bg-mercury-70",
+                      }}
+                      value={value || ""}
+                      onChange={(e) => {
+                        onChange(e.target.value)
+                      }}
+                    />
+                  </div>
+                )
+              }}
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-10 max-md:grid-cols-1">
+            <InteractFrequency />
+            <ToneAdaptation />
+            <ResponseLength />
+            <SuggestReplies />
+          </div>
+        </>
+      )}
     </div>
   )
 }
