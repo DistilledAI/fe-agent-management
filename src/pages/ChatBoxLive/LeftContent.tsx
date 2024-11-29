@@ -10,6 +10,7 @@ import VideoCustom from "@components/VideoCustom"
 import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { bgClanDefault } from "@assets/images"
 import AvatarCustom from "@components/AvatarCustom"
+// import TotalMemberBadge from "@components/TotalMemberBadge"
 
 const LeftContent: React.FC<{
   groupDetail: UserGroup | null
@@ -81,15 +82,17 @@ const LeftContent: React.FC<{
               disableAnimation
             />
             <div className="absolute left-1/2 top-1/2 z-[11] h-[70px] w-[70px] -translate-x-1/2 -translate-y-1/2 rounded-full">
-              {/* <div
-                style={{ animation: "bounce .8s ease-in-out infinite .5s" }}
-                className="absolute z-[-1] h-[70px] w-[70px] rounded-full bg-gray-400 opacity-20"
-              ></div> */}
               <AvatarCustom
                 className="h-full w-full object-cover"
                 src={groupDetail?.group.image}
+                publicAddress={groupDetail?.group?.name}
               />
             </div>
+            {/* <div className="absolute right-4 top-4 z-[11]">
+              <TotalMemberBadge
+                groupId={groupDetail?.groupId?.toString() ?? ""}
+              />
+            </div> */}
           </div>
         )}
 
