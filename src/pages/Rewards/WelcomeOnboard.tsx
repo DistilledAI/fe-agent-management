@@ -28,7 +28,7 @@ const WelcomeOnboard: React.FC<{
           <span className="text-base-sb text-mercury-950">Welcome Gift</span>
         </>
       ),
-      desc: "Log in to Mesh with a Web3 wallet that has at least one blockchain transaction.",
+      desc: "Log in to Mesh",
       point: "+200 xDSTL",
       key: XDSTL_TASK_KEY.LOGIN,
     },
