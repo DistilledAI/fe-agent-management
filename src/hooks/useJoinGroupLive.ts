@@ -10,9 +10,11 @@ import { useAppDispatch } from "./useAppRedux"
 import useAuthState from "./useAuthState"
 
 const useJoinGroupLive = () => {
-  const { pathname, state } = useLocation()
-  const { chatId, originalChatId } = useGetChatId()
-  const isInvitePathName = pathname === `${PATH_NAMES.CLAN}/${originalChatId}`
+  const { state } = useLocation()
+  const { chatId } = useGetChatId()
+  // const isInvitePathName =
+  //   pathname === `${PATH_NAMES.CLAN}/${originalChatId}` ||
+  //   pathname === `${PATH_NAMES.LIVE}/${originalChatId}`
   const { isLogin, user } = useAuthState()
   const dispatch = useAppDispatch()
   const [isLogged, setIsLogged] = useState(false)
@@ -38,8 +40,9 @@ const useJoinGroupLive = () => {
         }
       : {}
     const res = await inviteUserJoinGroup(payload, headers)
-    navigate(`${PATH_NAMES.CLAN}/${res?.data?.group?.label}`)
+
     setIsInvited(true)
+    navigate(`${PATH_NAMES.CLAN}/${res?.data?.group?.label}`)
     return !!res.data
   }
 
@@ -70,29 +73,24 @@ const useJoinGroupLive = () => {
   useEffect(() => {
     // anonymous join group live
     ;(async () => {
-      if (chatId && isInvitePathName && !isLogin) {
+      if (chatId && !isLogin) {
         anonymousJoinGroupLive()
       }
     })()
-  }, [isInvitePathName, chatId, isLogin])
+  }, [chatId, isLogin])
 
   useEffect(() => {
     // user join group live
     ;(async () => {
       const isJoinLiveLogged =
-        chatId &&
-        isInvitePathName &&
-        user?.id &&
-        !isLogged &&
-        isLogin &&
-        !state?.isGroupJoined
+        chatId && user?.id && !isLogged && isLogin && !state?.isGroupJoined
 
       if (isJoinLiveLogged) {
         await joinGroupLive(user)
         fetchGroups()
       }
     })()
-  }, [isInvitePathName, chatId, isLogin, isLogged, state?.isGroupJoined])
+  }, [chatId, isLogin, isLogged, state?.isGroupJoined])
 
   return { isInvited }
 }

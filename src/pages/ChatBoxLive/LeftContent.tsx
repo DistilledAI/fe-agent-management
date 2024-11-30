@@ -16,7 +16,6 @@ const LeftContent: React.FC<{
   groupDetail: UserGroup | null
   isFetched: boolean
 }> = ({ groupDetail, isFetched }) => {
-  console.log("🚀 ~ groupDetail:", groupDetail)
   const queryClient = useQueryClient()
   const [isLoaded, setIsLoaded] = useState(false)
   const isMaxi =
