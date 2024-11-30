@@ -9,7 +9,11 @@ const useGetChatId = () => {
   const getChatId = async () => {
     try {
       if (chatIdParam?.includes("@")) {
-        const res = await getGroupDetailFromLabel(chatIdParam)
+        let newChatIdParam = chatIdParam
+        if (chatIdParam === "@maxisbuyin") {
+          newChatIdParam = "@maxisbuyin_"
+        }
+        const res = await getGroupDetailFromLabel(newChatIdParam)
         return res?.data?.id
       }
 
