@@ -49,7 +49,7 @@ const useSubmitChat = ({
       }
 
       if (!ref.current || (ref.current && new Date().getTime() > ref.current)) {
-        ref.current = new Date().setSeconds(new Date().getSeconds() + 60)
+        ref.current = new Date().setSeconds(new Date().getSeconds() + 6)
         return postChatToGroup({
           groupId: Number(groupId),
           messages: reply?.username
