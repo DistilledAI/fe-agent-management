@@ -100,7 +100,7 @@ const LeftContent: React.FC<{
 
         <div className="mt-6 hidden items-center justify-between gap-2 md:flex">
           {/* <TwitterButton /> */}
-          <TradeTokenButton />
+          <TradeTokenButton isMaxi={isMaxi} />
         </div>
       </div>
       <div className="mt-6 hidden md:block">
