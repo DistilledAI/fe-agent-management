@@ -3,18 +3,18 @@ import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import useSubmitChat from "@hooks/useSubmitChat"
 import useWindowSize from "@hooks/useWindowSize"
+import ClanShortInfo from "@pages/AgentClan/ClanShortInfo"
 import ChatInput from "@pages/ChatPage/ChatBox/ChatInput"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import useFetchMessages from "@pages/ChatPage/ChatBox/ChatMessages/useFetchMessages"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useQuery } from "@tanstack/react-query"
+import React, { useState } from "react"
 import SpeechRecognition from "react-speech-recognition"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import MessageLive from "./MessageLive"
 import ToggleActionsMobile from "./ToggleActionsMobile"
-import React, { useState } from "react"
-import ClanShortInfo from "@pages/AgentClan/ClanShortInfo"
 
 const RightContent: React.FC<{
   isClan?: boolean
@@ -45,6 +45,7 @@ const RightContent: React.FC<{
           username: replyUsername ?? "",
         }
       : undefined,
+    isClan,
   })
   const isEnableTextInput = isLogin && chatId
   const { data: isCloseLiveChat = false } = useQuery<boolean>({

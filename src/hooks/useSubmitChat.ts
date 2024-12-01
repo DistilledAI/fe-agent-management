@@ -9,6 +9,7 @@ import {
 } from "@pages/ChatPage/ChatBox/ChatMessages/useFetchMessages"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { makeId } from "@utils/index"
+import { useRef } from "react"
 import { postChatToGroup } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 import useAuthState from "./useAuthState"
@@ -17,6 +18,7 @@ const useSubmitChat = ({
   groupId,
   callbackDone,
   reply,
+  isClan,
 }: {
   groupId: string | undefined
   callbackDone?: () => void
@@ -25,20 +27,38 @@ const useSubmitChat = ({
     message: string
     username: string
   }
+  isClan?: boolean
 }) => {
   const { user } = useAuthState()
   const queryClient = useQueryClient()
 
+  const ref = useRef<any>()
+
   const mutation = useMutation({
     mutationKey: [QueryDataKeys.SEND_MESSAGE],
-    mutationFn: (message: string) =>
-      postChatToGroup({
-        groupId: Number(groupId),
-        messages: reply?.username
-          ? message.replace(reply.username, "")
-          : message,
-        replyTo: reply?.messageId,
-      }),
+    //@ts-ignore
+    mutationFn: (message: string) => {
+      if (!isClan) {
+        return postChatToGroup({
+          groupId: Number(groupId),
+          messages: reply?.username
+            ? message.replace(reply.username, "")
+            : message,
+          replyTo: reply?.messageId,
+        })
+      }
+
+      if (!ref.current || (ref.current && new Date().getTime() > ref.current)) {
+        ref.current = new Date().setSeconds(new Date().getSeconds() + 60)
+        return postChatToGroup({
+          groupId: Number(groupId),
+          messages: reply?.username
+            ? message.replace(reply.username, "")
+            : message,
+          replyTo: reply?.messageId,
+        })
+      }
+    },
     onMutate: (variables) => {
       const newMessage: IMessageBox = {
         content: reply?.username
