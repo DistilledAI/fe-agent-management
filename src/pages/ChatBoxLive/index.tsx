@@ -8,8 +8,8 @@ import useFetchDetail from "@pages/ChatPage/Mobile/ChatDetail/useFetch"
 
 const ChatBoxLive = () => {
   const { isInvited } = useJoinGroupLive()
-  const { isMobile } = useWindowSize()
   const { groupDetail, isFetched } = useFetchDetail(isInvited)
+  const { isMobile } = useWindowSize()
 
   return (
     <div
