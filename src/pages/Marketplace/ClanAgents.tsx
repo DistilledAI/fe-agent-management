@@ -3,34 +3,20 @@ import { LiveIcon } from "@components/Icons"
 import { MessageDots } from "@components/Icons/Message"
 import { PATH_NAMES } from "@constants/index"
 import { Button } from "@nextui-org/react"
-import { useQuery } from "@tanstack/react-query"
 import { useNavigate } from "react-router-dom"
-import { getListGroupAgentPublic } from "services/group"
 import { IGroupDetail } from "types/group"
-import { QueryDataKeys } from "types/queryDataKeys"
+import useFetchClan from "./useFetchClan"
 
 const ClanAgents = () => {
   const navigate = useNavigate()
+  const { data } = useFetchClan()
 
   const handleChatWithClan = async (clan: IGroupDetail) => {
     const inviteUrl = `${PATH_NAMES.CLAN}/${clan.label}`
     return navigate(inviteUrl)
   }
 
-  const { data, error } = useQuery({
-    queryKey: [QueryDataKeys.PUBLIC_GROUP_AGENT],
-    queryFn: getListGroupAgentPublic,
-    staleTime: 5 * 60 * 1000,
-    refetchOnWindowFocus: false,
-  })
-
-  if (error) {
-    console.log({ error })
-  }
-
-  const clans = data?.data?.items || []
-
-  return clans.map((clan: IGroupDetail, index: number) => (
+  return data.map((clan: IGroupDetail, index: number) => (
     <div
       className="flex h-fit cursor-pointer justify-between gap-2 rounded-[22px] border-b border-b-mercury-70 p-2 last:border-none hover:bg-mercury-200 md:border-b-[0px]"
       key={index}

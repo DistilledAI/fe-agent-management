@@ -18,6 +18,7 @@ import { solanaCircleIcon } from "@assets/svg"
 import ContractDisplay from "./ContractDisplay"
 import { AGENT_INFO_CLANS } from "@constants/index"
 import AudioClanCustom from "@components/AudioClanCustom"
+import SkeletonInfo, { SkeletonDesc } from "./SkeletonInfo"
 
 const LeftContent: React.FC<{
   groupDetail: UserGroup | null
@@ -25,7 +26,6 @@ const LeftContent: React.FC<{
 }> = ({ groupDetail, isFetched }) => {
   const queryClient = useQueryClient()
   const [isLoaded, setIsLoaded] = useState(false)
-
   const isMaxi =
     groupDetail?.group.label === "@maxisbuyin" ||
     groupDetail?.group.label === "@maxisbuyin_"
@@ -66,7 +66,7 @@ const LeftContent: React.FC<{
       className={twMerge(
         "flex w-full max-w-full flex-col transition-all duration-300 ease-linear max-md:px-4 lg:max-w-[320px]",
         isExpandLiveChat && "hidden",
-        isCloseChatLive && "h-[calc(100%-113px)]",
+        isCloseChatLive && "h-[calc(100%-230px)]",
       )}
     >
       <div className="flex h-full flex-col md:h-fit">
@@ -108,46 +108,56 @@ const LeftContent: React.FC<{
             <AudioClanCustom audioSrc={stalorAudio} />
           </div>
         )}
-        <div className="mt-3 hidden items-center justify-between gap-3 md:flex">
-          <SocialButton
-            icon={<TwitterIcon size={20} />}
-            link={agentInfo?.xLink}
-            isDisabled={!agentInfo?.xLink}
-          />
-          <SocialButton
-            icon={<TelegramOutlineIcon size={20} />}
-            link={agentInfo?.teleLink}
-            isDisabled={!agentInfo?.teleLink}
-          />
+        {isFetched ? (
           <>
-            <Button
-              className="h-14 w-full rounded-full bg-mercury-70 text-white md:h-10"
-              onClick={onOpen}
-              isDisabled={!agentInfo?.shareLink}
-            >
-              <ShareArrowIcon />
-            </Button>
-            <ShareQRModal
-              title={agentInfo?.username}
-              isOpen={isOpen}
-              shareUrl={agentInfo?.shareLink || ""}
-              onClose={onClose}
+            <div className="mt-3 hidden items-center justify-between gap-3 md:flex">
+              <SocialButton
+                icon={<TwitterIcon size={20} />}
+                link={agentInfo?.xLink}
+                isDisabled={!agentInfo?.xLink}
+              />
+              <SocialButton
+                icon={<TelegramOutlineIcon size={20} />}
+                link={agentInfo?.teleLink}
+                isDisabled={!agentInfo?.teleLink}
+              />
+              <>
+                <Button
+                  className="h-14 w-full rounded-full bg-mercury-70 text-white md:h-10"
+                  onClick={onOpen}
+                  isDisabled={!agentInfo?.shareLink}
+                >
+                  <ShareArrowIcon />
+                </Button>
+                <ShareQRModal
+                  title={agentInfo?.username}
+                  isOpen={isOpen}
+                  shareUrl={agentInfo?.shareLink || ""}
+                  onClose={onClose}
+                />
+              </>
+            </div>
+            <div className="mt-3 hidden md:block">
+              <TradeTokenButton isMaxi={isMaxi} />
+            </div>
+            <ContractDisplay
+              classNames={{
+                wrapper: "mt-3 hidden md:flex",
+              }}
+              icon={agentInfo?.contract ? solanaCircleIcon : ""}
+              value={agentInfo?.contract}
             />
           </>
-        </div>
-        <div className="mt-3 hidden md:block">
-          <TradeTokenButton isMaxi={isMaxi} />
-        </div>
-        <ContractDisplay
-          classNames={{
-            wrapper: "mt-3 hidden md:flex",
-          }}
-          icon={agentInfo?.contract ? solanaCircleIcon : ""}
-          value={agentInfo?.contract}
-        />
+        ) : (
+          <SkeletonInfo />
+        )}
       </div>
       <div className="mt-2 hidden md:block">
-        <AgentDescription groupDetail={groupDetail} isMaxi={isMaxi} />
+        {isFetched ? (
+          <AgentDescription groupDetail={groupDetail} isMaxi={isMaxi} />
+        ) : (
+          <SkeletonDesc />
+        )}
       </div>
     </div>
   )
