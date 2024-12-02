@@ -41,8 +41,8 @@ const ShareQRModal = ({
       hideCloseButton
       classNames={{
         base: "bg-white w-fit",
-        wrapper: "z-[99]",
-        backdrop: "z-[99]",
+        wrapper: "z-[999]",
+        backdrop: "z-[999]",
       }}
       size="sm"
       placement="center"

@@ -10,14 +10,35 @@ import {
   useDisclosure,
 } from "@nextui-org/react"
 import AgentDescription from "./AgentDescription"
-import TwitterButton from "./TwitterButton"
-import React from "react"
+import React, { useMemo } from "react"
 import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import SocialButton from "./SocialButton"
+import { TwitterIcon } from "@components/Icons/Twitter"
+import { AGENT_INFO_CLANS } from "./LeftContent"
+import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
+import { ShareArrowIcon } from "@components/Icons/Share"
+import ShareQRModal from "@components/ShareQRModal"
+import { solanaCircleIcon } from "@assets/svg"
+import { centerTextEllipsis, copyClipboard } from "@utils/index"
+import { CopyIcon } from "@components/Icons/Copy"
 
 const AgentLiveInfo: React.FC<{
   groupDetail: UserGroup | null
 }> = ({ groupDetail }) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
+  const {
+    isOpen: isShareOpen,
+    onClose: onShareClose,
+    onOpen: onShareOpen,
+  } = useDisclosure()
+
+  const agentInfo = useMemo(
+    () =>
+      AGENT_INFO_CLANS.find(
+        (agent) => agent.username === groupDetail?.group.label,
+      ),
+    [groupDetail?.group.label],
+  )
 
   return (
     <>
@@ -48,8 +69,53 @@ const AgentLiveInfo: React.FC<{
               className="absolute right-3 top-1/2 -translate-y-1/2"
             />
           </ModalHeader>
-          <ModalBody className="gap-4 px-3 py-4">
-            <TwitterButton />
+          <ModalBody className="gap-3 px-3 py-4">
+            <div className="flex items-center justify-between gap-3">
+              <SocialButton
+                icon={<TwitterIcon size={20} />}
+                link={agentInfo?.xLink}
+                isDisabled={!agentInfo?.xLink}
+              />
+              <SocialButton
+                icon={<TelegramOutlineIcon size={20} />}
+                link={agentInfo?.teleLink}
+                isDisabled={!agentInfo?.teleLink}
+              />
+              <>
+                <Button
+                  className="h-14 w-full rounded-full bg-mercury-70 text-white md:h-10"
+                  onClick={onShareOpen}
+                  isDisabled={!agentInfo?.shareLink}
+                >
+                  <ShareArrowIcon />
+                </Button>
+                <ShareQRModal
+                  title={agentInfo?.username}
+                  isOpen={isShareOpen}
+                  shareUrl={agentInfo?.shareLink || ""}
+                  onClose={onShareClose}
+                />
+              </>
+            </div>
+            {agentInfo?.contract ? (
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-16 font-bold text-mercury-950">
+                  Contract
+                </span>
+                <div className="mt-1 flex items-center gap-2 rounded-[22px] bg-mercury-30 px-2 py-[2px] hover:bg-mercury-50">
+                  <img src={solanaCircleIcon} />
+                  <div
+                    className="flex cursor-pointer items-center gap-2"
+                    onClick={(e) => copyClipboard(e, agentInfo?.contract ?? "")}
+                  >
+                    <span className="text-16 text-mercury-900">
+                      {centerTextEllipsis(agentInfo?.contract ?? "", 6)}
+                    </span>
+                    <CopyIcon />
+                  </div>
+                </div>
+              </div>
+            ) : null}
             <AgentDescription groupDetail={groupDetail} />
           </ModalBody>
           <ModalFooter className="px-3">

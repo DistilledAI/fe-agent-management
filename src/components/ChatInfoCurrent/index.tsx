@@ -2,7 +2,6 @@ import AvatarContainer from "@components/AvatarContainer"
 import AvatarCustom from "@components/AvatarCustom"
 import AvatarGroup from "@components/AvatarGroup"
 import { LiveIcon } from "@components/Icons"
-import TotalMemberBadge from "@components/TotalMemberBadge"
 import useAuthState from "@hooks/useAuthState"
 import {
   getAvatarGroupChat,
@@ -16,6 +15,7 @@ import {
 import React from "react"
 import { twMerge } from "tailwind-merge"
 import MoreAction from "./MoreAction"
+import TotalMemberBadge from "@components/TotalMemberBadge"
 
 const ChatInfoCurrent: React.FC<{
   groupDetail: UserGroup | null
@@ -25,7 +25,6 @@ const ChatInfoCurrent: React.FC<{
   const isGroup = groupDetail?.group?.typeGroup === TypeGroup.PRIVATE_GROUP
   const isGroupPublic = groupDetail?.group?.typeGroup === TypeGroup.PUBLIC_GROUP
   const isLive = isGroupPublic && groupDetail?.group?.live === 1
-  const groupId = groupDetail?.groupId as any
 
   if (!groupDetail) return null
 
@@ -44,11 +43,13 @@ const ChatInfoCurrent: React.FC<{
               "bg-lgd-code-hot-ramp bg-clip-text text-transparent font-bold text-[16px]",
           )}
         />
+        {isLive && (
+          <TotalMemberBadge groupId={groupDetail.groupId.toString()} />
+        )}
         <MoreAction
           groupId={groupDetail.groupId}
           groupType={groupDetail.group.typeGroup}
         />
-        {isLive && <TotalMemberBadge groupId={groupId} />}
       </div>
     )
 

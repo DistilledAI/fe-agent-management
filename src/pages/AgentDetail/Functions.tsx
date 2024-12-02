@@ -3,7 +3,7 @@ import {
   PhototBoltIcon,
   RepeatIcon,
 } from "@components/Icons/AgentDetailIcon"
-import { TelegramOulineIcon } from "@components/Icons/SocialLinkIcon"
+import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
 import { TwitterIcon } from "@components/Icons/Twitter"
 import { StarUserIconOutline } from "@components/Icons/UserIcon"
 import { Button, Switch } from "@nextui-org/react"
@@ -75,7 +75,7 @@ const Functions: React.FC<{
         text={
           <div className="my-6 flex items-center justify-between gap-3 max-sm:flex-col max-sm:items-start">
             <div className="flex flex-wrap items-center gap-2">
-              <TelegramOulineIcon />
+              <TelegramOutlineIcon />
               <span className="text-base-sb text-mercury-950">
                 Autonomous Bot on Telegram Group
               </span>

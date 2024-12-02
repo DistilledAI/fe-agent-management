@@ -80,8 +80,8 @@ export const TelegramIcon = ({ size = 20, color = "#000" }: IconProps) => {
   )
 }
 
-export const TelegramOulineIcon = ({
-  size = 25,
+export const TelegramOutlineIcon = ({
+  size = 20,
   color = "#545454",
 }: IconProps) => {
   return (
@@ -89,13 +89,13 @@ export const TelegramOulineIcon = ({
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
-      viewBox="0 0 25 25"
+      viewBox="0 0 21 20"
       fill="none"
     >
       <path
-        d="M15.5 10.5L11.5 14.5L17.5 20.5L21.5 4.5L3.5 11.5L7.5 13.5L9.5 19.5L12.5 15.5"
+        d="M13 8.33325L9.66667 11.6666L14.6667 16.6666L18 3.33325L3 9.16659L6.33333 10.8333L8 15.8333L10.5 12.4999"
         stroke={color}
-        strokeWidth="1.5"
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />

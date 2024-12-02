@@ -68,3 +68,23 @@ export const ShareFilledIcon = ({
     </svg>
   )
 }
+
+export const ShareArrowIcon = ({ size = 20, color = "#545454" }: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 21 20"
+      fill="none"
+    >
+      <path
+        d="M10.9976 3.33325V6.66659C5.51839 7.52325 3.48089 12.3233 2.66422 16.6666C2.63339 16.8383 7.15089 11.6983 10.9976 11.6666V14.9999L17.6642 9.16659L10.9976 3.33325Z"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
