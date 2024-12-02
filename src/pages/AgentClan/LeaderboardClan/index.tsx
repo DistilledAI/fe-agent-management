@@ -1,17 +1,27 @@
 import HowToEarnEXP from "./HowToEarnEXP"
 import { twMerge } from "tailwind-merge"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import RankExpList from "./RankExpList"
 import ToggleLeaderboardClan from "./ToggleLeaderboardClan"
+import useOutsideClick from "@hooks/useOutSideClick"
+import { useRef } from "react"
 
 const LeaderboardClan = () => {
+  const queryClient = useQueryClient()
   const { data: isToggleLeaderboard } = useQuery<boolean>({
     queryKey: [QueryDataKeys.TOGGLE_LEADERBOARD_CLAN],
   })
+  const leaderboardRef = useRef<any>(null)
+  useOutsideClick(leaderboardRef, () =>
+    queryClient.setQueryData<boolean>(
+      [QueryDataKeys.TOGGLE_LEADERBOARD_CLAN],
+      () => false,
+    ),
+  )
 
   return (
-    <>
+    <div ref={leaderboardRef}>
       <ToggleLeaderboardClan />
       <div
         className={twMerge(
@@ -22,7 +32,7 @@ const LeaderboardClan = () => {
         <HowToEarnEXP />
         <RankExpList />
       </div>
-    </>
+    </div>
   )
 }
 

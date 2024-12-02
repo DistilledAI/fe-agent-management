@@ -30,7 +30,7 @@ const ToggleLeaderboardClan = () => {
       onClick={toggleLeaderboardClan}
     >
       <div className="flex -rotate-90 flex-row-reverse items-center gap-1">
-        <span className="text-brown-100 text-14 font-bold">LEADERBOARD</span>
+        <span className="text-14 font-bold text-brown-100">LEADERBOARD</span>
         <div>
           <TrophyFilledIcon color="#A88E67" size={14} />
         </div>
