@@ -159,7 +159,7 @@ const ChatWindow = ({
             Header: renderHeader,
             EmptyPlaceholder: () => renderEmptyPlaceholder(),
           }}
-          followOutput={"auto"}
+          // followOutput={"auto"}
           // atBottomStateChange={setIsAtBottom}
           atBottomThreshold={AT_BOTTOM_THRESHOLD}
           itemContent={renderRow}

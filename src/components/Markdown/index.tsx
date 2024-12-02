@@ -38,7 +38,7 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
       <img
         src={src}
         alt={alt}
-        className="h-auto max-w-[280px] rounded-3xl border border-mercury-100 object-cover shadow-1"
+        className="h-auto min-h-[200px] max-w-[280px] rounded-3xl border border-mercury-100 object-cover shadow-1"
       />
     ),
     a: ({ href, children }: any) => (
