@@ -44,7 +44,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
 
   return (
     <div className="flex items-center justify-between">
-      <div>
+      <div className="max-md:hidden">
         <ChatInfoCurrent groupDetail={groupDetail} textColor={textColor} />
       </div>
       {isShowInfo ? (
@@ -79,7 +79,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
             <span className="text-base text-mercury-900">
               <span className="font-bold">{totalxDstlPoint}</span> xDSTL
             </span>
-            <div className="absolute -right-2 -top-2 h-3 w-3 rounded-full bg-[#FF3B30]" />
+            <div className="absolute -right-2 -top-2 h-3 w-3 rounded-full bg-[#FF3B30] max-md:hidden" />
           </div>
 
           <Button
@@ -97,16 +97,25 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
           </Button>
         </div>
       ) : (
-        <Button
-          className="h-[44px] rounded-full bg-mercury-950 text-white max-md:h-[36px]"
-          isLoading={loading}
-          onClick={connectWallet}
-        >
-          <div className="flex items-center gap-1 max-md:hidden">
-            {!loading && <WalletIcon />} Connect Wallet
+        <div className="flex items-center gap-1">
+          <div
+            onClick={connectWallet}
+            className="mr-1 flex cursor-pointer items-center gap-1"
+          >
+            <img src={xDSTL} width={24} height={24} />
+            <span className="text-13 font-semibold">Earn xDSTL</span>
           </div>
-          <span className="hidden max-md:block">Connect</span>
-        </Button>
+          <Button
+            className="h-[44px] rounded-full bg-mercury-950 text-white max-md:h-[36px]"
+            isLoading={loading}
+            onClick={connectWallet}
+          >
+            <div className="flex items-center gap-1 max-md:hidden">
+              {!loading && <WalletIcon />} Connect Wallet
+            </div>
+            <span className="hidden max-md:block">Connect</span>
+          </Button>
+        </div>
       )}
     </div>
   )
