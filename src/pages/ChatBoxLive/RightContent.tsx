@@ -17,6 +17,7 @@ import MessageLive from "./MessageLive"
 import ToggleActionsMobile from "./ToggleActionsMobile"
 import TradeTokenButton from "./TradeTokenButton"
 import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import InstructionBanner from "./InstructionBanner"
 
 const RightContent: React.FC<{
   isClan?: boolean
@@ -151,6 +152,8 @@ const RightContent: React.FC<{
           />
         </div>
       </div>
+
+      <InstructionBanner />
     </div>
   )
 }
