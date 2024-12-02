@@ -25,13 +25,16 @@ const MainLayout = () => {
     `${PATH_NAMES.INVITE}/${inviteAgentId}`,
     `${PATH_NAMES.MY_DATA}`,
     `${PATH_NAMES.PRIVATE_AGENT}/${privateChatId}`,
-    `${PATH_NAMES.CLAN}`,
+    // `${PATH_NAMES.CLAN}`,
     `${PATH_NAMES.MY_AGENTS}`,
   ]
 
+  const ignoreFooter = [`${PATH_NAMES.CLAN}`]
+
   const isIgnoreLayout = ignoreLayout.some((path) => pathname.startsWith(path))
+  const isIgnoreFooter = ignoreFooter.some((path) => pathname.startsWith(path))
   const isHeader = !isIgnoreLayout
-  const isFooter = !isIgnoreLayout
+  const isFooter = !isIgnoreLayout && !isIgnoreFooter
 
   const hasHeader = screenWidth < 768 && isHeader
   const hasFooter = screenWidth < 768 && isFooter

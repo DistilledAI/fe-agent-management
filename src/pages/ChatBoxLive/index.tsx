@@ -14,14 +14,14 @@ const ChatBoxLive = () => {
   return (
     <div
       className={twMerge(
-        "relative mx-auto h-dvh max-w-[1232px] bg-mercury-30 max-md:overflow-hidden max-md:pt-[60px] md:h-[calc(100dvh-68px)] md:bg-white md:px-6",
+        "relative mx-auto h-[calc(100dvh-50px)] max-w-[1232px] bg-mercury-30 max-md:overflow-hidden md:h-[calc(100dvh-68px)] md:bg-white md:px-6",
       )}
     >
       {isMobile ? <ChatLiveHeader groupDetail={groupDetail} /> : <></>}
 
       <div className="flex h-full gap-2 pb-4 max-lg:flex-col md:gap-5">
         <LeftContent groupDetail={groupDetail} isFetched={isFetched} />
-        <RightContent isClan />
+        <RightContent isClan groupDetail={groupDetail} />
       </div>
     </div>
   )

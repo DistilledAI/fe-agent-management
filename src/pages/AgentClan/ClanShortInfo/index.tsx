@@ -1,6 +1,5 @@
 import { xDSTL, xpIcon } from "@assets/images"
 import { BoltIcon, TrophyIcon } from "@components/Icons"
-import { ArrowRightIcon } from "@components/Icons/Arrow"
 import { CircularProgress, Image } from "@nextui-org/react"
 import { useQueries, useQuery, useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
@@ -50,20 +49,13 @@ const ClanShortInfo = () => {
     handleRefetchXpPoint,
   )
 
-  const toggleLeaderboardClan = () => {
-    queryClient.setQueryData(
-      [QueryDataKeys.TOGGLE_LEADERBOARD_CLAN],
-      () => true,
-    )
-  }
-
   return (
     <>
-      <div className="w-full pb-1">
-        <div className="flex w-full items-center rounded-full bg-mercury-30 px-4 py-[10px]">
+      <div className="w-full pb-1 max-md:my-1 max-md:px-4">
+        <div className="flex w-full items-center rounded-full bg-mercury-30 px-4 py-[10px] max-md:bg-white max-md:px-2">
           <div className="relative flex w-full items-center justify-between">
-            <div className="absolute left-1/2 h-[26px] w-[1px] -translate-x-1/2 bg-mercury-200" />
-            <div className="flex w-[calc(50%-15px)] items-center justify-between gap-3">
+            <div className="absolute left-1/2 h-[26px] w-[1px] -translate-x-1/2 bg-mercury-200 max-md:hidden" />
+            <div className="flex w-[calc(50%-15px)] items-center justify-between gap-3 max-md:w-auto max-md:flex-row-reverse">
               <div className="flex items-center gap-2">
                 <p className="text-14 text-mercury-900">Rewards</p>
                 <div className="flex items-center gap-1">
@@ -82,10 +74,16 @@ const ClanShortInfo = () => {
                 <span className="text-14">{remainingDays || 0} days left</span>
               </div>
             </div>
-            <div className="flex w-[calc(50%-15px)] items-center justify-between">
-              <span className="text-14 text-mercury-900">Your EXP</span>
+            <div className="flex w-[calc(50%-15px)] items-center justify-between max-md:w-auto">
+              <span className="text-14 text-mercury-900 max-md:hidden">
+                Your EXP
+              </span>
               <div className="flex items-center gap-2">
-                <button type="button" onClick={handleRefetchXpPoint}>
+                <button
+                  type="button"
+                  className="max-md:hidden"
+                  onClick={handleRefetchXpPoint}
+                >
                   <CircularProgress
                     aria-label="Loading..."
                     value={timerProgress}
@@ -98,24 +96,18 @@ const ClanShortInfo = () => {
                     strokeWidth={4}
                   />
                 </button>
-                <div
-                  className="flex cursor-pointer items-center gap-3"
-                  onClick={toggleLeaderboardClan}
-                >
-                  <div className="flex items-center gap-1">
+                <div className="flex cursor-pointer items-center gap-3">
+                  <div className="flex items-center gap-1 max-md:hidden">
                     <TrophyIcon />
                     <span className="text-14 font-bold text-mercury-950">
                       {expPointUser?.rank || "-"}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 max-md:mr-1">
                     <Image src={xpIcon} alt="xp" className="h-6 w-6" />
                     <span className="text-14 font-bold text-mercury-950">
                       {expPointUser?.totalPoint || "-"}
                     </span>
-                  </div>
-                  <div className="-mr-1 hover:opacity-70">
-                    <ArrowRightIcon />
                   </div>
                 </div>
               </div>

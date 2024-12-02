@@ -182,7 +182,7 @@ const ChatInput = ({
           "h-9 w-[52px] min-w-[52px] rounded-full border border-white bg-mercury-30 px-4 py-2",
           isDarkTheme && "bg-mercury-30",
           //disabled
-          "border-transparent disabled:bg-mercury-30/50",
+          "border-transparent disabled:bg-mercury-30/50 max-md:hidden",
         )}
       >
         <PaperClipFilledIcon
