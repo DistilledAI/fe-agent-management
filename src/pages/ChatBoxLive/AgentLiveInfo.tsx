@@ -1,5 +1,11 @@
+import { solanaCircleIcon } from "@assets/svg"
 import CloseButton from "@components/CloseButton"
+import { CopyIcon } from "@components/Icons/Copy"
 import { InfoCircleOutlineIcon } from "@components/Icons/InfoCircleIcon"
+import { ShareArrowIcon } from "@components/Icons/Share"
+import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
+import { TwitterIcon } from "@components/Icons/Twitter"
+import ShareQRModal from "@components/ShareQRModal"
 import {
   Button,
   Modal,
@@ -9,18 +15,12 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react"
-import AgentDescription from "./AgentDescription"
-import React, { useMemo } from "react"
 import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
-import SocialButton from "./SocialButton"
-import { TwitterIcon } from "@components/Icons/Twitter"
-import { AGENT_INFO_CLANS } from "./LeftContent"
-import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
-import { ShareArrowIcon } from "@components/Icons/Share"
-import ShareQRModal from "@components/ShareQRModal"
-import { solanaCircleIcon } from "@assets/svg"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
-import { CopyIcon } from "@components/Icons/Copy"
+import React, { useMemo } from "react"
+import AgentDescription from "./AgentDescription"
+import { AGENT_INFO_CLANS } from "./LeftContent"
+import SocialButton from "./SocialButton"
 
 const AgentLiveInfo: React.FC<{
   groupDetail: UserGroup | null
@@ -31,6 +31,10 @@ const AgentLiveInfo: React.FC<{
     onClose: onShareClose,
     onOpen: onShareOpen,
   } = useDisclosure()
+
+  const isMaxi =
+    groupDetail?.group.label === "@maxisbuyin" ||
+    groupDetail?.group.label === "@maxisbuyin_"
 
   const agentInfo = useMemo(
     () =>
@@ -116,7 +120,7 @@ const AgentLiveInfo: React.FC<{
                 </div>
               </div>
             ) : null}
-            <AgentDescription groupDetail={groupDetail} />
+            <AgentDescription groupDetail={groupDetail} isMaxi={isMaxi} />
           </ModalBody>
           <ModalFooter className="px-3">
             <Button
