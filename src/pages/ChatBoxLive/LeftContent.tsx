@@ -25,6 +25,7 @@ const LeftContent: React.FC<{
 }> = ({ groupDetail, isFetched }) => {
   const queryClient = useQueryClient()
   const [isLoaded, setIsLoaded] = useState(false)
+
   const isMaxi =
     groupDetail?.group.label === "@maxisbuyin" ||
     groupDetail?.group.label === "@maxisbuyin_"

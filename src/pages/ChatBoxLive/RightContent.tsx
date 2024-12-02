@@ -15,10 +15,14 @@ import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import MessageLive from "./MessageLive"
 import ToggleActionsMobile from "./ToggleActionsMobile"
+import TradeTokenButton from "./TradeTokenButton"
+import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import InstructionBanner from "./InstructionBanner"
 
 const RightContent: React.FC<{
   isClan?: boolean
-}> = ({ isClan = false }) => {
+  groupDetail?: UserGroup | null
+}> = ({ isClan = false, groupDetail }) => {
   const { isMobile } = useWindowSize()
   const { isLogin } = useAuthState()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
@@ -27,6 +31,9 @@ const RightContent: React.FC<{
   const [replyId, setReplyId] = useState<number>()
   const [replyTxt, setReplyTxt] = useState<string>("")
   const [hasFocus, setHasFocus] = useState(false)
+  const isMaxi =
+    groupDetail?.group.label === "@maxisbuyin" ||
+    groupDetail?.group.label === "@maxisbuyin_"
   const resetReply = () => {
     setReplyId(undefined)
     setReplyUsername(null)
@@ -113,7 +120,7 @@ const RightContent: React.FC<{
             "md:max-h-[calc(100%-80px)]",
             isClan && "md:max-h-[calc(100%-130px)]",
           )}
-          scrollBottomClassName="max-md:!bottom-[93px] max-md:bg-none"
+          scrollBottomClassName="max-md:!bottom-[200px] max-md:bg-none"
           increaseViewportBy={3000}
         />
       ) : (
@@ -129,17 +136,24 @@ const RightContent: React.FC<{
         )}
       >
         <div className="absolute inset-x-0 bottom-[calc(100%-5px)] hidden h-6 w-full bg-fading-white md:block" />
-        <ChatInput
-          onSubmit={mutation.mutate}
-          isPending={mutation.isPending}
-          isDisabledInput={!isEnableTextInput}
-          replyUsername={replyUsername}
-          hasFocus={hasFocus}
-          setHasFocus={setHasFocus}
-          resetRely={resetReply}
-          wrapperClassName="w-full static max-w-full"
-        />
+        <div className={twMerge("flex items-center", isMaxi && "gap-1")}>
+          <div className="md:hidden">
+            <TradeTokenButton isMaxi={isMaxi} />
+          </div>
+          <ChatInput
+            onSubmit={mutation.mutate}
+            isPending={mutation.isPending}
+            isDisabledInput={!isEnableTextInput}
+            replyUsername={replyUsername}
+            hasFocus={hasFocus}
+            setHasFocus={setHasFocus}
+            resetRely={resetReply}
+            wrapperClassName="w-full static max-w-full max-md:pl-3"
+          />
+        </div>
       </div>
+
+      <InstructionBanner />
     </div>
   )
 }

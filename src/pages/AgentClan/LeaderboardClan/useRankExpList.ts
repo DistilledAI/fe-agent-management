@@ -50,7 +50,7 @@ const useRankExpList = ({ groupId }: { groupId: string }) => {
   const rankList =
     (
       data as InfiniteData<{ rankList: LeaderboardEntry[] }> | undefined
-    )?.pages?.flatMap((page) => page.rankList) || []
+    )?.pages?.flatMap((page) => page?.rankList) || []
 
   return {
     rankList,

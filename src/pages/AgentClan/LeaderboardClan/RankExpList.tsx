@@ -113,11 +113,11 @@ const RankExpList = () => {
               <RankExpCard
                 key={index}
                 rank={index + 1}
-                avatarUrl={rankItem.avatar}
-                publicAddress={rankItem.publicAddress}
-                username={rankItem.username}
-                exp={rankItem.totalPointExp}
-                xDSTL={getXDSTL(rankItem.totalPointExp)}
+                avatarUrl={rankItem?.avatar}
+                publicAddress={rankItem?.publicAddress}
+                username={rankItem?.username}
+                exp={rankItem?.totalPointExp}
+                xDSTL={getXDSTL(rankItem?.totalPointExp)}
                 classNames={{
                   wrapper: twMerge(
                     "mx-6",

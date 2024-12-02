@@ -7,6 +7,7 @@ import UserAuth from "@pages/ChatPage/ChatBox/UserAuth"
 import React from "react"
 import { Link, useLocation } from "react-router-dom"
 import DrawerLeft from "./DrawerLeft"
+import { twMerge } from "tailwind-merge"
 
 const MAP_PAGE_TITLE_FROM_PATH_NAME = {
   [PATH_NAMES.PRIVATE_AGENT]: "Private Agent",
@@ -25,7 +26,9 @@ const HeaderMobile: React.FC = () => {
         <div onClick={onOpen}>
           <BarIcon />
         </div>
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div
+          className={twMerge("absolute left-[50px] top-1/2 -translate-y-1/2")}
+        >
           {pageTitle ? (
             <span className="text-base-sb">{pageTitle}</span>
           ) : (
