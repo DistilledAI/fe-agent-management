@@ -15,26 +15,9 @@ import { ShareArrowIcon } from "@components/Icons/Share"
 import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
 import ShareQRModal from "@components/ShareQRModal"
 import { solanaCircleIcon } from "@assets/svg"
-import { centerTextEllipsis, copyClipboard } from "@utils/index"
-import { CopyIcon } from "@components/Icons/Copy"
+import ContractDisplay from "./ContractDisplay"
+import { AGENT_INFO_CLANS } from "@constants/index"
 import AudioClanCustom from "@components/AudioClanCustom"
-
-export const AGENT_INFO_CLANS = [
-  {
-    username: "@maxisbuyin_",
-    xLink: "https://x.com/maxisbuyin_",
-    teleLink: "https://t.me/maxisbuyin",
-    shareLink: "https://mesh.distilled.ai/clan/@maxisbuyin_",
-    contract: "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h",
-  },
-  {
-    username: "@stalor",
-    xLink: "",
-    teleLink: "",
-    shareLink: "https://mesh.distilled.ai/clan/@stalor",
-    contract: "",
-  },
-]
 
 const LeftContent: React.FC<{
   groupDetail: UserGroup | null
@@ -154,25 +137,13 @@ const LeftContent: React.FC<{
         <div className="mt-3 hidden md:block">
           <TradeTokenButton isMaxi={isMaxi} />
         </div>
-        {agentInfo?.contract ? (
-          <div className="mt-3 hidden items-center justify-between gap-2 md:flex">
-            <span className="text-16 font-bold text-mercury-950">Contract</span>
-            <div className="flex items-center gap-2 rounded-[22px] bg-mercury-30 px-2 py-[2px] hover:bg-mercury-50">
-              <img src={solanaCircleIcon} />
-              {agentInfo?.contract ? (
-                <div
-                  className="flex cursor-pointer items-center gap-2"
-                  onClick={(e) => copyClipboard(e, agentInfo?.contract ?? "")}
-                >
-                  <span className="text-16 text-mercury-900">
-                    {centerTextEllipsis(agentInfo?.contract ?? "", 6)}
-                  </span>
-                  <CopyIcon />
-                </div>
-              ) : null}
-            </div>
-          </div>
-        ) : null}
+        <ContractDisplay
+          classNames={{
+            wrapper: "mt-3 hidden md:flex",
+          }}
+          icon={agentInfo?.contract ? solanaCircleIcon : ""}
+          value={agentInfo?.contract}
+        />
       </div>
       <div className="mt-2 hidden md:block">
         <AgentDescription groupDetail={groupDetail} isMaxi={isMaxi} />

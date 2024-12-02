@@ -1,6 +1,5 @@
 import { solanaCircleIcon } from "@assets/svg"
 import CloseButton from "@components/CloseButton"
-import { CopyIcon } from "@components/Icons/Copy"
 import { InfoCircleOutlineIcon } from "@components/Icons/InfoCircleIcon"
 import { ShareArrowIcon } from "@components/Icons/Share"
 import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
@@ -16,11 +15,11 @@ import {
   useDisclosure,
 } from "@nextui-org/react"
 import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
-import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import React, { useMemo } from "react"
 import AgentDescription from "./AgentDescription"
-import { AGENT_INFO_CLANS } from "./LeftContent"
 import SocialButton from "./SocialButton"
+import ContractDisplay from "./ContractDisplay"
+import { AGENT_INFO_CLANS } from "@constants/index"
 
 const AgentLiveInfo: React.FC<{
   groupDetail: UserGroup | null
@@ -101,25 +100,13 @@ const AgentLiveInfo: React.FC<{
                 />
               </>
             </div>
-            {agentInfo?.contract ? (
-              <div className="flex items-center justify-between gap-2">
-                <span className="text-16 font-bold text-mercury-950">
-                  Contract
-                </span>
-                <div className="mt-1 flex items-center gap-2 rounded-[22px] bg-mercury-30 px-2 py-[2px] hover:bg-mercury-50">
-                  <img src={solanaCircleIcon} />
-                  <div
-                    className="flex cursor-pointer items-center gap-2"
-                    onClick={(e) => copyClipboard(e, agentInfo?.contract ?? "")}
-                  >
-                    <span className="text-16 text-mercury-900">
-                      {centerTextEllipsis(agentInfo?.contract ?? "", 6)}
-                    </span>
-                    <CopyIcon />
-                  </div>
-                </div>
-              </div>
-            ) : null}
+            <ContractDisplay
+              classNames={{
+                wrapper: "mt-3",
+              }}
+              icon={agentInfo?.contract ? solanaCircleIcon : ""}
+              value={agentInfo?.contract}
+            />
             <AgentDescription groupDetail={groupDetail} isMaxi={isMaxi} />
           </ModalBody>
           <ModalFooter className="px-3">
