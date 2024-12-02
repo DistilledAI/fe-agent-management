@@ -4,6 +4,7 @@ import DotLoading from "@components/DotLoading"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { FilledUserIcon, FilledUsersPlusIcon } from "@components/Icons/UserIcon"
+import TotalMemberBadge from "@components/TotalMemberBadge"
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
@@ -27,7 +28,6 @@ import {
 } from "./helpers"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroups, { LIMIT, TypeGroup, UserGroup } from "./useFetchGroups"
-import TotalMemberBadge from "@components/TotalMemberBadge"
 
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
@@ -176,7 +176,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                 aria-selected={isActive}
                 onClick={() => handleGroupClick(groupItem, isBotLive)}
                 className={twMerge(
-                  "hover-light-effect group/item group relative mx-4 mb-2 flex h-14 items-center justify-between gap-1 gap-2 rounded-full px-2 py-2",
+                  "hover-light-effect group/item group relative mx-4 mb-2 flex h-14 items-center justify-between gap-2 rounded-full px-2 py-2",
                   isActive && "bg-mercury-100",
                   sidebarCollapsed &&
                     "flex w-14 items-center justify-center p-0",
