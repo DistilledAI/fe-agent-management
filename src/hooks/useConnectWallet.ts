@@ -253,7 +253,8 @@ const useConnectWallet = () => {
 
   const connectPhantomWallet = async () => {
     //@ts-ignore
-    const isPhantomWallet = window.phantom.ethereum.isPhantom
+    const isPhantomWallet = window.phantom?.solana?.isPhantom
+
     if (!isPhantomWallet) {
       if (isMobile) {
         const deepLinkApp = "https://phantom.app/download"
