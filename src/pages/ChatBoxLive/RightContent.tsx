@@ -119,7 +119,7 @@ const RightContent: React.FC<{
             "md:max-h-[calc(100%-80px)]",
             isClan && "md:max-h-[calc(100%-130px)]",
           )}
-          scrollBottomClassName="max-md:!bottom-[93px] max-md:bg-none"
+          scrollBottomClassName="max-md:!bottom-[200px] max-md:bg-none"
           increaseViewportBy={3000}
         />
       ) : (
