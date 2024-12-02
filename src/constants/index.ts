@@ -201,3 +201,20 @@ export const COMMUNICATION_STYLE_LIST = [
 ]
 
 export const CLEAR_CACHED_MESSAGE = "CLEAR_CACHED"
+
+export const AGENT_INFO_CLANS = [
+  {
+    username: "@maxisbuyin_",
+    xLink: "https://x.com/maxisbuyin_",
+    teleLink: "https://t.me/maxisbuyin",
+    shareLink: "https://mesh.distilled.ai/clan/@maxisbuyin_",
+    contract: "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h",
+  },
+  {
+    username: "@stalor",
+    xLink: "https://x.com/stalor_ai",
+    teleLink: "",
+    shareLink: "https://mesh.distilled.ai/clan/@stalor",
+    contract: "",
+  },
+]
