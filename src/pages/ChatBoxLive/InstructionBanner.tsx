@@ -30,7 +30,10 @@ const InstructionBanner = () => {
           onClose={() => dispatch(updateInstructBanner(false))}
         />
 
-        <img src={bannerConnectWallet} className="h-[145px] w-[258px]" />
+        <img
+          src={bannerConnectWallet}
+          className="h-[145px] w-[258px] rounded-lg border border-mercury-300"
+        />
       </div>
     </div>
   )
