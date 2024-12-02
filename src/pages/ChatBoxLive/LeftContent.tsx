@@ -1,6 +1,5 @@
-import { bgClanDefault } from "@assets/images"
 import bitcoinMaxIntro from "@assets/video/bitcoin-max-intro-ai.mp4"
-import AvatarCustom from "@components/AvatarCustom"
+import stalorAudio from "@assets/audio/audio_stalor.mp3"
 import VideoCustom from "@components/VideoCustom"
 import { Button, Image, Skeleton, useDisclosure } from "@nextui-org/react"
 import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
@@ -18,6 +17,7 @@ import ShareQRModal from "@components/ShareQRModal"
 import { solanaCircleIcon } from "@assets/svg"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { CopyIcon } from "@components/Icons/Copy"
+import AudioClanCustom from "@components/AudioClanCustom"
 
 export const AGENT_INFO_CLANS = [
   {
@@ -87,7 +87,7 @@ const LeftContent: React.FC<{
     >
       <div className="flex h-full flex-col md:h-fit">
         {!isLoaded || !isFetched ? (
-          <Skeleton className="h-[350px] rounded-[32px]"></Skeleton>
+          <Skeleton className="h-[350px] rounded-[32px] md:h-[400px]"></Skeleton>
         ) : isMaxi ? (
           <VideoCustom
             videoSrc={bitcoinMaxIntro}
@@ -107,21 +107,21 @@ const LeftContent: React.FC<{
             muted={isMuted}
           />
         ) : (
-          <div className="relative max-h-[427px] overflow-hidden rounded-[32px]">
+          <div
+            style={{
+              backgroundImage:
+                'url("https://data.cupiee.com/images/companion-stalor-bg.png")',
+            }}
+            className="relative h-[400px] overflow-hidden rounded-[32px]"
+          >
             <Image
               classNames={{ wrapper: "w-full h-full !max-w-full" }}
-              className="h-full w-full object-cover"
-              src={bgClanDefault}
+              className="h-full w-full object-contain"
+              src="https://data.cupiee.com/images/companion-stalor-sad.png"
               alt="clan"
               disableAnimation
             />
-            <div className="absolute left-1/2 top-1/2 z-[11] h-[70px] w-[70px] -translate-x-1/2 -translate-y-1/2 rounded-full">
-              <AvatarCustom
-                className="h-full w-full object-cover"
-                src={groupDetail?.group.image}
-                publicAddress={groupDetail?.group?.name}
-              />
-            </div>
+            <AudioClanCustom audioSrc={stalorAudio} />
           </div>
         )}
         <div className="mt-3 hidden items-center justify-between gap-3 md:flex">

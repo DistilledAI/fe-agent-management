@@ -17,6 +17,9 @@ const ChatLiveHeader: React.FC<{
   const navigate = useNavigate()
   const isLive = groupDetail ? groupDetail.group.live === 1 : false
   const groupId = groupDetail?.groupId as any
+  const isMaxi =
+    groupDetail?.group.label === "@maxisbuyin" ||
+    groupDetail?.group.label === "@maxisbuyin_"
 
   return (
     <div className="fixed left-0 top-0 z-20 flex h-14 w-full items-center gap-3 bg-mercury-30 px-3 md:hidden">
@@ -48,7 +51,7 @@ const ChatLiveHeader: React.FC<{
 
       <div className="flex items-center gap-3">
         <AgentLiveInfo groupDetail={groupDetail} />
-        <TradeTokenButton />
+        <TradeTokenButton isMaxi={isMaxi} />
       </div>
     </div>
   )

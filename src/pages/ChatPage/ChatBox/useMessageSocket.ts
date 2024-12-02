@@ -175,8 +175,8 @@ const useMessageSocket = () => {
   }
 
   const handleWithTyping = (e: IDataListen) => {
-    const isBotLive = e.user.configBot === "live"
-    if (isBotLive) return
+    // const isBotLive = e.user.configBot === "live"
+    // if (isBotLive) return
     const newMsg = {
       id: e.msgId,
       role: RoleChat.CUSTOMER,
@@ -186,6 +186,7 @@ const useMessageSocket = () => {
       roleOwner: e.user.role,
       createdAt: new Date().toISOString(),
       publicAddress: e.user.publicAddress,
+      username: e.user.username,
     }
     addNewMsg(newMsg, e)
   }
