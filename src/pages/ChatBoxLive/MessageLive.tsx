@@ -1,10 +1,12 @@
 import AvatarCustom from "@components/AvatarCustom"
+import { ImageIcon } from "@components/Icons"
 import { ArrowsRelyIcon } from "@components/Icons/Arrow"
 import MarkdownMessage from "@components/Markdown"
 import { RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
+import { isMarkdownImage } from "@utils/index"
 import { twMerge } from "tailwind-merge"
 
 interface MessageLiveProps {
@@ -53,7 +55,11 @@ const MessageLive: React.FC<MessageLiveProps> = ({ message, onReply }) => {
                 {message.reply.username}
               </p>
               <p className="line-clamp-1 max-w-[200px] text-15 text-mercury-400">
-                {message.reply.message}
+                {isMarkdownImage(message.reply.message) ? (
+                  <ImageIcon />
+                ) : (
+                  message.reply.message
+                )}
               </p>
             </div>
           )}

@@ -525,3 +525,34 @@ export const WarningIcon = ({ size = 20, color = "#545454" }: IconProps) => {
     </svg>
   )
 }
+
+export const ImageIcon = ({ size = 20, color = "#545454" }: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 12 12"
+      fill="none"
+    >
+      <path
+        d="M7.5 3H7.505M1.5 3C1.5 2.60218 1.65804 2.22064 1.93934 1.93934C2.22064 1.65804 2.60218 1.5 3 1.5H9C9.39782 1.5 9.77936 1.65804 10.0607 1.93934C10.342 2.22064 10.5 2.60218 10.5 3V7C10.5 7.39782 10.342 7.77936 10.0607 8.06066C9.77936 8.34196 9.39782 8.5 9 8.5H3C2.60218 8.5 2.22064 8.34196 1.93934 8.06066C1.65804 7.77936 1.5 7.39782 1.5 7V3Z"
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M1.5 6.49998L3.5 4.49998C3.72803 4.28055 3.98669 4.16504 4.25 4.16504C4.51331 4.16504 4.77197 4.28055 5 4.49998L7 6.49998"
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M6.5 5.99998L7.5 4.99998C7.72803 4.78055 7.98669 4.66504 8.25 4.66504C8.51331 4.66504 8.77197 4.78055 9 4.99998L10.5 6.49998M4 10.5H4.005M6 10.5H6.005M8 10.5H8.005"
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
