@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query"
 import { getGroupChatDetail } from "services/chat"
 import useGetChatId from "./useGetChatId"
 import { QueryDataKeys } from "types/queryDataKeys"
-import { useEffect } from "react"
 
 const useFetchDetail = (isInvited = false) => {
   const { isLogin } = useAuthState()
@@ -15,19 +14,13 @@ const useFetchDetail = (isInvited = false) => {
       ? { filter: `{"label":"${chatId}"}` }
       : { filter: `{"groupId":${chatId}}` }
 
-  const { data, isLoading, isFetched, refetch } = useQuery({
-    queryKey: [QueryDataKeys.GROUP_DETAIL, chatId?.toString()],
+  const { data, isLoading, isFetched } = useQuery({
+    queryKey: [QueryDataKeys.GROUP_DETAIL, chatId?.toString(), `${isInvited}`],
     queryFn: () => getGroupChatDetail(params),
     staleTime: 60 * 60 * 1000,
     enabled: !!chatId && !!isLogin,
   })
   const result: UserGroup | null = data?.data || null
-
-  useEffect(() => {
-    if (isInvited) {
-      refetch()
-    }
-  }, [isInvited])
 
   return { groupDetail: result, chatId, isLoading, isFetched }
 }
