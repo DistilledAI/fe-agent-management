@@ -70,7 +70,7 @@ const LeftContent: React.FC<{
       )}
     >
       <div className="flex h-full flex-col md:h-fit">
-        {!isLoaded || !isFetched ? (
+        {!isLoaded || !isFetched || groupDetail === null ? (
           <Skeleton className="h-[350px] rounded-[32px] md:h-[400px]"></Skeleton>
         ) : isMaxi ? (
           <VideoCustom
@@ -108,7 +108,7 @@ const LeftContent: React.FC<{
             <AudioClanCustom audioSrc={stalorAudio} />
           </div>
         )}
-        {isFetched ? (
+        {isFetched && groupDetail !== null ? (
           <>
             <div className="mt-3 hidden items-center justify-between gap-3 md:flex">
               <SocialButton
@@ -153,7 +153,7 @@ const LeftContent: React.FC<{
         )}
       </div>
       <div className="mt-2 hidden md:block">
-        {isFetched ? (
+        {isFetched && groupDetail !== null ? (
           <AgentDescription groupDetail={groupDetail} isMaxi={isMaxi} />
         ) : (
           <SkeletonDesc />
