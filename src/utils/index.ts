@@ -250,7 +250,7 @@ export const formatNumberWithComma = (num: number) => {
 export const isMarkdownImage = (str: string) => {
   const markdownImageRegex =
     /^!\[.*\]\(https?:\/\/[^\s]+\.(?:jpg|jpeg|png|gif|svg|webp)(\?.*)?\)$/i
-  return markdownImageRegex.test(str)
+  return markdownImageRegex.test(str.trim())
 }
 
 export const shortenNumber = (number: number) => {
