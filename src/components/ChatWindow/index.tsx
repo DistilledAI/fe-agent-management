@@ -77,7 +77,6 @@ const ChatWindow = ({
     async (e: React.UIEvent<HTMLDivElement>) => {
       const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
       if (scrollTop === 0 && hasPreviousMore) {
-        // setIsAtBottom(false)
         const messagesIndex = await onLoadPrevMessages()
         if (messagesIndex) {
           virtuosoRef.current?.scrollToIndex({
@@ -99,7 +98,7 @@ const ChatWindow = ({
       return (
         <>
           {isFetchingPreviousPage && messages.length >= LIMIT ? (
-            <div className="flex h-full items-center justify-center py-6">
+            <div className="flex h-full items-center justify-center pt-1">
               <DotLoading />
             </div>
           ) : (
