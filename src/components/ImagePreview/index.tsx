@@ -6,7 +6,7 @@ const ViewFullMedia: React.FC<{
   onClose: () => void
   url: string
 }> = ({ isOpen, onClose, url }) => {
-  if (!isOpen) return null
+  if (!isOpen) return <></>
   return (
     <div className="fixed left-0 top-0 !z-[10000] flex h-full w-full items-center">
       <div

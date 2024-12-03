@@ -6,6 +6,7 @@ import { QueryDataKeys } from "types/queryDataKeys"
 
 interface TotalMemberBadgeProps {
   groupId: string
+  isQuery?: boolean
 }
 
 const TotalMemberBadge = ({ groupId }: TotalMemberBadgeProps) => {

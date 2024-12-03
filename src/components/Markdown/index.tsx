@@ -7,7 +7,6 @@ import { useParams } from "react-router-dom"
 const MarkdownMessage = ({ msg }: { msg: string }) => {
   const { chatId } = useParams()
   const { textColor } = getActiveColorRandomById(chatId)
-
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const replaceSrcImage = (src: string) => {
@@ -23,9 +22,11 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
   }
 
   const breakLine = (text: string) => {
-    let md = text
+    const newText = text.replace(/\n+$/, "")
+
+    let md = newText
     // Support multiple linebreaks
-    md = text.replace(/```[\s\S]*?```/g, (m) => m.replace(/\n/g, "\n "))
+    md = newText.replace(/```[\s\S]*?```/g, (m) => m.replace(/\n/g, "\n "))
     md = md.replace(/(?<=\n\n)(?![*-])\n/g, "&nbsp;\n ")
     // Support single linebreak
     md = md.replace(/(\n)/gm, "  \n")
@@ -59,7 +60,7 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
           <img
             src={imageSrc}
             alt={alt}
-            className="h-auto min-h-[200px] max-w-[280px] cursor-pointer rounded-3xl border border-mercury-100 object-cover shadow-1"
+            className="h-[200px] w-[280px] cursor-pointer rounded-3xl border border-mercury-100 object-cover shadow-1"
             onClick={() => onOpen()}
           />
 

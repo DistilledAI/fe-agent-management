@@ -1,7 +1,7 @@
 import bitcoinMaxIntro from "@assets/video/bitcoin-max-intro-ai.mp4"
 import stalorAudio from "@assets/audio/audio_stalor.mp3"
 import VideoCustom from "@components/VideoCustom"
-import { Button, Image, Skeleton, useDisclosure } from "@nextui-org/react"
+import { Image, Skeleton } from "@nextui-org/react"
 import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
 import React, { useEffect, useMemo, useState } from "react"
@@ -9,16 +9,12 @@ import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import AgentDescription from "./AgentDescription"
 import TradeTokenButton from "./TradeTokenButton"
-import SocialButton from "./SocialButton"
-import { TwitterIcon } from "@components/Icons/Twitter"
-import { ShareArrowIcon } from "@components/Icons/Share"
-import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
-import ShareQRModal from "@components/ShareQRModal"
 import { solanaCircleIcon } from "@assets/svg"
 import ContractDisplay from "./ContractDisplay"
 import { AGENT_INFO_CLANS } from "@constants/index"
 import AudioClanCustom from "@components/AudioClanCustom"
 import SkeletonInfo, { SkeletonDesc } from "./SkeletonInfo"
+import AgentSocials from "./AgentSocials"
 
 const LeftContent: React.FC<{
   groupDetail: UserGroup | null
@@ -47,7 +43,6 @@ const LeftContent: React.FC<{
   const isMuted = !!agentLiveVolume.data
   const isCloseChatLive = !!closeLiveChat.data
   const isExpandLiveChat = !!expandLiveChat.data
-  const { isOpen, onOpen, onClose } = useDisclosure()
 
   useEffect(() => {
     setTimeout(() => setIsLoaded(true), 200)
@@ -58,7 +53,7 @@ const LeftContent: React.FC<{
       AGENT_INFO_CLANS.find(
         (agent) => agent.username === groupDetail?.group.label,
       ),
-    [groupDetail?.group.label],
+    [groupDetail?.group?.label],
   )
 
   return (
@@ -110,33 +105,12 @@ const LeftContent: React.FC<{
         )}
         {isFetched && groupDetail !== null ? (
           <>
-            <div className="mt-3 hidden items-center justify-between gap-3 md:flex">
-              <SocialButton
-                icon={<TwitterIcon size={20} />}
-                link={agentInfo?.xLink}
-                isDisabled={!agentInfo?.xLink}
-              />
-              <SocialButton
-                icon={<TelegramOutlineIcon size={20} />}
-                link={agentInfo?.teleLink}
-                isDisabled={!agentInfo?.teleLink}
-              />
-              <>
-                <Button
-                  className="h-14 w-full rounded-full bg-mercury-70 text-white md:h-10"
-                  onClick={onOpen}
-                  isDisabled={!agentInfo?.shareLink}
-                >
-                  <ShareArrowIcon />
-                </Button>
-                <ShareQRModal
-                  title={agentInfo?.username}
-                  isOpen={isOpen}
-                  shareUrl={agentInfo?.shareLink || ""}
-                  onClose={onClose}
-                />
-              </>
-            </div>
+            <AgentSocials
+              agentInfo={agentInfo}
+              classNames={{
+                wrapper: "mt-3 hidden md:flex",
+              }}
+            />
             <div className="mt-3 hidden md:block">
               <TradeTokenButton isMaxi={isMaxi} />
             </div>

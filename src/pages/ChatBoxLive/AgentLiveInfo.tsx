@@ -1,10 +1,6 @@
 import { solanaCircleIcon } from "@assets/svg"
 import CloseButton from "@components/CloseButton"
 import { InfoCircleOutlineIcon } from "@components/Icons/InfoCircleIcon"
-import { ShareArrowIcon } from "@components/Icons/Share"
-import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
-import { TwitterIcon } from "@components/Icons/Twitter"
-import ShareQRModal from "@components/ShareQRModal"
 import {
   Button,
   Modal,
@@ -17,19 +13,14 @@ import {
 import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import React, { useMemo } from "react"
 import AgentDescription from "./AgentDescription"
-import SocialButton from "./SocialButton"
 import ContractDisplay from "./ContractDisplay"
 import { AGENT_INFO_CLANS } from "@constants/index"
+import AgentSocials from "./AgentSocials"
 
 const AgentLiveInfo: React.FC<{
   groupDetail: UserGroup | null
 }> = ({ groupDetail }) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
-  const {
-    isOpen: isShareOpen,
-    onClose: onShareClose,
-    onOpen: onShareOpen,
-  } = useDisclosure()
 
   const isMaxi =
     groupDetail?.group.label === "@maxisbuyin" ||
@@ -73,33 +64,7 @@ const AgentLiveInfo: React.FC<{
             />
           </ModalHeader>
           <ModalBody className="gap-3 px-3 py-4">
-            <div className="flex items-center justify-between gap-3">
-              <SocialButton
-                icon={<TwitterIcon size={20} />}
-                link={agentInfo?.xLink}
-                isDisabled={!agentInfo?.xLink}
-              />
-              <SocialButton
-                icon={<TelegramOutlineIcon size={20} />}
-                link={agentInfo?.teleLink}
-                isDisabled={!agentInfo?.teleLink}
-              />
-              <>
-                <Button
-                  className="h-14 w-full rounded-full bg-mercury-70 text-white md:h-10"
-                  onClick={onShareOpen}
-                  isDisabled={!agentInfo?.shareLink}
-                >
-                  <ShareArrowIcon />
-                </Button>
-                <ShareQRModal
-                  title={agentInfo?.username}
-                  isOpen={isShareOpen}
-                  shareUrl={agentInfo?.shareLink || ""}
-                  onClose={onShareClose}
-                />
-              </>
-            </div>
+            <AgentSocials agentInfo={agentInfo} />
             <ContractDisplay
               classNames={{
                 wrapper: "mt-3",

@@ -247,6 +247,12 @@ export const formatNumberWithComma = (num: number) => {
   return 0
 }
 
+export const isMarkdownImage = (str: string) => {
+  const markdownImageRegex =
+    /^!\[.*\]\(https?:\/\/[^\s]+\.(?:jpg|jpeg|png|gif|svg|webp)(\?.*)?\)$/i
+  return markdownImageRegex.test(str.trim())
+}
+
 export const shortenNumber = (number: number) => {
   if (number >= 1000000000000) {
     return (number / 1000000000000).toFixed(1).replace(".0", "") + "T"
