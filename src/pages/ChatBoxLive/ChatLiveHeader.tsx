@@ -44,7 +44,7 @@ const ChatLiveHeader: React.FC<{
           ) : (
             <></>
           )}
-          {isLive && <TotalMemberBadge groupId={groupId} />}
+          {isLive && <TotalMemberBadge groupId={groupId.toString()} />}
         </div>
         <AgentLiveInfo groupDetail={groupDetail} />
       </div>
