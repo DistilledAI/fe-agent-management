@@ -174,7 +174,6 @@ const useConnectWallet = () => {
 
   const connectMetamaskWallet = async () => {
     const isMetaMaskWallet = window.ethereum.isMetaMask
-    console.log("🚀 ~ connectMetamaskWal ~ isMetaMaskWallet:", isMetaMaskWallet)
     if (!isMetaMaskWallet) {
       if (isMobile) {
         const deepLinkApp = `https://metamask.app.link/dapp/${document.location.host}`
@@ -254,10 +253,9 @@ const useConnectWallet = () => {
 
   const connectPhantomWallet = async () => {
     //@ts-ignore
-    const isPhantomWallet = window.phantom?.solana?.isPhantom
-    console.log("🚀 ~ connectPhantomWal ~ isPhantomWallet:", isPhantomWallet)
+    const isPhantomInstalled = window.phantom?.solana?.isPhantom
 
-    if (!isPhantomWallet) {
+    if (!isPhantomInstalled) {
       if (isMobile) {
         const deepLinkApp = "https://phantom.app/download"
         toast.info(`Please open the application in phantom's browser`)

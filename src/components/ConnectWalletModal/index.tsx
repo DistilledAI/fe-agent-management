@@ -5,6 +5,7 @@ import {
   OwalletIcon,
   PhantomIcon,
 } from "@components/Icons/MetamaskIcon"
+import TestConnectWallet from "@hooks/TestConnectWallet"
 import { useAppDispatch, useAppSelector } from "@hooks/useAppRedux"
 import useConnectWallet from "@hooks/useConnectWallet"
 import {
@@ -113,6 +114,8 @@ const ConnectWalletModal = () => {
               </div>
             )
           })}
+
+          <TestConnectWallet />
         </ModalBody>
       </ModalContent>
     </Modal>
