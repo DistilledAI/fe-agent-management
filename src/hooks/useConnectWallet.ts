@@ -75,7 +75,8 @@ const useConnectWallet = () => {
 
   const connectOwallet = async () => {
     //@ts-ignore
-    const isOwallet = window.owallet.isOwallet
+    const isOwallet = window.eth_owallet && window.owallet.isOwallet
+
     if (!isOwallet) {
       if (isMobile) {
         const deepLinkApp = "https://owallet.io/"
@@ -174,6 +175,7 @@ const useConnectWallet = () => {
 
   const connectMetamaskWallet = async () => {
     const isMetaMaskWallet = window.ethereum.isMetaMask
+
     if (!isMetaMaskWallet) {
       if (isMobile) {
         const deepLinkApp = `https://metamask.app.link/dapp/${document.location.host}`
@@ -185,16 +187,6 @@ const useConnectWallet = () => {
       }
 
       return toast.warning(`Please install Metamask to continue!`)
-    }
-
-    const isTrustWalletDefault =
-      window.ethereum.isTrust || window.ethereum.isTrustWallet
-
-    if (isTrustWalletDefault) {
-      toast.warning(
-        "Trust Wallet is set to default, please turn off and reload page to use MetaMask!",
-      )
-      return
     }
 
     try {
@@ -251,11 +243,23 @@ const useConnectWallet = () => {
     }
   }
 
+  const getProvider = () => {
+    if ("solana" in window) {
+      const provider = (window as any).solana
+      if (provider.isPhantom) {
+        return provider
+      }
+    }
+
+    return null
+  }
+
   const connectPhantomWallet = async () => {
     //@ts-ignore
     const isPhantomInstalled = window.phantom?.solana?.isPhantom
+    const provider = getProvider()
 
-    if (!isPhantomInstalled) {
+    if (!isPhantomInstalled || !provider) {
       if (isMobile) {
         const deepLinkApp = "https://phantom.app/download"
         toast.info(`Please open the application in phantom's browser`)
@@ -268,24 +272,18 @@ const useConnectWallet = () => {
       return toast.warning(`Please install Phantom to continue!`)
     }
 
-    const isTrustWalletDefault =
-      window.ethereum.isTrust || window.ethereum.isTrustWallet
-
-    if (isTrustWalletDefault) {
-      toast.warning(
-        "Trust Wallet is set to default, please turn off and reload page to use MetaMask!",
-      )
-      return
-    }
-
     try {
       setLoadingConnectPhantom(true)
       const timestamp = Math.floor(Date.now() / 1000) + 86400
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      await provider.connect()
 
-      await provider.send("eth_requestAccounts", [])
-      const signer = await provider.getSigner()
-      const publicAddress = await getPublicAddress(signer)
+      //@ts-ignore
+      const accounts = await window?.phantom.ethereum.request({
+        method: "eth_requestAccounts",
+        params: [],
+      })
+
+      const publicAddress = accounts[0]
 
       const domain = {}
       const types = {
@@ -301,11 +299,15 @@ const useConnectWallet = () => {
         timestamp,
       }
 
+      const providerEther = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = providerEther.getSigner()
+
       const signature = (await signer._signTypedData(
         domain,
         types,
         value,
       )) as any
+
       const digest = ethers.utils._TypedDataEncoder.hash(domain, types, value)
       const publicKey = ethers.utils.recoverPublicKey(digest, signature)
 
