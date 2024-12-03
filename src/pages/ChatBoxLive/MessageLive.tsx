@@ -56,7 +56,7 @@ const MessageLive: React.FC<MessageLiveProps> = ({ message, onReply }) => {
               </p>
               <p className="line-clamp-1 max-w-[200px] text-15 text-mercury-400">
                 {isMarkdownImage(message.reply.message) ? (
-                  <ImageIcon />
+                  <ImageIcon color="#ADADAD" />
                 ) : (
                   message.reply.message
                 )}
