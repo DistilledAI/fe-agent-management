@@ -96,7 +96,7 @@ const ClanShortInfo = () => {
                     strokeWidth={4}
                   />
                 </button>
-                <div className="flex cursor-pointer items-center gap-3">
+                <div className="flex items-center gap-3">
                   <div className="flex items-center gap-1 max-md:hidden">
                     <TrophyIcon />
                     <span className="text-14 font-bold text-mercury-950">
