@@ -3,12 +3,10 @@ import { useDisclosure } from "@nextui-org/react"
 import { getActiveColorRandomById, isImageUrl } from "@utils/index"
 import Markdown from "react-markdown"
 import { useParams } from "react-router-dom"
-import { twMerge } from "tailwind-merge"
 
 const MarkdownMessage = ({ msg }: { msg: string }) => {
   const { chatId } = useParams()
   const { textColor } = getActiveColorRandomById(chatId)
-
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const replaceSrcImage = (src: string) => {
@@ -60,10 +58,8 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
           <img
             src={imageSrc}
             alt={alt}
-            className={twMerge(
-              "h-[200px] w-[300px] cursor-pointer rounded-2xl border border-mercury-30 bg-gray-50 object-cover shadow-1",
-            )}
-            onClick={onOpen}
+            className="h-[200px] w-[280px] cursor-pointer rounded-3xl border border-mercury-100 object-cover shadow-1"
+            onClick={() => onOpen()}
           />
 
           <ViewFullMedia isOpen={isOpen} url={imageSrc} onClose={onClose} />
