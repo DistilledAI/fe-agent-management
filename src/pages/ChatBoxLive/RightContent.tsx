@@ -73,7 +73,7 @@ const RightContent: React.FC<{
       <div
         className={twMerge(
           index === 0 && "pt-4",
-          index === messages.length - 1 && "pb-24 md:pb-0",
+          index === messages.length - 1 && "pb-56 md:pb-0",
         )}
       >
         <MessageLive
