@@ -1,10 +1,11 @@
 import { formatCountdownTime, useCountdown } from "@hooks/useCountdown"
 
-const TimeProgress: React.FC = () => {
-  const dateNow = new Date(1733304424865)
-  const fiveMinutesLaterDate = new Date(
-    dateNow.getTime() + 5 * 60 * 1000,
-  ).getTime()
+const TimeProgress: React.FC<{
+  startTime: any
+  endTime: any
+}> = ({ startTime, endTime }) => {
+  const dateNow = new Date(startTime)
+  const fiveMinutesLaterDate = new Date(endTime).getTime()
 
   const { timeRemaining } = useCountdown({
     startTime: Math.floor(dateNow.getTime()),

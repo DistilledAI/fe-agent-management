@@ -6,8 +6,11 @@ import BigNumber from "bignumber.js"
 import { useSelector } from "react-redux"
 import { DECMIMAL_SHOW } from "../constants"
 import { twMerge } from "tailwind-merge"
+import useGetPriceRealtime from "../hooks/useGetPriceRealtime"
 
 const HeaderPrice = () => {
+  useGetPriceRealtime()
+
   const { price, priceChange } = useSelector(
     (state: RootState) => state.priceInfo,
   )

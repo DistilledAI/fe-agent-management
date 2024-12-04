@@ -1,5 +1,5 @@
 {
-  "address": "w6kExqTy2v84MGzsX8uicpWzRLVdAzZhZ6x9anjbb81",
+  "address": "3YTzQx87MSRhyn2apQJWa6CPJXnLY9FBewWkcWZUfUG4",
   "metadata": {
     "name": "solora_pyth_price",
     "version": "0.1.0",
@@ -705,28 +705,143 @@
   "errors": [
     {
       "code": 6000,
-      "name": "InvalidPDATransferSource",
-      "msg": "Invalid PDA transfer source"
+      "name": "EventSettled",
+      "msg": "Event has already been settled"
     },
     {
       "code": 6001,
-      "name": "InvalidPDATransferDestination",
-      "msg": "Invalid PDA transfer destination"
+      "name": "InvalidOutcome",
+      "msg": "An invalid outcome was chosen"
     },
     {
       "code": 6002,
-      "name": "PublicKeyMismatch",
-      "msg": "Invalid public key"
+      "name": "OverflowError",
+      "msg": "Overflow error"
     },
     {
       "code": 6003,
-      "name": "IncorrectOwner",
-      "msg": "Incorrect owner"
+      "name": "InvalidExpiry",
+      "msg": "The expiry date has passed"
     },
     {
       "code": 6004,
-      "name": "UninitializedAccount",
-      "msg": "Account not initialized"
+      "name": "OrderExpired",
+      "msg": "The order has expired"
+    },
+    {
+      "code": 6005,
+      "name": "EventNotSettled",
+      "msg": "Event has not been settled"
+    },
+    {
+      "code": 6006,
+      "name": "FillNotFound",
+      "msg": "A fill was not found for this user"
+    },
+    {
+      "code": 6007,
+      "name": "FillAlreadySettled",
+      "msg": "The fill has already been settled"
+    },
+    {
+      "code": 6008,
+      "name": "OrderFilled",
+      "msg": "The order has already been filled"
+    },
+    {
+      "code": 6009,
+      "name": "AmountLargerThanRemainingAsk",
+      "msg": "The amount to remove is more than remaining ask"
+    },
+    {
+      "code": 6010,
+      "name": "InvalidFillAuthority",
+      "msg": "The fill authority does not match"
+    },
+    {
+      "code": 6011,
+      "name": "InvalidLockTime",
+      "msg": "Invalid lock time"
+    },
+    {
+      "code": 6012,
+      "name": "EventLocked",
+      "msg": "Event has been locked"
+    },
+    {
+      "code": 6013,
+      "name": "InvalidMint",
+      "msg": "Invalid token mint"
+    },
+    {
+      "code": 6014,
+      "name": "EventNotLocked",
+      "msg": "The event has not been locked yet"
+    },
+    {
+      "code": 6015,
+      "name": "LockPriceSet",
+      "msg": "The lock price has already been set"
+    },
+    {
+      "code": 6016,
+      "name": "InvalidPrice",
+      "msg": "Invalid price"
+    },
+    {
+      "code": 6017,
+      "name": "LockPriceNotSet",
+      "msg": "The lock price has not been set"
+    },
+    {
+      "code": 6018,
+      "name": "EventInWaitingPeriod",
+      "msg": "The event is still in the waiting period"
+    },
+    {
+      "code": 6019,
+      "name": "InvalidInterval",
+      "msg": "Invalid interval"
+    },
+    {
+      "code": 6020,
+      "name": "EventNotStarted",
+      "msg": "The event has not started"
+    },
+    {
+      "code": 6021,
+      "name": "EventNotExpired",
+      "msg": "The event has not expired"
+    },
+    {
+      "code": 6022,
+      "name": "ZeroAmount",
+      "msg": "Zero amount"
+    },
+    {
+      "code": 6023,
+      "name": "InvalidFee",
+      "msg": "Invalid fee"
+    },
+    {
+      "code": 6024,
+      "name": "InvalidFeeBurn",
+      "msg": "Invalid fee burn"
+    },
+    {
+      "code": 6025,
+      "name": "IncorrectAuthority",
+      "msg": "IncorrectAuthority"
+    },
+    {
+      "code": 6026,
+      "name": "PythError",
+      "msg": "Pyth has an internal error."
+    },
+    {
+      "code": 6027,
+      "name": "TryToSerializePriceAccount",
+      "msg": "Program should not try to serialize a price account."
     }
   ],
   "types": [

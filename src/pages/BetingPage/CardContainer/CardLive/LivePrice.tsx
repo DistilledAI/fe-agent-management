@@ -6,10 +6,17 @@ import BigNumber from "bignumber.js"
 import { useSelector } from "react-redux"
 import { twMerge } from "tailwind-merge"
 
-const LiveCardPrice = () => {
-  const { price, priceChange } = useSelector(
-    (state: RootState) => state.priceInfo,
-  )
+const LiveCardPrice = ({ currentRound }: { currentRound: any }) => {
+  const { price } = useSelector((state: RootState) => state.priceInfo)
+
+  const downAmount = currentRound?.downAmount || 0
+  const upAmount = currentRound?.upAmount || 0
+  const total = new BigNumber(downAmount).plus(upAmount)
+  const lockPrice = new BigNumber(currentRound?.lockPrice || 0).toNumber()
+  const upOffset = upAmount ? total.div(upAmount).toNumber() : 1
+  const downOffset = downAmount ? total.div(downAmount).toNumber() : 1
+
+  const priceChange = new BigNumber(price).minus(lockPrice).toNumber()
 
   const isDown = new BigNumber(priceChange).isLessThan(0)
   const isUp = new BigNumber(priceChange).isGreaterThan(0)
@@ -73,7 +80,7 @@ const LiveCardPrice = () => {
               UP
             </span>
             <span className="text-[12px] text-[rgba(252,_252,_252,_0.50)]">
-              {1.87}x Payout
+              {upOffset}x Payout
             </span>
           </div>
           <ArrowUpFilledIcon
@@ -98,7 +105,7 @@ const LiveCardPrice = () => {
               DOWN
             </span>
             <span className="text-[12px] text-[rgba(252,_252,_252,_0.50)]">
-              {1.87}x Payout
+              {downOffset}x Payout
             </span>
           </div>
           <div className="rotate-180">

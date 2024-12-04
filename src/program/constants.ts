@@ -1,8 +1,8 @@
-import base58 from "bs58";
+export const EVENT = "event"
+export const EVENT_CONFIG = "event_config"
+export const BPS = 300 // fees per prediction event
+export const MAX_ADDRESS_SOLANA = "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h"
 
-export const EVENT = "event";
-export const EVENT_CONFIG = "event_config";
-export const BPS = 300; // fees per prediction event
 // FIXME: fill addresses
 export const PUBKEYS = {
   LOCALNET: {
@@ -16,8 +16,8 @@ export const PUBKEYS = {
     PYTH_FEED: "4cSM2e6rvbGQUFiJbqytoVMi5GgghSMr8LwVrT9VPSPo",
   },
   MAINNET: {
-    EVENT_AUTHORITY: "",
-    CURRENCY_MINT: "",
-    PYTH_FEED: "",
+    EVENT_AUTHORITY: "6WJ6YvAFBVVC41qt23Jb7mkaWdbsB1YgDy46aQLG1H49",
+    CURRENCY_MINT: MAX_ADDRESS_SOLANA,
+    PYTH_FEED: "GVXRSBjFk6e6J3NbVPXohDJetcTjaeeuykUpbQF8UoMU",
   },
-};
+}

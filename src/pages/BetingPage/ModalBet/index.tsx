@@ -5,13 +5,12 @@ import { maxIcon } from "@assets/images"
 import { Web3SolanaProgramInteraction } from "../../../program/utils/web3Utils"
 import { BET_TYPE } from "../CardContainer"
 import { loadingButtonIcon } from "@assets/svg"
+import { MAX_ADDRESS_SOLANA } from "program/constants"
 
 interface ModalProps {
   isOpen: boolean
   closeModal: () => void
 }
-
-const MAX_ADDRESS_SOLANA = "EwGUjRyLVJ9Q8KY8kBmeAyhQAf4EcbGxrXsxexZaCGhM"
 
 const web3Solana = new Web3SolanaProgramInteraction()
 

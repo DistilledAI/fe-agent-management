@@ -1,10 +1,10 @@
 import BetDisclaimer from "@components/BetDisclaimer"
-import HeaderBet from "./HeaderBet"
-import { useEffect } from "react"
-import SwiperList from "./SwiperList"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { PhantomWalletName } from "@solana/wallet-adapter-wallets"
+import { useEffect } from "react"
+import HeaderBet from "./HeaderBet"
 import useDisclaimer from "./hooks/useDisclaimer"
+import SwiperList from "./SwiperList"
 
 const Betting = () => {
   const { isOpen, onOpenChange, onAccept } = useDisclaimer()
