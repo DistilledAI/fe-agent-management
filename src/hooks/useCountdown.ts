@@ -61,7 +61,6 @@ export const useCountdown = ({
     calcDiffTime(getTimeDateNow, end),
   )
 
-  console.log("timeRemaining", end, start, end - start, timeRemaining)
   const [isStarted, setIsStarted] = useState(() => {
     const isStart = getTimeDateNow >= start
     return isStart
