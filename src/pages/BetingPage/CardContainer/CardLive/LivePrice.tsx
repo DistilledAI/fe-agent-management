@@ -1,15 +1,12 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
-import { CheckFilledIcon } from "@components/Icons/DefiLens"
 import { RootState } from "@configs/store"
+import { DECMIMAL_SHOW } from "@pages/BetingPage/constants"
 import { numberWithCommas } from "@utils/format"
 import BigNumber from "bignumber.js"
 import { useSelector } from "react-redux"
 import { twMerge } from "tailwind-merge"
-import { DECMIMAL_SHOW } from "../constants"
-import TimeProgress from "./TimeProgress"
-import { Divider } from "@nextui-org/react"
 
-export const LiveCardContent = ({ roundItem }: { roundItem: any }) => {
+const LiveCardPrice = () => {
   const { price, priceChange } = useSelector(
     (state: RootState) => state.priceInfo,
   )
@@ -19,16 +16,7 @@ export const LiveCardContent = ({ roundItem }: { roundItem: any }) => {
   const isDraw = new BigNumber(priceChange).isEqualTo(0)
 
   return (
-    <div className="rounded-b-[12px] border border-[#1A1C28] bg-[#13141D] p-4">
-      <div
-        className={twMerge(
-          "absolute left-1/2 top-0 flex h-5 -translate-x-1/2 -translate-y-1/2 items-center rounded-sm border border-[#080A14] bg-[#E4775D] p-[6px] text-[12px] text-[#080A14] shadow shadow-[#rgba(0,_0,_0,_0.16)]",
-        )}
-      >
-        <CheckFilledIcon size={12} color="#080A14" />
-        <span className="ml-1">ENTERED</span>
-      </div>
-      <TimeProgress />
+    <>
       <div
         className={twMerge(
           "mb-6 rounded-lg border border-[#9FF4CF] bg-[#080A14] p-4",
@@ -121,25 +109,8 @@ export const LiveCardContent = ({ roundItem }: { roundItem: any }) => {
           </div>
         </div>
       </div>
-      <div className="mt-6 flex flex-col">
-        <div className="flex items-center justify-between text-[12px]">
-          <span className="text-[#9192A0]">Your position</span>
-          <span className="text-[#E8E9EE]">-- MAX</span>
-        </div>
-        <div className="mt-3 flex items-center justify-between text-[12px]">
-          <span className="text-[#9192A0]">Your prediction</span>
-          <span className="text-[#9FF4CF]">UP</span>
-        </div>
-        <Divider className="my-3 bg-[#30344A]" />
-        <div className="flex items-center justify-between text-[12px]">
-          <span className="text-[#9192A0]">Looked Price</span>
-          <span className="text-[#E8E9EE]">$648.8047</span>
-        </div>
-        <div className="mt-3 flex items-center justify-between text-[12px]">
-          <span className="text-[#9192A0]">Prize pool</span>
-          <span className="text-[#E8E9EE]">212.2690 MAX</span>
-        </div>
-      </div>
-    </div>
+    </>
   )
 }
+
+export default LiveCardPrice
