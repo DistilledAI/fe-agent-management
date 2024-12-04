@@ -1,7 +1,7 @@
 import bitcoinMaxIntro from "@assets/video/bitcoin-max-intro-ai.mp4"
 import stalorAudio from "@assets/audio/audio_stalor.mp3"
 import VideoCustom from "@components/VideoCustom"
-import { Image, Skeleton } from "@nextui-org/react"
+import { Image, Skeleton, useDisclosure } from "@nextui-org/react"
 import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
 import React, { useEffect, useMemo, useState } from "react"
@@ -15,6 +15,8 @@ import { AGENT_INFO_CLANS } from "@constants/index"
 import AudioClanCustom from "@components/AudioClanCustom"
 import SkeletonInfo, { SkeletonDesc } from "./SkeletonInfo"
 import AgentSocials from "./AgentSocials"
+import BetModal from "@components/BetModal"
+import { bgBtcPrediction, bitmaxAva, btcIconRote } from "@assets/images"
 
 const LeftContent: React.FC<{
   groupDetail: UserGroup | null
@@ -22,6 +24,7 @@ const LeftContent: React.FC<{
 }> = ({ groupDetail, isFetched }) => {
   const queryClient = useQueryClient()
   const [isLoaded, setIsLoaded] = useState(false)
+  const { isOpen, onOpenChange, onOpen } = useDisclosure()
   const isMaxi =
     groupDetail?.group.label === "@maxisbuyin" ||
     groupDetail?.group.label === "@maxisbuyin_"
@@ -68,23 +71,59 @@ const LeftContent: React.FC<{
         {!isLoaded || !isFetched || groupDetail === null ? (
           <Skeleton className="h-[350px] rounded-[32px] md:h-[400px]"></Skeleton>
         ) : isMaxi ? (
-          <VideoCustom
-            videoSrc={bitcoinMaxIntro}
-            classNames={{
-              video: twMerge(
-                "h-full min-h-[350px] w-full rounded-[32px] object-cover max-h-[350px] md:max-h-[400px] md:h-auto",
-                isCloseChatLive && "max-md:max-h-full",
-              ),
-            }}
-            isVolumeIcon
-            onMuteToggle={(muted) =>
-              queryClient.setQueryData<boolean>(
-                [QueryDataKeys.AGENT_LIVE_VOLUME],
-                () => muted,
-              )
-            }
-            muted={isMuted}
-          />
+          <div className="relative">
+            <VideoCustom
+              videoSrc={bitcoinMaxIntro}
+              classNames={{
+                video: twMerge(
+                  "h-full min-h-[350px] w-full rounded-[32px] object-cover max-h-[350px] md:max-h-[400px] md:h-auto",
+                  isCloseChatLive && "max-md:max-h-full",
+                ),
+              }}
+              isVolumeIcon
+              onMuteToggle={(muted) =>
+                queryClient.setQueryData<boolean>(
+                  [QueryDataKeys.AGENT_LIVE_VOLUME],
+                  () => muted,
+                )
+              }
+              muted={isMuted}
+            />
+            <div
+              onClick={onOpen}
+              className="absolute bottom-2 left-3 right-3 flex cursor-pointer items-center justify-between rounded-full bg-[rgba(52,54,54,0.7)] px-2 py-2 backdrop-blur-[10px]"
+            >
+              <div className="flex items-center gap-2">
+                <div className="flex h-3 w-3 items-center justify-center rounded-full bg-[#A5DC004D]">
+                  <div className="h-2 w-2 rounded-full bg-[#58DC00]"></div>
+                </div>
+                <p className="text-14 font-medium leading-4 text-white">
+                  Play to <br /> Earn $MAX
+                </p>
+              </div>
+              <div
+                style={{
+                  backgroundImage: `url(${bgBtcPrediction})`,
+                  backgroundSize: "100% 100%",
+                  backgroundRepeat: "no-repeat",
+                }}
+                className="flex h-[50px] items-center gap-2 rounded-full px-3"
+              >
+                <div className="relative">
+                  <Image className="h-8 w-8 rounded-full" src={bitmaxAva} />
+                  <Image
+                    classNames={{
+                      wrapper: "w-4 h-4 absolute bottom-[-2px] right-[-2px]",
+                    }}
+                    src={btcIconRote}
+                  />
+                </div>
+                <p className="whitespace-nowrap font-extrabold italic text-white">
+                  <span className="text-[#F7931A]">$BTC</span> Prediction
+                </p>
+              </div>
+            </div>
+          </div>
         ) : (
           <div
             style={{
@@ -133,6 +172,7 @@ const LeftContent: React.FC<{
           <SkeletonDesc />
         )}
       </div>
+      {isOpen && <BetModal onOpenChange={onOpenChange} isOpen={isOpen} />}
     </div>
   )
 }
