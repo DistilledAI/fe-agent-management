@@ -21,7 +21,7 @@ import ContextCleared from "@components/ContextCleared"
 import { useQuery } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import useAuthState from "@hooks/useAuthState"
-import { useMemo } from "react"
+import { useCallback, useMemo } from "react"
 
 const ChatMessages = () => {
   const {
@@ -54,53 +54,60 @@ const ChatMessages = () => {
       <FilledUserIcon size={14} />
     )
 
-  const renderMessage = (index: number, message: IMessageBox) => {
-    const { paddingBottomStyle, borderRadiusStyle } = groupedMessages(
-      index,
-      message,
-      messages,
-    )
-
-    if (message.content === CLEAR_CACHED_MESSAGE) {
-      return (
-        <ContextCleared
-          wrapperClassName={twMerge(
-            "max-w-[768px] mx-auto pb-4 px-3 md:px-0",
-            messages.length - 1 === index && "pb-10",
-          )}
-          textClassName={textColor}
-        />
+  const renderMessage = useCallback(
+    (index: number, message: IMessageBox) => {
+      const { paddingBottomStyle, borderRadiusStyle } = groupedMessages(
+        index,
+        message,
+        messages,
       )
-    }
-    return (
-      <div
-        className={twMerge(
-          "mx-auto w-full max-w-[768px] px-3 pb-4",
-          message.role === RoleChat.OWNER && paddingBottomStyle,
-        )}
-        key={index}
-      >
-        {message.role === RoleChat.CUSTOMER ? (
-          <ReceiverMessage
-            avatar={{
-              src: message.avatar,
-              badgeIcon: getBadgeIcon(message.roleOwner),
-              badgeClassName: getBadgeColor(message.roleOwner),
-              publicAddress: message.publicAddress,
-            }}
-            content={message.content}
-            isTyping={message.isTyping}
+
+      if (message.content === CLEAR_CACHED_MESSAGE) {
+        return (
+          <ContextCleared
+            wrapperClassName={twMerge(
+              "max-w-[768px] mx-auto pb-4 px-3 md:px-0",
+              messages.length - 1 === index && "pb-10",
+            )}
+            textClassName={textColor}
           />
-        ) : null}
-        {message.role === RoleChat.OWNER ? (
-          <SenderMessage
-            content={message.content}
-            baseClassName={twMerge(bgColor, borderRadiusStyle)}
-          />
-        ) : null}
-      </div>
-    )
-  }
+        )
+      }
+
+      const isOwner = message.role === RoleChat.OWNER
+      const isCustomer = message.role === RoleChat.CUSTOMER
+
+      return (
+        <div
+          className={twMerge(
+            "mx-auto w-full max-w-[768px] px-3 pb-4",
+            isOwner && paddingBottomStyle,
+          )}
+          key={index}
+        >
+          {isCustomer && (
+            <ReceiverMessage
+              avatar={{
+                src: message.avatar,
+                badgeIcon: getBadgeIcon(message.roleOwner),
+                badgeClassName: getBadgeColor(message.roleOwner),
+                publicAddress: message.publicAddress,
+              }}
+              content={message.content}
+              isTyping={message.isTyping}
+            />
+          )}
+          {isOwner && (
+            <SenderMessage
+              content={message.content}
+              baseClassName={twMerge(bgColor, borderRadiusStyle)}
+            />
+          )}
+        </div>
+      )
+    },
+    [messages, textColor, bgColor],
+  )
 
   return (
     <>

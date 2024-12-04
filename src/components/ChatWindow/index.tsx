@@ -4,7 +4,6 @@ import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
-  useMemo,
   useRef,
   useState,
 } from "react"
@@ -93,40 +92,44 @@ const ChatWindow = ({
     [hasPreviousMore],
   )
 
-  const renderHeader = useMemo(
-    () => () => {
+  const renderHeader = useCallback(() => {
+    if (isFetchingPreviousPage && messages.length >= LIMIT) {
       return (
-        <>
-          {isFetchingPreviousPage && messages.length >= LIMIT ? (
-            <div className="flex h-full items-center justify-center pt-1">
-              <DotLoading />
-            </div>
-          ) : (
-            <></>
-          )}
-          {Header ? <div className="pb-4">{Header}</div> : <></>}
-        </>
+        <div className="flex h-full items-center justify-center pt-1">
+          <DotLoading />
+        </div>
       )
-    },
-    [isFetchingPreviousPage, messages.length, Header],
-  )
+    }
 
-  const renderEmptyPlaceholder = () =>
-    isFetched && !messages.length ? (
-      <div className="flex h-full items-center justify-center">NO MESSAGE</div>
-    ) : (
-      <></>
-    )
+    if (Header) {
+      return <div className="pb-4">{Header}</div>
+    }
 
-  const renderRow = useMemo(
-    () => (index: number, message: IMessageBox) => {
+    return null
+  }, [isFetchingPreviousPage, messages.length, Header])
+
+  const renderEmptyPlaceholder = useCallback(() => {
+    if (isFetched && !messages.length) {
       return (
-        <article className={twMerge("px-3 pb-3", msgBoxClassName)} key={index}>
-          {itemContent(index, message)}
-        </article>
+        <div className="flex h-full items-center justify-center">
+          NO MESSAGE
+        </div>
       )
-    },
-    [msgBoxClassName, chatId, itemContent],
+    }
+
+    return null
+  }, [isFetched, messages.length])
+
+  const renderRow = useCallback(
+    (index: number, message: IMessageBox) => (
+      <article
+        className={twMerge("px-3 pb-3", msgBoxClassName)}
+        key={message?.id || index}
+      >
+        {itemContent(index, message)}
+      </article>
+    ),
+    [msgBoxClassName, itemContent],
   )
 
   return (
@@ -158,7 +161,7 @@ const ChatWindow = ({
             Header: renderHeader,
             EmptyPlaceholder: () => renderEmptyPlaceholder(),
           }}
-          // followOutput={"auto"}
+          followOutput={!isScrollBottom ? "auto" : false}
           // atBottomStateChange={setIsAtBottom}
           atBottomThreshold={AT_BOTTOM_THRESHOLD}
           itemContent={renderRow}

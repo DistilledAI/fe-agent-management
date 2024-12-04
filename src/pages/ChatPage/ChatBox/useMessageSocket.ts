@@ -159,9 +159,16 @@ const useMessageSocket = () => {
               ...lastPage,
               messages: lastPage.messages.map((item) => {
                 if (item.id === e.msgId) {
+                  const newContent = isPlusMsg
+                    ? item.content + e.messages
+                    : e.messages
+                  if (newContent === item.content && !item.isTyping) {
+                    return item
+                  }
+
                   return {
                     ...item,
-                    content: isPlusMsg ? item.content + e.messages : e.messages,
+                    content: newContent,
                     isTyping: false,
                   }
                 }

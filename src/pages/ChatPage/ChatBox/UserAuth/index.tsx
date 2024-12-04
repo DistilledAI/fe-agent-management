@@ -31,7 +31,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
       if (!cachedData) {
         return await getMyPrivateAgent()
       }
-      return {}
+      return cachedData
     },
     enabled: !isAnonymous && isLogin,
   })
