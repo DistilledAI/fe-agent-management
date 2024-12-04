@@ -1,5 +1,6 @@
 export const storageKey = {
   ACCESS_TOKEN: "accessToken",
+  DISCLAIMER: "disclaimer",
 }
 
 export const cachedLocalStorage = {
