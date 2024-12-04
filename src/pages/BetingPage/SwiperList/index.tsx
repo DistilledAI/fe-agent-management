@@ -11,6 +11,7 @@ import {
 } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 import CardContainer, { BET_TYPE, STATUS_ROUND } from "../CardContainer"
+import ModalBet from "../ModalBet"
 
 export const CHART_DOT_CLICK_EVENT = "CHART_DOT_CLICK_EVENT"
 
@@ -110,6 +111,7 @@ export const LIST_MOCKED = [
 
 const SwiperList = () => {
   const { setSwiper, swiper } = useSwiper()
+  const [showBetModal, setShowBetModal] = useState(false)
   // const { currentEpoch, rounds } = useGetSortedRoundsCurrentEpoch()
   // const previousEpoch = currentEpoch > 0 ? currentEpoch - 1 : currentEpoch
   // const swiperIndex = rounds?.findIndex((round) => round.epoch === previousEpoch)
@@ -136,6 +138,10 @@ const SwiperList = () => {
 
   return (
     <>
+      <ModalBet
+        isOpen={showBetModal}
+        closeModal={() => setShowBetModal(false)}
+      ></ModalBet>
       <Swiper
         // initialSlide={swiperIndex}
         initialSlide={4}
@@ -173,7 +179,14 @@ const SwiperList = () => {
         {LIST_MOCKED.map((roundItem, key) => (
           <SwiperSlide key={`${key}-swiper-${roundItem.round}`}>
             {({ isActive }) => (
-              <CardContainer roundItem={roundItem} isActive={isActive} />
+              <CardContainer
+                roundItem={roundItem}
+                isActive={isActive}
+                onClick={() =>
+                  roundItem.status === STATUS_ROUND.NEXT &&
+                  setShowBetModal(true)
+                }
+              />
             )}
           </SwiperSlide>
         ))}

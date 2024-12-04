@@ -3,6 +3,7 @@ import { ChangeEvent, useEffect, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { maxIcon } from "@assets/images"
 import { Web3SolanaProgramInteraction } from "../utils/web3Utils"
+import { BET_TYPE } from "../CardContainer"
 
 interface ModalProps {
   isOpen: boolean
@@ -15,6 +16,7 @@ const web3Solana = new Web3SolanaProgramInteraction()
 
 const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
   const [tokenBal, setTokenBal] = useState<number>(0)
+  const [type, setType] = useState<number>(BET_TYPE.UP)
   const [amountVal, setAmountVal] = useState<string>("")
   //   const wallet = useWallet();
 
@@ -78,12 +80,22 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
           <div className="flex w-full gap-2">
             <div
               className={twMerge(
-                "h-10 flex-1 rounded bg-[#9FF4CF] p-2 text-[14px] uppercase text-[#080A14] hover:brightness-125",
+                "h-10 flex-1 cursor-pointer rounded bg-[#1A1C28] p-2 text-center text-[14px] uppercase text-[#E8E9EE] hover:brightness-125",
+                type === BET_TYPE.UP && "bg-[#9FF4CF] text-[#080A14]",
               )}
+              onClick={() => setType(BET_TYPE.UP)}
             >
               UP
             </div>
-            <div></div>
+            <div
+              className={twMerge(
+                "h-10 flex-1 cursor-pointer rounded bg-[#1A1C28] p-2 text-center text-[14px] uppercase text-[#E8E9EE] hover:brightness-125",
+                type === BET_TYPE.DOWN && "bg-[#E75787] text-[#080A14]",
+              )}
+              onClick={() => setType(BET_TYPE.DOWN)}
+            >
+              DOWN
+            </div>
           </div>
 
           <div className="mt-6">

@@ -13,6 +13,7 @@ import { NextCardContent } from "./NextCardContent"
 interface CardContainerProps {
   roundItem: any
   isActive: boolean
+  onClick: () => void
 }
 
 export enum STATUS_ROUND {
@@ -47,6 +48,7 @@ export const CardContent = ({ roundItem }: { roundItem: any }) => {
 const CardContainer: React.FC<CardContainerProps> = ({
   roundItem,
   isActive,
+  onClick,
 }) => {
   return (
     <div
@@ -55,6 +57,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
         roundItem.status === STATUS_ROUND.EXPIRED && "brightness-75",
         isActive && "border border-[#E8E9EE]",
       )}
+      onClick={onClick}
     >
       <CardHeader roundItem={roundItem} />
       <CardContent roundItem={roundItem} />
