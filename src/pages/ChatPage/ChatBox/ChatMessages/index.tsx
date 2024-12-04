@@ -21,7 +21,7 @@ import ContextCleared from "@components/ContextCleared"
 import { useQuery } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import useAuthState from "@hooks/useAuthState"
-import { IAgentData } from "types/user"
+import { useMemo } from "react"
 
 const ChatMessages = () => {
   const {
@@ -35,14 +35,17 @@ const ChatMessages = () => {
   const { chatId } = useGetChatId()
   const { bgColor, textColor } = getActiveColorRandomById(chatId)
   const { spacing } = useStyleSpacing()
-  const { user, isLogin, isAnonymous } = useAuthState()
-  const { data } = useQuery<any>({
-    queryKey: [QueryDataKeys.MY_BOT_LIST],
-    enabled: isLogin && !isAnonymous,
-  })
-  const isOwner = !!data?.data?.items?.find(
-    (agent: IAgentData) => agent?.owner === user?.id,
-  )
+  const { user, isLogin } = useAuthState()
+  const { data: chatDetailResult, isFetched: isGroupDetailFetched } =
+    useQuery<any>({
+      queryKey: [QueryDataKeys.GROUP_DETAIL, chatId?.toString()],
+      enabled: !!chatId && isLogin,
+    })
+
+  const userBId = chatDetailResult?.data?.group?.userBId
+  const isOwner = useMemo(() => {
+    return !isGroupDetailFetched && isLogin ? true : userBId === user?.id
+  }, [isGroupDetailFetched, userBId, user?.id, isLogin])
 
   const getBadgeIcon = (role: RoleUser) =>
     role === RoleUser.BOT ? (
@@ -117,7 +120,7 @@ const ChatMessages = () => {
         }}
         isChatActions={true}
       />
-      <ChatActions isClearContextBtn={!isOwner} />
+      <ChatActions isClearContextBtn={!isOwner} isDelegateBtn={isOwner} />
     </>
   )
 }

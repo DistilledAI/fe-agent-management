@@ -12,7 +12,12 @@ import { getUserPublicDetail } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
 import ShareQRModal from "@components/ShareQRModal"
 
-const AgentInfoCard = ({ messages }: { messages: IMessageBox[] }) => {
+interface AgentInfoCardProps {
+  messages: IMessageBox[]
+  getAgentOwner?: (agentOwner: any) => void
+}
+
+const AgentInfoCard = ({ messages }: AgentInfoCardProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { chatId } = useGetChatId()
 
@@ -20,7 +25,6 @@ const AgentInfoCard = ({ messages }: { messages: IMessageBox[] }) => {
     queryKey: [QueryDataKeys.GROUP_DETAIL, chatId?.toString()],
     enabled: !!chatId,
     staleTime: 60 * 60 * 1000,
-    refetchOnMount: false,
   })
 
   const userBId = chatDetailResult?.data?.group?.userBId

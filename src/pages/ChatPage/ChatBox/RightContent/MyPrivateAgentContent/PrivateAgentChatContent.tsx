@@ -117,7 +117,9 @@ const PrivateAgentChatContent: React.FC<{
         }
         isChatActions={isChatActions}
       />
-      {isChatActions ? <ChatActions isDelegateBtn={false} /> : null}
+      {isChatActions ? (
+        <ChatActions isClearContextBtn isDelegateBtn={false} />
+      ) : null}
       <div
         className={twMerge(
           "absolute bottom-[70px] left-1/2 w-[calc(100%-32px)] -translate-x-1/2 bg-white pb-0 md:bottom-[95px] md:pb-2",
