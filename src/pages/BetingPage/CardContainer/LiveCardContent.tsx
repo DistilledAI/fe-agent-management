@@ -7,6 +7,7 @@ import { useSelector } from "react-redux"
 import { twMerge } from "tailwind-merge"
 import { DECMIMAL_SHOW } from "../constants"
 import TimeProgress from "./TimeProgress"
+import { Divider } from "@nextui-org/react"
 
 export const LiveCardContent = ({ roundItem }: { roundItem: any }) => {
   const { price, priceChange } = useSelector(
@@ -121,6 +122,15 @@ export const LiveCardContent = ({ roundItem }: { roundItem: any }) => {
         </div>
       </div>
       <div className="mt-6 flex flex-col">
+        <div className="flex items-center justify-between text-[12px]">
+          <span className="text-[#9192A0]">Your position</span>
+          <span className="text-[#E8E9EE]">-- MAX</span>
+        </div>
+        <div className="mt-3 flex items-center justify-between text-[12px]">
+          <span className="text-[#9192A0]">Your prediction</span>
+          <span className="text-[#9FF4CF]">UP</span>
+        </div>
+        <Divider className="my-3 bg-[#30344A]" />
         <div className="flex items-center justify-between text-[12px]">
           <span className="text-[#9192A0]">Looked Price</span>
           <span className="text-[#E8E9EE]">$648.8047</span>

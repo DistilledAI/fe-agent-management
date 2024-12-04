@@ -7,11 +7,7 @@ import { BET_TYPE } from "."
 export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
   const { selectedBet } = roundItem
 
-  const renderDisplayMaxBet = (betType: any) => {
-    const isActive = betType === BET_TYPE.DOWN
-
-    if (!isActive) return <div />
-
+  const renderDisplayMaxBet = (betType: BET_TYPE) => {
     return (
       <Tooltip
         content={
@@ -33,7 +29,12 @@ export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
               />
             </svg>
             <span className="text-12 font-medium text-[#F7F7F7]">
-              MAX’s bet DOWN
+              MAX’s bet{" "}
+              {betType === BET_TYPE.DOWN ? (
+                <span className="text-[#E75787]">DOWN</span>
+              ) : (
+                <span className="text-[#9FF4CF]">UP</span>
+              )}
             </span>
           </div>
         }
@@ -41,6 +42,7 @@ export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
         showArrow
         classNames={{
           content: "bg-[#30344A] p-2",
+          base: "before:bg-[#30344A]",
         }}
         offset={40}
       >
@@ -92,7 +94,7 @@ export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
             </span>
           </div>
           <div className="flex items-center gap-1">
-            {renderDisplayMaxBet(BET_TYPE.DRAW)}
+            {renderDisplayMaxBet(BET_TYPE.UP)}
             <ArrowUpFilledIcon bgColor="#585A6B" size={18} />
           </div>
         </div>
