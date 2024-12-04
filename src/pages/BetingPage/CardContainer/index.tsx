@@ -7,8 +7,8 @@ import { twMerge } from "tailwind-merge"
 import { CalculatingCardContent } from "./CalculatingCardContent"
 import { ExpireCardContent } from "./ExpireCardContent"
 import { LaterCardContent } from "./LaterCardContent"
-import { LiveCardContent } from "./LiveCardContent"
 import { NextCardContent } from "./NextCardContent"
+import CardLiveBet from "./CardLive"
 
 interface CardContainerProps {
   roundItem: any
@@ -35,7 +35,7 @@ export const CardContent = ({ roundItem }: { roundItem: any }) => {
     case STATUS_ROUND.EXPIRED:
       return <ExpireCardContent roundItem={roundItem} />
     case STATUS_ROUND.LIVE:
-      return <LiveCardContent roundItem={roundItem} />
+      return <CardLiveBet roundItem={roundItem} />
     case STATUS_ROUND.NEXT:
       return <NextCardContent roundItem={roundItem} />
     case STATUS_ROUND.CALCULATING:

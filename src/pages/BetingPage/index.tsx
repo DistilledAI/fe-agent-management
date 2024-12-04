@@ -1,7 +1,6 @@
 import BetDisclaimer from "@components/BetDisclaimer"
 import HeaderBet from "./HeaderBet"
 import { useEffect } from "react"
-import useGetPriceRealtime from "./hooks/useGetPriceRealtime"
 import SwiperList from "./SwiperList"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { PhantomWalletName } from "@solana/wallet-adapter-wallets"
@@ -9,7 +8,6 @@ import useDisclaimer from "./hooks/useDisclaimer"
 
 const Betting = () => {
   const { isOpen, onOpenChange, onAccept } = useDisclaimer()
-  useGetPriceRealtime()
   const { select, publicKey, connect } = useWallet()
 
   useEffect(() => {
