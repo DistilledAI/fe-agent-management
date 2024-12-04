@@ -179,7 +179,10 @@ const SwiperList = () => {
         resizeObserver
       >
         {LIST_MOCKED.map((roundItem, key) => (
-          <SwiperSlide key={`${key}-swiper-${roundItem.round}`}>
+          <SwiperSlide
+            className="!h-fit"
+            key={`${key}-swiper-${roundItem.round}`}
+          >
             {({ isActive }) => (
               <CardContainer
                 roundItem={roundItem}
@@ -194,7 +197,7 @@ const SwiperList = () => {
         ))}
       </Swiper>
 
-      <div className="flex items-center justify-center gap-2">
+      <div className="mt-5 flex items-center justify-center gap-2">
         <div
           className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-1 border-white bg-mercury-950 hover:brightness-125"
           onClick={() => swiper.slideTo(swiper.activeIndex - 1, 0)}
