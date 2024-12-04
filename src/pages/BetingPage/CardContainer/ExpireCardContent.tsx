@@ -1,3 +1,4 @@
+import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { twMerge } from "tailwind-merge"
 import { BET_TYPE } from "."
 
@@ -55,21 +56,10 @@ export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
               {isDraw ? 1 : 1.87}x Payout
             </span>
           </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-          >
-            <path
-              d="M3.5 7.625L8 3.125L12.5 7.625M8 3.75V12.875"
-              stroke={!isUp ? "#585A6B" : "#9FF4CF"}
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <ArrowUpFilledIcon
+            bgColor={!isUp ? "#585A6B" : "#9FF4CF"}
+            size={18}
+          />
         </div>
         <div
           className={twMerge(
@@ -91,21 +81,12 @@ export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
               {isDraw ? 1 : 1.87}x Payout
             </span>
           </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-          >
-            <path
-              d="M3.5 8.375L8 12.875L12.5 8.375M8 12.25V3.125"
-              stroke={isDown ? "#E75787" : "#585A6B"}
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          <div className="rotate-180">
+            <ArrowUpFilledIcon
+              bgColor={isDown ? "#E75787" : "#585A6B"}
+              size={18}
             />
-          </svg>
+          </div>
         </div>
       </div>
       <div className="flex flex-col">

@@ -1,16 +1,17 @@
+import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
+import { CheckFilledIcon } from "@components/Icons/DefiLens"
 import { RootState } from "@configs/store"
-import { useWallet } from "@solana/wallet-adapter-react"
 import { numberWithCommas } from "@utils/format"
 import BigNumber from "bignumber.js"
 import { useSelector } from "react-redux"
 import { twMerge } from "tailwind-merge"
 import { DECMIMAL_SHOW } from "../constants"
+import TimeProgress from "./TimeProgress"
 
 export const LiveCardContent = ({ roundItem }: { roundItem: any }) => {
   const { price, priceChange } = useSelector(
     (state: RootState) => state.priceInfo,
   )
-  // const lockedPrice =
 
   const isDown = new BigNumber(priceChange).isLessThan(0)
   const isUp = new BigNumber(priceChange).isGreaterThan(0)
@@ -23,23 +24,10 @@ export const LiveCardContent = ({ roundItem }: { roundItem: any }) => {
           "absolute left-1/2 top-0 flex h-5 -translate-x-1/2 -translate-y-1/2 items-center rounded-sm border border-[#080A14] bg-[#E4775D] p-[6px] text-[12px] text-[#080A14] shadow shadow-[#rgba(0,_0,_0,_0.16)]",
         )}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="12"
-          height="12"
-          viewBox="0 0 12 12"
-          fill="none"
-        >
-          <path
-            d="M9.75 3L4.5 9L2.25 6.75"
-            stroke="#080A14"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <CheckFilledIcon size={12} color="#080A14" />
         <span className="ml-1">ENTERED</span>
       </div>
+      <TimeProgress />
       <div
         className={twMerge(
           "mb-6 rounded-lg border border-[#9FF4CF] bg-[#080A14] p-4",
@@ -99,21 +87,10 @@ export const LiveCardContent = ({ roundItem }: { roundItem: any }) => {
               {1.87}x Payout
             </span>
           </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-          >
-            <path
-              d="M3.5 7.625L8 3.125L12.5 7.625M8 3.75V12.875"
-              stroke={!isUp ? "#585A6B" : "#9FF4CF"}
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <ArrowUpFilledIcon
+            bgColor={!isUp ? "#585A6B" : "#9FF4CF"}
+            size={18}
+          />
         </div>
         <div
           className={twMerge(
@@ -135,21 +112,12 @@ export const LiveCardContent = ({ roundItem }: { roundItem: any }) => {
               {1.87}x Payout
             </span>
           </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-          >
-            <path
-              d="M3.5 8.375L8 12.875L12.5 8.375M8 12.25V3.125"
-              stroke={isDown ? "#E75787" : "#585A6B"}
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          <div className="rotate-180">
+            <ArrowUpFilledIcon
+              bgColor={isDown ? "#E75787" : "#585A6B"}
+              size={18}
             />
-          </svg>
+          </div>
         </div>
       </div>
       <div className="mt-6 flex flex-col">
