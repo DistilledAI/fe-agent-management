@@ -33,12 +33,9 @@ const AppRouter = () => {
         element={isMobile ? <MainLayout /> : <MainLayoutDesktop />}
       >
         {/* Route Regular */}
+        <Route path={PATH_NAMES.BETTING} element={<Betting />} />
         <Route
           path={PATH_NAMES.HOME}
-          element={isMobile ? <Betting /> : <Betting />}
-        />
-        <Route
-          path={"/bet"}
           element={isMobile ? <ChatPageMobile /> : <ChatBox />}
         />
         <Route
