@@ -30,7 +30,13 @@ import localStorage from "redux-persist/lib/storage"
 const persistConfig = {
   key: "root",
   storage: localStorage,
-  whitelist: ["agents", "sidebarCollapsed", "user", "instructBanner"],
+  whitelist: [
+    "agents",
+    "sidebarCollapsed",
+    "user",
+    "instructBanner",
+    "firstLogin",
+  ],
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
