@@ -274,6 +274,13 @@ const useConnectWallet = () => {
 
     try {
       setLoadingConnectPhantom(true)
+      //@ts-ignore
+      const ethereumProvider = window?.phantom.ethereum
+      if (!ethereumProvider) {
+        return toast.warning(
+          `Please activate the Ethereum Network in your wallet settings!`,
+        )
+      }
       const timestamp = Math.floor(Date.now() / 1000) + 86400
       await provider.connect()
 
