@@ -114,12 +114,6 @@ export const LIST_MOCKED = [
 const SwiperList = () => {
   const { setSwiper, swiper } = useSwiper()
   const [showBetModal, setShowBetModal] = useState(false)
-  // const { currentEpoch, rounds } = useGetSortedRoundsCurrentEpoch()
-  // const previousEpoch = currentEpoch > 0 ? currentEpoch - 1 : currentEpoch
-  // const swiperIndex = rounds?.findIndex((round) => round.epoch === previousEpoch)
-
-  // useOnNextRound()
-  // useOnViewChange(swiperIndex ?? 0, view)
 
   //   useGetPriceRealtime()
 

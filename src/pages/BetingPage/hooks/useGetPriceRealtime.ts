@@ -1,3 +1,4 @@
+import { RootState } from "@configs/store"
 import {
   getPythClusterApiUrl,
   getPythProgramKeyForCluster,
@@ -5,25 +6,21 @@ import {
   PythCluster,
   PythConnection,
 } from "@pythnetwork/client"
+import { updatePriceInfo } from "@reducers/priceInfoSlice"
 import { Connection } from "@solana/web3.js"
 import BigNumber from "bignumber.js"
-// import {
-//   getPythClusterApiUrl,
-//   getPythProgramKeyForCluster,
-//   PythCluster,
-//   PriceStatus,
-//   PythConnection,
-// } from ""
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 
 const PYTHNET_CLUSTER_NAME: PythCluster = "pythnet"
 const connection = new Connection(getPythClusterApiUrl(PYTHNET_CLUSTER_NAME))
 const pythPublicKey = getPythProgramKeyForCluster(PYTHNET_CLUSTER_NAME)
 
 const useGetPriceRealtime = () => {
-  const [price, setPrice] = useState<string>()
-  const [priceChange, setPriceChange] = useState<string>()
-  const [priceChangePercent, setPriceChangePercent] = useState<string>()
+  const dispatch = useDispatch()
+  const { price, priceChange, priceChangePercent } = useSelector(
+    (state: RootState) => state.priceInfo,
+  )
   //   const BTC_PRICE_ID =
   //     "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43"
 
@@ -36,34 +33,34 @@ const useGetPriceRealtime = () => {
         const price = priceAccount.accountInfo.data
 
         if (product.symbol === "Crypto.BTC/USD") {
-          // sample output:
-          // SOL/USD: $14.627930000000001 ±$0.01551797
           if (price.price && price.confidence) {
-            // tslint:disable-next-line:no-console
-            // console.log("price", price)
             const { previousPrice, price: currentPrice } = price || {}
-            const priceChange = new BigNumber(currentPrice)
-              .minus(previousPrice)
-              .toString()
+            const priceChangeBN = new BigNumber(currentPrice).minus(
+              previousPrice,
+            )
+            const priceChange = priceChangeBN.toString()
             const priceChangePercent = new BigNumber(priceChange)
               .multipliedBy(100)
               .div(previousPrice)
               .toString()
 
-            // console.log(
-            //   `${product.symbol}: $${price.price} \xB1$${price.confidence}`,
-            // )
+            // console.log("==={priceChange}===", {
+            //   currentPrice,
+            //   priceChange,
+            //   priceChangePercent,
+            // })
 
-            console.log("==={priceChange}===", {
-              currentPrice,
-              priceChange,
-              priceChangePercent,
-            })
-            setPrice(currentPrice)
-            setPriceChange(priceChange)
-            setPriceChangePercent(priceChangePercent)
+            if (!priceChangeBN.isEqualTo(0)) {
+              //   console.log("priceChange", priceChange)
+              dispatch(
+                updatePriceInfo({
+                  price: currentPrice,
+                  priceChange,
+                  priceChangePercent,
+                }),
+              )
+            }
           } else {
-            // tslint:disable-next-line:no-console
             console.log(
               `${product.symbol}: price currently unavailable. status is ${PriceStatus[price.status]}`,
             )
@@ -72,11 +69,11 @@ const useGetPriceRealtime = () => {
       },
     )
 
-    // tslint:disable-next-line:no-console
     console.log("Reading from Pyth price feed...")
     pythConnection.start()
 
     return () => {
+      console.log("clean ==> . . . ")
       // Cleanup WebSocket connections when component unmounts
       pythConnection.stop()
     }

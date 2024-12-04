@@ -2,7 +2,7 @@ import { numberWithCommas } from "@utils/format"
 import { ChangeEvent, useEffect, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { maxIcon } from "@assets/images"
-import { Web3SolanaProgramInteraction } from "../utils/web3Utils"
+import { Web3SolanaProgramInteraction } from "../../../program/utils/web3Utils"
 import { BET_TYPE } from "../CardContainer"
 import { loadingButtonIcon } from "@assets/svg"
 
@@ -129,7 +129,7 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
               </div>
 
               <div className="flex h-8 w-fit items-center justify-center rounded-[32px] bg-[#080A14] px-4 py-1 text-[14px] text-[#E8E9EE]">
-                SOL
+                MAX
                 <img
                   src={maxIcon}
                   alt="maxIcon"

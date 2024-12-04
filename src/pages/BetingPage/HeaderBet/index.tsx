@@ -1,12 +1,22 @@
 import { btcIconRote } from "@assets/images"
 import { TimerIcon } from "@components/Icons"
+import { RootState } from "@configs/store"
 import { formatCountdownTime, useCountdown } from "@hooks/useCountdown"
 import { Image } from "@nextui-org/react"
+import { numberWithCommas } from "@utils/format"
+import BigNumber from "bignumber.js"
+import { useSelector } from "react-redux"
 import { twMerge } from "tailwind-merge"
+import { DECMIMAL_SHOW } from "../constants"
 
 const HeaderBet = () => {
-  const isDraw = false
-  const isDown = false
+  const { price, priceChange } = useSelector(
+    (state: RootState) => state.priceInfo,
+  )
+  // const lockedPrice =
+
+  const isDown = new BigNumber(priceChange).isLessThan(0)
+  const isDraw = new BigNumber(priceChange).isEqualTo(0)
 
   const { timeRemaining } = useCountdown({
     startTime: Math.floor(new Date(1733247924000).getTime()),
@@ -31,7 +41,10 @@ const HeaderBet = () => {
         </div>
         <div className="mt-3 flex items-center gap-2">
           <p className="text-[32px] font-medium leading-none text-[#F3F4F6]">
-            $96,847
+            $
+            {numberWithCommas(new BigNumber(price).toNumber(), undefined, {
+              maximumFractionDigits: DECMIMAL_SHOW,
+            })}
           </p>
           <div
             className={twMerge(
@@ -40,7 +53,19 @@ const HeaderBet = () => {
               isDraw && "bg-[#1A1C28] text-[#585A6B]",
             )}
           >
-            {isDraw ? "+0.00" : isDown ? `-${1.25}` : `+${5.25}`}%
+            {isDraw
+              ? "$0.00"
+              : isDown
+                ? `-$${numberWithCommas(
+                    new BigNumber(priceChange).multipliedBy(-1).toNumber(),
+                    undefined,
+                    { maximumFractionDigits: DECMIMAL_SHOW },
+                  )}`
+                : `+$${numberWithCommas(
+                    new BigNumber(priceChange).toNumber(),
+                    undefined,
+                    { maximumFractionDigits: DECMIMAL_SHOW },
+                  )}`}
           </div>
         </div>
       </div>
