@@ -1,0 +1,5 @@
+.Toastify__toast-container--top-right:has(div.earned-point-toast) {
+  width: 180px;
+  height: 110px;
+  padding: 0px;
+}

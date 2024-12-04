@@ -102,12 +102,6 @@ const RankExpList = () => {
                 </div>
               ) : null,
           }}
-          increaseViewportBy={500}
-          // endReached={async (index) => {
-          //   if (index + 1 >= 10) {
-          //     await fetchNextPage()
-          //   }
-          // }}
           itemContent={(index, rankItem) => {
             return (
               <RankExpCard
