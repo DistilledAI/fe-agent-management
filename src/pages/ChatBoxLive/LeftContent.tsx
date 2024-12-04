@@ -91,7 +91,7 @@ const LeftContent: React.FC<{
               backgroundImage:
                 'url("https://data.cupiee.com/images/companion-stalor-bg.png")',
             }}
-            className="relative h-[400px] overflow-hidden rounded-[32px]"
+            className="relative h-[350px] overflow-hidden rounded-[32px] md:h-[400px]"
           >
             <Image
               classNames={{ wrapper: "w-full h-full !max-w-full" }}

@@ -18,7 +18,7 @@ const Account = () => {
   const { data }: { data: any } = useQuery({
     queryKey: [QueryDataKeys.MY_BOT_LIST],
   })
-  const agents = data ? data.data.items : []
+  const agents = data ? data?.data?.items : []
 
   const renderLogoutBtn = () => {
     return (
