@@ -25,7 +25,7 @@ const LeaderboardClan = () => {
       <ToggleLeaderboardClan />
       <div
         className={twMerge(
-          "fixed inset-y-0 right-0 z-50 w-full translate-x-[100%] overflow-hidden rounded-bl-[22px] rounded-tl-[22px] border border-mercury-100 bg-mercury-30 shadow-9 transition-all duration-300 ease-in-out md:inset-y-6 md:max-w-[380px]",
+          "fixed inset-y-0 right-0 z-50 w-full translate-x-[100%] overflow-hidden rounded-bl-[22px] rounded-tl-[22px] border border-mercury-100 bg-mercury-30 shadow-9 transition-all duration-300 ease-in-out md:bottom-6 md:top-[68px] md:max-w-[380px]",
           isToggleLeaderboard && "translate-x-0",
         )}
       >
