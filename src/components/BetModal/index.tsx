@@ -13,7 +13,7 @@ const BetModal: React.FC<{
       onOpenChange={onOpenChange}
       backdrop="blur"
       classNames={{
-        base: "bg-transparent py-10 max-md:py-4 justify-center",
+        base: "bg-[#080A14] py-10 max-md:py-4 justify-center",
         wrapper: "z-[99]",
         backdrop: "z-[99]",
         closeButton: "bg-white right-4 top-4",
