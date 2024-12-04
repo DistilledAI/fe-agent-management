@@ -91,10 +91,3 @@
   align-items: center;
   display: flex;
 }
-
-.swiper-slide {
-  /* background-color: #e8e9ee; */
-  color: #080a14;
-  /* check mobile */
-  width: 320px !important;
-}

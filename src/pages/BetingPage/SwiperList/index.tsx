@@ -13,6 +13,7 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import CardContainer, { BET_TYPE, STATUS_ROUND } from "../CardContainer"
 import ModalBet from "../ModalBet"
 import { ArrowsLeftIcon, ArrowsRightIcon } from "@components/Icons/Arrow"
+// import useGetPriceRealtime from "../hooks/useGetPriceRealtime"
 
 export const CHART_DOT_CLICK_EVENT = "CHART_DOT_CLICK_EVENT"
 
@@ -119,6 +120,8 @@ const SwiperList = () => {
 
   // useOnNextRound()
   // useOnViewChange(swiperIndex ?? 0, view)
+
+  //   useGetPriceRealtime()
 
   useEffect(() => {
     const handleChartDotClick = () => {

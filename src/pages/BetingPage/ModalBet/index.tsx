@@ -4,13 +4,14 @@ import { twMerge } from "tailwind-merge"
 import { maxIcon } from "@assets/images"
 import { Web3SolanaProgramInteraction } from "../utils/web3Utils"
 import { BET_TYPE } from "../CardContainer"
+import { loadingButtonIcon } from "@assets/svg"
 
 interface ModalProps {
   isOpen: boolean
   closeModal: () => void
 }
 
-const MAX_ADDRESS_SOLANA = "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h"
+const MAX_ADDRESS_SOLANA = "EwGUjRyLVJ9Q8KY8kBmeAyhQAf4EcbGxrXsxexZaCGhM"
 
 const web3Solana = new Web3SolanaProgramInteraction()
 
@@ -18,18 +19,23 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
   const [tokenBal, setTokenBal] = useState<number>(0)
   const [type, setType] = useState<number>(BET_TYPE.UP)
   const [amountVal, setAmountVal] = useState<string>("")
+  const [loading, setLoading] = useState<boolean>(false)
   //   const wallet = useWallet();
 
   const getBalance = async () => {
-    // if (!wallet.publicKey) {
-    //   return;
-    // }
+    if (!window.solana) {
+      return
+    }
 
     try {
+      const wallet = (await window.solana.connect()).publicKey.toBase58()
+
       const tokenBal = await web3Solana.getTokenBalance(
-        "2RExGFDFexUfHmog3cAb8VqWM6rcbNeGcFSnYim3Wgpt",
+        wallet,
         MAX_ADDRESS_SOLANA,
       )
+
+      console.log("tokenBal", tokenBal)
       setTokenBal(tokenBal ? tokenBal : 0)
     } catch (error) {
       console.log("error", error)
@@ -61,7 +67,11 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
             Set position
           </h2>
           <button
-            onClick={() => closeModal()}
+            onClick={() => {
+              closeModal()
+              setType(BET_TYPE.UP)
+              setAmountVal("")
+            }}
             className="absolute right-6 top-6 text-gray-600"
           >
             <svg
@@ -165,8 +175,20 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
             <button
               // disabled={!formValid || isLoading}
               className="mt-4 w-full cursor-pointer rounded border-[2px] border-solid border-[rgba(255,255,255,0.25)] p-1 uppercase transition-all duration-150 ease-in hover:border-[rgba(255,255,255)] disabled:cursor-not-allowed disabled:opacity-75"
+              onClick={() => {
+                setLoading(true)
+                console.log("----CONFIRM----", {
+                  type,
+                  amountVal,
+                })
+
+                setLoading(false)
+              }}
             >
-              <div className="rounded bg-white px-6 py-2 uppercase text-[#080A14]">
+              <div className="flex items-center justify-center gap-2 rounded bg-white px-6 py-2 uppercase text-[#080A14]">
+                {loading && (
+                  <img src={loadingButtonIcon} alt="loadingButtonIcon" />
+                )}
                 CONFIRM
               </div>
             </button>

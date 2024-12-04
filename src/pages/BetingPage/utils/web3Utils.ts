@@ -13,7 +13,12 @@ export const TOKEN_RESERVES = 1_000_000_000_000_000
 export const LAMPORT_RESERVES = 1_000_000_000
 export const INIT_BONDING_CURVE = 95
 
-export const endpoint = "https://api.mainnet-beta.solana.com"
+const SOLANA_RPC =
+  "https://convincing-practical-moon.solana-devnet.quiknode.pro/5b018a6d154e06d1c892246cf1b5a251b40bddc1"
+const SOLANA_WS =
+  "wss://convincing-practical-moon.solana-devnet.quiknode.pro/5b018a6d154e06d1c892246cf1b5a251b40bddc1"
+
+export const endpoint = SOLANA_RPC
 //   export const pumpProgramId = new PublicKey(idl.address);
 //   export const pumpProgramInterface = JSON.parse(JSON.stringify(idl));
 
@@ -21,7 +26,7 @@ export class Web3SolanaProgramInteraction {
   constructor(
     private readonly connection = new Connection(endpoint, {
       commitment: commitmentLevel,
-      //   wsEndpoint: process.env.NEXT_PUBLIC_SOLANA_WS,
+      wsEndpoint: SOLANA_WS,
     }),
   ) {}
 

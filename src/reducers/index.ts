@@ -4,6 +4,7 @@ import connectWalletReducer from "./connectWalletSlice"
 import sidebarCollapsedReducer from "./sidebarCollapsedSlice"
 import instructBannerReducer from "./instructBannerSlice"
 import userReducer, { IUserState } from "./userSlice"
+import priceInfoReducer, { PriceInfoState } from "./priceInfoSlice"
 
 type TReducer = {
   agents: AgentState
@@ -11,6 +12,7 @@ type TReducer = {
   sidebarCollapsed: boolean
   connectWalletReducer: any
   instructBanner: boolean
+  priceInfo: PriceInfoState
 }
 
 const rootReducer: Reducer<TReducer> = combineReducers({
@@ -19,6 +21,7 @@ const rootReducer: Reducer<TReducer> = combineReducers({
   sidebarCollapsed: sidebarCollapsedReducer,
   connectWalletReducer: connectWalletReducer,
   instructBanner: instructBannerReducer,
+  priceInfo: priceInfoReducer,
 })
 
 export default rootReducer
