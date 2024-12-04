@@ -5,7 +5,6 @@ import { PATH_NAMES, RoleUser } from "@constants/index"
 import { getBadgeColor, IMessageBox } from "./helpers"
 // import { ThreeDotsCircleIcon } from "@components/Icons/SocialLinkIcon"
 import { Button, useDisclosure } from "@nextui-org/react"
-import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
 import { getUserPublicDetail } from "services/user"
@@ -13,29 +12,29 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import ShareQRModal from "@components/ShareQRModal"
 
 interface AgentInfoCardProps {
+  groupId: string
   messages: IMessageBox[]
   getAgentOwner?: (agentOwner: any) => void
 }
 
-const AgentInfoCard = ({ messages }: AgentInfoCardProps) => {
+const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { chatId } = useGetChatId()
 
   const { data: chatDetailResult } = useQuery<any>({
-    queryKey: [QueryDataKeys.GROUP_DETAIL, chatId?.toString()],
-    enabled: !!chatId,
+    queryKey: [QueryDataKeys.GROUP_DETAIL, groupId],
+    enabled: !!groupId,
     staleTime: 60 * 60 * 1000,
   })
 
   const userBId = chatDetailResult?.data?.group?.userBId
 
-  const { data } = useQuery({
-    queryKey: [QueryDataKeys.USER_PUBLIC_DETAIL, userBId],
+  const { data } = useQuery<any>({
+    queryKey: [QueryDataKeys.USER_PUBLIC_DETAIL, userBId?.toString()],
     queryFn: async () => {
       const agentIdOfUserB = messages.find(
         (message) => message.ownerId === userBId,
       )?.agentId
-      return agentIdOfUserB ? await getUserPublicDetail(agentIdOfUserB) : null
+      return agentIdOfUserB ? await getUserPublicDetail(agentIdOfUserB) : {}
     },
     enabled: !!userBId && messages.length > 0,
     staleTime: 60 * 60 * 1000,

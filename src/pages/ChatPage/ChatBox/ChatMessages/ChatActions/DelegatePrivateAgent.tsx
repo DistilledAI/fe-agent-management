@@ -31,6 +31,7 @@ const DelegatePrivateAgent = () => {
         return response?.data
       }
     }
+    return {}
   }
 
   const { data: botInfo, refetch } = useQuery({

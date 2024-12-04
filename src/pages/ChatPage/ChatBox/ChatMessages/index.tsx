@@ -32,17 +32,17 @@ const ChatMessages = () => {
     hasPreviousMore,
     isFetchingPreviousPage,
   } = useFetchMessages()
-  const { chatId } = useGetChatId()
-  const { bgColor, textColor } = getActiveColorRandomById(chatId)
+  const { chatId: groupId } = useGetChatId()
+  const { bgColor, textColor } = getActiveColorRandomById(groupId)
   const { spacing } = useStyleSpacing()
   const { user, isLogin } = useAuthState()
-  const { data: chatDetailResult, isFetched: isGroupDetailFetched } =
+  const { data: groupDetailData, isFetched: isGroupDetailFetched } =
     useQuery<any>({
-      queryKey: [QueryDataKeys.GROUP_DETAIL, chatId?.toString()],
-      enabled: !!chatId && isLogin,
+      queryKey: [QueryDataKeys.GROUP_DETAIL, groupId?.toString()],
+      enabled: !!groupId && isLogin,
     })
 
-  const userBId = chatDetailResult?.data?.group?.userBId
+  const userBId = groupDetailData?.data?.group?.userBId
   const isOwner = useMemo(() => {
     return !isGroupDetailFetched && isLogin ? true : userBId === user?.id
   }, [isGroupDetailFetched, userBId, user?.id, isLogin])
@@ -105,7 +105,7 @@ const ChatMessages = () => {
   return (
     <>
       <ChatWindow
-        Header={<AgentInfoCard messages={messages} />}
+        Header={<AgentInfoCard messages={messages} groupId={groupId} />}
         messages={messages}
         itemContent={renderMessage}
         isLoading={isLoading}
@@ -113,7 +113,7 @@ const ChatMessages = () => {
         hasPreviousMore={hasPreviousMore}
         isFetchingPreviousPage={isFetchingPreviousPage}
         onLoadPrevMessages={onLoadPrevMessages}
-        chatId={chatId}
+        chatId={groupId}
         msgBoxClassName="p-0 md:px-4"
         style={{
           paddingBottom: `${spacing}px`,
