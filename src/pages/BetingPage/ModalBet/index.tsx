@@ -77,7 +77,7 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
               />
             </svg>
           </button>
-          <div className="flex w-full gap-2">
+          <div className="mt-8 flex w-full gap-2">
             <div
               className={twMerge(
                 "h-10 flex-1 cursor-pointer rounded bg-[#1A1C28] p-2 text-center text-[14px] uppercase text-[#E8E9EE] hover:brightness-125",
