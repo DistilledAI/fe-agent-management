@@ -8,6 +8,7 @@ import Account from "@pages/Account"
 import AddMyData from "@pages/AddMyData"
 import AgentDetail from "@pages/AgentDetail"
 import AuthorProfile from "@pages/AuthorProfile"
+import Betting from "@pages/BetingPage"
 import ChatBoxLive from "@pages/ChatBoxLive"
 import ChatMyAgent from "@pages/ChatMyAgent"
 import ChatBox from "@pages/ChatPage/ChatBox"
@@ -34,6 +35,10 @@ const AppRouter = () => {
         {/* Route Regular */}
         <Route
           path={PATH_NAMES.HOME}
+          element={isMobile ? <Betting /> : <Betting />}
+        />
+        <Route
+          path={"/bet"}
           element={isMobile ? <ChatPageMobile /> : <ChatBox />}
         />
         <Route

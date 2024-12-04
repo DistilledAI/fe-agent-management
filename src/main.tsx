@@ -8,6 +8,8 @@ import React from "react"
 import "react-toastify/dist/ReactToastify.css"
 import "@rainbow-me/rainbowkit/styles.css"
 import "./index.css"
+import "swiper/css"
+import "swiper/css/pagination"
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

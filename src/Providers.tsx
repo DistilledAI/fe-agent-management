@@ -5,6 +5,7 @@ import { RainbowKitProvider } from "@rainbow-me/rainbowkit"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ThemeProvider as NextThemesProvider } from "next-themes"
 import { SocketProvider } from "providers/SocketProvider"
+import SwiperProvider from "providers/SwiperProvider"
 import { HelmetProvider } from "react-helmet-async"
 import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
@@ -28,7 +29,7 @@ const Providers = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
                         attribute="class"
                         defaultTheme="light"
                       >
-                        {children}
+                        <SwiperProvider>{children}</SwiperProvider>
                       </NextThemesProvider>
                     </NextUIProvider>
                   </RainbowKitProvider>
