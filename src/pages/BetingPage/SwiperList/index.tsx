@@ -150,6 +150,7 @@ const SwiperList = () => {
         spaceBetween={16}
         // slidesPerView={4}
         slidesPerView="auto"
+        style={{ paddingTop: 10 }}
         onBeforeDestroy={() => setSwiper(null)}
         freeMode={{
           enabled: true,

@@ -53,7 +53,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
   return (
     <div
       className={twMerge(
-        "w-full rounded-[12px] border border-[#1A1C28] bg-[#13141D] font-medium duration-150 ease-in hover:brightness-125",
+        "relative w-full rounded-[12px] border border-[#1A1C28] bg-[#13141D] font-medium duration-150 ease-in hover:brightness-125",
         roundItem.status === STATUS_ROUND.EXPIRED && "brightness-75",
         isActive && "border border-[#E8E9EE]",
       )}
