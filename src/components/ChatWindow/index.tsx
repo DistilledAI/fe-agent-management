@@ -151,7 +151,7 @@ const ChatWindow = ({
           id="chat-window"
           style={{
             height: "100%",
-            willChange: "transform",
+            willChange: "scroll-position",
             overflowAnchor: "none",
           }}
           ref={virtuosoRef}
