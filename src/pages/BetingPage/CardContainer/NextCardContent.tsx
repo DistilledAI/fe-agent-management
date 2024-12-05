@@ -1,14 +1,16 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
+import { Divider } from "@nextui-org/react"
 import { numberWithCommas, toBN } from "@utils/format"
 import { twMerge } from "tailwind-merge"
 import { BET_TYPE } from "."
-import MaxBettedInfo from "./MaxBettedInfo"
 import { DECIMAL_SPL } from "../constants"
-import { Divider } from "@nextui-org/react"
 import { useGetCurrentRoundData } from "../hooks/useGetRoundData"
+import MaxBettedInfo from "./MaxBettedInfo"
 
 export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
   const { currentRoundData } = useGetCurrentRoundData()
+  //max predict
+  const typeMaxBet = roundItem?.predict?.action
 
   // const downAmount = roundItem?.downAmount || 0
   // const upAmount = roundItem?.upAmount || 0
@@ -91,7 +93,7 @@ export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
             </span>
           </div>
           <div className="flex items-center gap-1">
-            <MaxBettedInfo betType={BET_TYPE.UP} />
+            <MaxBettedInfo betType={typeMaxBet} typeBet={BET_TYPE.UP} />
             <ArrowUpFilledIcon bgColor="#585A6B" size={18} />
           </div>
         </div>
@@ -109,6 +111,7 @@ export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
             </span>
           </div>
           <div className="flex items-center gap-1">
+            <MaxBettedInfo betType={typeMaxBet} typeBet={BET_TYPE.DOWN} />
             <div className="rotate-180">
               <ArrowUpFilledIcon bgColor="#585A6B" size={18} />
             </div>

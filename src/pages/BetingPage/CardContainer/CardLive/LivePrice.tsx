@@ -1,6 +1,6 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { RootState } from "@configs/store"
-import { DECIMAL_BTC, DECIMAL_SHOW } from "@pages/BetingPage/constants"
+import { DECIMAL_SHOW } from "@pages/BetingPage/constants"
 import { numberWithCommas, toBN } from "@utils/format"
 import BigNumber from "bignumber.js"
 import { useSelector } from "react-redux"
@@ -8,8 +8,16 @@ import { twMerge } from "tailwind-merge"
 import { BET_TYPE } from ".."
 import MaxBettedInfo from "../MaxBettedInfo"
 
-const LiveCardPrice = ({ currentRound }: { currentRound: any }) => {
+const LiveCardPrice = ({
+  currentRound,
+  roundItem,
+}: {
+  currentRound: any
+  roundItem: any
+}) => {
   const { price } = useSelector((state: RootState) => state.priceInfo)
+  //max predict
+  const typeMaxBet = roundItem?.predict?.action
 
   const downAmount = currentRound?.downAmount || 0
   const upAmount = currentRound?.upAmount || 0
@@ -90,7 +98,7 @@ const LiveCardPrice = ({ currentRound }: { currentRound: any }) => {
             </span>
           </div>
           <div className="flex items-center gap-1">
-            <MaxBettedInfo betType={BET_TYPE.UP} />
+            <MaxBettedInfo betType={typeMaxBet} typeBet={BET_TYPE.UP} />
             <ArrowUpFilledIcon
               bgColor={!isUp ? "#585A6B" : "#9FF4CF"}
               size={18}
@@ -117,11 +125,14 @@ const LiveCardPrice = ({ currentRound }: { currentRound: any }) => {
               {downOffset}x Payout
             </span>
           </div>
-          <div className="rotate-180">
-            <ArrowUpFilledIcon
-              bgColor={isDown ? "#E75787" : "#585A6B"}
-              size={18}
-            />
+          <div className="flex items-center gap-1">
+            <MaxBettedInfo betType={typeMaxBet} typeBet={BET_TYPE.DOWN} />
+            <div className="rotate-180">
+              <ArrowUpFilledIcon
+                bgColor={isDown ? "#E75787" : "#585A6B"}
+                size={18}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -11,6 +11,7 @@ import { toBN } from "@utils/format"
 import BigNumber from "bignumber.js"
 import delay from "lodash/delay"
 import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
+import { getPredictHistory } from "services/game"
 import {
   FreeMode,
   Keyboard,
@@ -20,9 +21,9 @@ import {
 } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 import CardContainer, { BET_TYPE, STATUS_ROUND } from "../CardContainer"
+import { DECIMAL_BTC } from "../constants"
 import useDisclaimer from "../hooks/useDisclaimer"
 import ModalBet from "../ModalBet"
-import { DECIMAL_BTC } from "../constants"
 
 export const CHART_DOT_CLICK_EVENT = "CHART_DOT_CLICK_EVENT"
 
@@ -46,7 +47,24 @@ const SwiperList = () => {
   const { connectMultipleWallet } = useConnectWallet()
   const [showBetModal, setShowBetModal] = useState(false)
 
+  const [predictHistory, setPredictHistory] = useState<any[]>([])
+
   const isLoginByWallet = isLogin && !isAnonymous
+
+  const callGetPredictHistory = async () => {
+    try {
+      const response = await getPredictHistory()
+      if (response) {
+        setPredictHistory(response?.data?.items)
+      }
+    } catch (error) {
+      console.log("error:", error)
+    }
+  }
+
+  useEffect(() => {
+    callGetPredictHistory()
+  }, [])
 
   useEffect(() => {
     ;(async () => {
@@ -250,6 +268,14 @@ const SwiperList = () => {
                 status = STATUS_ROUND.EXPIRED
               }
 
+              const exitsPredictRecord = predictHistory?.find(
+                (item) => item.index === round,
+              )
+              console.log(
+                "🚀 ~ SwiperList ~ exitsPredictRecord:",
+                exitsPredictRecord,
+              )
+
               return (
                 <SwiperSlide
                   className="!h-fit"
@@ -265,6 +291,7 @@ const SwiperList = () => {
                         end,
                         total,
                         lockPrice,
+                        predict: exitsPredictRecord,
                       }}
                       currentRound={currentEventData}
                       isActive={isActive}

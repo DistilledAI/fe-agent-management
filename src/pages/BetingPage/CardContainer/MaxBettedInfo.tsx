@@ -5,7 +5,10 @@ import { BET_TYPE } from "."
 
 const MaxBettedInfo: React.FC<{
   betType: BET_TYPE
-}> = ({ betType }) => {
+  typeBet: any
+}> = ({ betType, typeBet }) => {
+  if (betType !== typeBet) return <div />
+
   return (
     <Tooltip
       content={

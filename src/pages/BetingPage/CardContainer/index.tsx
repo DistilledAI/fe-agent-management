@@ -5,10 +5,10 @@ import { LiveIcon } from "@components/Icons/BettingPage/LiveIcon"
 import { NextIcon } from "@components/Icons/BettingPage/NextIcon"
 import { twMerge } from "tailwind-merge"
 import { CalculatingCardContent } from "./CalculatingCardContent"
+import CardLiveBet from "./CardLive"
 import { ExpireCardContent } from "./ExpireCardContent"
 import { LaterCardContent } from "./LaterCardContent"
 import { NextCardContent } from "./NextCardContent"
-import CardLiveBet from "./CardLive"
 
 interface CardContainerProps {
   roundItem: any
@@ -26,9 +26,9 @@ export enum STATUS_ROUND {
 }
 
 export enum BET_TYPE {
-  UP,
-  DOWN,
-  DRAW,
+  UP = "up",
+  DOWN = "down",
+  DRAW = "draw",
 }
 
 export const CardContent = ({

@@ -1,23 +1,23 @@
-import bitcoinMaxIntro from "@assets/video/bitcoin-max-intro-ai.mp4"
 import stalorAudio from "@assets/audio/audio_stalor.mp3"
+import { bgBtcPrediction, bitmaxAva, btcIconRote } from "@assets/images"
+import { solanaCircleIcon } from "@assets/svg"
+import bitcoinMaxIntro from "@assets/video/bitcoin-max-intro-ai.mp4"
+import AudioClanCustom from "@components/AudioClanCustom"
+import BetModal from "@components/BetModal"
 import VideoCustom from "@components/VideoCustom"
+import { AGENT_INFO_CLANS } from "@constants/index"
 import { Image, Skeleton, useDisclosure } from "@nextui-org/react"
 import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
 import React, { useEffect, useMemo, useState } from "react"
+import { useSearchParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import AgentDescription from "./AgentDescription"
-import TradeTokenButton from "./TradeTokenButton"
-import { solanaCircleIcon } from "@assets/svg"
-import ContractDisplay from "./ContractDisplay"
-import { AGENT_INFO_CLANS } from "@constants/index"
-import AudioClanCustom from "@components/AudioClanCustom"
-import SkeletonInfo, { SkeletonDesc } from "./SkeletonInfo"
 import AgentSocials from "./AgentSocials"
-import BetModal from "@components/BetModal"
-import { bgBtcPrediction, bitmaxAva, btcIconRote } from "@assets/images"
-import { useSearchParams } from "react-router-dom"
+import ContractDisplay from "./ContractDisplay"
+import SkeletonInfo, { SkeletonDesc } from "./SkeletonInfo"
+import TradeTokenButton from "./TradeTokenButton"
 
 const LeftContent: React.FC<{
   groupDetail: UserGroup | null
@@ -180,7 +180,8 @@ const LeftContent: React.FC<{
           <SkeletonDesc />
         )}
       </div>
-      {isOpen && <BetModal onOpenChange={onOpenChange} isOpen={isOpen} />}
+      {/* {isOpen && <BetModal onOpenChange={onOpenChange} isOpen={isOpen} />} */}
+      <BetModal onOpenChange={onOpenChange} isOpen={true} />
     </div>
   )
 }

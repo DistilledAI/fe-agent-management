@@ -1,14 +1,14 @@
+import { loadingButtonIcon } from "@assets/svg"
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
+import { useWallet } from "@solana/wallet-adapter-react"
 import { numberWithCommas, toBN } from "@utils/format"
 import BigNumber from "bignumber.js"
+import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
+import { useState } from "react"
 import { twMerge } from "tailwind-merge"
+import { BET_TYPE } from "."
 import { DECIMAL_BTC, DECIMAL_SHOW, DECIMAL_SPL } from "../constants"
 import { CalculatingCardContent } from "./CalculatingCardContent"
-import { useWallet } from "@solana/wallet-adapter-react"
-import { useState } from "react"
-import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
-import { loadingButtonIcon } from "@assets/svg"
-import { BET_TYPE } from "."
 import MaxBettedInfo from "./MaxBettedInfo"
 
 export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
@@ -19,6 +19,9 @@ export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
   const isDown = !!roundItem.outcome.down
   const isDraw = !!roundItem.outcome.invalid || !!roundItem.outcome.same
   const isUp = !!roundItem.outcome.up
+
+  //max predict
+  const typeMaxBet = roundItem?.predict?.action
 
   const userBetUp = roundItem.userOrder?.outcome?.up
   const userBetDown = roundItem.userOrder?.outcome?.down
@@ -108,10 +111,13 @@ export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
               {isDraw ? 1 : upOffset}x Payout
             </span>
           </div>
-          <ArrowUpFilledIcon
-            bgColor={!isUp ? "#585A6B" : "#9FF4CF"}
-            size={18}
-          />
+          <div className="flex items-center gap-1">
+            <MaxBettedInfo betType={typeMaxBet} typeBet={BET_TYPE.UP} />
+            <ArrowUpFilledIcon
+              bgColor={!isUp ? "#585A6B" : "#9FF4CF"}
+              size={18}
+            />
+          </div>
         </div>
         <div
           className={twMerge(
@@ -134,7 +140,7 @@ export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
             </span>
           </div>
           <div className="flex items-center gap-1">
-            <MaxBettedInfo betType={BET_TYPE.DOWN} />
+            <MaxBettedInfo betType={typeMaxBet} typeBet={BET_TYPE.DOWN} />
             <div className="rotate-180">
               <ArrowUpFilledIcon
                 bgColor={isDown ? "#E75787" : "#585A6B"}
