@@ -75,7 +75,11 @@ const useConnectWallet = () => {
 
   const connectOwallet = async () => {
     //@ts-ignore
-    const isOwallet = window.owallet.isOwallet
+    const isOwallet = isMobile
+      ? //@ts-ignore
+        window.owallet.isOwallet
+      : //@ts-ignore
+        window.eth_owallet && window.owallet.isOwallet
 
     if (!isOwallet) {
       if (isMobile) {
