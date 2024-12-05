@@ -20,7 +20,7 @@ const Betting = () => {
   }, [publicKey])
 
   return (
-    <div>
+    <div className="bg-[#080A14] py-6">
       <BetDisclaimer
         onAccept={onAccept}
         isOpen={isOpen}

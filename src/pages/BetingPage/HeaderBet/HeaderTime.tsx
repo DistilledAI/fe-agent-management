@@ -1,10 +1,17 @@
 import { TimerIcon } from "@components/Icons"
-import { formatCountdownTime, useCountdown } from "@hooks/useCountdown"
+import { formatCountdownTime, TIMER, useCountdown } from "@hooks/useCountdown"
 
 const HeaderTime = () => {
+  // const startTime = currentEventData?.startTime
+  //   ? new BigNumber(currentEventData?.startTime).toNumber()
+  //   : Math.floor(Date.now() / TIMER.MILLISECOND)
+  // const endTime = currentEventData?.lockTime
+  //   ? new BigNumber(currentEventData?.lockTime).toNumber()
+  //   : Math.floor(Date.now() / TIMER.MILLISECOND)
+
   const { timeRemaining } = useCountdown({
-    startTime: Math.floor(new Date(1733247924000).getTime()),
-    endTime: Math.floor(new Date(1733251524000).getTime()),
+    startTime: Math.floor(1733330526),
+    endTime: Math.floor(1733334126),
     onStart: () => console.log("started"),
     onEnd: () => console.log("ended"),
   })

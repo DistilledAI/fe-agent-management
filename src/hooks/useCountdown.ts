@@ -23,6 +23,15 @@ export const calcDiffTime = (
   return new Date(end).getTime() - new Date(start).getTime()
 }
 
+export const calcPercent = (start: number, end: number, current: number) => {
+  const total =
+    new Date(end * TIMER.MILLISECOND).getTime() -
+    new Date(start * TIMER.MILLISECOND).getTime()
+
+  if (current <= 0) return 100
+  return total > 0 ? (current * 100) / total : 100
+}
+
 export const formatCountdownTime = (milliseconds: number) => {
   const formatMilliseconds = milliseconds < 0 ? 0 : milliseconds
   const seconds = Math.floor(formatMilliseconds / TIMER.MILLISECOND)
@@ -52,21 +61,25 @@ export const useCountdown = ({
   // bidInfo['start_time'] = new Date('2024-01-12T11:29:10.691Z').getTime();
   // bidInfo['end_time'] = new Date('2024-01-12T11:30:10.691Z').getTime();
 
+  const [percent, setPercent] = useState(0)
   const [isEnd, setIsEnd] = useState(false)
   const countdownRef = useRef<any>(null)
   const getTimeDateNow = Date.now()
-  const [start] = useState(startTime)
-  const [end] = useState(endTime)
-  const [timeRemaining, setTimeRemaining] = useState(() =>
-    calcDiffTime(getTimeDateNow, end),
-  )
-
+  const [start, setStart] = useState(startTime * TIMER.MILLISECOND)
+  const [end, setEnd] = useState(endTime * TIMER.MILLISECOND)
+  const [timeRemaining, setTimeRemaining] = useState(() => {
+    return calcDiffTime(getTimeDateNow, endTime * TIMER.MILLISECOND)
+  })
   const [isStarted, setIsStarted] = useState(() => {
-    const isStart = getTimeDateNow >= start
+    const isStart = getTimeDateNow >= startTime * TIMER.MILLISECOND
     return isStart
   })
 
   useEffect(() => {
+    if (!startTime || !endTime) return
+
+    setStart(startTime * TIMER.MILLISECOND)
+    setEnd(endTime * TIMER.MILLISECOND)
     setIsStarted(() => {
       const isStart = getTimeDateNow >= startTime * TIMER.MILLISECOND
 
@@ -80,6 +93,7 @@ export const useCountdown = ({
     setTimeRemaining(() =>
       calcDiffTime(getTimeDateNow, endTime * TIMER.MILLISECOND),
     )
+
     const decrementTime = () => {
       setTimeRemaining((prev) => {
         const newRemain = prev - TIMER.MILLISECOND
@@ -97,22 +111,28 @@ export const useCountdown = ({
 
     return () => {
       if (countdownRef.current) {
+        console.log("Clean =>> countdown")
         clearInterval(countdownRef.current)
       }
     }
   }, [startTime, endTime])
 
   useEffect(() => {
+    if (!startTime || !endTime) return
+    const newPercent = calcPercent(start, end, timeRemaining)
+    setPercent(() => newPercent)
+
     if (getTimeDateNow >= startTime * TIMER.MILLISECOND && !isStarted) {
       setIsStarted(true)
       onStart()
     }
-  }, [timeRemaining, start, end, startTime])
+  }, [timeRemaining, start, end, startTime, endTime])
 
   return {
     isStarted,
     timeRemaining,
     isEnd,
+    percent,
     start: new Date(start * TIMER.MILLISECOND),
     end: new Date(end * TIMER.MILLISECOND),
   }

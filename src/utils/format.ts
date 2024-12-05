@@ -1,3 +1,5 @@
+import BigNumber from "bignumber.js"
+
 export const validateNumber: any = (amount: any) => {
   if (typeof amount === "string") return validateNumber(Number(amount))
   if (Number.isNaN(amount) || !Number.isFinite(amount)) return 0
@@ -66,4 +68,8 @@ export function formatLargeNumber(number: number) {
 
   const scaledNumber = number / Math.pow(10, tier * 3)
   return scaledNumber.toFixed(2) + suffixes[tier]
+}
+
+export const toBN = (number: BigNumber.Value) => {
+  return new BigNumber(number)
 }

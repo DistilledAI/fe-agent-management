@@ -1,11 +1,37 @@
 import { bitmaxAva } from "@assets/images"
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { Tooltip } from "@nextui-org/react"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { numberWithCommas, toBN } from "@utils/format"
 import { twMerge } from "tailwind-merge"
 import { BET_TYPE } from "."
 
 export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
-  const { selectedBet } = roundItem
+  const wallet = useWallet()
+  const isUnDrawn = !!roundItem.outcome.undrawn
+  const isDown = !!roundItem.outcome.down
+  const isDraw = !!roundItem.outcome.invalid || !!roundItem.outcome.same
+  const isUp = !!roundItem.outcome.up
+
+  const userBetUp = roundItem.userOrder?.outcome?.up
+  const userBetDown = roundItem.userOrder?.outcome?.down
+  const isClaimable =
+    !isUnDrawn &&
+    (userBetUp || userBetDown) &&
+    (isDraw || (userBetDown && isDown) || (userBetUp && isUp))
+
+  const downAmount = roundItem?.downAmount || 0
+  const upAmount = roundItem?.upAmount || 0
+  const total = toBN(downAmount).plus(upAmount)
+  const settlePrice = toBN(roundItem?.settlePrice || 0).toNumber()
+  const lockPrice = toBN(roundItem?.lockPrice || 0).toNumber()
+
+  const upOffset = !toBN(upAmount).isEqualTo(0)
+    ? total.div(upAmount).toNumber()
+    : 1
+  const downOffset = !toBN(downAmount).isEqualTo(0)
+    ? total.div(downAmount).toNumber()
+    : 1
 
   const renderDisplayMaxBet = (betType: BET_TYPE) => {
     return (
@@ -53,7 +79,7 @@ export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
 
   return (
     <div className="rounded-b-[12px] border border-[#1A1C28] bg-[#13141D] p-4">
-      {![BET_TYPE.DOWN, BET_TYPE.UP].includes(selectedBet) ? (
+      {!(userBetDown || userBetUp) ? (
         <div className={"mb-4 flex flex-col rounded-lg bg-[#080A14] p-4"}>
           <div className="flex w-full items-center justify-center rounded bg-[#9FF4CF] p-2 text-center text-[14px] font-medium text-[#080A14]">
             ENTER UP
@@ -64,7 +90,7 @@ export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
         </div>
       ) : (
         <div className={"mb-4 flex flex-col rounded-lg bg-[#080A14] p-4"}>
-          {selectedBet === BET_TYPE.UP ? (
+          {userBetUp ? (
             <div className="flex w-full cursor-not-allowed items-center justify-center rounded bg-[#30344A] p-2 text-center text-[14px] font-medium text-[#585A6B]">
               <ArrowUpFilledIcon bgColor="#585A6B" size={18} />
               UP ENTERED
@@ -90,7 +116,7 @@ export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
               UP
             </span>
             <span className="text-[12px] text-[rgba(252,_252,_252,_0.50)]">
-              {0}x Payout
+              {upOffset}x Payout
             </span>
           </div>
           <div className="flex items-center gap-1">
@@ -108,7 +134,7 @@ export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
               DOWN
             </span>
             <span className="text-[12px] text-[rgba(252,_252,_252,_0.50)]">
-              {0}x Payout
+              {downOffset}x Payout
             </span>
           </div>
           <div className="flex items-center gap-1">
@@ -122,7 +148,9 @@ export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
       <div className="mt-6 flex flex-col">
         <div className="flex items-center justify-between text-[12px]">
           <span className="text-[#9192A0]">Prize pool</span>
-          <span className="text-[#E8E9EE]">648.8047 MAX</span>
+          <span className="text-[#E8E9EE]">
+            {numberWithCommas(total.toNumber())} MAX
+          </span>
         </div>
       </div>
     </div>

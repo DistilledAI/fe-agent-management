@@ -1,4 +1,4 @@
-import { numberWithCommas } from "@utils/format"
+import { numberWithCommas, toBN } from "@utils/format"
 import { ChangeEvent, useEffect, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { maxIcon } from "@assets/images"
@@ -6,6 +6,7 @@ import { Web3SolanaProgramInteraction } from "../../../program/utils/web3Utils"
 import { BET_TYPE } from "../CardContainer"
 import { loadingButtonIcon } from "@assets/svg"
 import { MAX_ADDRESS_SOLANA } from "program/constants"
+import { useWallet } from "@solana/wallet-adapter-react"
 
 interface ModalProps {
   isOpen: boolean
@@ -19,22 +20,22 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
   const [type, setType] = useState<number>(BET_TYPE.UP)
   const [amountVal, setAmountVal] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(false)
-  //   const wallet = useWallet();
+  const wallet = useWallet()
 
   const getBalance = async () => {
-    if (!window.solana) {
+    if (!wallet) {
       return
     }
 
     try {
-      const wallet = (await window.solana.connect()).publicKey.toBase58()
+      const address = wallet.publicKey?.toBase58() || ""
 
       const tokenBal = await web3Solana.getTokenBalance(
-        wallet,
+        address,
         MAX_ADDRESS_SOLANA,
       )
 
-      console.log("tokenBal", tokenBal)
+      console.log("tokenBal", address, tokenBal)
       setTokenBal(tokenBal ? tokenBal : 0)
     } catch (error) {
       console.log("error", error)
@@ -43,7 +44,7 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
 
   useEffect(() => {
     getBalance()
-  }, [])
+  }, [wallet])
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -172,14 +173,22 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
             </div>
 
             <button
-              // disabled={!formValid || isLoading}
-              className="mt-4 w-full cursor-pointer rounded border-[2px] border-solid border-[rgba(255,255,255,0.25)] p-1 uppercase transition-all duration-150 ease-in hover:border-[rgba(255,255,255)] disabled:cursor-not-allowed disabled:opacity-75"
-              onClick={() => {
+              disabled={!wallet || loading}
+              className="mt-4 w-full cursor-pointer rounded border-[2px] border-solid border-[rgba(255,255,255,0.25)] p-1 uppercase transition-all duration-150 ease-in hover:border-[rgba(255,255,255)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-75 disabled:brightness-75"
+              onClick={async () => {
                 setLoading(true)
                 console.log("----CONFIRM----", {
                   type,
                   amountVal,
                 })
+
+                await web3Solana.createOrder(
+                  wallet,
+                  toBN(amountVal)
+                    .multipliedBy(10 ** 6)
+                    .toString(),
+                  type === BET_TYPE.DOWN ? { down: {} } : { up: {} },
+                )
 
                 setLoading(false)
               }}

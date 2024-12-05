@@ -1,7 +1,7 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { RootState } from "@configs/store"
-import { DECMIMAL_SHOW } from "@pages/BetingPage/constants"
-import { numberWithCommas } from "@utils/format"
+import { DECIMAL_SHOW } from "@pages/BetingPage/constants"
+import { numberWithCommas, toBN } from "@utils/format"
 import BigNumber from "bignumber.js"
 import { useSelector } from "react-redux"
 import { twMerge } from "tailwind-merge"
@@ -11,10 +11,14 @@ const LiveCardPrice = ({ currentRound }: { currentRound: any }) => {
 
   const downAmount = currentRound?.downAmount || 0
   const upAmount = currentRound?.upAmount || 0
-  const total = new BigNumber(downAmount).plus(upAmount)
-  const lockPrice = new BigNumber(currentRound?.lockPrice || 0).toNumber()
-  const upOffset = upAmount ? total.div(upAmount).toNumber() : 1
-  const downOffset = downAmount ? total.div(downAmount).toNumber() : 1
+  const total = toBN(currentRound.total || 0)
+  const lockPrice = toBN(currentRound.lockPrice)
+  const upOffset = !toBN(upAmount).isEqualTo(0)
+    ? total.div(upAmount).toNumber()
+    : 1
+  const downOffset = !toBN(downAmount).isEqualTo(0)
+    ? total.div(downAmount).toNumber()
+    : 1
 
   const priceChange = new BigNumber(price).minus(lockPrice).toNumber()
 
@@ -36,7 +40,7 @@ const LiveCardPrice = ({ currentRound }: { currentRound: any }) => {
           <div className="text-[24px] font-medium text-[#E8E9EE]">
             $
             {numberWithCommas(new BigNumber(price).toNumber(), undefined, {
-              maximumFractionDigits: DECMIMAL_SHOW,
+              maximumFractionDigits: DECIMAL_SHOW,
             })}
           </div>
 
@@ -53,12 +57,12 @@ const LiveCardPrice = ({ currentRound }: { currentRound: any }) => {
                 ? `-$${numberWithCommas(
                     new BigNumber(priceChange).multipliedBy(-1).toNumber(),
                     undefined,
-                    { maximumFractionDigits: DECMIMAL_SHOW },
+                    { maximumFractionDigits: DECIMAL_SHOW },
                   )}`
                 : `+$${numberWithCommas(
                     new BigNumber(priceChange).toNumber(),
                     undefined,
-                    { maximumFractionDigits: DECMIMAL_SHOW },
+                    { maximumFractionDigits: DECIMAL_SHOW },
                   )}`}
           </div>
         </div>

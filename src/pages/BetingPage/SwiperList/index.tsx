@@ -13,6 +13,11 @@ import {
 import { Swiper, SwiperSlide } from "swiper/react"
 import CardContainer, { BET_TYPE, STATUS_ROUND } from "../CardContainer"
 import ModalBet from "../ModalBet"
+import BigNumber from "bignumber.js"
+import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { toBN } from "@utils/format"
+import { TIMER } from "@hooks/useCountdown"
 // import useGetPriceRealtime from "../hooks/useGetPriceRealtime"
 
 export const CHART_DOT_CLICK_EVENT = "CHART_DOT_CLICK_EVENT"
@@ -70,13 +75,13 @@ export const LIST_MOCKED = [
     isEntered: false,
     isCalculating: false,
   },
-  {
-    round: 7,
-    status: STATUS_ROUND.LIVE,
-    isEntered: true,
-    selectedBet: BET_TYPE.DOWN,
-    isCalculating: false,
-  },
+  // {
+  //   round: 7,
+  //   status: STATUS_ROUND.LIVE,
+  //   isEntered: true,
+  //   selectedBet: BET_TYPE.DOWN,
+  //   isCalculating: false,
+  // },
   {
     round: 8,
     status: STATUS_ROUND.NEXT,
@@ -111,9 +116,105 @@ export const LIST_MOCKED = [
   },
 ]
 
+const web3Solana = new Web3SolanaProgramInteraction()
+
+const MAX_LIMIT = 10
+
 const SwiperList = () => {
   const { setSwiper, swiper } = useSwiper()
   const [showBetModal, setShowBetModal] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [eventConfig, setEventConfig] = useState()
+  const [currentRound, setCurrentRound] = useState<number>(1)
+  const [listEvent, setListEvent] = useState<any>()
+  const [currentEventData, setCurrentEventData] = useState<any>()
+  const wallet = useWallet()
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        setLoading(true)
+        if (currentEventData) {
+          return
+        }
+        console.log("wallet", wallet)
+        if (wallet) {
+          const { eventDataConfig, eventConfigPda } =
+            await web3Solana.getEventConfig(wallet)
+
+          if (eventDataConfig && eventConfigPda) {
+            setEventConfig(eventDataConfig as any)
+            const currentRound = new BigNumber(eventDataConfig.nextRoundId || 2)
+              .minus(1)
+              .toNumber()
+
+            console.log("currentRound", currentRound)
+            setCurrentRound(currentRound)
+
+            // ... expired - expired - expired - live - next(cur) - later - later
+            const startRound =
+              currentRound - (MAX_LIMIT - 1) >= 1
+                ? currentRound - (MAX_LIMIT - 1)
+                : 1
+
+            const limit =
+              currentRound >= MAX_LIMIT ? MAX_LIMIT : currentRound - 1
+
+            const { eventData: eventWin, eventPDA } =
+              await web3Solana.getEventData(wallet, eventConfigPda as any, 28)
+
+            const order = await web3Solana.getBetInfoByUser(
+              wallet,
+              eventPDA as any,
+            )
+            console.log("order", order)
+
+            const eventList = await Promise.all(
+              [...new Array(limit)].map((round, idx) => {
+                const roundIdx = startRound + idx
+                return web3Solana.getEventData(
+                  wallet,
+                  eventConfigPda as any,
+                  roundIdx,
+                )
+              }),
+            )
+
+            const userOrders = await Promise.all(
+              eventList.map((ev) =>
+                web3Solana.getBetInfoByUser(wallet, ev.eventPDA as any),
+              ),
+            )
+
+            setListEvent([
+              ...eventList.map((e, idx) => {
+                return { ...(e.eventData || {}), userOrder: userOrders[idx] }
+              }),
+              { ...(eventWin || {}), userOrder: order },
+            ])
+
+            console.log(
+              "eventList",
+              eventList.map((e, idx) => {
+                return {
+                  ...(e.eventData || {}),
+                  userOrder: userOrders[idx],
+                  idNumber: e.eventData.id.toNumber(),
+                }
+              }),
+            )
+
+            console.log("event", eventWin)
+            setCurrentEventData(event)
+          }
+        }
+      } catch (error) {
+        console.log("error", error)
+      } finally {
+        setLoading(false)
+      }
+    })()
+  }, [wallet])
 
   //   useGetPriceRealtime()
 
@@ -134,80 +235,126 @@ const SwiperList = () => {
 
   const [, setIsChangeTransition] = useState(false) // isChangeTransition
 
+  // 68
+
   return (
     <>
       <ModalBet
         isOpen={showBetModal}
         closeModal={() => setShowBetModal(false)}
       ></ModalBet>
-      <Swiper
-        // initialSlide={swiperIndex}
-        initialSlide={4}
-        onSwiper={setSwiper}
-        spaceBetween={16}
-        // slidesPerView={4}
-        slidesPerView="auto"
-        style={{ paddingTop: 10 }}
-        onBeforeDestroy={() => setSwiper(null)}
-        freeMode={{
-          enabled: true,
-          sticky: true,
-          momentumRatio: 0.25,
-          momentumVelocityRatio: 0.5,
-        }}
-        breakpoints={{
-          640: {
-            slidesPerView: 2,
-            spaceBetween: 20,
-          },
-          768: {
-            slidesPerView: 4,
-            spaceBetween: 40,
-          },
-          1024: {
-            slidesPerView: 5,
-            spaceBetween: 50,
-          },
-        }}
-        modules={[Virtual, Keyboard, Mousewheel, FreeMode]}
-        centeredSlides
-        mousewheel
-        keyboard
-        resizeObserver
-      >
-        {LIST_MOCKED.map((roundItem, key) => (
-          <SwiperSlide
-            className="!h-fit"
-            key={`${key}-swiper-${roundItem.round}`}
+      {loading ? (
+        <div>Loading ...</div>
+      ) : (
+        <>
+          <Swiper
+            // initialSlide={swiperIndex}
+            initialSlide={MAX_LIMIT - 2}
+            onSwiper={setSwiper}
+            spaceBetween={16}
+            // slidesPerView={4}
+            slidesPerView="auto"
+            style={{ paddingTop: 10 }}
+            onBeforeDestroy={() => setSwiper(null)}
+            freeMode={{
+              enabled: true,
+              sticky: true,
+              momentumRatio: 0.25,
+              momentumVelocityRatio: 0.5,
+            }}
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+              },
+              768: {
+                slidesPerView: 4,
+                spaceBetween: 40,
+              },
+              1024: {
+                slidesPerView: 5,
+                spaceBetween: 50,
+              },
+            }}
+            modules={[Virtual, Keyboard, Mousewheel, FreeMode]}
+            centeredSlides
+            mousewheel
+            keyboard
+            resizeObserver
           >
-            {({ isActive }) => (
-              <CardContainer
-                roundItem={roundItem}
-                isActive={isActive}
-                onClick={() =>
-                  roundItem.status === STATUS_ROUND.NEXT &&
-                  setShowBetModal(true)
-                }
-              />
-            )}
-          </SwiperSlide>
-        ))}
-      </Swiper>
+            {[
+              ...(listEvent || []),
+              { id: currentRound + 1, status: STATUS_ROUND.LATER },
+              { id: currentRound + 2, status: STATUS_ROUND.LATER },
+            ].map((roundItem, key) => {
+              const round = toBN(roundItem.id).toNumber()
 
-      <div className="mt-5 flex items-center justify-center gap-2">
-        <div
-          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-1 border-white bg-mercury-950 hover:brightness-125"
-          onClick={() => swiper.slideTo(swiper.activeIndex - 1, 0)}
-        >
-          <ArrowsLeftIcon />
-        </div>
-        <div
-          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-1 border-white bg-mercury-950 hover:brightness-125"
-          onClick={() => swiper.slideTo(swiper.activeIndex + 1, 0)}
-        >
-          <ArrowsRightIcon />
-        </div>
-      </div>
+              const startTime = toBN(currentEventData?.startTime).toNumber()
+              const endTime = toBN(currentEventData?.lockTime).toNumber()
+
+              const downAmount = currentEventData?.downAmount || 0
+              const upAmount = currentEventData?.upAmount || 0
+              const total = toBN(downAmount).plus(upAmount)
+              const lockPrice = toBN(
+                currentEventData?.lockPrice || 0,
+              ).toNumber()
+
+              let status = STATUS_ROUND.LATER
+              if (round === currentRound) {
+                status = STATUS_ROUND.NEXT
+              } else if (round === currentRound - 1) {
+                status = STATUS_ROUND.LIVE
+              } else if (round < currentRound - 1) {
+                status = STATUS_ROUND.EXPIRED
+              }
+              // isEntered: true,
+              // isCalculating: false,
+              // selectedBet: BET_TYPE.DOWN,
+              // result: BET_TYPE.DOWN,
+              // isWin: true,
+
+              return (
+                <SwiperSlide
+                  className="!h-fit cursor-pointer"
+                  key={`${key}-swiper-${roundItem.round}`}
+                >
+                  {({ isActive }) => (
+                    <CardContainer
+                      roundItem={{
+                        ...roundItem,
+                        status,
+                        round,
+                        startTime,
+                        endTime,
+                        total,
+                        lockPrice,
+                      }}
+                      isActive={isActive}
+                      onClick={() =>
+                        status === STATUS_ROUND.NEXT && setShowBetModal(true)
+                      }
+                    />
+                  )}
+                </SwiperSlide>
+              )
+            })}
+          </Swiper>
+          <div className="mt-5 flex items-center justify-center gap-2">
+            <div
+              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-1 border-white bg-mercury-950 hover:brightness-125"
+              onClick={() => swiper.slideTo(swiper.activeIndex - 1, 0)}
+            >
+              <ArrowsLeftIcon />
+            </div>
+            <div
+              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-1 border-white bg-mercury-950 hover:brightness-125"
+              onClick={() => swiper.slideTo(swiper.activeIndex + 1, 0)}
+            >
+              <ArrowsRightIcon />
+            </div>
+          </div>
+        </>
+      )}
     </>
   )
 }

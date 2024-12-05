@@ -1,12 +1,47 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
+import { numberWithCommas, toBN } from "@utils/format"
+import BigNumber from "bignumber.js"
 import { twMerge } from "tailwind-merge"
-import { BET_TYPE } from "."
+import { DECIMAL_SHOW, DECIMAL_SPL } from "../constants"
+import { CalculatingCardContent } from "./CalculatingCardContent"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { useState } from "react"
+import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
+import { loadingButtonIcon } from "@assets/svg"
 
 export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
-  const { selectedBet, result } = roundItem
-  const isDown = result === BET_TYPE.DOWN
-  const isDraw = result === BET_TYPE.DRAW
-  const isUp = result === BET_TYPE.UP
+  const wallet = useWallet()
+  const [loading, setLoading] = useState(false)
+  const isUnDrawn = !!roundItem.outcome.undrawn
+  const isDown = !!roundItem.outcome.down
+  const isDraw = !!roundItem.outcome.invalid || !!roundItem.outcome.same
+  const isUp = !!roundItem.outcome.up
+
+  const userBetUp = roundItem.userOrder?.outcome?.up
+  const userBetDown = roundItem.userOrder?.outcome?.down
+  const isClaimable =
+    !isUnDrawn &&
+    (userBetUp || userBetDown) &&
+    (isDraw || (userBetDown && isDown) || (userBetUp && isUp))
+
+  const downAmount = roundItem?.downAmount || 0
+  const upAmount = roundItem?.upAmount || 0
+  const total = new BigNumber(downAmount).plus(upAmount)
+  const settlePrice = new BigNumber(roundItem?.settlePrice || 0).toNumber()
+  const lockPrice = new BigNumber(roundItem?.lockPrice || 0).toNumber()
+
+  const upOffset = !toBN(upAmount).isEqualTo(0)
+    ? total.div(upAmount).toNumber()
+    : 1
+  const downOffset = !toBN(downAmount).isEqualTo(0)
+    ? total.div(downAmount).toNumber()
+    : 1
+
+  const priceChange = new BigNumber(settlePrice).minus(lockPrice).toNumber()
+
+  if (isUnDrawn) {
+    return <CalculatingCardContent roundItem={roundItem} />
+  }
 
   return (
     <div className="rounded-b-[12px] border border-[#1A1C28] bg-[#13141D] p-4">
@@ -21,7 +56,7 @@ export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
         <div className="mb-2 text-[12px] text-[#9192A0]">Last Price</div>
         <div className="flex items-center justify-between gap-2">
           <div className="text-[24px] font-medium text-[#E8E9EE]">
-            $0.002370
+            ${numberWithCommas(settlePrice)}
           </div>
 
           <div
@@ -32,7 +67,19 @@ export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
               isDraw && "bg-[#1A1C28] text-[#585A6B]",
             )}
           >
-            {isDraw ? "+0.00" : isDown ? `-${1.25}` : `+${5.25}`}%
+            {isDraw
+              ? "$0.00"
+              : isDown
+                ? `-$${numberWithCommas(
+                    new BigNumber(priceChange).multipliedBy(-1).toNumber(),
+                    undefined,
+                    { maximumFractionDigits: DECIMAL_SHOW },
+                  )}`
+                : `+$${numberWithCommas(
+                    new BigNumber(priceChange).toNumber(),
+                    undefined,
+                    { maximumFractionDigits: DECIMAL_SHOW },
+                  )}`}
           </div>
         </div>
       </div>
@@ -53,7 +100,7 @@ export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
               UP
             </span>
             <span className="text-[12px] text-[rgba(252,_252,_252,_0.50)]">
-              {isDraw ? 1 : 1.87}x Payout
+              {isDraw ? 1 : upOffset}x Payout
             </span>
           </div>
           <ArrowUpFilledIcon
@@ -78,7 +125,7 @@ export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
               DOWN
             </span>
             <span className="text-[12px] text-[rgba(252,_252,_252,_0.50)]">
-              {isDraw ? 1 : 1.87}x Payout
+              {isDraw ? 1 : downOffset}x Payout
             </span>
           </div>
           <div className="rotate-180">
@@ -91,20 +138,35 @@ export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
       </div>
       <div className="flex flex-col">
         <div className="flex items-center justify-between text-[12px]">
-          <span className="text-[#9192A0]">Looked Price</span>
-          <span className="text-[#E8E9EE]">$648.8047</span>
+          <span className="text-[#9192A0]">Locked Price</span>
+          <span className="text-[#E8E9EE]">${numberWithCommas(lockPrice)}</span>
         </div>
         <div className="mt-3 flex items-center justify-between text-[12px]">
           <span className="text-[#9192A0]">Prize pool</span>
-          <span className="text-[#E8E9EE]">212.2690 MAX</span>
+          <span className="text-[#E8E9EE]">
+            {numberWithCommas(total.div(10 ** DECIMAL_SPL).toNumber())} MAX
+          </span>
         </div>
       </div>
-      {result === selectedBet && (
+      {isClaimable && (
         <button
-          // disabled={!formValid || isLoading}
+          disabled={!wallet || loading}
+          onClick={async () => {
+            try {
+              setLoading(true)
+
+              const web3Solana = new Web3SolanaProgramInteraction()
+              await web3Solana.claimOrder(wallet, roundItem.id.toNumber())
+            } catch (error) {
+              console.log("claim error", error)
+            } finally {
+              setLoading(false)
+            }
+          }}
           className="mt-4 w-full cursor-pointer rounded border-[2px] border-solid border-[rgba(255,255,255,0.25)] p-1 uppercase transition-all duration-150 ease-in hover:border-[rgba(255,255,255)] disabled:cursor-not-allowed disabled:opacity-75"
         >
-          <div className="rounded bg-white px-6 py-2 uppercase text-[#080A14]">
+          <div className="flex items-center justify-center gap-2 rounded bg-white px-6 py-2 uppercase text-[#080A14]">
+            {loading && <img src={loadingButtonIcon} alt="loadingButtonIcon" />}
             Collect winnings
           </div>
         </button>

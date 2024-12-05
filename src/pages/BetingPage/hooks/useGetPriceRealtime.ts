@@ -51,7 +51,7 @@ const useGetPriceRealtime = () => {
             // })
 
             if (!priceChangeBN.isEqualTo(0)) {
-              //   console.log("priceChange", priceChange)
+              // console.log("priceChange", priceChange)
               dispatch(
                 updatePriceInfo({
                   price: currentPrice,

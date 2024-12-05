@@ -8,60 +8,25 @@ import { numberWithCommas } from "@utils/format"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { useEffect, useState } from "react"
 import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
+import { TIMER } from "@hooks/useCountdown"
 
 const web3Solana = new Web3SolanaProgramInteraction()
 
 const CardLiveBet = ({ roundItem }: { roundItem: any }) => {
-  // const [eventConfig, setEventConfig] = useState()
-  const [currentEventData, setCurrentEventData] = useState<any>()
-  const wallet = useWallet()
+  const startTime = roundItem?.startTime
+    ? new BigNumber(roundItem?.startTime).toNumber()
+    : Math.floor(Date.now() / TIMER.MILLISECOND)
+  const endTime = roundItem?.lockTime
+    ? new BigNumber(roundItem?.lockTime).toNumber()
+    : Math.floor(Date.now() / TIMER.MILLISECOND)
 
-  useEffect(() => {
-    ;(async () => {
-      try {
-        if (currentEventData) {
-          return
-        }
+  // const startTime = Math.floor(Date.now() / TIMER.MILLISECOND)
+  // const endTime = Math.floor(Date.now() / TIMER.MILLISECOND + 300)
 
-        if (wallet) {
-          const { eventDataConfig, eventConfigPda } =
-            await web3Solana.getEventConfig(wallet)
-
-          if (eventDataConfig && eventConfigPda) {
-            // setEventConfig(eventDataConfig as any)
-            const currentRound = new BigNumber(eventDataConfig.nextRoundId || 2)
-              .minus(1)
-              .toNumber()
-
-            console.log("currentRound", currentRound)
-
-            const event = await web3Solana.getEventData(
-              wallet,
-              eventConfigPda,
-              currentRound,
-            )
-
-            console.log("event", event)
-            setCurrentEventData(event)
-          }
-        }
-      } catch (error) {
-        console.log("error", error)
-      }
-    })()
-  })
-
-  const startTime = currentEventData?.startTime
-    ? new BigNumber(currentEventData?.startTime).multipliedBy(1000).toNumber()
-    : Date.now()
-  const endTime = currentEventData?.lockTime
-    ? new BigNumber(currentEventData?.lockTime).multipliedBy(1000).toNumber()
-    : Date.now()
-
-  const downAmount = currentEventData?.downAmount || 0
-  const upAmount = currentEventData?.upAmount || 0
+  const downAmount = roundItem?.downAmount || 0
+  const upAmount = roundItem?.upAmount || 0
   const total = new BigNumber(downAmount).plus(upAmount)
-  const lockPrice = new BigNumber(currentEventData?.lockPrice || 0).toNumber()
+  const lockPrice = new BigNumber(roundItem?.lockPrice || 0).toNumber()
 
   return (
     <div className="rounded-b-[12px] border border-[#1A1C28] bg-[#13141D] p-4">
@@ -74,7 +39,7 @@ const CardLiveBet = ({ roundItem }: { roundItem: any }) => {
         <span className="ml-1">ENTERED</span>
       </div>
       <TimeProgress startTime={startTime} endTime={endTime} />
-      <LiveCardPrice currentRound={currentEventData} />
+      <LiveCardPrice currentRound={roundItem} />
       <div className="mt-6 flex flex-col">
         <div className="flex items-center justify-between text-[12px]">
           <span className="text-[#9192A0]">Your position</span>
