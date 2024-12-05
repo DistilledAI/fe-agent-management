@@ -73,6 +73,7 @@ const SwiperList = () => {
   }, [currentRoundStored])
 
   useEffect(() => {
+    console.log("currentRoundStored==>", currentRoundStored)
     ;(async () => {
       try {
         setLoading(true)
@@ -151,6 +152,8 @@ const SwiperList = () => {
               }),
               // { ...(eventWin || {}), userOrder: order },
             ])
+
+            console.log("eventList", eventList)
           }
         }
       } catch (error) {

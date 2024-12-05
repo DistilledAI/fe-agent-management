@@ -24,10 +24,10 @@ const LiveCardPrice = ({
   const total = toBN(currentRound.total || 0)
   const lockPrice = toBN(currentRound.lockPrice)
   const upOffset = !toBN(upAmount).isEqualTo(0)
-    ? total.div(upAmount).toNumber()
+    ? numberWithCommas(total.div(upAmount).toNumber())
     : 1
   const downOffset = !toBN(downAmount).isEqualTo(0)
-    ? total.div(downAmount).toNumber()
+    ? numberWithCommas(total.div(downAmount).toNumber())
     : 1
 
   const priceChange = new BigNumber(price).minus(lockPrice).toNumber()

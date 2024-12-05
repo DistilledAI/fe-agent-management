@@ -39,10 +39,10 @@ const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
   const lockPrice = new BigNumber(roundItem?.lockPrice || 0).toNumber()
 
   const upOffset = !toBN(upAmount).isEqualTo(0)
-    ? total.div(upAmount).toNumber()
+    ? numberWithCommas(total.div(upAmount).toNumber())
     : 1
   const downOffset = !toBN(downAmount).isEqualTo(0)
-    ? total.div(downAmount).toNumber()
+    ? numberWithCommas(total.div(downAmount).toNumber())
     : 1
 
   const priceChange = new BigNumber(settlePrice).minus(lockPrice).toNumber()

@@ -9,6 +9,7 @@ import { useState } from "react"
 import { twMerge } from "tailwind-merge"
 import TimeProgress from "../TimeProgress"
 import LiveCardPrice from "./LivePrice"
+import { CalculatingCardContent } from "../CalculatingCardContent"
 
 const CardLiveBet = ({ roundItem }: { roundItem: any; currentRound?: any }) => {
   const { liveRoundData } = useGetRoundDataById(roundItem.round)
@@ -32,7 +33,7 @@ const CardLiveBet = ({ roundItem }: { roundItem: any; currentRound?: any }) => {
   // const total = new BigNumber(downAmount).plus(upAmount)
   // const lockPrice = new BigNumber(roundItem?.lockPrice || 0).toNumber()
 
-  const [, setIsEnd] = useState(false)
+  const [isEnd, setIsEnd] = useState(false)
   const startTime = liveRoundData?.lockTime
     ? new BigNumber(liveRoundData?.lockTime).toNumber()
     : Math.floor(Date.now() / TIMER.MILLISECOND)
@@ -54,9 +55,9 @@ const CardLiveBet = ({ roundItem }: { roundItem: any; currentRound?: any }) => {
     .div(10 ** DECIMAL_BTC)
     .toNumber()
 
-  // if (isEnd) {
-  //   return <CalculatingCardContent roundItem={roundItem} />
-  // }
+  if (isEnd) {
+    return <CalculatingCardContent roundItem={roundItem} />
+  }
 
   return (
     <div className="rounded-b-[12px] border border-[#1A1C28] bg-[#13141D] p-4">
