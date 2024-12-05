@@ -22,7 +22,7 @@ const MainLayoutDesktop = () => {
           <LeftBar />
           <div
             className={twMerge(
-              "relative min-h-dvh w-[calc(100%-329px)] pt-[68px] transition-all duration-300 ease-in-out",
+              "relative w-[calc(100%-329px)] pt-[68px] transition-all duration-300 ease-in-out",
               sidebarCollapsed && "w-[calc(100%-104px)]",
             )}
           >

@@ -97,7 +97,7 @@ const RightContent: React.FC<{
       className={twMerge(
         "flex-1",
         "z-[11] bg-white max-md:rounded-[14px] max-md:border-t max-md:border-t-white max-md:shadow-7",
-        "md:px-10",
+        "md:px-5",
         "max-2xl:px-0",
         isCloseLiveChat && "h-[113px] flex-none md:flex-1",
       )}

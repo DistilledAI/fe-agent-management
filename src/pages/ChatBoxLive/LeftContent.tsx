@@ -59,7 +59,7 @@ const LeftContent: React.FC<{
   return (
     <div
       className={twMerge(
-        "flex w-full max-w-full flex-col transition-all duration-300 ease-linear max-md:px-4 lg:max-w-[320px]",
+        "flex w-full max-w-full flex-col overflow-y-auto transition-all duration-300 ease-linear scrollbar-hide max-md:px-4 lg:max-w-[320px]",
         isExpandLiveChat && "hidden",
         isCloseChatLive && "h-[calc(100%-230px)]",
       )}

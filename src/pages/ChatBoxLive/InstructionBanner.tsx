@@ -23,7 +23,7 @@ const InstructionBanner = () => {
   }
 
   return (
-    <div className="absolute right-16 top-16">
+    <div className="absolute right-12 top-16">
       <div className="relative">
         <CloseButton
           className="absolute -left-3 -top-3 border border-mercury-300 !bg-mercury-100"
