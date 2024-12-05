@@ -5,6 +5,8 @@ import { numberWithCommas, toBN } from "@utils/format"
 import BigNumber from "bignumber.js"
 import { useSelector } from "react-redux"
 import { twMerge } from "tailwind-merge"
+import MaxBettedInfo from "../MaxBettedInfo"
+import { BET_TYPE } from ".."
 
 const LiveCardPrice = ({ currentRound }: { currentRound: any }) => {
   const { price } = useSelector((state: RootState) => state.priceInfo)
@@ -87,10 +89,13 @@ const LiveCardPrice = ({ currentRound }: { currentRound: any }) => {
               {upOffset}x Payout
             </span>
           </div>
-          <ArrowUpFilledIcon
-            bgColor={!isUp ? "#585A6B" : "#9FF4CF"}
-            size={18}
-          />
+          <div className="flex items-center gap-1">
+            <MaxBettedInfo betType={BET_TYPE.UP} />
+            <ArrowUpFilledIcon
+              bgColor={!isUp ? "#585A6B" : "#9FF4CF"}
+              size={18}
+            />
+          </div>
         </div>
         <div
           className={twMerge(

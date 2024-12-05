@@ -8,6 +8,8 @@ import { useWallet } from "@solana/wallet-adapter-react"
 import { useState } from "react"
 import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
 import { loadingButtonIcon } from "@assets/svg"
+import { BET_TYPE } from "."
+import MaxBettedInfo from "./MaxBettedInfo"
 
 export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
   const wallet = useWallet()
@@ -128,11 +130,14 @@ export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
               {isDraw ? 1 : downOffset}x Payout
             </span>
           </div>
-          <div className="rotate-180">
-            <ArrowUpFilledIcon
-              bgColor={isDown ? "#E75787" : "#585A6B"}
-              size={18}
-            />
+          <div className="flex items-center gap-1">
+            <MaxBettedInfo betType={BET_TYPE.DOWN} />
+            <div className="rotate-180">
+              <ArrowUpFilledIcon
+                bgColor={isDown ? "#E75787" : "#585A6B"}
+                size={18}
+              />
+            </div>
           </div>
         </div>
       </div>

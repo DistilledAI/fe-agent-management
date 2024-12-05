@@ -15,14 +15,14 @@ const useDisclaimer = () => {
     else if (isLogin && !isAnonymous && !isAccepted) {
       onOpen()
     }
-  }, [isAccepted])
+  }, [isAccepted, isLogin])
 
   const onAccept = () => {
     cachedLocalStorage.setItem(storageKey.DISCLAIMER, "1")
     setIsAccepted(true)
   }
 
-  return { isOpen, onOpenChange, isAccepted, onAccept }
+  return { isOpen, onOpenChange, isAccepted, onAccept, onOpen }
 }
 
 export default useDisclaimer

@@ -20,11 +20,9 @@ const BetModal: React.FC<{
       }}
     >
       <ModalContent>
-        {() => (
-          <div className="max-h-full overflow-y-auto">
-            <Betting />
-          </div>
-        )}
+        <div className="max-h-full overflow-y-auto">
+          <Betting />
+        </div>
       </ModalContent>
     </Modal>
   )

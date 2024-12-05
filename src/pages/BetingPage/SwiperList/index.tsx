@@ -1,8 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react"
 
+import BetDisclaimer from "@components/BetDisclaimer"
 import { ArrowsLeftIcon, ArrowsRightIcon } from "@components/Icons/Arrow"
+import useAuthState from "@hooks/useAuthState"
 import useSwiper from "@hooks/useSwiper"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { toBN } from "@utils/format"
+import BigNumber from "bignumber.js"
 import delay from "lodash/delay"
+import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
 import {
   FreeMode,
   Keyboard,
@@ -12,13 +19,8 @@ import {
 } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 import CardContainer, { BET_TYPE, STATUS_ROUND } from "../CardContainer"
+import useDisclaimer from "../hooks/useDisclaimer"
 import ModalBet from "../ModalBet"
-import BigNumber from "bignumber.js"
-import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
-import { useWallet } from "@solana/wallet-adapter-react"
-import { toBN } from "@utils/format"
-import { TIMER } from "@hooks/useCountdown"
-// import useGetPriceRealtime from "../hooks/useGetPriceRealtime"
 
 export const CHART_DOT_CLICK_EVENT = "CHART_DOT_CLICK_EVENT"
 
@@ -122,6 +124,8 @@ const MAX_LIMIT = 10
 
 const SwiperList = () => {
   const { setSwiper, swiper } = useSwiper()
+  const { isLogin, isAnonymous } = useAuthState()
+  const { isOpen, onOpenChange, onAccept, isAccepted, onOpen } = useDisclaimer()
   const [showBetModal, setShowBetModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [eventConfig, setEventConfig] = useState()
@@ -216,7 +220,7 @@ const SwiperList = () => {
     })()
   }, [wallet])
 
-  //   useGetPriceRealtime()
+  const isLoginByWallet = isLogin && !isAnonymous
 
   useEffect(() => {
     const handleChartDotClick = () => {
@@ -243,6 +247,11 @@ const SwiperList = () => {
         isOpen={showBetModal}
         closeModal={() => setShowBetModal(false)}
       ></ModalBet>
+      <BetDisclaimer
+        onAccept={onAccept}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      />
       {loading ? (
         <div>Loading ...</div>
       ) : (
