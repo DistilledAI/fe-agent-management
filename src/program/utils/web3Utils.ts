@@ -229,8 +229,8 @@ export class Web3SolanaProgramInteraction {
         currentRound.startTime.toNumber() <= currentTime &&
         currentTime <= currentRound.lockTime.toNumber()
       ) {
-        const betAmount = new BN(100000)
-        const side = { up: {} }
+        // const betAmount = new BN(100000)
+        // const side = { up: {} }
 
         const [order] = PublicKey.findProgramAddressSync(
           [Buffer.from("order"), event.toBytes(), wallet.publicKey.toBuffer()],
