@@ -62,15 +62,19 @@ const ChatWindow = ({
     }
   }, [chatId])
 
+  const scrollToBottom = useCallback(() => {
+    virtuosoRef.current?.scrollToIndex({
+      index: messages.length - 1,
+      behavior: "auto",
+      align: style?.paddingBottom === "0px" ? "end" : "center",
+    })
+  }, [messages, style?.paddingBottom])
+
   useEffect(() => {
     if (!isScrollBottom) {
-      virtuosoRef.current?.scrollToIndex({
-        index: messages.length - 1,
-        behavior: "auto",
-        align: style?.paddingBottom === "0px" ? "end" : "center",
-      })
+      scrollToBottom()
     }
-  }, [messages, isScrollBottom, style?.paddingBottom, chatId])
+  }, [scrollToBottom, isScrollBottom, chatId])
 
   const onScroll = useCallback(
     async (e: React.UIEvent<HTMLDivElement>) => {
@@ -147,6 +151,8 @@ const ChatWindow = ({
           id="chat-window"
           style={{
             height: "100%",
+            willChange: "transform",
+            overflowAnchor: "none",
           }}
           ref={virtuosoRef}
           data={messages}

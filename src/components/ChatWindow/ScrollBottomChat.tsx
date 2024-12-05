@@ -27,7 +27,7 @@ const ScrollBottomChat = ({
   }
 
   if (!isScrollBottom) {
-    return <></>
+    return null
   }
 
   return (
