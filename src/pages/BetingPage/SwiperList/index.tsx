@@ -15,6 +15,8 @@ import CardContainer, { BET_TYPE, STATUS_ROUND } from "../CardContainer"
 import ModalBet from "../ModalBet"
 import BetDisclaimer from "@components/BetDisclaimer"
 import useDisclaimer from "../hooks/useDisclaimer"
+import useAuthState from "@hooks/useAuthState"
+import useConnectWallet from "@hooks/useConnectWallet"
 // import useGetPriceRealtime from "../hooks/useGetPriceRealtime"
 
 export const CHART_DOT_CLICK_EVENT = "CHART_DOT_CLICK_EVENT"
@@ -115,8 +117,12 @@ export const LIST_MOCKED = [
 
 const SwiperList = () => {
   const { setSwiper, swiper } = useSwiper()
+  const { isLogin, isAnonymous } = useAuthState()
+  const { connectMultipleWallet } = useConnectWallet()
   const { isOpen, onOpenChange, onAccept, isAccepted, onOpen } = useDisclaimer()
   const [showBetModal, setShowBetModal] = useState(false)
+
+  const isLoginByWallet = isLogin && !isAnonymous
 
   useEffect(() => {
     const handleChartDotClick = () => {
@@ -192,6 +198,11 @@ const SwiperList = () => {
                 isActive={isActive}
                 onClick={() => {
                   if (roundItem.status === STATUS_ROUND.NEXT) {
+                    if (!isLoginByWallet) {
+                      connectMultipleWallet()
+                      return
+                    }
+
                     if (!isAccepted) onOpen()
                     else setShowBetModal(true)
                   }
