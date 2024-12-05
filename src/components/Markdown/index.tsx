@@ -60,7 +60,7 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
           <img
             src={imageSrc}
             alt={alt}
-            className="h-[200px] w-[280px] cursor-pointer rounded-3xl border border-mercury-100 object-cover shadow-1"
+            className="max-h-[300px] min-h-[200px] cursor-pointer rounded-3xl border border-mercury-100 object-cover shadow-1"
             onClick={() => onOpen()}
           />
 
