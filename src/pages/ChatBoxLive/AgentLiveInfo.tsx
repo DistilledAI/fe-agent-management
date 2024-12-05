@@ -37,10 +37,10 @@ const AgentLiveInfo: React.FC<{
   return (
     <>
       <Button
-        className="h-[38px] w-[38px] min-w-[38px] rounded-full bg-mercury-70 p-0"
+        className="h-7 w-7 min-w-7 rounded-full bg-mercury-70 p-0"
         onClick={onOpen}
       >
-        <InfoCircleOutlineIcon />
+        <InfoCircleOutlineIcon size={20} />
       </Button>
       <Modal
         isOpen={isOpen}

@@ -76,7 +76,7 @@ const RankExpList = () => {
           All EXP converts to xDSTL after the competition ends.
         </p>
       </div>
-      <div className="h-[calc(100dvh-444px)] space-y-2">
+      <div className="h-[calc(100dvh-300px)] space-y-2 md:h-[calc(100dvh-444px)]">
         {!isAnonymous && (
           <RankExpCard
             classNames={{

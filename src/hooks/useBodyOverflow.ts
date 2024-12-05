@@ -1,7 +1,14 @@
 import { useEffect } from "react"
+import useWindowSize from "./useWindowSize"
 
 const useBodyOverflow = (overflowState = "hidden") => {
+  const { isMobile } = useWindowSize()
+
   useEffect(() => {
+    if (isMobile) {
+      return
+    }
+
     const scrollPosition = window.scrollY
 
     if (overflowState === "hidden") {
@@ -18,7 +25,7 @@ const useBodyOverflow = (overflowState = "hidden") => {
         window.scrollTo(0, scrollPosition)
       }
     }
-  }, [overflowState])
+  }, [overflowState, isMobile])
 }
 
 export default useBodyOverflow

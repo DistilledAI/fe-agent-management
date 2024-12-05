@@ -66,9 +66,9 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
         <div
           className={twMerge(
             "h-10 w-10 overflow-hidden rounded-full border-1 border-mercury-400 bg-mercury-100",
-            className,
             isLive &&
               "relative h-[38px] w-[38px] border-white outline outline-2 outline-[#FF075A]",
+            className,
           )}
         >
           <canvas ref={canvasRef} style={{ display: "none" }} />

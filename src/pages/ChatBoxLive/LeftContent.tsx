@@ -66,13 +66,13 @@ const LeftContent: React.FC<{
     >
       <div className="flex h-full flex-col md:h-fit">
         {!isLoaded || !isFetched || groupDetail === null ? (
-          <Skeleton className="h-[350px] rounded-[32px] md:h-[400px]"></Skeleton>
+          <Skeleton className="h-[300px] rounded-[32px] md:h-[400px]"></Skeleton>
         ) : isMaxi ? (
           <VideoCustom
             videoSrc={bitcoinMaxIntro}
             classNames={{
               video: twMerge(
-                "h-full min-h-[350px] w-full rounded-[32px] object-cover max-h-[350px] md:max-h-[400px] md:h-auto",
+                "h-full min-h-[300px] w-full rounded-[32px] object-cover max-h-[300px] md:max-h-[400px] md:h-auto",
                 isCloseChatLive && "max-md:max-h-full",
               ),
             }}
@@ -91,7 +91,7 @@ const LeftContent: React.FC<{
               backgroundImage:
                 'url("https://data.cupiee.com/images/companion-stalor-bg.png")',
             }}
-            className="relative h-[350px] overflow-hidden rounded-[32px] md:h-[400px]"
+            className="relative h-[300px] min-h-[300px] w-full overflow-hidden rounded-[32px] md:h-[400px]"
           >
             <Image
               classNames={{ wrapper: "w-full h-full !max-w-full" }}
