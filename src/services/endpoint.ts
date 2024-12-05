@@ -75,6 +75,9 @@ const endpoint = {
     withBaseURL(`/point/exp/total-point/group/${groupId}`),
   GET_EXP_TOTAL_POINT_USER: (groupId: number) =>
     withBaseURL(`/point/exp/total-point/user/${groupId}`),
+
+  //game
+  GET_PREDICT_HISTORY: withBaseURL("/game/predict/history"),
 }
 
 export default endpoint
