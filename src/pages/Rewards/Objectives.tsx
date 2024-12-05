@@ -105,6 +105,7 @@ const Objectives: React.FC<{
             <div
               className="relative w-[220px] cursor-pointer py-2 max-md:p-0"
               onClick={() => setActiveKey(objective.key)}
+              key={objective.key}
             >
               <img className="w-full" src={imageSrc} />
               {isObjectiveActive && (

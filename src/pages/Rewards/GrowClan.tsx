@@ -32,7 +32,10 @@ const GrowClan: React.FC = () => {
     <div className="w-full">
       {MISSION_LIST.map((item: any) => {
         return (
-          <div className="flex items-center justify-between border-b-1 border-mercury-100 px-4 py-[14px] pr-0 max-md:px-0">
+          <div
+            className="flex items-center justify-between border-b-1 border-mercury-100 px-4 py-[14px] pr-0 max-md:px-0"
+            key={item.key}
+          >
             <div className="w-full">
               <div className="flex items-center gap-2">{item.label}</div>
               <span className="text-base text-mercury-700">{item.desc}</span>
