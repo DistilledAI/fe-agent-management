@@ -59,7 +59,13 @@
   <body style="background-color: transparent">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <!-- <script type="module">
+      import process from "process"
+      import { Buffer } from "buffer"
 
+      window.Buffer = Buffer
+      window.process = process
+    </script> -->
     <!-- clarity -->
     <script type="text/javascript">
       if (window.location.host === "mesh.distilled.ai") {
