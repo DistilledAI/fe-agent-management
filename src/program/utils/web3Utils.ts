@@ -498,7 +498,7 @@ export class Web3SolanaProgramInteraction {
         ])
         .instruction()
 
-      console.log("createIx", createIx)
+      // console.log("createIx", createIx)
 
       transaction.add(updateCpIx, updateCuIx, createIx)
 
