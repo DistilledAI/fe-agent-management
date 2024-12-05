@@ -1,3 +1,10 @@
+import * as anchor from "@coral-xyz/anchor"
+import { BN } from "@coral-xyz/anchor"
+import {
+  ASSOCIATED_TOKEN_PROGRAM_ID,
+  getAssociatedTokenAddressSync,
+  TOKEN_PROGRAM_ID,
+} from "@solana/spl-token"
 import { WalletContextState } from "@solana/wallet-adapter-react"
 import {
   ComputeBudgetProgram,
@@ -9,18 +16,11 @@ import {
   Transaction,
   TransactionExpiredTimeoutError,
 } from "@solana/web3.js"
-import * as anchor from "@coral-xyz/anchor"
 import BigNumber from "bignumber.js"
-import { SoloraPythPrice } from "../types/solora_pyth_price.ts"
-import idl from "../idl/solora_pyth_price.json"
 import { EVENT, EVENT_CONFIG, PUBKEYS } from "program/constants.ts"
-import {
-  ASSOCIATED_TOKEN_PROGRAM_ID,
-  getAssociatedTokenAddressSync,
-  TOKEN_PROGRAM_ID,
-} from "@solana/spl-token"
-import { BN } from "@coral-xyz/anchor"
 import { toast } from "react-toastify"
+import idl from "../idl/solora_pyth_price.json"
+import { SoloraPythPrice } from "../types/solora_pyth_price.ts"
 
 export const commitmentLevel = "confirmed"
 export const TOKEN_RESERVES = 1_000_000_000_000_000
@@ -86,8 +86,6 @@ export class Web3SolanaProgramInteraction {
 
     const eventDataConfig =
       await program.account.eventConfig.fetch(eventConfigPda)
-
-    console.log("first", eventDataConfig, eventDataConfig)
 
     return { eventDataConfig, eventConfigPda }
   }
@@ -419,19 +417,19 @@ export class Web3SolanaProgramInteraction {
       console.log(order)
 
       const eventDetail = await program.account.event.fetch(event)
-      const orderDetail = await program.account.order.fetch(order)
+      // const orderDetail = await program.account.order.fetch(order)
 
       if (eventDetail.outcome.undrawn) {
         console.log("This round is not over yet.")
       }
-      if (
-        !eventDetail.outcome.invalid &&
-        !eventDetail.outcome.same &&
-        eventDetail.outcome != orderDetail.outcome
-      ) {
-        console.log("You lose!")
-        return
-      }
+      // if (
+      //   !eventDetail.outcome.invalid &&
+      //   !eventDetail.outcome.same &&
+      //   eventDetail.outcome != orderDetail.outcome
+      // ) {
+      //   console.log("You lose!")
+      //   return
+      // }
 
       const eventCurrencyAccount = getAssociatedTokenAddressSync(
         currencyMint,

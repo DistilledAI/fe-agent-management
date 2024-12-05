@@ -24,6 +24,8 @@ import CardContainer, { BET_TYPE, STATUS_ROUND } from "../CardContainer"
 import { DECIMAL_BTC } from "../constants"
 import useDisclaimer from "../hooks/useDisclaimer"
 import ModalBet from "../ModalBet"
+import { useSelector } from "react-redux"
+import { RootState } from "@configs/store"
 
 export const CHART_DOT_CLICK_EVENT = "CHART_DOT_CLICK_EVENT"
 
@@ -35,10 +37,9 @@ const SwiperList = () => {
   const { setSwiper, swiper } = useSwiper()
   const { isAccepted, onOpen, isOpen, onOpenChange, onAccept } = useDisclaimer()
   const [loading, setLoading] = useState(false)
-  const [eventConfig, setEventConfig] = useState()
+  const [_eventConfig, setEventConfig] = useState()
   const [currentRound, setCurrentRound] = useState<number>(1)
   const [rangeTime, setRangeTime] = useState<number>(300)
-  const [currentRoundRefresh, setCurrentRoundRefresh] = useState<number>(1)
   const [listEvent, setListEvent] = useState<any>()
   const [currentEventData, setCurrentEventData] = useState<any>()
   const wallet = useWallet()
@@ -62,9 +63,14 @@ const SwiperList = () => {
     }
   }
 
+  const { currentRoundData } = useSelector(
+    (state: RootState) => state.priceInfo,
+  )
+  const currentRoundStored = currentEventData?.id?.toNumber()
+
   useEffect(() => {
     callGetPredictHistory()
-  }, [])
+  }, [currentRoundStored])
 
   useEffect(() => {
     ;(async () => {
@@ -80,7 +86,9 @@ const SwiperList = () => {
 
           if (eventDataConfig && eventConfigPda) {
             setEventConfig(eventDataConfig as any)
-            const currentRound = new BigNumber(eventDataConfig.nextRoundId || 2)
+            const currentRound = new BigNumber(
+              (eventDataConfig as any).nextRoundId || 2,
+            )
               .minus(1)
               .toNumber()
 
@@ -103,12 +111,11 @@ const SwiperList = () => {
               currentRound >= MAX_LIMIT ? MAX_LIMIT - 1 : currentRound - 1
             console.log("startRound", startRound, limit)
 
-            const { eventData: currentEvent, eventPDA } =
-              await web3Solana.getEventData(
-                wallet,
-                eventConfigPda as any,
-                currentRound,
-              )
+            const { eventData: currentEvent } = await web3Solana.getEventData(
+              wallet,
+              eventConfigPda as any,
+              currentRound,
+            )
             setCurrentEventData(currentEvent)
 
             // const { eventData: eventWin, eventPDA: pda } =
@@ -118,7 +125,7 @@ const SwiperList = () => {
             // console.log("order", order)
 
             const eventList = await Promise.all(
-              [...new Array(limit + 1)].map((round, idx) => {
+              [...new Array(limit + 1)].map((_round, idx) => {
                 const roundIdx = startRound + idx
                 // console.log("roundIdx", roundIdx)
                 return web3Solana.getEventData(
@@ -137,21 +144,13 @@ const SwiperList = () => {
 
             setListEvent([
               ...eventList.map((e, idx) => {
-                return { ...(e.eventData || {}), userOrder: userOrders[idx] }
+                return {
+                  ...(e.eventData || ({} as any)),
+                  userOrder: userOrders[idx],
+                }
               }),
               // { ...(eventWin || {}), userOrder: order },
             ])
-
-            console.log(
-              "eventList",
-              eventList.map((e, idx) => {
-                return {
-                  ...(e.eventData || {}),
-                  userOrder: userOrders[idx],
-                  idNumber: e.eventData.id.toNumber(),
-                }
-              }),
-            )
           }
         }
       } catch (error) {
@@ -160,7 +159,7 @@ const SwiperList = () => {
         setLoading(false)
       }
     })()
-  }, [wallet])
+  }, [wallet, currentRoundData])
 
   useEffect(() => {
     const handleChartDotClick = () => {
@@ -270,10 +269,6 @@ const SwiperList = () => {
 
               const exitsPredictRecord = predictHistory?.find(
                 (item) => item.index === round,
-              )
-              console.log(
-                "🚀 ~ SwiperList ~ exitsPredictRecord:",
-                exitsPredictRecord,
               )
 
               return (

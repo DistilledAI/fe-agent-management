@@ -6,7 +6,7 @@ import { NextIcon } from "@components/Icons/BettingPage/NextIcon"
 import { twMerge } from "tailwind-merge"
 import { CalculatingCardContent } from "./CalculatingCardContent"
 import CardLiveBet from "./CardLive"
-import { ExpireCardContent } from "./ExpireCardContent"
+import ExpireCardContent from "./ExpireCardContent"
 import { LaterCardContent } from "./LaterCardContent"
 import { NextCardContent } from "./NextCardContent"
 

@@ -32,7 +32,7 @@ export const useGetCurrentRoundData = () => {
               .minus(1)
               .toNumber()
 
-            console.log("currentRound - useGetCurrentRoundData", currentRound)
+            // console.log("currentRound - useGetCurrentRoundData", currentRound)
             setCurrentRound(currentRound)
 
             const { eventData: currentEvent, eventPDA } =
@@ -48,7 +48,10 @@ export const useGetCurrentRoundData = () => {
             // setCurrentEventData(currentEvent)
             dispatch(
               updateCurrentRound({
-                currentRoundData: { ...(currentEvent || {}), userOrder },
+                currentRoundData: {
+                  ...(currentEvent || ({} as any)),
+                  userOrder,
+                },
               }),
             )
           }
@@ -100,7 +103,7 @@ export const useGetRoundDataById = (id: number) => {
             // setCurrentEventData(currentEvent)
             dispatch(
               updateLiveRound({
-                liveRoundData: { ...(currentEvent || {}), userOrder },
+                liveRoundData: { ...(currentEvent || ({} as any)), userOrder },
               }),
             )
           }

@@ -1,6 +1,7 @@
 import { starIcon } from "@assets/svg"
+import { FC } from "react"
 
-export const CalculatingCardContent = ({ roundItem }: { roundItem: any }) => {
+export const CalculatingCardContent: FC<{ roundItem: any }> = () => {
   return (
     <div className="rounded-b-[12px] border border-[#1A1C28] bg-[#13141D] p-4">
       <div

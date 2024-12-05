@@ -1,10 +1,8 @@
 import { logoAgentLand } from "@assets/images"
-import { RootState } from "@configs/store"
 import { Image } from "@nextui-org/react"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { PhantomWalletName } from "@solana/wallet-adapter-wallets"
 import { useEffect } from "react"
-import { useSelector } from "react-redux"
 import HeaderBet from "./HeaderBet"
 import SwiperList from "./SwiperList"
 // import { useGetCurrentRoundData } from "./hooks/useGetRoundData"
@@ -21,10 +19,9 @@ const Betting = () => {
     })()
   }, [publicKey])
 
-  const { currentRoundData } = useSelector(
-    (state: RootState) => state.priceInfo,
-  )
-  // console.log("first", currentRoundData)
+  // const { currentRoundData } = useSelector(
+  //   (state: RootState) => state.priceInfo,
+  // )
 
   return (
     <div>

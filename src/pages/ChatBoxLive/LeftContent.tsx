@@ -180,8 +180,8 @@ const LeftContent: React.FC<{
           <SkeletonDesc />
         )}
       </div>
-      {/* {isOpen && <BetModal onOpenChange={onOpenChange} isOpen={isOpen} />} */}
-      <BetModal onOpenChange={onOpenChange} isOpen={true} />
+      {isOpen && <BetModal onOpenChange={onOpenChange} isOpen={isOpen} />}
+      {/* <BetModal onOpenChange={onOpenChange} isOpen={true} /> */}
     </div>
   )
 }

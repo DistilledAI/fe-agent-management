@@ -1,5 +1,4 @@
 import HeaderPrice from "./HeaderPrice"
-import HeaderTime from "./HeaderTime"
 
 const HeaderBet = () => {
   return (

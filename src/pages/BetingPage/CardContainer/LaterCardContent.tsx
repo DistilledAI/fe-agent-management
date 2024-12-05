@@ -10,7 +10,7 @@ export const LaterCardContent = ({ roundItem }: { roundItem: any }) => {
     ? toBN(roundItem?.end).toNumber()
     : Math.floor(Date.now() / TIMER.MILLISECOND)
 
-  const { timeRemaining, start, end, isStarted } = useCountdown({
+  const { timeRemaining } = useCountdown({
     startTime,
     endTime,
     onStart: () => console.log("started"),

@@ -1,4 +1,5 @@
-import { formatCountdownTime, useCountdown } from "@hooks/useCountdown"
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useCountdown } from "@hooks/useCountdown"
 
 const TimeProgress: React.FC<{
   startTime: any
@@ -6,14 +7,14 @@ const TimeProgress: React.FC<{
   onEnd: () => void
 }> = ({ startTime, endTime, onEnd }) => {
   // isStarted
-  const { timeRemaining, percent } = useCountdown({
+  const { percent } = useCountdown({
     startTime,
     endTime,
     onStart: () => console.log("started"),
     onEnd: onEnd,
   })
 
-  const { minutes, seconds } = formatCountdownTime(timeRemaining)
+  // const { minutes, seconds } = formatCountdownTime(timeRemaining)
 
   // console.log(
   //   "timeRemaining",
@@ -24,6 +25,10 @@ const TimeProgress: React.FC<{
   //   seconds,
   // )
 
+  if (percent <= 0) {
+    return null
+  }
+
   return (
     <div className="mb-4 flex items-center justify-between gap-2">
       <div className="w-full rounded-[28px] bg-[#1A1C28] p-[2px]">
@@ -32,9 +37,9 @@ const TimeProgress: React.FC<{
           style={{ width: `${percent}%` }}
         />
       </div>
-      <div className="text-12 font-medium text-[#E8E9EE]">
+      {/* <div className="text-12 font-medium text-[#E8E9EE]">
         <span>{minutes}</span>:<span>{seconds}</span>
-      </div>
+      </div> */}
     </div>
   )
 }

@@ -4,14 +4,14 @@ import { useWallet } from "@solana/wallet-adapter-react"
 import { numberWithCommas, toBN } from "@utils/format"
 import BigNumber from "bignumber.js"
 import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
-import { useState } from "react"
+import { memo, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { BET_TYPE } from "."
 import { DECIMAL_BTC, DECIMAL_SHOW, DECIMAL_SPL } from "../constants"
 import { CalculatingCardContent } from "./CalculatingCardContent"
 import MaxBettedInfo from "./MaxBettedInfo"
 
-export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
+const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
   const wallet = useWallet()
   const [loading, setLoading] = useState(false)
   const [isClaimed, setIsClaimed] = useState(false)
@@ -195,3 +195,5 @@ export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
     </div>
   )
 }
+
+export default memo(ExpireCardContent)

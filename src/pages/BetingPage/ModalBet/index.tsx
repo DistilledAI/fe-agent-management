@@ -17,7 +17,7 @@ const web3Solana = new Web3SolanaProgramInteraction()
 
 const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
   const [tokenBal, setTokenBal] = useState<number>(0)
-  const [type, setType] = useState<number>(BET_TYPE.UP)
+  const [type, setType] = useState<BET_TYPE>(BET_TYPE.UP)
   const [amountVal, setAmountVal] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(false)
   const wallet = useWallet()

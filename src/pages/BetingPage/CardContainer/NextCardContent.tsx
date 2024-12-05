@@ -34,10 +34,10 @@ export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
   const total = toBN(downAmount).plus(upAmount)
 
   const upOffset = !toBN(upAmount).isEqualTo(0)
-    ? total.div(upAmount).toNumber()
+    ? numberWithCommas(total.div(upAmount).toNumber())
     : 1
   const downOffset = !toBN(downAmount).isEqualTo(0)
-    ? total.div(downAmount).toNumber()
+    ? numberWithCommas(total.div(downAmount).toNumber())
     : 1
 
   const userBetUp = currentRoundData?.userOrder?.outcome?.up

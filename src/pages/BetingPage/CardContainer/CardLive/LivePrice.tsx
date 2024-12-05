@@ -13,7 +13,7 @@ const LiveCardPrice = ({
   roundItem,
 }: {
   currentRound: any
-  roundItem: any
+  roundItem?: any
 }) => {
   const { price } = useSelector((state: RootState) => state.priceInfo)
   //max predict
