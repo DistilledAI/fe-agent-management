@@ -17,17 +17,25 @@ import SkeletonInfo, { SkeletonDesc } from "./SkeletonInfo"
 import AgentSocials from "./AgentSocials"
 import BetModal from "@components/BetModal"
 import { bgBtcPrediction, bitmaxAva, btcIconRote } from "@assets/images"
+import { useSearchParams } from "react-router-dom"
 
 const LeftContent: React.FC<{
   groupDetail: UserGroup | null
   isFetched: boolean
 }> = ({ groupDetail, isFetched }) => {
   const queryClient = useQueryClient()
+  const [searchParams] = useSearchParams()
+  const prediction = searchParams.get("prediction")
   const [isLoaded, setIsLoaded] = useState(false)
   const { isOpen, onOpenChange, onOpen } = useDisclosure()
   const isMaxi =
     groupDetail?.group.label === "@maxisbuyin" ||
     groupDetail?.group.label === "@maxisbuyin_"
+
+  useEffect(() => {
+    if (!!prediction && isMaxi) onOpen()
+  }, [prediction, isMaxi])
+
   const [agentLiveVolume, closeLiveChat, expandLiveChat] = useQueries({
     queries: [
       {
