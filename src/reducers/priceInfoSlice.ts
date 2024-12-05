@@ -6,6 +6,7 @@ export interface PriceInfoState {
   priceChange: string
   priceChangePercent: string
   currentRoundData: any
+  liveRoundData: any
 }
 
 const initialState: PriceInfoState = {
@@ -13,6 +14,7 @@ const initialState: PriceInfoState = {
   priceChange: "0",
   priceChangePercent: "0",
   currentRoundData: null,
+  liveRoundData: null,
 }
 
 const priceInfo = createSlice({
@@ -21,16 +23,30 @@ const priceInfo = createSlice({
   reducers: {
     updatePriceInfo: (
       state,
-      action: PayloadAction<Partial<PriceInfoState>>,
+      action: PayloadAction<
+        Pick<PriceInfoState, "price" | "priceChange" | "priceChangePercent">
+      >,
     ) => {
-      return {
-        ...state,
-        ...action.payload,
-      }
+      state.price = action.payload.price
+      state.priceChange = action.payload.priceChange
+      state.priceChangePercent = action.payload.priceChangePercent
+    },
+    updateCurrentRound: (
+      state,
+      action: PayloadAction<Pick<PriceInfoState, "currentRoundData">>,
+    ) => {
+      state.currentRoundData = action.payload.currentRoundData
+    },
+    updateLiveRound: (
+      state,
+      action: PayloadAction<Pick<PriceInfoState, "liveRoundData">>,
+    ) => {
+      state.liveRoundData = action.payload.liveRoundData
     },
   },
 })
 
-export const { updatePriceInfo } = priceInfo.actions
+export const { updatePriceInfo, updateCurrentRound, updateLiveRound } =
+  priceInfo.actions
 
 export default priceInfo.reducer

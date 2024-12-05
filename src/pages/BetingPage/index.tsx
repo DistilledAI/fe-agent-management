@@ -5,7 +5,7 @@ import { PhantomWalletName } from "@solana/wallet-adapter-wallets"
 import { useEffect } from "react"
 import HeaderBet from "./HeaderBet"
 import SwiperList from "./SwiperList"
-import useGetCurrentRoundData from "./hooks/useGetCurrentRoundData"
+// import { useGetCurrentRoundData } from "./hooks/useGetRoundData"
 import { useSelector } from "react-redux"
 import { RootState } from "@configs/store"
 

@@ -36,6 +36,7 @@ const SwiperList = () => {
   const [loading, setLoading] = useState(false)
   const [eventConfig, setEventConfig] = useState()
   const [currentRound, setCurrentRound] = useState<number>(1)
+  const [rangeTime, setRangeTime] = useState<number>(300)
   const [currentRoundRefresh, setCurrentRoundRefresh] = useState<number>(1)
   const [listEvent, setListEvent] = useState<any>()
   const [currentEventData, setCurrentEventData] = useState<any>()
@@ -65,8 +66,14 @@ const SwiperList = () => {
               .minus(1)
               .toNumber()
 
-            console.log("currentRound", currentRound)
+            console.log(
+              "currentRound",
+              currentRound,
+              (eventDataConfig as any).intervalSeconds,
+              eventDataConfig,
+            )
             setCurrentRound(currentRound)
+            setRangeTime((eventDataConfig as any).intervalSeconds || 300)
 
             // ... expired - expired - expired - live - next(cur) - later - later
             const startRound =
@@ -75,7 +82,7 @@ const SwiperList = () => {
                 : 1
 
             const limit =
-              currentRound >= MAX_LIMIT ? MAX_LIMIT : currentRound - 1
+              currentRound >= MAX_LIMIT ? MAX_LIMIT - 1 : currentRound - 1
             console.log("startRound", startRound, limit)
 
             const { eventData: currentEvent, eventPDA } =
@@ -95,7 +102,7 @@ const SwiperList = () => {
             const eventList = await Promise.all(
               [...new Array(limit + 1)].map((round, idx) => {
                 const roundIdx = startRound + idx
-                console.log("roundIdx", roundIdx)
+                // console.log("roundIdx", roundIdx)
                 return web3Solana.getEventData(
                   wallet,
                   eventConfigPda as any,
@@ -211,8 +218,10 @@ const SwiperList = () => {
             ].map((roundItem, key) => {
               const round = toBN(roundItem.id).toNumber()
 
-              let start = toBN(roundItem?.startTime).toNumber()
-              let end = toBN(roundItem?.lockTime).toNumber()
+              let start = toBN(roundItem?.lockTime).toNumber()
+              let end = toBN(start)
+                .plus(rangeTime || 300)
+                .toNumber()
 
               if (round === currentRound + 1) {
                 start = toBN(currentEventData?.startTime).toNumber()
@@ -220,7 +229,9 @@ const SwiperList = () => {
               }
               if (round === currentRound + 2) {
                 start = toBN(currentEventData?.startTime).toNumber()
-                end = toBN(currentEventData?.lockTime).plus(300).toNumber() // plus 5 min
+                end = toBN(currentEventData?.lockTime)
+                  .plus(rangeTime || 300)
+                  .toNumber() // plus 5 min
               }
 
               const downAmount = roundItem?.downAmount || 0

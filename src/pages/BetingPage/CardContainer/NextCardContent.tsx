@@ -4,13 +4,31 @@ import { twMerge } from "tailwind-merge"
 import { BET_TYPE } from "."
 import MaxBettedInfo from "./MaxBettedInfo"
 import { DECIMAL_SPL } from "../constants"
+import { Divider } from "@nextui-org/react"
+import { useGetCurrentRoundData } from "../hooks/useGetRoundData"
 
 export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
-  const userBetUp = roundItem.userOrder?.outcome?.up
-  const userBetDown = roundItem.userOrder?.outcome?.down
+  const { currentRoundData } = useGetCurrentRoundData()
 
-  const downAmount = roundItem?.downAmount || 0
-  const upAmount = roundItem?.upAmount || 0
+  // const downAmount = roundItem?.downAmount || 0
+  // const upAmount = roundItem?.upAmount || 0
+  // const total = toBN(downAmount).plus(upAmount)
+
+  // const upOffset = !toBN(upAmount).isEqualTo(0)
+  //   ? total.div(upAmount).toNumber()
+  //   : 1
+  // const downOffset = !toBN(downAmount).isEqualTo(0)
+  //   ? total.div(downAmount).toNumber()
+  //   : 1
+
+  // const userBetUp = roundItem.userOrder?.outcome?.up
+  // const userBetDown = roundItem.userOrder?.outcome?.down
+  // const userBetAmount = toBN(roundItem.userOrder?.amount || 0)
+  //   .div(10 ** DECIMAL_SPL)
+  //   .toNumber()
+
+  const downAmount = currentRoundData?.downAmount || 0
+  const upAmount = currentRoundData?.upAmount || 0
   const total = toBN(downAmount).plus(upAmount)
 
   const upOffset = !toBN(upAmount).isEqualTo(0)
@@ -19,6 +37,12 @@ export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
   const downOffset = !toBN(downAmount).isEqualTo(0)
     ? total.div(downAmount).toNumber()
     : 1
+
+  const userBetUp = currentRoundData.userOrder?.outcome?.up
+  const userBetDown = currentRoundData.userOrder?.outcome?.down
+  const userBetAmount = toBN(currentRoundData.userOrder?.amount || 0)
+    .div(10 ** DECIMAL_SPL)
+    .toNumber()
 
   return (
     <div className="rounded-b-[12px] border border-[#1A1C28] bg-[#13141D] p-4">
@@ -92,7 +116,26 @@ export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
         </div>
       </div>
       <div className="mt-6 flex flex-col">
-        <div className="flex items-center justify-between text-[12px]">
+        {(userBetDown || userBetUp) && (
+          <>
+            <div className="flex items-center justify-between text-[12px]">
+              <span className="text-[#9192A0]">Your position</span>
+              <span className="text-[#E8E9EE]">
+                {numberWithCommas(userBetAmount)} MAX
+              </span>
+            </div>
+            <div className="mt-3 flex items-center justify-between text-[12px]">
+              <span className="text-[#9192A0]">Your prediction</span>
+              {userBetUp ? (
+                <span className="text-[#9FF4CF]">UP</span>
+              ) : (
+                <span className="text-[#E75787]">DOWN</span>
+              )}
+            </div>
+            <Divider className="my-3 bg-[#30344A]" />
+          </>
+        )}
+        <div className="mt-3 flex items-center justify-between text-[12px]">
           <span className="text-[#9192A0]">Prize pool</span>
           <span className="text-[#E8E9EE]">
             {numberWithCommas(total.div(10 ** DECIMAL_SPL).toNumber())} $MAX
