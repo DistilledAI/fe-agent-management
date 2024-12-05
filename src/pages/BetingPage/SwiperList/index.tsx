@@ -36,7 +36,7 @@ const MAX_LIMIT = 10
 const SwiperList = () => {
   const { setSwiper, swiper } = useSwiper()
   const { isAccepted, onOpen, isOpen, onOpenChange, onAccept } = useDisclaimer()
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [_eventConfig, setEventConfig] = useState()
   const [currentRound, setCurrentRound] = useState<number>(1)
   const [rangeTime, setRangeTime] = useState<number>(300)
@@ -110,7 +110,6 @@ const SwiperList = () => {
 
             const limit =
               currentRound >= MAX_LIMIT ? MAX_LIMIT - 1 : currentRound - 1
-            console.log("startRound", startRound, limit)
 
             const { eventData: currentEvent } = await web3Solana.getEventData(
               wallet,
@@ -193,7 +192,11 @@ const SwiperList = () => {
         closeModal={() => setShowBetModal(false)}
       ></ModalBet>
       {loading ? (
-        <div>Loading ...</div>
+        <div className="flex h-screen max-h-[450px] animate-pulse items-center justify-center gap-10 overflow-x-auto p-6 scrollbar-hide">
+          <div className="h-full w-full max-w-[320px] rounded-xl bg-[#13141D]"></div>
+          <div className="h-full w-full max-w-[320px] rounded-xl bg-[#13141D]"></div>
+          <div className="h-full w-full max-w-[320px] rounded-xl bg-[#13141D]"></div>
+        </div>
       ) : (
         <>
           <Swiper
@@ -203,7 +206,7 @@ const SwiperList = () => {
             spaceBetween={16}
             // slidesPerView={4}
             slidesPerView="auto"
-            style={{ paddingTop: 10 }}
+            style={{ paddingTop: 10, paddingBottom: 10 }}
             onBeforeDestroy={() => setSwiper(null)}
             freeMode={{
               enabled: true,
@@ -295,13 +298,15 @@ const SwiperList = () => {
                       isActive={isActive}
                       onClick={() => {
                         if (status === STATUS_ROUND.NEXT) {
-                          if (!isLoginByWallet) {
-                            connectMultipleWallet()
-                            return
-                          }
+                          if (!currentRoundData.userOrder) {
+                            if (!isLoginByWallet) {
+                              connectMultipleWallet()
+                              return
+                            }
 
-                          if (!isAccepted) onOpen()
-                          else setShowBetModal(true)
+                            if (!isAccepted) onOpen()
+                            else setShowBetModal(true)
+                          }
                         }
                       }}
                     />

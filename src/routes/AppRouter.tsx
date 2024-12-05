@@ -36,8 +36,10 @@ const AppRouter = () => {
         <Route
           path={PATH_NAMES.BETTING}
           element={
-            <div className="bg-black-999">
-              <Betting />
+            <div className="m-auto flex h-screen items-center justify-center bg-black-999">
+              <div className="w-full">
+                <Betting />
+              </div>
             </div>
           }
         />

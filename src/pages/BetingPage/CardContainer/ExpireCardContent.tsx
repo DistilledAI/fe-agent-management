@@ -10,6 +10,7 @@ import { BET_TYPE } from "."
 import { DECIMAL_BTC, DECIMAL_SHOW, DECIMAL_SPL } from "../constants"
 import { CalculatingCardContent } from "./CalculatingCardContent"
 import MaxBettedInfo from "./MaxBettedInfo"
+import { CloseFilledIcon } from "@components/Icons/DefiLens"
 
 const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
   const wallet = useWallet()
@@ -17,7 +18,10 @@ const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
   const [isClaimed, setIsClaimed] = useState(false)
   const isUnDrawn = !!roundItem.outcome.undrawn
   const isDown = !!roundItem.outcome.down
-  const isDraw = !!roundItem.outcome.invalid || !!roundItem.outcome.same
+  const isDraw =
+    !!roundItem.outcome.invalid ||
+    !!roundItem.outcome.same ||
+    !!roundItem.outcome.undrawn
   const isUp = !!roundItem.outcome.up
 
   //max predict
@@ -25,8 +29,8 @@ const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
 
   const userBetUp = roundItem.userOrder?.outcome?.up
   const userBetDown = roundItem.userOrder?.outcome?.down
+  // !isUnDrawn &&
   const isClaimable =
-    !isUnDrawn &&
     (userBetUp || userBetDown) &&
     (isDraw || (userBetDown && isDown) || (userBetUp && isUp))
 
@@ -40,19 +44,38 @@ const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
 
   const upOffset = !toBN(upAmount).isEqualTo(0)
     ? numberWithCommas(total.div(upAmount).toNumber())
-    : 1
+    : numberWithCommas(
+        total.div(10 ** DECIMAL_SPL).isEqualTo(0)
+          ? 1
+          : total.div(10 ** DECIMAL_SPL).toNumber(),
+      )
   const downOffset = !toBN(downAmount).isEqualTo(0)
     ? numberWithCommas(total.div(downAmount).toNumber())
-    : 1
+    : numberWithCommas(
+        total.div(10 ** DECIMAL_SPL).isEqualTo(0)
+          ? 1
+          : total.div(10 ** DECIMAL_SPL).toNumber(),
+      )
 
   const priceChange = new BigNumber(settlePrice).minus(lockPrice).toNumber()
 
-  if (isUnDrawn) {
-    return <CalculatingCardContent roundItem={roundItem} />
-  }
+  const isInvalid = !!roundItem?.outcome?.undrawn || !!roundItem.outcome.invalid
+  // if (isUnDrawn) {
+  //   return <CalculatingCardContent roundItem={roundItem} />
+  // }
 
   return (
     <div className="rounded-b-[12px] border border-[#1A1C28] bg-[#13141D] p-4">
+      {isInvalid && (
+        <div
+          className={twMerge(
+            "absolute left-1/2 top-0 flex h-5 -translate-x-1/2 -translate-y-1/2 items-center rounded-sm border border-[#080A14] bg-[#E8E9EE] p-[6px] text-[12px] text-[#080A14] shadow shadow-[#rgba(0,_0,_0,_0.16)]",
+          )}
+        >
+          <CloseFilledIcon size={12} color="#080A14" />
+          <span className="ml-1">CANCELED</span>
+        </div>
+      )}
       <div
         className={twMerge(
           "mb-4 rounded-lg border border-[#9FF4CF] bg-[#080A14] p-4",
