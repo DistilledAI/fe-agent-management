@@ -3,7 +3,7 @@ import useFetchGroups from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { IUser, loginSuccessByAnonymous } from "@reducers/userSlice"
 import { useEffect, useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
 import { postCreateAnonymous } from "services/auth"
 import { inviteUserJoinGroup } from "services/chat"
 import { useAppDispatch } from "./useAppRedux"
@@ -16,6 +16,8 @@ const useJoinGroupLive = () => {
   //   pathname === `${PATH_NAMES.CLAN}/${originalChatId}` ||
   //   pathname === `${PATH_NAMES.LIVE}/${originalChatId}`
   const { isLogin, user } = useAuthState()
+  const [searchParams] = useSearchParams()
+  const prediction = searchParams.get("prediction")
   const dispatch = useAppDispatch()
   const [isLogged, setIsLogged] = useState(false)
   const isAnonymous = user?.role === RoleUser.ANONYMOUS
@@ -42,7 +44,9 @@ const useJoinGroupLive = () => {
     const res = await inviteUserJoinGroup(payload, headers)
 
     setIsInvited(true)
-    navigate(`${PATH_NAMES.CLAN}/${res?.data?.group?.label}`)
+    navigate(
+      `${PATH_NAMES.CLAN}/${res?.data?.group?.label}${prediction ? "?prediction=true" : ""}`,
+    )
     return !!res.data
   }
 
