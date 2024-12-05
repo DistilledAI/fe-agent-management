@@ -22,7 +22,7 @@ const useDisclaimer = () => {
     setIsAccepted(true)
   }
 
-  return { isOpen, onOpenChange, isAccepted, onAccept }
+  return { isOpen, onOpenChange, isAccepted, onAccept, onOpen }
 }
 
 export default useDisclaimer

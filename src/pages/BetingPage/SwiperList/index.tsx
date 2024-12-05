@@ -13,6 +13,8 @@ import {
 import { Swiper, SwiperSlide } from "swiper/react"
 import CardContainer, { BET_TYPE, STATUS_ROUND } from "../CardContainer"
 import ModalBet from "../ModalBet"
+import BetDisclaimer from "@components/BetDisclaimer"
+import useDisclaimer from "../hooks/useDisclaimer"
 // import useGetPriceRealtime from "../hooks/useGetPriceRealtime"
 
 export const CHART_DOT_CLICK_EVENT = "CHART_DOT_CLICK_EVENT"
@@ -113,9 +115,8 @@ export const LIST_MOCKED = [
 
 const SwiperList = () => {
   const { setSwiper, swiper } = useSwiper()
+  const { isOpen, onOpenChange, onAccept, isAccepted, onOpen } = useDisclaimer()
   const [showBetModal, setShowBetModal] = useState(false)
-
-  //   useGetPriceRealtime()
 
   useEffect(() => {
     const handleChartDotClick = () => {
@@ -140,6 +141,11 @@ const SwiperList = () => {
         isOpen={showBetModal}
         closeModal={() => setShowBetModal(false)}
       ></ModalBet>
+      <BetDisclaimer
+        onAccept={onAccept}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      />
       <Swiper
         // initialSlide={swiperIndex}
         initialSlide={4}
@@ -184,10 +190,12 @@ const SwiperList = () => {
               <CardContainer
                 roundItem={roundItem}
                 isActive={isActive}
-                onClick={() =>
-                  roundItem.status === STATUS_ROUND.NEXT &&
-                  setShowBetModal(true)
-                }
+                onClick={() => {
+                  if (roundItem.status === STATUS_ROUND.NEXT) {
+                    if (!isAccepted) onOpen()
+                    else setShowBetModal(true)
+                  }
+                }}
               />
             )}
           </SwiperSlide>
