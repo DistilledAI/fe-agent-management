@@ -102,6 +102,7 @@ const userSlice = createSlice({
       state.user = userInitState
       state.isLogin = false
       cachedLocalStorage.removeItem(storageKey.ACCESS_TOKEN)
+      cachedLocalStorage.removeItem(storageKey.DISCLAIMER)
       cachedSessionStorage.removeItem(storageKey.ACCESS_TOKEN)
       cachedLocalStorage.removeItem("persist:root")
       cachedSessionStorage.removeItem("persist:root")

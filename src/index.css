@@ -85,3 +85,13 @@
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-wrapper {
+  align-items: center;
+  display: flex;
+}

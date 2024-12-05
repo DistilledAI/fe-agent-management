@@ -8,6 +8,7 @@ import Account from "@pages/Account"
 import AddMyData from "@pages/AddMyData"
 import AgentDetail from "@pages/AgentDetail"
 import AuthorProfile from "@pages/AuthorProfile"
+import Betting from "@pages/BetingPage"
 import ChatBoxLive from "@pages/ChatBoxLive"
 import ChatMyAgent from "@pages/ChatMyAgent"
 import ChatBox from "@pages/ChatPage/ChatBox"
@@ -32,6 +33,14 @@ const AppRouter = () => {
         element={isMobile ? <MainLayout /> : <MainLayoutDesktop />}
       >
         {/* Route Regular */}
+        <Route
+          path={PATH_NAMES.BETTING}
+          element={
+            <div className="bg-black-999">
+              <Betting />
+            </div>
+          }
+        />
         <Route
           path={PATH_NAMES.HOME}
           element={isMobile ? <ChatPageMobile /> : <ChatBox />}

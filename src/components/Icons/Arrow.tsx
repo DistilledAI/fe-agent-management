@@ -245,3 +245,44 @@ export const ArrowsRelyIcon = ({ size = 20, color = "#545454" }: IconProps) => {
     </svg>
   )
 }
+
+export const ArrowsLeftIcon = ({ size = 20, color = "#E8E9EE" }: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M15.7501 19.2071C16.1406 18.8166 16.1406 18.1834 15.7501 17.7929L9.95718 12L15.7501 6.20711C16.1406 5.81658 16.1406 5.18342 15.7501 4.79289C15.3596 4.40237 14.7264 4.40237 14.3359 4.79289L8.54297 10.5858C7.76192 11.3668 7.76192 12.6332 8.54297 13.4142L14.3359 19.2071C14.7264 19.5976 15.3596 19.5976 15.7501 19.2071Z"
+        fill={color}
+      />
+    </svg>
+  )
+}
+
+export const ArrowsRightIcon = ({
+  size = 20,
+  color = "#E8E9EE",
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M8.24992 4.7929C7.8594 5.18342 7.8594 5.81658 8.24992 6.20711L14.0428 12L8.24992 17.7929C7.8594 18.1834 7.8594 18.8166 8.24992 19.2071C8.64045 19.5976 9.27361 19.5976 9.66413 19.2071L15.457 13.4142C16.2381 12.6332 16.2381 11.3668 15.457 10.5858L9.66414 4.7929C9.27361 4.40237 8.64045 4.40237 8.24992 4.7929Z"
+        fill={color}
+      />
+    </svg>
+  )
+}

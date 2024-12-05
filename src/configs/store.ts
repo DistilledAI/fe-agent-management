@@ -1,6 +1,6 @@
+import rootReducer from "@reducers/index"
 import { configureStore } from "@reduxjs/toolkit"
 import { persistReducer, persistStore } from "redux-persist"
-import rootReducer from "@reducers/index"
 // import sessionStorage from "redux-persist/lib/storage/session"
 import localStorage from "redux-persist/lib/storage"
 
@@ -36,6 +36,7 @@ const persistConfig = {
     "user",
     "instructBanner",
     "firstLogin",
+    "priceInfo",
   ],
 }
 
@@ -51,7 +52,7 @@ const store = configureStore({
 
 const persistor = persistStore(store)
 
-export { store, persistor }
+export { persistor, store }
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>
