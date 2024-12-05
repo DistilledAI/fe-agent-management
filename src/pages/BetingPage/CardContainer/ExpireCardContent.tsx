@@ -8,7 +8,7 @@ import { memo, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { BET_TYPE } from "."
 import { DECIMAL_BTC, DECIMAL_SHOW, DECIMAL_SPL } from "../constants"
-import { CalculatingCardContent } from "./CalculatingCardContent"
+// import { CalculatingCardContent } from "./CalculatingCardContent"
 import MaxBettedInfo from "./MaxBettedInfo"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
 
@@ -16,7 +16,7 @@ const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
   const wallet = useWallet()
   const [loading, setLoading] = useState(false)
   const [isClaimed, setIsClaimed] = useState(false)
-  const isUnDrawn = !!roundItem.outcome.undrawn
+  // const isUnDrawn = !!roundItem.outcome.undrawn
   const isDown = !!roundItem.outcome.down
   const isDraw =
     !!roundItem.outcome.invalid ||
