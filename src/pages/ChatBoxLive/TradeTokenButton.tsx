@@ -25,7 +25,7 @@ const TradeTokenButton: React.FC<{
     <Button className="pointer-events-none h-11 w-fit rounded-full border-1 border-brown-500 bg-brown-50 text-white max-md:hidden md:w-full">
       <WarningIcon color="#83664B" />
       <span className="text-16 font-medium text-brown-600">
-        Not tokenize yet
+        Not tokenized yet
       </span>
     </Button>
   )
