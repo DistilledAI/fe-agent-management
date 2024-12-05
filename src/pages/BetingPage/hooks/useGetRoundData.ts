@@ -90,15 +90,17 @@ export const useGetRoundDataById = (id: number) => {
             await web3Solana.getEventConfig(wallet)
 
           if (eventDataConfig && eventConfigPda) {
-            const { eventData: currentEvent } = await web3Solana.getEventData(
+            const { eventData: currentEvent, eventPDA } =
+              await web3Solana.getEventData(wallet, eventConfigPda as any, id)
+
+            const userOrder = await web3Solana.getBetInfoByUser(
               wallet,
-              eventConfigPda as any,
-              id,
+              eventPDA as any,
             )
             // setCurrentEventData(currentEvent)
             dispatch(
               updateLiveRound({
-                liveRoundData: currentEvent,
+                liveRoundData: { ...(currentEvent || {}), userOrder },
               }),
             )
           }

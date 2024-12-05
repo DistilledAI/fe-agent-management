@@ -21,9 +21,9 @@ export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
   //   ? total.div(downAmount).toNumber()
   //   : 1
 
-  // const userBetUp = roundItem.userOrder?.outcome?.up
-  // const userBetDown = roundItem.userOrder?.outcome?.down
-  // const userBetAmount = toBN(roundItem.userOrder?.amount || 0)
+  // const userBetUp = roundItem?.userOrder?.outcome?.up
+  // const userBetDown = roundItem?.userOrder?.outcome?.down
+  // const userBetAmount = toBN(roundItem?.userOrder?.amount || 0)
   //   .div(10 ** DECIMAL_SPL)
   //   .toNumber()
 
@@ -38,9 +38,9 @@ export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
     ? total.div(downAmount).toNumber()
     : 1
 
-  const userBetUp = currentRoundData.userOrder?.outcome?.up
-  const userBetDown = currentRoundData.userOrder?.outcome?.down
-  const userBetAmount = toBN(currentRoundData.userOrder?.amount || 0)
+  const userBetUp = currentRoundData?.userOrder?.outcome?.up
+  const userBetDown = currentRoundData?.userOrder?.outcome?.down
+  const userBetAmount = toBN(currentRoundData?.userOrder?.amount || 0)
     .div(10 ** DECIMAL_SPL)
     .toNumber()
 

@@ -9,26 +9,48 @@ import { CalculatingCardContent } from "../CalculatingCardContent"
 import TimeProgress from "../TimeProgress"
 import LiveCardPrice from "./LivePrice"
 import { DECIMAL_BTC, DECIMAL_SPL } from "@pages/BetingPage/constants"
+import { useGetRoundDataById } from "@pages/BetingPage/hooks/useGetRoundData"
 
 const CardLiveBet = ({ roundItem }: { roundItem: any; currentRound?: any }) => {
+  const { liveRoundData } = useGetRoundDataById(roundItem.round)
+
+  // const [isEnd, setIsEnd] = useState(false)
+  // const startTime = roundItem?.start
+  //   ? new BigNumber(roundItem?.start).toNumber()
+  //   : Math.floor(Date.now() / TIMER.MILLISECOND)
+  // const endTime = roundItem?.end
+  //   ? new BigNumber(roundItem?.end).toNumber()
+  //   : Math.floor(Date.now() / TIMER.MILLISECOND)
+
+  // const userBetUp = roundItem?.userOrder?.outcome?.up
+  // const userBetDown = roundItem?.userOrder?.outcome?.down
+  // const userBetAmount = toBN(roundItem?.userOrder?.amount || 0)
+  //   .div(10 ** DECIMAL_SPL)
+  //   .toNumber()
+
+  // const downAmount = roundItem?.downAmount || 0
+  // const upAmount = roundItem?.upAmount || 0
+  // const total = new BigNumber(downAmount).plus(upAmount)
+  // const lockPrice = new BigNumber(roundItem?.lockPrice || 0).toNumber()
+
   const [isEnd, setIsEnd] = useState(false)
-  const startTime = roundItem?.start
-    ? new BigNumber(roundItem?.start).toNumber()
+  const startTime = liveRoundData?.start
+    ? new BigNumber(liveRoundData?.start).toNumber()
     : Math.floor(Date.now() / TIMER.MILLISECOND)
-  const endTime = roundItem?.end
-    ? new BigNumber(roundItem?.end).toNumber()
+  const endTime = liveRoundData?.end
+    ? new BigNumber(liveRoundData?.end).toNumber()
     : Math.floor(Date.now() / TIMER.MILLISECOND)
 
-  const userBetUp = roundItem.userOrder?.outcome?.up
-  const userBetDown = roundItem.userOrder?.outcome?.down
-  const userBetAmount = toBN(roundItem.userOrder?.amount || 0)
+  const userBetUp = liveRoundData?.userOrder?.outcome?.up
+  const userBetDown = liveRoundData?.userOrder?.outcome?.down
+  const userBetAmount = toBN(liveRoundData?.userOrder?.amount || 0)
     .div(10 ** DECIMAL_SPL)
     .toNumber()
 
-  const downAmount = roundItem?.downAmount || 0
-  const upAmount = roundItem?.upAmount || 0
+  const downAmount = liveRoundData?.downAmount || 0
+  const upAmount = liveRoundData?.upAmount || 0
   const total = new BigNumber(downAmount).plus(upAmount)
-  const lockPrice = new BigNumber(roundItem?.lockPrice || 0).toNumber()
+  const lockPrice = new BigNumber(liveRoundData?.lockPrice || 0).toNumber()
 
   // if (isEnd) {
   //   return <CalculatingCardContent roundItem={roundItem} />
