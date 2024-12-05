@@ -41,6 +41,14 @@ export const endpoint = SOLANA_RPC
 export const pythProgramId = new PublicKey(idl.address)
 export const pythProgramInterface = JSON.parse(JSON.stringify(idl))
 
+export const CHAINLINK_PROGRAM = new PublicKey(
+  "HEvSKofvBgfaexv23kMabbYqxasxU3mQ4ibBMEmJWHny",
+)
+
+export const CHAINLINK_FEED = new PublicKey(
+  "Cv4T27XbjVoKUYwP72NQQanvZeA7W4YF9L4EnYT9kx5o",
+) // BTC/USD
+
 export class Web3SolanaProgramInteraction {
   constructor(
     private readonly connection = new Connection(endpoint, {
@@ -70,12 +78,16 @@ export class Web3SolanaProgramInteraction {
         new PublicKey(PUBKEYS.MAINNET.EVENT_AUTHORITY).toBytes(),
         new PublicKey(PUBKEYS.MAINNET.PYTH_FEED).toBytes(),
         new PublicKey(PUBKEYS.MAINNET.CURRENCY_MINT).toBytes(),
+        CHAINLINK_PROGRAM.toBytes(),
+        CHAINLINK_FEED.toBytes(),
       ],
       program.programId,
     )
 
     const eventDataConfig =
       await program.account.eventConfig.fetch(eventConfigPda)
+
+    console.log("first", eventDataConfig, eventDataConfig)
 
     return { eventDataConfig, eventConfigPda }
   }
@@ -180,6 +192,8 @@ export class Web3SolanaProgramInteraction {
           new PublicKey(PUBKEYS.MAINNET.EVENT_AUTHORITY).toBytes(),
           new PublicKey(PUBKEYS.MAINNET.PYTH_FEED).toBytes(),
           currencyMint.toBytes(),
+          CHAINLINK_PROGRAM.toBytes(),
+          CHAINLINK_FEED.toBytes(),
         ],
         program.programId,
       )
@@ -369,6 +383,8 @@ export class Web3SolanaProgramInteraction {
           new PublicKey(PUBKEYS.MAINNET.EVENT_AUTHORITY).toBytes(),
           new PublicKey(PUBKEYS.MAINNET.PYTH_FEED).toBytes(),
           currencyMint.toBytes(),
+          CHAINLINK_PROGRAM.toBytes(),
+          CHAINLINK_FEED.toBytes(),
         ],
         program.programId,
       )

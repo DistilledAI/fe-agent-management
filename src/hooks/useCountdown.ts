@@ -29,7 +29,7 @@ export const calcPercent = (start: number, end: number, current: number) => {
     new Date(start * TIMER.MILLISECOND).getTime()
 
   if (current <= 0) return 100
-  return total > 0 ? (current * 100) / total : 100
+  return total > 0 ? 100 - (current * 100) / total : 100
 }
 
 export const formatCountdownTime = (milliseconds: number) => {
@@ -119,14 +119,14 @@ export const useCountdown = ({
 
   useEffect(() => {
     if (!startTime || !endTime) return
-    const newPercent = calcPercent(start, end, timeRemaining)
+    const newPercent = calcPercent(startTime, endTime, timeRemaining)
     setPercent(() => newPercent)
 
     if (getTimeDateNow >= startTime * TIMER.MILLISECOND && !isStarted) {
       setIsStarted(true)
       onStart()
     }
-  }, [timeRemaining, start, end, startTime, endTime])
+  }, [timeRemaining, startTime, endTime])
 
   return {
     isStarted,

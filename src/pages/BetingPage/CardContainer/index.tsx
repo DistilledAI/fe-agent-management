@@ -12,6 +12,7 @@ import CardLiveBet from "./CardLive"
 
 interface CardContainerProps {
   roundItem: any
+  currentRound: any
   isActive: boolean
   onClick: () => void
 }
@@ -30,12 +31,18 @@ export enum BET_TYPE {
   DRAW,
 }
 
-export const CardContent = ({ roundItem }: { roundItem: any }) => {
+export const CardContent = ({
+  roundItem,
+  currentRound,
+}: {
+  roundItem: any
+  currentRound: any
+}) => {
   switch (roundItem.status) {
     case STATUS_ROUND.EXPIRED:
       return <ExpireCardContent roundItem={roundItem} />
     case STATUS_ROUND.LIVE:
-      return <CardLiveBet roundItem={roundItem} />
+      return <CardLiveBet roundItem={roundItem} currentRound={currentRound} />
     case STATUS_ROUND.NEXT:
       return <NextCardContent roundItem={roundItem} />
     case STATUS_ROUND.CALCULATING:
@@ -49,6 +56,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
   roundItem,
   isActive,
   onClick,
+  currentRound,
 }) => {
   return (
     <div
@@ -60,7 +68,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
       onClick={onClick}
     >
       <CardHeader roundItem={roundItem} />
-      <CardContent roundItem={roundItem} />
+      <CardContent roundItem={roundItem} currentRound={currentRound} />
     </div>
   )
 }

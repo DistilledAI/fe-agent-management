@@ -3,12 +3,14 @@ import { formatCountdownTime, useCountdown } from "@hooks/useCountdown"
 const TimeProgress: React.FC<{
   startTime: any
   endTime: any
-}> = ({ startTime, endTime }) => {
+  onEnd: () => void
+}> = ({ startTime, endTime, onEnd }) => {
+  // isStarted
   const { timeRemaining, percent } = useCountdown({
     startTime,
     endTime,
     onStart: () => console.log("started"),
-    onEnd: () => console.log("ended"),
+    onEnd: onEnd,
   })
 
   const { minutes, seconds } = formatCountdownTime(timeRemaining)

@@ -1,12 +1,12 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { RootState } from "@configs/store"
-import { DECIMAL_SHOW } from "@pages/BetingPage/constants"
+import { DECIMAL_BTC, DECIMAL_SHOW } from "@pages/BetingPage/constants"
 import { numberWithCommas, toBN } from "@utils/format"
 import BigNumber from "bignumber.js"
 import { useSelector } from "react-redux"
 import { twMerge } from "tailwind-merge"
-import MaxBettedInfo from "../MaxBettedInfo"
 import { BET_TYPE } from ".."
+import MaxBettedInfo from "../MaxBettedInfo"
 
 const LiveCardPrice = ({ currentRound }: { currentRound: any }) => {
   const { price } = useSelector((state: RootState) => state.priceInfo)
@@ -69,7 +69,7 @@ const LiveCardPrice = ({ currentRound }: { currentRound: any }) => {
           </div>
         </div>
       </div>
-      <div className="relative w-full cursor-pointer">
+      <div className="relative w-full">
         <div
           className={twMerge(
             "mb-1 flex items-center justify-between rounded-t-lg bg-[rgba(159,_244,_207,_0.16)] p-3",

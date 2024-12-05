@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import BetDisclaimer from "@components/BetDisclaimer"
 import { ArrowsLeftIcon, ArrowsRightIcon } from "@components/Icons/Arrow"
 import useAuthState from "@hooks/useAuthState"
+import useConnectWallet from "@hooks/useConnectWallet"
 import useSwiper from "@hooks/useSwiper"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { toBN } from "@utils/format"
@@ -14,15 +15,286 @@ import {
   FreeMode,
   Keyboard,
   Mousewheel,
-  //   Pagination,
+  // Pagination,
   Virtual,
 } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 import CardContainer, { BET_TYPE, STATUS_ROUND } from "../CardContainer"
 import useDisclaimer from "../hooks/useDisclaimer"
 import ModalBet from "../ModalBet"
+import { DECIMAL_BTC } from "../constants"
 
 export const CHART_DOT_CLICK_EVENT = "CHART_DOT_CLICK_EVENT"
+
+const web3Solana = new Web3SolanaProgramInteraction()
+
+const MAX_LIMIT = 10
+
+const SwiperList = () => {
+  const { setSwiper, swiper } = useSwiper()
+  const { isAccepted, onOpen, isOpen, onOpenChange, onAccept } = useDisclaimer()
+  const [loading, setLoading] = useState(false)
+  const [eventConfig, setEventConfig] = useState()
+  const [currentRound, setCurrentRound] = useState<number>(1)
+  const [currentRoundRefresh, setCurrentRoundRefresh] = useState<number>(1)
+  const [listEvent, setListEvent] = useState<any>()
+  const [currentEventData, setCurrentEventData] = useState<any>()
+  const wallet = useWallet()
+
+  const { isLogin, isAnonymous } = useAuthState()
+  const { connectMultipleWallet } = useConnectWallet()
+  const [showBetModal, setShowBetModal] = useState(false)
+
+  const isLoginByWallet = isLogin && !isAnonymous
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        setLoading(true)
+        if (currentEventData) {
+          return
+        }
+        console.log("wallet", wallet)
+        if (wallet) {
+          const { eventDataConfig, eventConfigPda } =
+            await web3Solana.getEventConfig(wallet)
+
+          if (eventDataConfig && eventConfigPda) {
+            setEventConfig(eventDataConfig as any)
+            const currentRound = new BigNumber(eventDataConfig.nextRoundId || 2)
+              .minus(1)
+              .toNumber()
+
+            console.log("currentRound", currentRound)
+            setCurrentRound(currentRound)
+
+            // ... expired - expired - expired - live - next(cur) - later - later
+            const startRound =
+              currentRound - (MAX_LIMIT - 1) >= 1
+                ? currentRound - (MAX_LIMIT - 1)
+                : 1
+
+            const limit =
+              currentRound >= MAX_LIMIT ? MAX_LIMIT : currentRound - 1
+            console.log("startRound", startRound, limit)
+
+            const { eventData: currentEvent, eventPDA } =
+              await web3Solana.getEventData(
+                wallet,
+                eventConfigPda as any,
+                currentRound,
+              )
+            setCurrentEventData(currentEvent)
+
+            // const { eventData: eventWin, eventPDA: pda } =
+            //   await web3Solana.getEventData(wallet, eventConfigPda as any, 68)
+
+            // const order = await web3Solana.getBetInfoByUser(wallet, pda as any)
+            // console.log("order", order)
+
+            const eventList = await Promise.all(
+              [...new Array(limit + 1)].map((round, idx) => {
+                const roundIdx = startRound + idx
+                console.log("roundIdx", roundIdx)
+                return web3Solana.getEventData(
+                  wallet,
+                  eventConfigPda as any,
+                  roundIdx,
+                )
+              }),
+            )
+
+            const userOrders = await Promise.all(
+              eventList.map((ev) =>
+                web3Solana.getBetInfoByUser(wallet, ev.eventPDA as any),
+              ),
+            )
+
+            setListEvent([
+              ...eventList.map((e, idx) => {
+                return { ...(e.eventData || {}), userOrder: userOrders[idx] }
+              }),
+              // { ...(eventWin || {}), userOrder: order },
+            ])
+
+            console.log(
+              "eventList",
+              eventList.map((e, idx) => {
+                return {
+                  ...(e.eventData || {}),
+                  userOrder: userOrders[idx],
+                  idNumber: e.eventData.id.toNumber(),
+                }
+              }),
+            )
+          }
+        }
+      } catch (error) {
+        console.log("error", error)
+      } finally {
+        setLoading(false)
+      }
+    })()
+  }, [wallet])
+
+  useEffect(() => {
+    const handleChartDotClick = () => {
+      setIsChangeTransition(true)
+      delay(() => setIsChangeTransition(false), 3000)
+    }
+    swiper?.el?.addEventListener(CHART_DOT_CLICK_EVENT, handleChartDotClick)
+
+    return () => {
+      swiper?.el?.removeEventListener(
+        CHART_DOT_CLICK_EVENT,
+        handleChartDotClick,
+      )
+    }
+  }, [swiper?.el])
+
+  const [, setIsChangeTransition] = useState(false) // isChangeTransition
+
+  return (
+    <>
+      <BetDisclaimer
+        onAccept={onAccept}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      />
+      <ModalBet
+        isOpen={showBetModal}
+        closeModal={() => setShowBetModal(false)}
+      ></ModalBet>
+      {loading ? (
+        <div>Loading ...</div>
+      ) : (
+        <>
+          <Swiper
+            // initialSlide={swiperIndex}
+            initialSlide={MAX_LIMIT - 2}
+            onSwiper={setSwiper}
+            spaceBetween={16}
+            // slidesPerView={4}
+            slidesPerView="auto"
+            style={{ paddingTop: 10 }}
+            onBeforeDestroy={() => setSwiper(null)}
+            freeMode={{
+              enabled: true,
+              sticky: true,
+              momentumRatio: 0.25,
+              momentumVelocityRatio: 0.5,
+            }}
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+              },
+              768: {
+                slidesPerView: 4,
+                spaceBetween: 40,
+              },
+              1024: {
+                slidesPerView: 5,
+                spaceBetween: 50,
+              },
+            }}
+            modules={[Virtual, Keyboard, Mousewheel, FreeMode]}
+            centeredSlides
+            mousewheel
+            keyboard
+            resizeObserver
+          >
+            {[
+              ...(listEvent || []),
+              { id: currentRound + 1, status: STATUS_ROUND.LATER },
+              { id: currentRound + 2, status: STATUS_ROUND.LATER },
+            ].map((roundItem, key) => {
+              const round = toBN(roundItem.id).toNumber()
+
+              let start = toBN(roundItem?.startTime).toNumber()
+              let end = toBN(roundItem?.lockTime).toNumber()
+
+              if (round === currentRound + 1) {
+                start = toBN(currentEventData?.startTime).toNumber()
+                end = toBN(currentEventData?.lockTime).toNumber()
+              }
+              if (round === currentRound + 2) {
+                start = toBN(currentEventData?.startTime).toNumber()
+                end = toBN(currentEventData?.lockTime).plus(300).toNumber() // plus 5 min
+              }
+
+              const downAmount = roundItem?.downAmount || 0
+              const upAmount = roundItem?.upAmount || 0
+              const total = toBN(downAmount).plus(upAmount)
+              const lockPrice = toBN(roundItem?.lockPrice || 0)
+                .div(10 ** DECIMAL_BTC)
+                .toNumber()
+
+              let status = STATUS_ROUND.LATER
+              if (round === currentRound) {
+                status = STATUS_ROUND.NEXT
+              } else if (round === currentRound - 1) {
+                status = STATUS_ROUND.LIVE
+              } else if (round < currentRound - 1) {
+                status = STATUS_ROUND.EXPIRED
+              }
+
+              return (
+                <SwiperSlide
+                  className="!h-fit"
+                  key={`${key}-swiper-${roundItem.round}`}
+                >
+                  {({ isActive }) => (
+                    <CardContainer
+                      roundItem={{
+                        ...roundItem,
+                        status,
+                        round,
+                        start,
+                        end,
+                        total,
+                        lockPrice,
+                      }}
+                      currentRound={currentEventData}
+                      isActive={isActive}
+                      onClick={() => {
+                        if (status === STATUS_ROUND.NEXT) {
+                          if (!isLoginByWallet) {
+                            connectMultipleWallet()
+                            return
+                          }
+
+                          if (!isAccepted) onOpen()
+                          else setShowBetModal(true)
+                        }
+                      }}
+                    />
+                  )}
+                </SwiperSlide>
+              )
+            })}
+          </Swiper>
+          <div className="mt-5 flex items-center justify-center gap-2">
+            <div
+              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-1 border-white bg-mercury-950 hover:brightness-125"
+              onClick={() => swiper.slideTo(swiper.activeIndex - 1, 0)}
+            >
+              <ArrowsLeftIcon />
+            </div>
+            <div
+              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-1 border-white bg-mercury-950 hover:brightness-125"
+              onClick={() => swiper.slideTo(swiper.activeIndex + 1, 0)}
+            >
+              <ArrowsRightIcon />
+            </div>
+          </div>
+        </>
+      )}
+    </>
+  )
+}
+
+export default SwiperList
 
 export const LIST_MOCKED = [
   {
@@ -117,255 +389,3 @@ export const LIST_MOCKED = [
     isCalculating: false,
   },
 ]
-
-const web3Solana = new Web3SolanaProgramInteraction()
-
-const MAX_LIMIT = 10
-
-const SwiperList = () => {
-  const { setSwiper, swiper } = useSwiper()
-  const { isLogin, isAnonymous } = useAuthState()
-  const { isOpen, onOpenChange, onAccept, isAccepted, onOpen } = useDisclaimer()
-  const [showBetModal, setShowBetModal] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [eventConfig, setEventConfig] = useState()
-  const [currentRound, setCurrentRound] = useState<number>(1)
-  const [listEvent, setListEvent] = useState<any>()
-  const [currentEventData, setCurrentEventData] = useState<any>()
-  const wallet = useWallet()
-
-  useEffect(() => {
-    ;(async () => {
-      try {
-        setLoading(true)
-        if (currentEventData) {
-          return
-        }
-        console.log("wallet", wallet)
-        if (wallet) {
-          const { eventDataConfig, eventConfigPda } =
-            await web3Solana.getEventConfig(wallet)
-
-          if (eventDataConfig && eventConfigPda) {
-            setEventConfig(eventDataConfig as any)
-            const currentRound = new BigNumber(eventDataConfig.nextRoundId || 2)
-              .minus(1)
-              .toNumber()
-
-            console.log("currentRound", currentRound)
-            setCurrentRound(currentRound)
-
-            // ... expired - expired - expired - live - next(cur) - later - later
-            const startRound =
-              currentRound - (MAX_LIMIT - 1) >= 1
-                ? currentRound - (MAX_LIMIT - 1)
-                : 1
-
-            const limit =
-              currentRound >= MAX_LIMIT ? MAX_LIMIT : currentRound - 1
-
-            const { eventData: eventWin, eventPDA } =
-              await web3Solana.getEventData(wallet, eventConfigPda as any, 28)
-
-            const order = await web3Solana.getBetInfoByUser(
-              wallet,
-              eventPDA as any,
-            )
-            console.log("order", order)
-
-            const eventList = await Promise.all(
-              [...new Array(limit)].map((round, idx) => {
-                const roundIdx = startRound + idx
-                return web3Solana.getEventData(
-                  wallet,
-                  eventConfigPda as any,
-                  roundIdx,
-                )
-              }),
-            )
-
-            const userOrders = await Promise.all(
-              eventList.map((ev) =>
-                web3Solana.getBetInfoByUser(wallet, ev.eventPDA as any),
-              ),
-            )
-
-            setListEvent([
-              ...eventList.map((e, idx) => {
-                return { ...(e.eventData || {}), userOrder: userOrders[idx] }
-              }),
-              { ...(eventWin || {}), userOrder: order },
-            ])
-
-            console.log(
-              "eventList",
-              eventList.map((e, idx) => {
-                return {
-                  ...(e.eventData || {}),
-                  userOrder: userOrders[idx],
-                  idNumber: e.eventData.id.toNumber(),
-                }
-              }),
-            )
-
-            console.log("event", eventWin)
-            setCurrentEventData(event)
-          }
-        }
-      } catch (error) {
-        console.log("error", error)
-      } finally {
-        setLoading(false)
-      }
-    })()
-  }, [wallet])
-
-  const isLoginByWallet = isLogin && !isAnonymous
-
-  useEffect(() => {
-    const handleChartDotClick = () => {
-      setIsChangeTransition(true)
-      delay(() => setIsChangeTransition(false), 3000)
-    }
-    swiper?.el?.addEventListener(CHART_DOT_CLICK_EVENT, handleChartDotClick)
-
-    return () => {
-      swiper?.el?.removeEventListener(
-        CHART_DOT_CLICK_EVENT,
-        handleChartDotClick,
-      )
-    }
-  }, [swiper?.el])
-
-  const [, setIsChangeTransition] = useState(false) // isChangeTransition
-
-  // 68
-
-  return (
-    <>
-      <ModalBet
-        isOpen={showBetModal}
-        closeModal={() => setShowBetModal(false)}
-      ></ModalBet>
-      <BetDisclaimer
-        onAccept={onAccept}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      />
-      {loading ? (
-        <div>Loading ...</div>
-      ) : (
-        <>
-          <Swiper
-            // initialSlide={swiperIndex}
-            initialSlide={MAX_LIMIT - 2}
-            onSwiper={setSwiper}
-            spaceBetween={16}
-            // slidesPerView={4}
-            slidesPerView="auto"
-            style={{ paddingTop: 10 }}
-            onBeforeDestroy={() => setSwiper(null)}
-            freeMode={{
-              enabled: true,
-              sticky: true,
-              momentumRatio: 0.25,
-              momentumVelocityRatio: 0.5,
-            }}
-            breakpoints={{
-              640: {
-                slidesPerView: 2,
-                spaceBetween: 20,
-              },
-              768: {
-                slidesPerView: 4,
-                spaceBetween: 40,
-              },
-              1024: {
-                slidesPerView: 5,
-                spaceBetween: 50,
-              },
-            }}
-            modules={[Virtual, Keyboard, Mousewheel, FreeMode]}
-            centeredSlides
-            mousewheel
-            keyboard
-            resizeObserver
-          >
-            {[
-              ...(listEvent || []),
-              { id: currentRound + 1, status: STATUS_ROUND.LATER },
-              { id: currentRound + 2, status: STATUS_ROUND.LATER },
-            ].map((roundItem, key) => {
-              const round = toBN(roundItem.id).toNumber()
-
-              const startTime = toBN(currentEventData?.startTime).toNumber()
-              const endTime = toBN(currentEventData?.lockTime).toNumber()
-
-              const downAmount = currentEventData?.downAmount || 0
-              const upAmount = currentEventData?.upAmount || 0
-              const total = toBN(downAmount).plus(upAmount)
-              const lockPrice = toBN(
-                currentEventData?.lockPrice || 0,
-              ).toNumber()
-
-              let status = STATUS_ROUND.LATER
-              if (round === currentRound) {
-                status = STATUS_ROUND.NEXT
-              } else if (round === currentRound - 1) {
-                status = STATUS_ROUND.LIVE
-              } else if (round < currentRound - 1) {
-                status = STATUS_ROUND.EXPIRED
-              }
-              // isEntered: true,
-              // isCalculating: false,
-              // selectedBet: BET_TYPE.DOWN,
-              // result: BET_TYPE.DOWN,
-              // isWin: true,
-
-              return (
-                <SwiperSlide
-                  className="!h-fit cursor-pointer"
-                  key={`${key}-swiper-${roundItem.round}`}
-                >
-                  {({ isActive }) => (
-                    <CardContainer
-                      roundItem={{
-                        ...roundItem,
-                        status,
-                        round,
-                        startTime,
-                        endTime,
-                        total,
-                        lockPrice,
-                      }}
-                      isActive={isActive}
-                      onClick={() =>
-                        status === STATUS_ROUND.NEXT && setShowBetModal(true)
-                      }
-                    />
-                  )}
-                </SwiperSlide>
-              )
-            })}
-          </Swiper>
-          <div className="mt-5 flex items-center justify-center gap-2">
-            <div
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-1 border-white bg-mercury-950 hover:brightness-125"
-              onClick={() => swiper.slideTo(swiper.activeIndex - 1, 0)}
-            >
-              <ArrowsLeftIcon />
-            </div>
-            <div
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-1 border-white bg-mercury-950 hover:brightness-125"
-              onClick={() => swiper.slideTo(swiper.activeIndex + 1, 0)}
-            >
-              <ArrowsRightIcon />
-            </div>
-          </div>
-        </>
-      )}
-    </>
-  )
-}
-
-export default SwiperList

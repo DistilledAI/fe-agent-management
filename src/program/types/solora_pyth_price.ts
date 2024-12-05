@@ -58,6 +58,16 @@ export type SoloraPythPrice = {
                 path: "event_config.currency_mint"
                 account: "eventConfig"
               },
+              {
+                kind: "account"
+                path: "event_config.chainlink_program"
+                account: "eventConfig"
+              },
+              {
+                kind: "account"
+                path: "event_config.chainlink_feed"
+                account: "eventConfig"
+              },
             ]
           }
           relations: ["event"]
@@ -77,7 +87,7 @@ export type SoloraPythPrice = {
               },
               {
                 kind: "account"
-                path: "event.start_time"
+                path: "event.id"
                 account: "event"
               },
             ]
@@ -102,7 +112,6 @@ export type SoloraPythPrice = {
           name: "authority"
           writable: true
           signer: true
-          relations: ["eventConfig"]
         },
         {
           name: "eventConfig"
@@ -128,7 +137,8 @@ export type SoloraPythPrice = {
               },
               {
                 kind: "account"
-                path: "authority"
+                path: "event_config.authority"
+                account: "eventConfig"
               },
               {
                 kind: "account"
@@ -137,6 +147,14 @@ export type SoloraPythPrice = {
               {
                 kind: "account"
                 path: "currencyMint"
+              },
+              {
+                kind: "account"
+                path: "chainlinkProgram"
+              },
+              {
+                kind: "account"
+                path: "chainlinkFeed"
               },
             ]
           }
@@ -164,6 +182,30 @@ export type SoloraPythPrice = {
         },
         {
           name: "pythFeed"
+          relations: ["eventConfig"]
+        },
+        {
+          name: "decimal"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [100, 101, 99, 105, 109, 97, 108, 115]
+              },
+              {
+                kind: "account"
+                path: "eventConfig"
+              },
+            ]
+          }
+        },
+        {
+          name: "chainlinkFeed"
+          relations: ["eventConfig"]
+        },
+        {
+          name: "chainlinkProgram"
           relations: ["eventConfig"]
         },
         {
@@ -229,11 +271,25 @@ export type SoloraPythPrice = {
                 kind: "account"
                 path: "currencyMint"
               },
+              {
+                kind: "account"
+                path: "chainlinkProgram"
+              },
+              {
+                kind: "account"
+                path: "chainlinkFeed"
+              },
             ]
           }
         },
         {
           name: "pythFeed"
+        },
+        {
+          name: "chainlinkFeed"
+        },
+        {
+          name: "chainlinkProgram"
         },
         {
           name: "currencyMint"
@@ -265,6 +321,10 @@ export type SoloraPythPrice = {
         },
         {
           name: "feeBurnBps"
+          type: "u32"
+        },
+        {
+          name: "expiredTimestampDifference"
           type: "u32"
         },
       ]
@@ -312,6 +372,16 @@ export type SoloraPythPrice = {
               {
                 kind: "account"
                 path: "event_config.currency_mint"
+                account: "eventConfig"
+              },
+              {
+                kind: "account"
+                path: "event_config.chainlink_program"
+                account: "eventConfig"
+              },
+              {
+                kind: "account"
+                path: "event_config.chainlink_feed"
                 account: "eventConfig"
               },
             ]
@@ -424,6 +494,16 @@ export type SoloraPythPrice = {
                 path: "event_config.currency_mint"
                 account: "eventConfig"
               },
+              {
+                kind: "account"
+                path: "event_config.chainlink_program"
+                account: "eventConfig"
+              },
+              {
+                kind: "account"
+                path: "event_config.chainlink_feed"
+                account: "eventConfig"
+              },
             ]
           }
           relations: ["event"]
@@ -452,6 +532,33 @@ export type SoloraPythPrice = {
         {
           name: "pythFeed"
           relations: ["eventConfig"]
+        },
+        {
+          name: "decimal"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [100, 101, 99, 105, 109, 97, 108, 115]
+              },
+              {
+                kind: "account"
+                path: "eventConfig"
+              },
+            ]
+          }
+        },
+        {
+          name: "chainlinkFeed"
+          relations: ["eventConfig"]
+        },
+        {
+          name: "chainlinkProgram"
+          relations: ["eventConfig"]
+        },
+        {
+          name: "systemProgram"
+          address: "11111111111111111111111111111111"
         },
       ]
       args: []
@@ -501,6 +608,16 @@ export type SoloraPythPrice = {
                 path: "event_config.currency_mint"
                 account: "eventConfig"
               },
+              {
+                kind: "account"
+                path: "event_config.chainlink_program"
+                account: "eventConfig"
+              },
+              {
+                kind: "account"
+                path: "event_config.chainlink_feed"
+                account: "eventConfig"
+              },
             ]
           }
         },
@@ -528,6 +645,33 @@ export type SoloraPythPrice = {
         {
           name: "pythFeed"
           relations: ["eventConfig"]
+        },
+        {
+          name: "decimal"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [100, 101, 99, 105, 109, 97, 108, 115]
+              },
+              {
+                kind: "account"
+                path: "eventConfig"
+              },
+            ]
+          }
+        },
+        {
+          name: "chainlinkFeed"
+          relations: ["eventConfig"]
+        },
+        {
+          name: "chainlinkProgram"
+          relations: ["eventConfig"]
+        },
+        {
+          name: "systemProgram"
+          address: "11111111111111111111111111111111"
         },
       ]
       args: []
@@ -576,6 +720,16 @@ export type SoloraPythPrice = {
               {
                 kind: "account"
                 path: "event_config.currency_mint"
+                account: "eventConfig"
+              },
+              {
+                kind: "account"
+                path: "event_config.chainlink_program"
+                account: "eventConfig"
+              },
+              {
+                kind: "account"
+                path: "event_config.chainlink_feed"
                 account: "eventConfig"
               },
             ]
@@ -649,6 +803,16 @@ export type SoloraPythPrice = {
               {
                 kind: "account"
                 path: "event_config.currency_mint"
+                account: "eventConfig"
+              },
+              {
+                kind: "account"
+                path: "event_config.chainlink_program"
+                account: "eventConfig"
+              },
+              {
+                kind: "account"
+                path: "event_config.chainlink_feed"
                 account: "eventConfig"
               },
             ]
@@ -759,6 +923,16 @@ export type SoloraPythPrice = {
                 path: "event_config.currency_mint"
                 account: "eventConfig"
               },
+              {
+                kind: "account"
+                path: "event_config.chainlink_program"
+                account: "eventConfig"
+              },
+              {
+                kind: "account"
+                path: "event_config.chainlink_feed"
+                account: "eventConfig"
+              },
             ]
           }
         },
@@ -780,6 +954,10 @@ export type SoloraPythPrice = {
     },
   ]
   accounts: [
+    {
+      name: "decimal"
+      discriminator: [138, 41, 153, 49, 98, 29, 40, 56]
+    },
     {
       name: "event"
       discriminator: [125, 192, 125, 158, 9, 115, 152, 233]
@@ -810,146 +988,47 @@ export type SoloraPythPrice = {
   errors: [
     {
       code: 6000
-      name: "eventSettled"
-      msg: "Event has already been settled"
+      name: "invalidPdaTransferSource"
+      msg: "Invalid PDA transfer source"
     },
     {
       code: 6001
-      name: "invalidOutcome"
-      msg: "An invalid outcome was chosen"
+      name: "invalidPdaTransferDestination"
+      msg: "Invalid PDA transfer destination"
     },
     {
       code: 6002
-      name: "overflowError"
-      msg: "Overflow error"
+      name: "publicKeyMismatch"
+      msg: "Invalid public key"
     },
     {
       code: 6003
-      name: "invalidExpiry"
-      msg: "The expiry date has passed"
+      name: "incorrectOwner"
+      msg: "Incorrect owner"
     },
     {
       code: 6004
-      name: "orderExpired"
-      msg: "The order has expired"
-    },
-    {
-      code: 6005
-      name: "eventNotSettled"
-      msg: "Event has not been settled"
-    },
-    {
-      code: 6006
-      name: "fillNotFound"
-      msg: "A fill was not found for this user"
-    },
-    {
-      code: 6007
-      name: "fillAlreadySettled"
-      msg: "The fill has already been settled"
-    },
-    {
-      code: 6008
-      name: "orderFilled"
-      msg: "The order has already been filled"
-    },
-    {
-      code: 6009
-      name: "amountLargerThanRemainingAsk"
-      msg: "The amount to remove is more than remaining ask"
-    },
-    {
-      code: 6010
-      name: "invalidFillAuthority"
-      msg: "The fill authority does not match"
-    },
-    {
-      code: 6011
-      name: "invalidLockTime"
-      msg: "Invalid lock time"
-    },
-    {
-      code: 6012
-      name: "eventLocked"
-      msg: "Event has been locked"
-    },
-    {
-      code: 6013
-      name: "invalidMint"
-      msg: "Invalid token mint"
-    },
-    {
-      code: 6014
-      name: "eventNotLocked"
-      msg: "The event has not been locked yet"
-    },
-    {
-      code: 6015
-      name: "lockPriceSet"
-      msg: "The lock price has already been set"
-    },
-    {
-      code: 6016
-      name: "invalidPrice"
-      msg: "Invalid price"
-    },
-    {
-      code: 6017
-      name: "lockPriceNotSet"
-      msg: "The lock price has not been set"
-    },
-    {
-      code: 6018
-      name: "eventInWaitingPeriod"
-      msg: "The event is still in the waiting period"
-    },
-    {
-      code: 6019
-      name: "invalidInterval"
-      msg: "Invalid interval"
-    },
-    {
-      code: 6020
-      name: "eventNotStarted"
-      msg: "The event has not started"
-    },
-    {
-      code: 6021
-      name: "eventNotExpired"
-      msg: "The event has not expired"
-    },
-    {
-      code: 6022
-      name: "zeroAmount"
-      msg: "Zero amount"
-    },
-    {
-      code: 6023
-      name: "invalidFee"
-      msg: "Invalid fee"
-    },
-    {
-      code: 6024
-      name: "invalidFeeBurn"
-      msg: "Invalid fee burn"
-    },
-    {
-      code: 6025
-      name: "incorrectAuthority"
-      msg: "incorrectAuthority"
-    },
-    {
-      code: 6026
-      name: "pythError"
-      msg: "Pyth has an internal error."
-    },
-    {
-      code: 6027
-      name: "tryToSerializePriceAccount"
-      msg: "Program should not try to serialize a price account."
+      name: "uninitializedAccount"
+      msg: "Account not initialized"
     },
   ]
   types: [
+    {
+      name: "decimal"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "value"
+            type: "i128"
+          },
+          {
+            name: "decimals"
+            type: "u32"
+          },
+        ]
+      }
+    },
     {
       name: "event"
       type: {
@@ -1066,7 +1145,6 @@ export type SoloraPythPrice = {
           },
           {
             name: "pythFeed"
-            docs: ["Pyth price feed account to fetch prices from"]
             type: "pubkey"
           },
           {
@@ -1108,6 +1186,14 @@ export type SoloraPythPrice = {
             docs: ["Amount in bps to burn from the fees received"]
             type: "u32"
           },
+          {
+            name: "chainlinkFeed"
+            type: "pubkey"
+          },
+          {
+            name: "chainlinkProgram"
+            type: "pubkey"
+          },
         ]
       }
     },
@@ -1130,6 +1216,14 @@ export type SoloraPythPrice = {
           },
           {
             name: "pythFeed"
+            type: "pubkey"
+          },
+          {
+            name: "chainlinkProgram"
+            type: "pubkey"
+          },
+          {
+            name: "chainlinkFeed"
             type: "pubkey"
           },
           {

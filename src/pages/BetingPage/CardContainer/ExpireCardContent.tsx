@@ -2,7 +2,7 @@ import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { numberWithCommas, toBN } from "@utils/format"
 import BigNumber from "bignumber.js"
 import { twMerge } from "tailwind-merge"
-import { DECIMAL_SHOW, DECIMAL_SPL } from "../constants"
+import { DECIMAL_BTC, DECIMAL_SHOW, DECIMAL_SPL } from "../constants"
 import { CalculatingCardContent } from "./CalculatingCardContent"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { useState } from "react"
@@ -14,6 +14,7 @@ import MaxBettedInfo from "./MaxBettedInfo"
 export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
   const wallet = useWallet()
   const [loading, setLoading] = useState(false)
+  const [isClaimed, setIsClaimed] = useState(false)
   const isUnDrawn = !!roundItem.outcome.undrawn
   const isDown = !!roundItem.outcome.down
   const isDraw = !!roundItem.outcome.invalid || !!roundItem.outcome.same
@@ -29,7 +30,9 @@ export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
   const downAmount = roundItem?.downAmount || 0
   const upAmount = roundItem?.upAmount || 0
   const total = new BigNumber(downAmount).plus(upAmount)
-  const settlePrice = new BigNumber(roundItem?.settlePrice || 0).toNumber()
+  const settlePrice = new BigNumber(roundItem?.settlePrice || 0)
+    .div(10 ** DECIMAL_BTC)
+    .toNumber()
   const lockPrice = new BigNumber(roundItem?.lockPrice || 0).toNumber()
 
   const upOffset = !toBN(upAmount).isEqualTo(0)
@@ -85,7 +88,7 @@ export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
           </div>
         </div>
       </div>
-      <div className="mb-6 w-full cursor-pointer">
+      <div className="mb-6 w-full">
         <div
           className={twMerge(
             "mb-1 flex items-center justify-between rounded-t-lg bg-[rgba(159,_244,_207,_0.16)] p-3",
@@ -149,11 +152,11 @@ export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
         <div className="mt-3 flex items-center justify-between text-[12px]">
           <span className="text-[#9192A0]">Prize pool</span>
           <span className="text-[#E8E9EE]">
-            {numberWithCommas(total.div(10 ** DECIMAL_SPL).toNumber())} MAX
+            {numberWithCommas(total.div(10 ** DECIMAL_SPL).toNumber())} $MAX
           </span>
         </div>
       </div>
-      {isClaimable && (
+      {isClaimable && !isClaimed && (
         <button
           disabled={!wallet || loading}
           onClick={async () => {
@@ -161,7 +164,14 @@ export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
               setLoading(true)
 
               const web3Solana = new Web3SolanaProgramInteraction()
-              await web3Solana.claimOrder(wallet, roundItem.id.toNumber())
+              const res = await web3Solana.claimOrder(
+                wallet,
+                roundItem.id.toNumber(),
+              )
+
+              if (res) {
+                setIsClaimed(true)
+              }
             } catch (error) {
               console.log("claim error", error)
             } finally {
