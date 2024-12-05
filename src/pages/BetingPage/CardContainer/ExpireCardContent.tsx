@@ -1,6 +1,7 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { twMerge } from "tailwind-merge"
 import { BET_TYPE } from "."
+import MaxBettedInfo from "./MaxBettedInfo"
 
 export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
   const { selectedBet, result } = roundItem
@@ -81,11 +82,14 @@ export const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
               {isDraw ? 1 : 1.87}x Payout
             </span>
           </div>
-          <div className="rotate-180">
-            <ArrowUpFilledIcon
-              bgColor={isDown ? "#E75787" : "#585A6B"}
-              size={18}
-            />
+          <div className="flex items-center gap-1">
+            <MaxBettedInfo betType={BET_TYPE.DOWN} />
+            <div className="rotate-180">
+              <ArrowUpFilledIcon
+                bgColor={isDown ? "#E75787" : "#585A6B"}
+                size={18}
+              />
+            </div>
           </div>
         </div>
       </div>
