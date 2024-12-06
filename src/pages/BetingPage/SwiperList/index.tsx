@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import BetDisclaimer from "@components/BetDisclaimer"
 import { ArrowsLeftIcon, ArrowsRightIcon } from "@components/Icons/Arrow"
 import { RootState } from "@configs/store"
-import useConnectWallet from "@hooks/useConnectWallet"
 import useSwiper from "@hooks/useSwiper"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { toBN } from "@utils/format"
@@ -43,7 +42,6 @@ const SwiperList = () => {
   const [currentEventData, setCurrentEventData] = useState<any>()
   const wallet = useWallet()
 
-  const { connectMultipleWallet } = useConnectWallet()
   const [showBetModal, setShowBetModal] = useState(false)
 
   const [predictHistory, setPredictHistory] = useState<any[]>([])
