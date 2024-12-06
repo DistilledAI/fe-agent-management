@@ -4,13 +4,9 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  box-sizing: box-border;
-}
-
 @layer base {
   body {
-    @apply font-barlow;
+    @apply box-border font-barlow;
   }
 }
 
