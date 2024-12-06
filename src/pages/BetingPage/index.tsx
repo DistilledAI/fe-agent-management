@@ -34,7 +34,7 @@ const Betting = () => {
         <HeaderBet />
       </div>
       <SwiperList />
-      <div className="fixed bottom-0 left-0 flex w-full items-center justify-center gap-2 bg-[#080A14] pb-5 pt-2 max-md:pb-2 max-md:pt-1">
+      <div className="fixed bottom-0 left-0 z-10 flex w-full items-center justify-center gap-2 bg-[#080A14] pb-5 pt-2 max-md:pb-2 max-md:pt-1">
         <span className="text-14 font-medium uppercase text-[#585A6B] max-md:text-[11px]">
           Powered by
         </span>
