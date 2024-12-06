@@ -1,6 +1,7 @@
 import { maxIcon } from "@assets/images"
 import { solanaCircleIcon } from "@assets/svg"
 import { CopyIcon } from "@components/Icons/Copy"
+import { PhantomIcon } from "@components/Icons/MetamaskIcon"
 import { Button, Image } from "@nextui-org/react"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { PhantomWalletName } from "@solana/wallet-adapter-wallets"
@@ -67,6 +68,9 @@ const HeaderWallet = () => {
     </div>
   ) : (
     <Button onClick={connectPhantom} className="rounded bg-white font-medium">
+      <div className="-ml-[5px] scale-75">
+        <PhantomIcon />
+      </div>{" "}
       Connect to Phantom
     </Button>
   )
