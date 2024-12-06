@@ -2,7 +2,7 @@
 # https://github.com/firebase/firebase-tools
 
 name: Deploy to Firebase Hosting on merge
-'on':
+"on":
   push:
     branches:
       - main
@@ -29,26 +29,24 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install Yarn
         run: npm install -g yarn
-      
+
       - name: Install Dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn --ignore-platform --ignore-engines --silent
-      
+
       - name: Build
         run: yarn build
         env:
           CI: false
-
-
+          NODE_OPTIONS: "--max-old-space-size=4096"
           VITE_BASE_API_URL: https://api-dev.distilled.ai/distill
           VITE_SOCKET_URL: wss://api-dev.distilled.ai
           VITE_GROUP_DEFAULT_FOR_PRIVATE_AGENT: 454
           VITE_GIT_COMMIT_ID: ${{ github.sha }}
 
-
       - name: Import Firebase service account credentials
         id: import-credentials
-        run : |
+        run: |
           echo ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MESS_DISTILLED_AI }} | base64 -d > $(pwd)/serviceaccount.json
           echo "file_path=$(pwd)/serviceaccount.json" >> $GITHUB_OUTPUT
 
