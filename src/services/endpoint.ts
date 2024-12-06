@@ -81,6 +81,8 @@ const endpoint = {
   // GET_PREDICT_HISTORY: withBaseURL("/game/predict/history"),
   GET_PREDICT_HISTORY:
     "https://api-dev.distilled.ai/distill/game/predict/history", // only on product
+  GET_CURRENT_PREDICT_ROUND:
+    "https://api-dev.distilled.ai/distill/game/predict/history-event", // only on product
 }
 
 export default endpoint

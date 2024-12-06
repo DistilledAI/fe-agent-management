@@ -1,3 +1,4 @@
+import { envConfig } from "@configs/env.ts"
 import * as anchor from "@coral-xyz/anchor"
 import { BN } from "@coral-xyz/anchor"
 import {
@@ -19,9 +20,9 @@ import {
 import BigNumber from "bignumber.js"
 import { EVENT, EVENT_CONFIG, PUBKEYS } from "program/constants.ts"
 import { toast } from "react-toastify"
+import { getCurrentPredictRound } from "services/game.ts"
 import idl from "../idl/solora_pyth_price.json"
 import { SoloraPythPrice } from "../types/solora_pyth_price.ts"
-import { envConfig } from "@configs/env.ts"
 
 export const commitmentLevel = "confirmed"
 export const TOKEN_RESERVES = 1_000_000_000_000_000
@@ -56,37 +57,61 @@ export class Web3SolanaProgramInteraction {
   ) {}
 
   getEventConfig = async (wallet: WalletContextState) => {
-    // check the connection
-    if (!this.connection) {
-      // !wallet.publicKey ||
-      console.log("Warning: Connection Notfound")
+    try {
+      const response = await getCurrentPredictRound()
+      if (
+        response.data &&
+        response.data.items?.[0] &&
+        response.data.items[0].roundIndex
+      ) {
+        const nextRoundId = response.data.items[0].roundIndex
+        const stringifyConfig = response.data.items[0].config
+        const config = JSON.parse(stringifyConfig)
+        config.eventDataConfig.nextRoundId = nextRoundId
+        const eventConfigPdaPublicKey = new PublicKey(config.eventConfigPda)
+
+        return { ...config, eventConfigPda: eventConfigPdaPublicKey }
+      }
+
+      // check the connection
+      if (!this.connection) {
+        // !wallet.publicKey ||
+        console.log("Warning: Connection Notfound")
+        return { eventDataConfig: "", eventConfigPda: "" }
+      }
+      const provider = new anchor.AnchorProvider(
+        this.connection,
+        wallet as any,
+        {
+          preflightCommitment: "confirmed",
+        },
+      )
+      anchor.setProvider(provider)
+      const program = new anchor.Program(
+        pythProgramInterface,
+        provider,
+      ) as anchor.Program<SoloraPythPrice>
+
+      const [eventConfigPda] = PublicKey.findProgramAddressSync(
+        [
+          Buffer.from(EVENT_CONFIG),
+          new PublicKey(PUBKEYS.MAINNET.EVENT_AUTHORITY).toBytes(),
+          new PublicKey(PUBKEYS.MAINNET.MODERATOR).toBytes(),
+          new PublicKey(PUBKEYS.MAINNET.CURRENCY_MINT).toBytes(),
+          CHAINLINK_PROGRAM.toBytes(),
+          CHAINLINK_FEED.toBytes(),
+        ],
+        program.programId,
+      )
+
+      const eventDataConfig =
+        await program.account.eventConfig.fetch(eventConfigPda)
+
+      return { eventDataConfig, eventConfigPda }
+    } catch (error) {
+      console.log("error: getEventConfig", error)
       return { eventDataConfig: "", eventConfigPda: "" }
     }
-    const provider = new anchor.AnchorProvider(this.connection, wallet as any, {
-      preflightCommitment: "confirmed",
-    })
-    anchor.setProvider(provider)
-    const program = new anchor.Program(
-      pythProgramInterface,
-      provider,
-    ) as anchor.Program<SoloraPythPrice>
-
-    const [eventConfigPda] = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from(EVENT_CONFIG),
-        new PublicKey(PUBKEYS.MAINNET.EVENT_AUTHORITY).toBytes(),
-        new PublicKey(PUBKEYS.MAINNET.MODERATOR).toBytes(),
-        new PublicKey(PUBKEYS.MAINNET.CURRENCY_MINT).toBytes(),
-        CHAINLINK_PROGRAM.toBytes(),
-        CHAINLINK_FEED.toBytes(),
-      ],
-      program.programId,
-    )
-
-    const eventDataConfig =
-      await program.account.eventConfig.fetch(eventConfigPda)
-
-    return { eventDataConfig, eventConfigPda }
   }
 
   getEventData = async (
