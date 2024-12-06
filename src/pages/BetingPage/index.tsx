@@ -1,8 +1,5 @@
 import { logoAgentLand } from "@assets/images"
 import { Image } from "@nextui-org/react"
-import { useWallet } from "@solana/wallet-adapter-react"
-import { PhantomWalletName } from "@solana/wallet-adapter-wallets"
-import { useEffect } from "react"
 import HeaderBet from "./HeaderBet"
 import SwiperList from "./SwiperList"
 // import { useGetCurrentRoundData } from "./hooks/useGetRoundData"

@@ -58,8 +58,9 @@ export class Web3SolanaProgramInteraction {
 
   getEventConfig = async (wallet: WalletContextState) => {
     // check the connection
-    if (!wallet.publicKey || !this.connection) {
-      console.log("Warning: Wallet not connected")
+    if (!this.connection) {
+      // !wallet.publicKey ||
+      console.log("Warning: Connection Notfound")
       return { eventDataConfig: "", eventConfigPda: "" }
     }
     const provider = new anchor.AnchorProvider(this.connection, wallet as any, {
@@ -95,8 +96,8 @@ export class Web3SolanaProgramInteraction {
     currentRound: number,
   ) => {
     // check the connection
-    if (!wallet.publicKey || !this.connection) {
-      console.log("Warning: Wallet not connected")
+    if (!this.connection) {
+      console.log("Warning: Connection Notfound")
       return { eventData: "", eventPDA: "" }
     }
     const provider = new anchor.AnchorProvider(this.connection, wallet as any, {
@@ -551,6 +552,7 @@ export class Web3SolanaProgramInteraction {
   }
 
   getTokenBalance = async (walletAddress: string, tokenMintAddress: string) => {
+    if (!walletAddress) return 0
     const wallet = new PublicKey(walletAddress)
     const tokenMint = new PublicKey(tokenMintAddress)
 

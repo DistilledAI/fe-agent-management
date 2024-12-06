@@ -82,6 +82,8 @@ const SwiperList = () => {
           const { eventDataConfig, eventConfigPda } =
             await web3Solana.getEventConfig(wallet)
 
+          console.log("first", eventDataConfig)
+
           if (eventDataConfig && eventConfigPda) {
             setEventConfig(eventDataConfig as any)
             const currentRound = new BigNumber(
@@ -133,11 +135,14 @@ const SwiperList = () => {
               }),
             )
 
-            const userOrders = await Promise.all(
-              eventList.map((ev) =>
-                web3Solana.getBetInfoByUser(wallet, ev.eventPDA as any),
-              ),
-            )
+            let userOrders: any = []
+            if (wallet.publicKey) {
+              userOrders = await Promise.all(
+                eventList.map((ev) =>
+                  web3Solana.getBetInfoByUser(wallet, ev.eventPDA as any),
+                ),
+              )
+            }
 
             setListEvent([
               ...eventList.map((e, idx) => {
