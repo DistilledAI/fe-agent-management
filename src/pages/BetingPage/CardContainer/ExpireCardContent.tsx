@@ -11,12 +11,13 @@ import { DECIMAL_BTC, DECIMAL_SHOW, DECIMAL_SPL } from "../constants"
 // import { CalculatingCardContent } from "./CalculatingCardContent"
 import MaxBettedInfo from "./MaxBettedInfo"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
+import { CalculatingCardContent } from "./CalculatingCardContent"
 
 const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
   const wallet = useWallet()
   const [loading, setLoading] = useState(false)
   const [isClaimed, setIsClaimed] = useState(false)
-  // const isUnDrawn = !!roundItem.outcome.undrawn
+  const isUnDrawn = !!roundItem.outcome.undrawn
   const isDown = !!roundItem.outcome.down
   const isDraw =
     !!roundItem.outcome.invalid ||
@@ -60,9 +61,9 @@ const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
   const priceChange = new BigNumber(settlePrice).minus(lockPrice).toNumber()
 
   const isInvalid = !!roundItem?.outcome?.undrawn || !!roundItem.outcome.invalid
-  // if (isUnDrawn) {
-  //   return <CalculatingCardContent roundItem={roundItem} />
-  // }
+  if (isUnDrawn) {
+    return <CalculatingCardContent roundItem={roundItem} />
+  }
 
   return (
     <div className="rounded-b-[12px] border border-[#1A1C28] bg-[#13141D] p-4">
