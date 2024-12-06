@@ -18,22 +18,6 @@ const HeaderBet = () => {
           </div>
           <div className="ml-2 flex items-center text-[16px] font-medium text-[#E4775D] max-md:text-[14px]">
             <span>Prediction by MAX</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              className="ml-1"
-            >
-              <path
-                d="M3.5 8.375L8 12.875L12.5 8.375M8 12.25V3.125"
-                stroke="#E4775D"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
           </div>
         </div>
       </div>

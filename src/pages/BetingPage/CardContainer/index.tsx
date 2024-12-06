@@ -83,8 +83,8 @@ export const CardHeader = ({ roundItem }: { roundItem: any }) => {
     },
     [STATUS_ROUND.LIVE]: {
       text: "LIVE",
-      titleTextClass: "text-[#FCFCFC] ml-1",
-      icon: <LiveIcon />,
+      titleTextClass: "text-[#080A14] ml-1",
+      icon: <LiveIcon color="#080A14" />,
     },
     [STATUS_ROUND.NEXT]: {
       text: "NEXT",
@@ -107,12 +107,24 @@ export const CardHeader = ({ roundItem }: { roundItem: any }) => {
   const { icon, text, titleTextClass } = HeaderByStatus[status]
 
   return (
-    <div className="flex h-10 items-center justify-between gap-2 rounded-t-[12px] bg-[#1A1C28] px-4 py-3 text-[12px] font-medium text-[#FCFCFC]">
+    <div
+      className={twMerge(
+        "flex h-10 items-center justify-between gap-2 rounded-t-[12px] bg-[#1A1C28] px-4 py-3 text-[12px] font-medium text-[#FCFCFC]",
+        status === STATUS_ROUND.LIVE && "bg-[#E4775D]",
+      )}
+    >
       <div className="flex items-center">
         {icon}
         <span className={twMerge("ml-1", titleTextClass)}>{text}</span>
       </div>
-      <div className="text-[#585A6B]">#{round}</div>
+      <div
+        className={twMerge(
+          "text-[#585A6B]",
+          status === STATUS_ROUND.LIVE && "text-[#080A14]",
+        )}
+      >
+        #{round}
+      </div>
     </div>
   )
 }

@@ -17,7 +17,7 @@ const BetModal: React.FC<{
         base: "bg-[#080A14] py-10 max-md:py-4 justify-center h-[85dvh] min-h-[85dvh] !justify-start !rounded-t-[32px]",
         wrapper: "z-[99]",
         backdrop: "z-[99]",
-        closeButton: "bg-white right-4 top-4",
+        closeButton: "bg-white right-4 top-4 z-[11]",
       }}
     >
       <ModalContent>
