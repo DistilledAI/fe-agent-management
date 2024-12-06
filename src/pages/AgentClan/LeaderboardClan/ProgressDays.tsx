@@ -99,7 +99,7 @@ const ProgressDays = () => {
             stroke="#6B50B5"
             strokeWidth="4"
             strokeDasharray={totalLength}
-            strokeDashoffset={dashOffset}
+            strokeDashoffset={totalLength - dashOffset}
             strokeLinecap="round"
             style={{
               transition: "stroke-dashoffset 0.5s ease",
