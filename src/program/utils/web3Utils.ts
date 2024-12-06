@@ -75,7 +75,7 @@ export class Web3SolanaProgramInteraction {
       [
         Buffer.from(EVENT_CONFIG),
         new PublicKey(PUBKEYS.MAINNET.EVENT_AUTHORITY).toBytes(),
-        new PublicKey(PUBKEYS.MAINNET.PYTH_FEED).toBytes(),
+        new PublicKey(PUBKEYS.MAINNET.MODERATOR).toBytes(),
         new PublicKey(PUBKEYS.MAINNET.CURRENCY_MINT).toBytes(),
         CHAINLINK_PROGRAM.toBytes(),
         CHAINLINK_FEED.toBytes(),
@@ -187,7 +187,7 @@ export class Web3SolanaProgramInteraction {
         [
           Buffer.from(EVENT_CONFIG),
           new PublicKey(PUBKEYS.MAINNET.EVENT_AUTHORITY).toBytes(),
-          new PublicKey(PUBKEYS.MAINNET.PYTH_FEED).toBytes(),
+          new PublicKey(PUBKEYS.MAINNET.MODERATOR).toBytes(),
           currencyMint.toBytes(),
           CHAINLINK_PROGRAM.toBytes(),
           CHAINLINK_FEED.toBytes(),
@@ -378,7 +378,7 @@ export class Web3SolanaProgramInteraction {
         [
           Buffer.from(EVENT_CONFIG),
           new PublicKey(PUBKEYS.MAINNET.EVENT_AUTHORITY).toBytes(),
-          new PublicKey(PUBKEYS.MAINNET.PYTH_FEED).toBytes(),
+          new PublicKey(PUBKEYS.MAINNET.MODERATOR).toBytes(),
           currencyMint.toBytes(),
           CHAINLINK_PROGRAM.toBytes(),
           CHAINLINK_FEED.toBytes(),
