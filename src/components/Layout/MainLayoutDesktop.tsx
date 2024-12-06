@@ -18,18 +18,16 @@ const MainLayoutDesktop = () => {
   return (
     <>
       <StyleSpacingProvider>
-        <div className="bg-white font-barlow">
-          <div className="flex">
-            <LeftBar />
-            <div
-              className={twMerge(
-                "relative min-h-dvh w-[calc(100%-329px)] pt-[68px] transition-all duration-300 ease-in-out",
-                sidebarCollapsed && "w-[calc(100%-104px)]",
-              )}
-            >
-              <UserAuthWrapper />
-              <Outlet />
-            </div>
+        <div className="flex bg-white font-barlow">
+          <LeftBar />
+          <div
+            className={twMerge(
+              "relative w-[calc(100%-329px)] pt-[68px] transition-all duration-300 ease-in-out",
+              sidebarCollapsed && "w-[calc(100%-104px)]",
+            )}
+          >
+            <UserAuthWrapper />
+            <Outlet />
           </div>
         </div>
       </StyleSpacingProvider>

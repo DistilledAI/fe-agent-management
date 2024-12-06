@@ -75,6 +75,12 @@ const endpoint = {
     withBaseURL(`/point/exp/total-point/group/${groupId}`),
   GET_EXP_TOTAL_POINT_USER: (groupId: number) =>
     withBaseURL(`/point/exp/total-point/user/${groupId}`),
+
+  //game
+  // TODO: update later
+  // GET_PREDICT_HISTORY: withBaseURL("/game/predict/history"),
+  GET_PREDICT_HISTORY:
+    "https://api-dev.distilled.ai/distill/game/predict/history", // only on product
 }
 
 export default endpoint

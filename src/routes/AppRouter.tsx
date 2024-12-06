@@ -31,7 +31,6 @@ const AppRouter = () => {
         //connect wallet modal
         element={isMobile ? <MainLayout /> : <MainLayoutDesktop />}
       >
-        {/* Route Regular */}
         <Route
           path={PATH_NAMES.HOME}
           element={isMobile ? <ChatPageMobile /> : <ChatBox />}

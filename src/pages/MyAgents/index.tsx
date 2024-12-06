@@ -37,7 +37,7 @@ const MyAgentPage = () => {
           <AlertBox
             isVisible={!isAgentActive}
             messages={[
-              "We appreciate your patience. Please join the whitelist to activate.",
+              "Please join the whitelist to activate. You will receive an email from contact@distilled.ai once your Personal Agent has been approved.",
             ]}
             links={[
               {

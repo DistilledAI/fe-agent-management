@@ -6,15 +6,15 @@ const ViewFullMedia: React.FC<{
   onClose: () => void
   url: string
 }> = ({ isOpen, onClose, url }) => {
-  if (!isOpen) return <></>
+  if (!isOpen) return null
   return (
-    <div className="fixed left-0 top-0 !z-[10000] flex h-full w-full items-center">
+    <div className="fixed inset-0 z-[100] flex h-full w-full items-center">
       <div
         onClick={onClose}
         className="absolute left-0 top-0 h-full w-full bg-[rgba(0,0,0,0.7)]"
       />
       <img
-        className="relative m-auto max-h-[calc(100vh-40px)] max-w-[calc(100vw-40px)] object-contain"
+        className="relative m-auto max-h-[calc(100dvh-40px)] min-h-[200px] min-w-[200px] max-w-[calc(100dvw-40px)] object-cover"
         alt="view"
         src={url}
       />

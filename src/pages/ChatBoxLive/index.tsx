@@ -5,16 +5,18 @@ import LeftContent from "./LeftContent"
 import RightContent from "./RightContent"
 import { twMerge } from "tailwind-merge"
 import useFetchDetail from "@pages/ChatPage/Mobile/ChatDetail/useFetch"
+import useBodyOverflow from "@hooks/useBodyOverflow"
 
 const ChatBoxLive = () => {
   const { isInvited } = useJoinGroupLive()
   const { groupDetail, isFetched } = useFetchDetail(isInvited)
   const { isMobile } = useWindowSize()
+  useBodyOverflow()
 
   return (
     <div
       className={twMerge(
-        "relative mx-auto h-[calc(100dvh-50px)] max-w-[1232px] bg-mercury-30 max-md:overflow-hidden md:h-[calc(100dvh-68px)] md:bg-white md:px-6",
+        "relative mx-auto h-[calc(100dvh-50px)] max-w-[1232px] bg-mercury-30 max-md:overflow-hidden md:z-[22] md:h-[calc(100dvh-68px)] md:bg-white md:px-6",
       )}
     >
       {isMobile ? <ChatLiveHeader groupDetail={groupDetail} /> : <></>}
