@@ -2,23 +2,31 @@ import { logoAgentLand } from "@assets/images"
 import { Image } from "@nextui-org/react"
 import HeaderBet from "./HeaderBet"
 import SwiperList from "./SwiperList"
-// import { useGetCurrentRoundData } from "./hooks/useGetRoundData"
+import { useEffect } from "react"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { PhantomWalletName } from "@solana/wallet-adapter-wallets"
 
 const Betting = () => {
-  // useGetCurrentRoundData()
-  // const { select, publicKey, connect } = useWallet()
-  // useEffect(() => {
-  //   ;(async () => {
-  //     if (!publicKey) {
-  //       select(PhantomWalletName)
-  //       await connect()
-  //     }
-  //   })()
-  // }, [publicKey])
+  const wallet = useWallet()
 
-  // const { currentRoundData } = useSelector(
-  //   (state: RootState) => state.priceInfo,
-  // )
+  useEffect(() => {
+    const provider = window?.solana
+    if (provider) {
+      provider?.on("accountChanged", (publicKeySol: any) => {
+        console.log("publicKeySol", publicKeySol?.toString())
+        // Attempt to reconnect to Phantom
+        if (publicKeySol) {
+          wallet.select(PhantomWalletName)
+        }
+
+        provider.connect().catch((error: any) => {
+          console.error({ errorSolAccountChanged: error })
+        })
+      })
+    }
+
+    return () => {}
+  }, [])
 
   return (
     <div>
