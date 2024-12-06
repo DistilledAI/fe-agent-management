@@ -78,6 +78,7 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
         {children}
       </a>
     ),
+    p: ({ children }: any) => <p className="break-all">{children}</p>,
   }
 
   return (
