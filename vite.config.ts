@@ -18,10 +18,8 @@ export default defineConfig(() => {
       Sitemap({
         hostname: "https://mesh.distilled.ai",
         dynamicRoutes: [
-          PATH_NAMES.HOME,
           PATH_NAMES.MARKETPLACE,
           PATH_NAMES.REWARDS,
-          PATH_NAMES.BETTING,
           PATH_NAMES.CREATE_AGENT,
           PATH_NAMES.MY_AGENTS,
         ],

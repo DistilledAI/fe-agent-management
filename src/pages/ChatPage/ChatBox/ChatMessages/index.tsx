@@ -126,6 +126,7 @@ const ChatMessages = () => {
           paddingBottom: `${spacing}px`,
         }}
         isChatActions={true}
+        increaseViewportBy={2000}
       />
       <ChatActions isClearContextBtn={!isOwner} isDelegateBtn={isOwner} />
     </>
