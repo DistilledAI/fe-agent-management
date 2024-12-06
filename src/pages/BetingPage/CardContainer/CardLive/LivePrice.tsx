@@ -47,7 +47,9 @@ const LiveCardPrice = ({
 
   const isDown = new BigNumber(priceChange).isLessThan(0)
   const isUp = new BigNumber(priceChange).isGreaterThan(0)
-  const isDraw = new BigNumber(priceChange).isEqualTo(0)
+  const isDraw =
+    new BigNumber(priceChange).isEqualTo(0) ||
+    new BigNumber(lockPrice).isEqualTo(0)
 
   return (
     <>
@@ -66,7 +68,6 @@ const LiveCardPrice = ({
               maximumFractionDigits: DECIMAL_SHOW,
             })}
           </div>
-
           <div
             className={twMerge(
               "flex h-5 items-center justify-center rounded-sm bg-[#9FF4CF] p-1 text-[12px] text-[#052E1C]",
