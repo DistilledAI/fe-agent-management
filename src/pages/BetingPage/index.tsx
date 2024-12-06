@@ -9,15 +9,15 @@ import SwiperList from "./SwiperList"
 
 const Betting = () => {
   // useGetCurrentRoundData()
-  const { select, publicKey, connect } = useWallet()
-  useEffect(() => {
-    ;(async () => {
-      if (!publicKey) {
-        select(PhantomWalletName)
-        await connect()
-      }
-    })()
-  }, [publicKey])
+  // const { select, publicKey, connect } = useWallet()
+  // useEffect(() => {
+  //   ;(async () => {
+  //     if (!publicKey) {
+  //       select(PhantomWalletName)
+  //       await connect()
+  //     }
+  //   })()
+  // }, [publicKey])
 
   // const { currentRoundData } = useSelector(
   //   (state: RootState) => state.priceInfo,
