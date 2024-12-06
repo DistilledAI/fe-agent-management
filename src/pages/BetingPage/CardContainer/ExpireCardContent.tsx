@@ -8,15 +8,11 @@ import { memo, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { BET_TYPE } from "."
 import { DECIMAL_BTC, DECIMAL_SHOW, DECIMAL_SPL } from "../constants"
-// import { CalculatingCardContent } from "./CalculatingCardContent"
-import MaxBettedInfo from "./MaxBettedInfo"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { CalculatingCardContent } from "./CalculatingCardContent"
-import { useSelector } from "react-redux"
-import { RootState } from "@configs/store"
+import MaxBettedInfo from "./MaxBettedInfo"
 
 const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
-  const { eventConfig } = useSelector((state: RootState) => state.priceInfo)
   const wallet = useWallet()
   const [loading, setLoading] = useState(false)
   const [isClaimed, setIsClaimed] = useState(false)
@@ -200,7 +196,6 @@ const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
               const res = await web3Solana.claimOrder(
                 wallet,
                 roundItem.id.toNumber(),
-                eventConfig,
               )
 
               if (res) {
