@@ -20,6 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         closeButton={<CloseFilledIcon size={18} />}
         bodyClassName="text-14 font-medium flex items-center"
         hideProgressBar={true}
+        autoClose={2000}
       />
     </Providers>
     ,

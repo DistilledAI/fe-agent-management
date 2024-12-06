@@ -11,10 +11,10 @@ const AuthorDescription = () => {
   const { user } = useAuthState()
   const dispatch = useDispatch()
   const descriptionRef = useRef<any>()
-  const [value, setValue] = useState(user?.description ?? "")
+  const [value, setValue] = useState("-")
 
   useEffect(() => {
-    setValue(user?.description ?? "-")
+    setValue(user?.description || "-")
   }, [user?.description])
 
   const handleUpdate = async () => {
@@ -51,16 +51,17 @@ const AuthorDescription = () => {
   }
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center gap-6">
       <span className="text-mercury-600">Bio:</span>
-      <div className="line-clamp-2 flex items-center gap-2">
+      <div className="line-clamp-2 flex flex-1 items-center justify-end gap-2">
         <textarea
-          className="text-base-md border-none bg-transparent text-right shadow-none outline-none"
+          className="text-base-md w-full resize-none border-none bg-transparent text-right shadow-none outline-none"
           value={value}
           onChange={(e) => handleOnChange(e.target.value)}
           onKeyDown={handleKeyDown}
           ref={descriptionRef}
           onBlur={handleUpdate}
+          rows={2}
         />
         <Button
           onClick={handleFocus}

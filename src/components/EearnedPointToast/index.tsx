@@ -56,6 +56,7 @@ const EarnedPointToast = () => {
               borderRadius: 22,
             },
             className: "earned-point-toast",
+            autoClose: 2000,
           },
         )
       })

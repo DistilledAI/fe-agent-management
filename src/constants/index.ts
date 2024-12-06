@@ -17,7 +17,6 @@ export const PATH_NAMES = {
   CREATE_AGENT: "/create-agent",
   MY_AGENTS: "/my-agents",
   REWARDS: "/rewards",
-  BETTING: "/betting",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {

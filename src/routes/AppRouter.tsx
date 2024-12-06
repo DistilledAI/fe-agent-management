@@ -8,7 +8,6 @@ import Account from "@pages/Account"
 import AddMyData from "@pages/AddMyData"
 import AgentDetail from "@pages/AgentDetail"
 import AuthorProfile from "@pages/AuthorProfile"
-import Betting from "@pages/BetingPage"
 import ChatBoxLive from "@pages/ChatBoxLive"
 import ChatMyAgent from "@pages/ChatMyAgent"
 import ChatBox from "@pages/ChatPage/ChatBox"
@@ -32,17 +31,6 @@ const AppRouter = () => {
         //connect wallet modal
         element={isMobile ? <MainLayout /> : <MainLayoutDesktop />}
       >
-        {/* Route Regular */}
-        <Route
-          path={PATH_NAMES.BETTING}
-          element={
-            <div className="m-auto flex h-screen items-center justify-center bg-black-999">
-              <div className="w-full">
-                <Betting />
-              </div>
-            </div>
-          }
-        />
         <Route
           path={PATH_NAMES.HOME}
           element={isMobile ? <ChatPageMobile /> : <ChatBox />}
