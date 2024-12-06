@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 
 import BetDisclaimer from "@components/BetDisclaimer"
 import { ArrowsLeftIcon, ArrowsRightIcon } from "@components/Icons/Arrow"
-import useAuthState from "@hooks/useAuthState"
+import { RootState } from "@configs/store"
 import useConnectWallet from "@hooks/useConnectWallet"
 import useSwiper from "@hooks/useSwiper"
 import { useWallet } from "@solana/wallet-adapter-react"
@@ -11,6 +11,7 @@ import { toBN } from "@utils/format"
 import BigNumber from "bignumber.js"
 import delay from "lodash/delay"
 import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
+import { useSelector } from "react-redux"
 import { getPredictHistory } from "services/game"
 import {
   FreeMode,
@@ -20,12 +21,10 @@ import {
   Virtual,
 } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
-import CardContainer, { BET_TYPE, STATUS_ROUND } from "../CardContainer"
+import CardContainer, { STATUS_ROUND } from "../CardContainer"
 import { DECIMAL_BTC } from "../constants"
 import useDisclaimer from "../hooks/useDisclaimer"
 import ModalBet from "../ModalBet"
-import { useSelector } from "react-redux"
-import { RootState } from "@configs/store"
 
 export const CHART_DOT_CLICK_EVENT = "CHART_DOT_CLICK_EVENT"
 
@@ -36,7 +35,7 @@ const MAX_LIMIT = 10
 const SwiperList = () => {
   const { setSwiper, swiper } = useSwiper()
   const { isAccepted, onOpen, isOpen, onOpenChange, onAccept } = useDisclaimer()
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [_eventConfig, setEventConfig] = useState()
   const [currentRound, setCurrentRound] = useState<number>(1)
   const [rangeTime, setRangeTime] = useState<number>(300)
@@ -44,13 +43,10 @@ const SwiperList = () => {
   const [currentEventData, setCurrentEventData] = useState<any>()
   const wallet = useWallet()
 
-  const { isLogin, isAnonymous } = useAuthState()
   const { connectMultipleWallet } = useConnectWallet()
   const [showBetModal, setShowBetModal] = useState(false)
 
   const [predictHistory, setPredictHistory] = useState<any[]>([])
-
-  const isLoginByWallet = isLogin && !isAnonymous
 
   const callGetPredictHistory = async () => {
     try {
@@ -66,18 +62,21 @@ const SwiperList = () => {
   const { currentRoundData } = useSelector(
     (state: RootState) => state.priceInfo,
   )
-  const currentRoundStored = currentEventData?.id?.toNumber()
+  const currentRoundStored = toBN(currentRoundData?.id || 1).toNumber()
 
   useEffect(() => {
     callGetPredictHistory()
   }, [currentRoundStored])
 
   useEffect(() => {
-    console.log("currentRoundStored==>", currentRoundStored)
+    console.log(
+      "======= REFRESH LIST ======= with currentRound is: ",
+      currentRoundStored,
+    )
     ;(async () => {
       try {
         setLoading(true)
-        if (currentEventData) {
+        if (currentEventData && currentRoundStored === currentRound) {
           return
         }
         console.log("wallet", wallet)
@@ -110,7 +109,6 @@ const SwiperList = () => {
 
             const limit =
               currentRound >= MAX_LIMIT ? MAX_LIMIT - 1 : currentRound - 1
-            console.log("startRound", startRound, limit)
 
             const { eventData: currentEvent } = await web3Solana.getEventData(
               wallet,
@@ -193,7 +191,11 @@ const SwiperList = () => {
         closeModal={() => setShowBetModal(false)}
       ></ModalBet>
       {loading ? (
-        <div>Loading ...</div>
+        <div className="flex h-screen max-h-[450px] animate-pulse items-center justify-center gap-10 overflow-x-auto p-6 scrollbar-hide">
+          <div className="h-full w-full max-w-[320px] rounded-xl bg-[#13141D]"></div>
+          <div className="h-full w-full max-w-[320px] rounded-xl bg-[#13141D]"></div>
+          <div className="h-full w-full max-w-[320px] rounded-xl bg-[#13141D]"></div>
+        </div>
       ) : (
         <>
           <Swiper
@@ -203,7 +205,7 @@ const SwiperList = () => {
             spaceBetween={16}
             // slidesPerView={4}
             slidesPerView="auto"
-            style={{ paddingTop: 10 }}
+            style={{ paddingTop: 10, paddingBottom: 10 }}
             onBeforeDestroy={() => setSwiper(null)}
             freeMode={{
               enabled: true,
@@ -295,13 +297,15 @@ const SwiperList = () => {
                       isActive={isActive}
                       onClick={() => {
                         if (status === STATUS_ROUND.NEXT) {
-                          if (!isLoginByWallet) {
-                            connectMultipleWallet()
-                            return
-                          }
+                          if (!currentRoundData.userOrder) {
+                            // if (!isLoginByWallet) {
+                            //   connectMultipleWallet()
+                            //   return
+                            // }
 
-                          if (!isAccepted) onOpen()
-                          else setShowBetModal(true)
+                            if (!isAccepted) onOpen()
+                            else setShowBetModal(true)
+                          }
                         }
                       }}
                     />
@@ -331,97 +335,3 @@ const SwiperList = () => {
 }
 
 export default SwiperList
-
-export const LIST_MOCKED = [
-  {
-    round: 1,
-    status: STATUS_ROUND.EXPIRED,
-    isEntered: false,
-    isCalculating: false,
-    result: BET_TYPE.UP,
-  },
-  {
-    round: 2,
-    status: STATUS_ROUND.EXPIRED,
-    isEntered: true,
-    isCalculating: false,
-    selectedBet: BET_TYPE.UP,
-    result: BET_TYPE.DOWN,
-  },
-  {
-    round: 31,
-    status: STATUS_ROUND.EXPIRED,
-    isEntered: true,
-    isCalculating: false,
-    selectedBet: BET_TYPE.DOWN,
-    result: BET_TYPE.DRAW,
-    isWin: true,
-  },
-  {
-    round: 3,
-    status: STATUS_ROUND.EXPIRED,
-    isEntered: true,
-    isCalculating: false,
-    selectedBet: BET_TYPE.DOWN,
-    result: BET_TYPE.DOWN,
-    isWin: true,
-  },
-  {
-    round: 4,
-    status: STATUS_ROUND.EXPIRED,
-    isEntered: false,
-    isCalculating: false,
-    result: BET_TYPE.UP,
-  },
-  {
-    round: 5,
-    status: STATUS_ROUND.CALCULATING,
-    isEntered: false,
-    isCalculating: false,
-  },
-  {
-    round: 6,
-    status: STATUS_ROUND.LIVE,
-    isEntered: false,
-    isCalculating: false,
-  },
-  // {
-  //   round: 7,
-  //   status: STATUS_ROUND.LIVE,
-  //   isEntered: true,
-  //   selectedBet: BET_TYPE.DOWN,
-  //   isCalculating: false,
-  // },
-  {
-    round: 8,
-    status: STATUS_ROUND.NEXT,
-    isEntered: false,
-    isCalculating: false,
-  },
-  {
-    round: 9,
-    status: STATUS_ROUND.NEXT,
-    isEntered: true,
-    selectedBet: BET_TYPE.UP,
-    isCalculating: false,
-  },
-  {
-    round: 10,
-    status: STATUS_ROUND.NEXT,
-    isEntered: true,
-    selectedBet: BET_TYPE.DOWN,
-    isCalculating: false,
-  },
-  {
-    round: 11,
-    status: STATUS_ROUND.LATER,
-    isEntered: false,
-    isCalculating: false,
-  },
-  {
-    round: 12,
-    status: STATUS_ROUND.LATER,
-    isEntered: false,
-    isCalculating: false,
-  },
-]

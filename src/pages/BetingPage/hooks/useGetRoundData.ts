@@ -45,7 +45,6 @@ export const useGetCurrentRoundData = () => {
               wallet,
               eventPDA as any,
             )
-            // setCurrentEventData(currentEvent)
             dispatch(
               updateCurrentRound({
                 currentRoundData: {

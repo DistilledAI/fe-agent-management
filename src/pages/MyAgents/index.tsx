@@ -16,7 +16,7 @@ const MyAgentPage = () => {
     refetchOnWindowFocus: false,
     enabled: !cachedData,
   })
-  const agents = data ? data.data.items : []
+  const agents = data ? data?.data?.items : []
   const agent = agents[0]
   const isAgentActive = agent && agent?.status === STATUS_AGENT.ACTIVE
 

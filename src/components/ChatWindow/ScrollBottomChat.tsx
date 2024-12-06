@@ -1,7 +1,7 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { Button } from "@nextui-org/react"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
-import { RefObject } from "react"
+import { RefObject, useCallback } from "react"
 import { VirtuosoHandle } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
 
@@ -18,16 +18,18 @@ const ScrollBottomChat = ({
 }: Props) => {
   const { spacing } = useStyleSpacing()
 
-  const onScrollToBottom = () => {
-    virtuosoRef.current?.scrollToIndex({
-      index: "LAST",
-      behavior: "auto",
-      align: "end",
-    })
-  }
+  const onScrollToBottom = useCallback(() => {
+    if (virtuosoRef.current) {
+      virtuosoRef.current.scrollToIndex({
+        index: "LAST",
+        behavior: "smooth",
+        align: "end",
+      })
+    }
+  }, [virtuosoRef.current])
 
   if (!isScrollBottom) {
-    return <></>
+    return null
   }
 
   return (

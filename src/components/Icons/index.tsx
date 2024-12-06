@@ -257,14 +257,14 @@ export const ModerateIcon = ({ size = 20, color = "#C8C8C8" }: IconProps) => {
       <path
         d="M10.5 4.16663H18M3 8.33329H12.1667M15.5 8.33329H16.3333M10.5 12.5H18M3 16.6666H10.5M13.8333 16.6666H16.3333"
         stroke={color}
-        stroke-width="1.5"
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M4.66797 4.16663H7.16797M4.66797 12.5H7.16797"
         stroke="#545454"
-        stroke-width="1.5"
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />

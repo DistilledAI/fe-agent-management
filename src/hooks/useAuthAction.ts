@@ -1,3 +1,4 @@
+import { updateFirstLogin } from "@reducers/firstLoginSlice"
 import { useAppDispatch } from "./useAppRedux"
 import { logout as logoutSlice } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
@@ -14,6 +15,7 @@ const useAuthAction = () => {
       (key) => !ignoreKeys.includes(key),
     )
     removeList.forEach((key) => queryClient.removeQueries({ queryKey: [key] }))
+    dispatch(updateFirstLogin(false))
   }
 
   return { logout }

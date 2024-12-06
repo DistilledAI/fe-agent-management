@@ -162,8 +162,8 @@ export const BgOverbought: FunctionComponent<{
           y2="16.9591"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color={color1} />
-          <stop offset="1" stop-color={color2} stop-opacity="0.38" />
+          <stop stopColor={color1} />
+          <stop offset="1" stopColor={color2} stop-opacity="0.38" />
         </linearGradient>
       </defs>
     </svg>
@@ -194,8 +194,8 @@ export const BgNeutral: FunctionComponent<{
           y2="26.0005"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color={color1} />
-          <stop offset="1" stop-color={color2} stop-opacity="0.38" />
+          <stop stopColor={color1} />
+          <stop offset="1" stopColor={color2} stop-opacity="0.38" />
         </linearGradient>
       </defs>
     </svg>
@@ -226,8 +226,8 @@ export const BgOversold: FunctionComponent<{
           y2="37.9943"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color={color1} />
-          <stop offset="1" stop-color={color2} stop-opacity="0.38" />
+          <stop stopColor={color1} />
+          <stop offset="1" stopColor={color2} stop-opacity="0.38" />
         </linearGradient>
       </defs>
     </svg>

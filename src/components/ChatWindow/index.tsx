@@ -4,7 +4,6 @@ import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
-  useMemo,
   useRef,
   useState,
 } from "react"
@@ -63,15 +62,19 @@ const ChatWindow = ({
     }
   }, [chatId])
 
+  const scrollToBottom = useCallback(() => {
+    virtuosoRef.current?.scrollToIndex({
+      index: messages.length - 1,
+      behavior: "auto",
+      align: style?.paddingBottom === "0px" ? "end" : "center",
+    })
+  }, [messages, style?.paddingBottom])
+
   useEffect(() => {
     if (!isScrollBottom) {
-      virtuosoRef.current?.scrollToIndex({
-        index: messages.length - 1,
-        behavior: "auto",
-        align: style?.paddingBottom === "0px" ? "end" : "center",
-      })
+      scrollToBottom()
     }
-  }, [messages, isScrollBottom, style?.paddingBottom, chatId])
+  }, [scrollToBottom, isScrollBottom, chatId])
 
   const onScroll = useCallback(
     async (e: React.UIEvent<HTMLDivElement>) => {
@@ -93,40 +96,44 @@ const ChatWindow = ({
     [hasPreviousMore],
   )
 
-  const renderHeader = useMemo(
-    () => () => {
+  const renderHeader = useCallback(() => {
+    if (isFetchingPreviousPage && messages.length >= LIMIT) {
       return (
-        <>
-          {isFetchingPreviousPage && messages.length >= LIMIT ? (
-            <div className="flex h-full items-center justify-center pt-1">
-              <DotLoading />
-            </div>
-          ) : (
-            <></>
-          )}
-          {Header ? <div className="pb-4">{Header}</div> : <></>}
-        </>
+        <div className="flex h-full items-center justify-center pt-1">
+          <DotLoading />
+        </div>
       )
-    },
-    [isFetchingPreviousPage, messages.length, Header],
-  )
+    }
 
-  const renderEmptyPlaceholder = () =>
-    isFetched && !messages.length ? (
-      <div className="flex h-full items-center justify-center">NO MESSAGE</div>
-    ) : (
-      <></>
-    )
+    if (Header) {
+      return <div className="pb-4">{Header}</div>
+    }
 
-  const renderRow = useMemo(
-    () => (index: number, message: IMessageBox) => {
+    return null
+  }, [isFetchingPreviousPage, messages.length, Header])
+
+  const renderEmptyPlaceholder = useCallback(() => {
+    if (isFetched && !messages.length) {
       return (
-        <article className={twMerge("px-3 pb-3", msgBoxClassName)} key={index}>
-          {itemContent(index, message)}
-        </article>
+        <div className="flex h-full items-center justify-center">
+          NO MESSAGE
+        </div>
       )
-    },
-    [msgBoxClassName, chatId, itemContent],
+    }
+
+    return null
+  }, [isFetched, messages.length])
+
+  const renderRow = useCallback(
+    (index: number, message: IMessageBox) => (
+      <article
+        className={twMerge("px-3 pb-3", msgBoxClassName)}
+        key={message?.id || index}
+      >
+        {itemContent(index, message)}
+      </article>
+    ),
+    [msgBoxClassName, itemContent],
   )
 
   return (
@@ -144,6 +151,8 @@ const ChatWindow = ({
           id="chat-window"
           style={{
             height: "100%",
+            willChange: "scroll-position",
+            overflowAnchor: "none",
           }}
           ref={virtuosoRef}
           data={messages}
@@ -158,7 +167,7 @@ const ChatWindow = ({
             Header: renderHeader,
             EmptyPlaceholder: () => renderEmptyPlaceholder(),
           }}
-          // followOutput={"auto"}
+          followOutput={!isScrollBottom ? "auto" : false}
           // atBottomStateChange={setIsAtBottom}
           atBottomThreshold={AT_BOTTOM_THRESHOLD}
           itemContent={renderRow}

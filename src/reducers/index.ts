@@ -1,10 +1,11 @@
 import { combineReducers, Reducer } from "@reduxjs/toolkit"
 import agentReducer, { AgentState } from "./agentSlice"
 import connectWalletReducer from "./connectWalletSlice"
-import sidebarCollapsedReducer from "./sidebarCollapsedSlice"
+import firstLoginReducer from "./firstLoginSlice"
 import instructBannerReducer from "./instructBannerSlice"
-import userReducer, { IUserState } from "./userSlice"
 import priceInfoReducer, { PriceInfoState } from "./priceInfoSlice"
+import sidebarCollapsedReducer from "./sidebarCollapsedSlice"
+import userReducer, { IUserState } from "./userSlice"
 
 type TReducer = {
   agents: AgentState
@@ -12,6 +13,7 @@ type TReducer = {
   sidebarCollapsed: boolean
   connectWalletReducer: any
   instructBanner: boolean
+  firstLogin: boolean
   priceInfo: PriceInfoState
 }
 
@@ -21,6 +23,7 @@ const rootReducer: Reducer<TReducer> = combineReducers({
   sidebarCollapsed: sidebarCollapsedReducer,
   connectWalletReducer: connectWalletReducer,
   instructBanner: instructBannerReducer,
+  firstLogin: firstLoginReducer,
   priceInfo: priceInfoReducer,
 })
 

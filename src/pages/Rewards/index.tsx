@@ -13,6 +13,7 @@ import { useEffect, useState } from "react"
 import { getTaskSuccess, getUserClaimTaskSuccess } from "services/agent"
 import { getReferralCode } from "services/user"
 import Objectives from "./Objectives"
+import useFetchMe from "@hooks/useFetchMe"
 
 export const XDSTL_TASK_KEY = {
   LOGIN: "LOGIN",
@@ -37,6 +38,7 @@ const Rewards: React.FC = () => {
   const [listTaskSuccess, setListTaskSuccess] = useState<any>([])
   const listActionTaskSuccess = listTaskSuccess?.map((item: any) => item.action)
   const [totalReferral, setTotalReferral] = useState<number>(0)
+  const { fetchData } = useFetchMe(false)
 
   const {
     isOpen: isOpenQR,
@@ -56,7 +58,10 @@ const Rewards: React.FC = () => {
   const callGetTaskSuccess = async () => {
     try {
       const res = await getTaskSuccess()
-      if (res) setListTaskSuccess(res?.data)
+      if (res) {
+        setListTaskSuccess(res?.data)
+        fetchData()
+      }
     } catch (error) {
       console.log("error", error)
     }

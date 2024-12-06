@@ -113,6 +113,7 @@ export default {
         7: "0px -16px 32px -4px rgba(24, 24, 25, 0.05), 0px -2px 4px 0px rgba(24, 24, 25, 0.04)",
         8: "0px 16px 32px -4px rgba(24, 24, 25, 0.05), 0px 2px 4px 0px rgba(24, 24, 25, 0.08)",
         9: "0px 16px 40px 0px rgba(24, 24, 25, 0.08), 0px 2px 4px 0px rgba(24, 24, 25, 0.05)",
+        10: "0px 16px 43px -4px rgba(24, 24, 25, 0.10)",
       },
     },
   },

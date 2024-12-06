@@ -20,11 +20,11 @@ const ChatLiveHeader: React.FC<{
 
   return (
     <>
-      <div className="flex h-14 w-full items-center gap-3 bg-mercury-30 px-3 md:hidden">
+      <div className="flex w-full items-center gap-3 bg-mercury-30 px-3 py-1 md:hidden">
         <div className="flex flex-1 items-center gap-3">
           <Button
             onClick={() => navigate(PATH_NAMES.HOME)}
-            className="h-[38px] w-[38px] min-w-[38px] rotate-90 rounded-full bg-mercury-70 p-0"
+            className="h-8 w-8 min-w-8 rotate-90 rounded-full bg-mercury-70 p-0"
           >
             <ChevronDownIcon />
           </Button>
@@ -40,6 +40,7 @@ const ChatLiveHeader: React.FC<{
                 isLive &&
                   "bg-lgd-code-hot-ramp bg-clip-text text-transparent font-bold text-[16px]",
               )}
+              avatarClassName="w-7 h-7"
             />
           ) : (
             <></>

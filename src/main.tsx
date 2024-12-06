@@ -16,11 +16,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <Providers>
       <App />
       <ToastContainer
-        toastClassName=" rounded-[14px] text-14-md bg-mercury-30"
+        toastClassName="rounded-[14px] text-14 font-medium  bg-mercury-30"
         closeButton={<CloseFilledIcon size={18} />}
-        bodyClassName={() => "text-14-md flex items-center"}
+        bodyClassName="text-14 font-medium flex items-center"
         hideProgressBar={true}
       />
     </Providers>
+    ,
   </React.StrictMode>,
 )

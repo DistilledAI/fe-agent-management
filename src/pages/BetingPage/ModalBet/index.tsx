@@ -54,6 +54,9 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
       setAmountVal("") // Allow empty string to clear the input
     }
   }
+
+  const isInsufficientFund = toBN(amountVal || 0).isGreaterThan(tokenBal)
+
   return (
     <div
       className={twMerge(
@@ -173,7 +176,7 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
             </div>
 
             <button
-              disabled={!wallet || loading}
+              disabled={!wallet || loading || isInsufficientFund || !amountVal}
               className="mt-4 w-full cursor-pointer rounded border-[2px] border-solid border-[rgba(255,255,255,0.25)] p-1 uppercase transition-all duration-150 ease-in hover:border-[rgba(255,255,255)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-75 disabled:brightness-75"
               onClick={async () => {
                 setLoading(true)
@@ -197,7 +200,7 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
                 {loading && (
                   <img src={loadingButtonIcon} alt="loadingButtonIcon" />
                 )}
-                CONFIRM
+                {!isInsufficientFund ? "CONFIRM" : "INSUFFICIENT FUND"}
               </div>
             </button>
           </div>

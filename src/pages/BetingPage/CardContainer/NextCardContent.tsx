@@ -35,10 +35,18 @@ export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
 
   const upOffset = !toBN(upAmount).isEqualTo(0)
     ? numberWithCommas(total.div(upAmount).toNumber())
-    : 1
+    : numberWithCommas(
+        total.div(10 ** DECIMAL_SPL).isEqualTo(0)
+          ? 1
+          : total.div(10 ** DECIMAL_SPL).toNumber(),
+      )
   const downOffset = !toBN(downAmount).isEqualTo(0)
     ? numberWithCommas(total.div(downAmount).toNumber())
-    : 1
+    : numberWithCommas(
+        total.div(10 ** DECIMAL_SPL).isEqualTo(0)
+          ? 1
+          : total.div(10 ** DECIMAL_SPL).toNumber(),
+      )
 
   const userBetUp = currentRoundData?.userOrder?.outcome?.up
   const userBetDown = currentRoundData?.userOrder?.outcome?.down

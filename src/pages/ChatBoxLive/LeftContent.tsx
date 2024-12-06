@@ -70,14 +70,14 @@ const LeftContent: React.FC<{
   return (
     <div
       className={twMerge(
-        "flex w-full max-w-full flex-col transition-all duration-300 ease-linear max-md:px-4 lg:max-w-[320px]",
+        "flex w-full max-w-full flex-col overflow-y-auto transition-all duration-300 ease-linear scrollbar-hide max-md:px-4 lg:max-w-[320px]",
         isExpandLiveChat && "hidden",
         isCloseChatLive && "h-[calc(100%-230px)]",
       )}
     >
       <div className="flex h-full flex-col md:h-fit">
         {!isLoaded || !isFetched || groupDetail === null ? (
-          <Skeleton className="h-[350px] rounded-[32px] md:h-[400px]"></Skeleton>
+          <Skeleton className="h-[300px] rounded-[32px] md:h-[400px]"></Skeleton>
         ) : isMaxi ? (
           <div className="relative">
             <VideoCustom
@@ -138,7 +138,7 @@ const LeftContent: React.FC<{
               backgroundImage:
                 'url("https://data.cupiee.com/images/companion-stalor-bg.png")',
             }}
-            className="relative h-[400px] overflow-hidden rounded-[32px]"
+            className="relative h-[300px] min-h-[300px] w-full overflow-hidden rounded-[32px] md:h-[400px]"
           >
             <Image
               classNames={{ wrapper: "w-full h-full !max-w-full" }}
@@ -181,7 +181,6 @@ const LeftContent: React.FC<{
         )}
       </div>
       {isOpen && <BetModal onOpenChange={onOpenChange} isOpen={isOpen} />}
-      {/* <BetModal onOpenChange={onOpenChange} isOpen={true} /> */}
     </div>
   )
 }

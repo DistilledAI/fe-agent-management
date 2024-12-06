@@ -52,7 +52,7 @@ const ClanShortInfo = () => {
   return (
     <>
       <div className="w-full pb-1 max-md:my-1 max-md:px-4">
-        <div className="flex w-full items-center rounded-full bg-mercury-30 px-4 py-[10px] max-md:bg-white max-md:px-2">
+        <div className="flex w-full items-center rounded-full bg-mercury-30 px-4 py-2 max-md:bg-white max-md:px-2">
           <div className="relative flex w-full items-center justify-between">
             <div className="absolute left-1/2 h-[26px] w-[1px] -translate-x-1/2 bg-mercury-200 max-md:hidden" />
             <div className="flex w-[calc(50%-15px)] items-center justify-between gap-3 max-md:w-auto max-md:flex-row-reverse">
