@@ -80,7 +80,7 @@ const CardLiveBet = ({ roundItem }: { roundItem: any; currentRound?: any }) => {
         endTime={endTime}
         onEnd={() => setIsEnd(true)}
       />
-      <LiveCardPrice currentRound={liveRoundData} />
+      <LiveCardPrice currentRound={liveRoundData} roundItem={roundItem} />
       <div className="mt-6 flex flex-col">
         {(userBetDown || userBetUp) && (
           <>
