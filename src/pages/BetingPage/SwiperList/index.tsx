@@ -163,7 +163,7 @@ const SwiperList = () => {
         setLoading(false)
       }
     })()
-  }, [wallet, currentRoundData])
+  }, [wallet.publicKey, currentRoundData])
 
   useEffect(() => {
     const handleChartDotClick = () => {
@@ -194,13 +194,13 @@ const SwiperList = () => {
         closeModal={() => setShowBetModal(false)}
       ></ModalBet>
       {loading ? (
-        <div className="flex h-screen max-h-[450px] animate-pulse items-center justify-center gap-10 overflow-x-auto p-6 scrollbar-hide max-md:max-h-[300px]">
+        <div className="flex h-screen max-h-[450px] animate-pulse items-center justify-center gap-10 overflow-x-auto p-6 scrollbar-hide max-md:max-h-[300px] max-md:gap-5">
           <div className="h-full w-full max-w-[320px] rounded-xl bg-[#1f212f]"></div>
           <div className="h-full w-full max-w-[320px] rounded-xl bg-[#1f212f]"></div>
           <div className="h-full w-full max-w-[320px] rounded-xl bg-[#1f212f] max-md:hidden"></div>
         </div>
       ) : (
-        <>
+        <div className="w-full max-md:px-4">
           <Swiper
             // initialSlide={swiperIndex}
             initialSlide={MAX_LIMIT - 2}
@@ -317,21 +317,21 @@ const SwiperList = () => {
               )
             })}
           </Swiper>
-          <div className="mt-5 flex items-center justify-center gap-2">
+          <div className="mt-5 flex items-center justify-center gap-2 max-md:mt-1">
             <div
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-1 border-white bg-mercury-950 hover:brightness-125"
+              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-1 border-white bg-mercury-950 hover:brightness-125 max-md:h-7 max-md:w-7"
               onClick={() => swiper.slideTo(swiper.activeIndex - 1, 0)}
             >
               <ArrowsLeftIcon />
             </div>
             <div
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-1 border-white bg-mercury-950 hover:brightness-125"
+              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-1 border-white bg-mercury-950 hover:brightness-125 max-md:h-7 max-md:w-7"
               onClick={() => swiper.slideTo(swiper.activeIndex + 1, 0)}
             >
               <ArrowsRightIcon />
             </div>
           </div>
-        </>
+        </div>
       )}
     </>
   )

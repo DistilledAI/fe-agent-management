@@ -8,7 +8,7 @@ import { CalculatingCardContent } from "./CalculatingCardContent"
 import CardLiveBet from "./CardLive"
 import ExpireCardContent from "./ExpireCardContent"
 import { LaterCardContent } from "./LaterCardContent"
-import { NextCardContent } from "./NextCardContent"
+import NextCardContent from "./NextCardContent"
 
 interface CardContainerProps {
   roundItem: any

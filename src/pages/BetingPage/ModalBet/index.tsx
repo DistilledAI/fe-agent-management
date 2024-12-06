@@ -213,6 +213,7 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
                   )
 
                   setLoading(false)
+                  closeModal()
                 }}
               >
                 <div className="flex items-center justify-center gap-2 rounded bg-white px-6 py-2 uppercase text-[#080A14]">
