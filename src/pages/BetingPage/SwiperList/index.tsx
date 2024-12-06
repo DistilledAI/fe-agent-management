@@ -317,7 +317,7 @@ const SwiperList = () => {
               )
             })}
           </Swiper>
-          <div className="mb-[70px] mt-5 flex items-center justify-center gap-2 max-md:mb-10 max-md:mt-1">
+          <div className="mb-[60px] mt-5 flex items-center justify-center gap-2 max-md:mb-10 max-md:mt-1">
             <div
               className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-1 border-white bg-mercury-950 hover:brightness-125 max-md:h-7 max-md:w-7"
               onClick={() => swiper.slideTo(swiper.activeIndex - 1, 0)}
