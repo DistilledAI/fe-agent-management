@@ -69,11 +69,14 @@ const SwiperList = () => {
   }, [currentRoundStored])
 
   useEffect(() => {
-    console.log("======= REFRESH LIST =======", currentRoundStored)
+    console.log(
+      "======= REFRESH LIST ======= with currentRound is: ",
+      currentRoundStored,
+    )
     ;(async () => {
       try {
         setLoading(true)
-        if (currentRoundStored === currentRound) {
+        if (currentEventData && currentRoundStored === currentRound) {
           return
         }
         console.log("wallet", wallet)
