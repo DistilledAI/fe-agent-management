@@ -10,6 +10,7 @@ import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { MAX_ADDRESS_SOLANA } from "program/constants"
 import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 import { twMerge } from "tailwind-merge"
 
 const web3Solana = new Web3SolanaProgramInteraction()
@@ -42,7 +43,9 @@ const HeaderWallet = () => {
 
   const connectPhantom = async () => {
     select(PhantomWalletName)
-    await connect()
+    await connect().catch(() => {
+      toast.error("Connect Wallet Failed!")
+    })
   }
 
   return publicKey ? (

@@ -8,6 +8,7 @@ import { loadingButtonIcon } from "@assets/svg"
 import { MAX_ADDRESS_SOLANA } from "program/constants"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { PhantomWalletName } from "@solana/wallet-adapter-wallets"
+import { toast } from "react-toastify"
 
 interface ModalProps {
   isOpen: boolean
@@ -181,7 +182,9 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
                 className="mt-4 w-full cursor-pointer rounded border-[2px] border-solid border-[rgba(255,255,255,0.25)] p-1 uppercase transition-all duration-150 ease-in hover:border-[rgba(255,255,255)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-75 disabled:brightness-75"
                 onClick={async () => {
                   wallet.select(PhantomWalletName)
-                  await wallet.connect()
+                  await wallet.connect().catch(() => {
+                    toast.error("Connect Wallet Failed")
+                  })
                 }}
               >
                 <div className="flex items-center justify-center gap-2 rounded bg-white px-6 py-2 uppercase text-[#080A14]">
