@@ -194,10 +194,10 @@ const SwiperList = () => {
         closeModal={() => setShowBetModal(false)}
       ></ModalBet>
       {loading ? (
-        <div className="flex h-screen max-h-[450px] animate-pulse items-center justify-center gap-10 overflow-x-auto p-6 scrollbar-hide">
-          <div className="h-full w-full max-w-[320px] rounded-xl bg-[#13141D]"></div>
-          <div className="h-full w-full max-w-[320px] rounded-xl bg-[#13141D]"></div>
-          <div className="h-full w-full max-w-[320px] rounded-xl bg-[#13141D]"></div>
+        <div className="flex h-screen max-h-[450px] animate-pulse items-center justify-center gap-10 overflow-x-auto p-6 scrollbar-hide max-md:max-h-[300px]">
+          <div className="h-full w-full max-w-[320px] rounded-xl bg-[#1f212f]"></div>
+          <div className="h-full w-full max-w-[320px] rounded-xl bg-[#1f212f]"></div>
+          <div className="h-full w-full max-w-[320px] rounded-xl bg-[#1f212f] max-md:hidden"></div>
         </div>
       ) : (
         <>
