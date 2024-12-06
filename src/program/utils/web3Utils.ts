@@ -21,6 +21,7 @@ import { EVENT, EVENT_CONFIG, PUBKEYS } from "program/constants.ts"
 import { toast } from "react-toastify"
 import idl from "../idl/solora_pyth_price.json"
 import { SoloraPythPrice } from "../types/solora_pyth_price.ts"
+import { envConfig } from "@configs/env.ts"
 
 export const commitmentLevel = "confirmed"
 export const TOKEN_RESERVES = 1_000_000_000_000_000
@@ -33,9 +34,11 @@ export const INIT_BONDING_CURVE = 95
 //   "wss://convincing-practical-moon.solana-devnet.quiknode.pro/5b018a6d154e06d1c892246cf1b5a251b40bddc1"
 
 const SOLANA_RPC =
-  "https://alien-stylish-road.solana-mainnet.quiknode.pro/4a5144638133c97e486d36e03fa4a82ea99c9add"
+  envConfig.solanaRpc ||
+  "https://mainnet.helius-rpc.com/?api-key=d5980b40-04fe-46e0-8893-25ebf25fedac"
 const SOLANA_WS =
-  "wss://alien-stylish-road.solana-mainnet.quiknode.pro/4a5144638133c97e486d36e03fa4a82ea99c9add"
+  envConfig.solanaWs ||
+  "wss://mainnet.helius-rpc.com/?api-key=d5980b40-04fe-46e0-8893-25ebf25fedac"
 
 export const endpoint = SOLANA_RPC
 export const pythProgramId = new PublicKey(idl.address)
@@ -229,8 +232,8 @@ export class Web3SolanaProgramInteraction {
         currentRound.startTime.toNumber() <= currentTime &&
         currentTime <= currentRound.lockTime.toNumber()
       ) {
-        const betAmount = new BN(100000)
-        const side = { up: {} }
+        // const betAmount = new BN(100000)
+        // const side = { up: {} }
 
         const [order] = PublicKey.findProgramAddressSync(
           [Buffer.from("order"), event.toBytes(), wallet.publicKey.toBuffer()],
@@ -498,7 +501,7 @@ export class Web3SolanaProgramInteraction {
         ])
         .instruction()
 
-      console.log("createIx", createIx)
+      // console.log("createIx", createIx)
 
       transaction.add(updateCpIx, updateCuIx, createIx)
 
