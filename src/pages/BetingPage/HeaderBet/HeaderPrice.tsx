@@ -24,7 +24,7 @@ const HeaderPrice = () => {
         <Image className="h-8 w-8" src={btcIconRote} />
         <p className="text-18 text-[#9192A0] max-md:text-16">
           <span className="mr-1 text-white">BTC</span>
-          bitcoin price
+          bitcoin
         </p>
       </div>
       <div className="mt-3 flex items-center gap-2 max-md:mt-2">

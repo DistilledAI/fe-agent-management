@@ -12,8 +12,11 @@ import { DECIMAL_BTC, DECIMAL_SHOW, DECIMAL_SPL } from "../constants"
 import MaxBettedInfo from "./MaxBettedInfo"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { CalculatingCardContent } from "./CalculatingCardContent"
+import { useSelector } from "react-redux"
+import { RootState } from "@configs/store"
 
 const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
+  const { eventConfig } = useSelector((state: RootState) => state.priceInfo)
   const wallet = useWallet()
   const [loading, setLoading] = useState(false)
   const [isClaimed, setIsClaimed] = useState(false)
@@ -197,6 +200,7 @@ const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
               const res = await web3Solana.claimOrder(
                 wallet,
                 roundItem.id.toNumber(),
+                eventConfig,
               )
 
               if (res) {
@@ -212,7 +216,7 @@ const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
         >
           <div className="flex items-center justify-center gap-2 rounded bg-white px-6 py-2 uppercase text-[#080A14]">
             {loading && <img src={loadingButtonIcon} alt="loadingButtonIcon" />}
-            Collect winnings
+            {!isInvalid ? "Collect winnings" : "WITHDRAW"}
           </div>
         </button>
       )}

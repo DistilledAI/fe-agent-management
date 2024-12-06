@@ -10,7 +10,7 @@ const TimeProgress: React.FC<{
   const { percent } = useCountdown({
     startTime,
     endTime,
-    onStart: () => console.log("started"),
+    onStart: () => {},
     onEnd: onEnd,
   })
 
