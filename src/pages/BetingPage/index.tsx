@@ -30,16 +30,19 @@ const Betting = () => {
 
   return (
     <div>
-      <div className="mx-auto mb-10 max-w-[1200px] px-4">
+      <div className="mx-auto mb-10 max-w-[1200px] px-4 max-md:mb-1">
         <HeaderBet />
       </div>
       <SwiperList />
-      <div className="fixed bottom-0 left-0 flex w-full items-center justify-center gap-2 bg-[#080A14] pb-5 pt-2">
-        <span className="text-14 font-medium uppercase text-[#585A6B]">
+      <div className="fixed bottom-0 left-0 flex w-full items-center justify-center gap-2 bg-[#080A14] pb-5 pt-2 max-md:pb-2 max-md:pt-1">
+        <span className="text-14 font-medium uppercase text-[#585A6B] max-md:text-[11px]">
           Powered by
         </span>
         <a target="_blank" href="https://agents.land/">
-          <Image className="max-h-[34px]" src={logoAgentLand} />
+          <Image
+            className="max-h-[34px] max-md:max-h-[26px]"
+            src={logoAgentLand}
+          />
         </a>
       </div>
     </div>

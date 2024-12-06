@@ -22,13 +22,13 @@ const HeaderPrice = () => {
     <div className="">
       <div className="flex items-center gap-2">
         <Image className="h-8 w-8" src={btcIconRote} />
-        <p className="text-18 text-[#9192A0]">
+        <p className="text-18 text-[#9192A0] max-md:text-16">
           <span className="mr-1 text-white">BTC</span>
           bitcoin price
         </p>
       </div>
-      <div className="mt-3 flex items-center gap-2">
-        <p className="text-[32px] font-medium leading-none text-[#F3F4F6]">
+      <div className="mt-3 flex items-center gap-2 max-md:mt-2">
+        <p className="text-[32px] font-medium leading-none text-[#F3F4F6] max-md:text-[22px]">
           $
           {numberWithCommas(new BigNumber(price).toNumber(), undefined, {
             maximumFractionDigits: DECIMAL_SHOW,
