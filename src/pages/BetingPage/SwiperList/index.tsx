@@ -163,7 +163,7 @@ const SwiperList = () => {
         setLoading(false)
       }
     })()
-  }, [wallet, currentRoundData])
+  }, [wallet.publicKey, currentRoundData])
 
   useEffect(() => {
     const handleChartDotClick = () => {

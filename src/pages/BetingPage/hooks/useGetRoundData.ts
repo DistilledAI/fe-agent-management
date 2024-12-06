@@ -69,7 +69,7 @@ export const useGetCurrentRoundData = () => {
     // Set interval to fetch every 5 seconds
     interval = setInterval(() => {
       fetchRoundData()
-    }, 5000)
+    }, 10000)
 
     return () => clearInterval(interval) // Cleanup interval on component unmount
   }, [wallet, dispatch])
@@ -105,6 +105,17 @@ export const useGetRoundDataById = (id: number) => {
                 eventPDA as any,
               )
             }
+
+            const lockPrice = toBN(
+              (currentEvent as any)?.lockPrice || 0,
+            ).toNumber()
+
+            console.log("lockPrice", lockPrice)
+
+            if (lockPrice) {
+              clearInterval(intervalId)
+              intervalId = null as any
+            }
             // setCurrentEventData(currentEvent)
             dispatch(
               updateLiveRound({
@@ -124,7 +135,7 @@ export const useGetRoundDataById = (id: number) => {
     // Set interval to fetch every 5 seconds
     intervalId = setInterval(() => {
       fetchRoundDataById()
-    }, 5000)
+    }, 10000)
 
     return () => clearInterval(intervalId) // Cleanup interval on component unmount
   }, [wallet, id, dispatch])

@@ -28,15 +28,12 @@ export const TOKEN_RESERVES = 1_000_000_000_000_000
 export const LAMPORT_RESERVES = 1_000_000_000
 export const INIT_BONDING_CURVE = 95
 
-// const SOLANA_RPC =
-//   "https://convincing-practical-moon.solana-devnet.quiknode.pro/5b018a6d154e06d1c892246cf1b5a251b40bddc1"
-// const SOLANA_WS =
-//   "wss://convincing-practical-moon.solana-devnet.quiknode.pro/5b018a6d154e06d1c892246cf1b5a251b40bddc1"
-
-// const SOLANA_RPC = envConfig.solanaRpc || "https://solana-rpc.publicnode.com"
-// const SOLANA_WS = envConfig.solanaWs || "wss://solana-rpc.publicnode.com"
-const SOLANA_RPC = envConfig.solanaRpc || "https://swr.xnftdata.com/rpc-proxy"
-const SOLANA_WS = envConfig.solanaWs || "wss://swr.xnftdata.com/rpc-proxy"
+const SOLANA_RPC =
+  envConfig.solanaRpc ||
+  "https://mainnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6"
+const SOLANA_WS =
+  envConfig.solanaWs ||
+  "wss://mainnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6"
 
 export const endpoint = SOLANA_RPC
 export const pythProgramId = new PublicKey(idl.address)

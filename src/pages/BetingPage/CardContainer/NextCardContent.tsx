@@ -6,8 +6,9 @@ import { BET_TYPE } from "."
 import { DECIMAL_SPL } from "../constants"
 import { useGetCurrentRoundData } from "../hooks/useGetRoundData"
 import MaxBettedInfo from "./MaxBettedInfo"
+import { memo } from "react"
 
-export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
+const NextCardContent = ({ roundItem }: { roundItem: any }) => {
   const { currentRoundData } = useGetCurrentRoundData()
   //max predict
   const typeMaxBet = roundItem?.predict?.action
@@ -156,3 +157,5 @@ export const NextCardContent = ({ roundItem }: { roundItem: any }) => {
     </div>
   )
 }
+
+export default memo(NextCardContent)

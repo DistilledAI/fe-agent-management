@@ -5,7 +5,7 @@ import { DECIMAL_BTC, DECIMAL_SPL } from "@pages/BetingPage/constants"
 import { useGetRoundDataById } from "@pages/BetingPage/hooks/useGetRoundData"
 import { numberWithCommas, toBN } from "@utils/format"
 import BigNumber from "bignumber.js"
-import { useState } from "react"
+import { memo, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import TimeProgress from "../TimeProgress"
 import LiveCardPrice from "./LivePrice"
@@ -112,4 +112,4 @@ const CardLiveBet = ({ roundItem }: { roundItem: any; currentRound?: any }) => {
   )
 }
 
-export default CardLiveBet
+export default memo(CardLiveBet)

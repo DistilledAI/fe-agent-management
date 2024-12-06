@@ -36,7 +36,9 @@ export const SolanaWalletProvider = ({ children }: { children: ReactNode }) => {
   // const wallets = [new PhantomWalletAdapter(), new SolflareWalletAdapter()];
   return (
     <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets}>{children}</WalletProvider>
+      <WalletProvider wallets={wallets} autoConnect>
+        {children}
+      </WalletProvider>
     </ConnectionProvider>
   )
 }
