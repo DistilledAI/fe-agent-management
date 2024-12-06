@@ -75,7 +75,7 @@ const useConnectWallet = () => {
 
   const connectOwallet = async () => {
     //@ts-ignore
-    const isOwallet = window.owallet.isOwallet
+    const isOwallet = window?.owallet?.isOwallet
 
     if (!isOwallet) {
       if (isMobile) {
@@ -91,25 +91,17 @@ const useConnectWallet = () => {
       return
     }
 
-    const isTrustWalletDefault =
-      window.ethereum.isTrust || window.ethereum.isTrustWallet
-
-    if (isTrustWalletDefault) {
-      toast.warning(
-        "Trust Wallet is set to default, please turn off and reload page to use MetaMask!",
-      )
-      return
-    }
-
     try {
       setLoadingConnectOwallet(true)
       const timestamp = Math.floor(Date.now() / 1000) + 86400
       //@ts-ignore
 
-      const provider = new ethers.providers.Web3Provider(
-        //@ts-ignore
-        isMobile ? window.ethereum : window.eth_owallet,
-      )
+      const ethereumProvider = isMobile ? window?.ethereum : window?.eth_owallet
+      if (!ethereumProvider) {
+        return toast.warning(`Please install Owallet to continue!`)
+      }
+
+      const provider = new ethers.providers.Web3Provider(ethereumProvider)
       //@ts-ignore
       if (isMobile) {
         await window.ethereum.request!({
@@ -127,8 +119,8 @@ const useConnectWallet = () => {
       }
       //@ts-ignore
       await window?.owallet.enable("0x01")
-
       await provider.send("eth_requestAccounts", [])
+
       const signer = await provider.getSigner()
       const publicAddress = await getPublicAddress(signer)
 
@@ -166,8 +158,10 @@ const useConnectWallet = () => {
 
       await login(input)
       dispatch(updateModalStatus(false))
-    } catch (error) {
+    } catch (error: any) {
       console.error(error, "error")
+      toast.error(error?.message)
+      setLoadingConnectOwallet(false)
     } finally {
       setLoadingConnectOwallet(false)
     }
@@ -194,7 +188,13 @@ const useConnectWallet = () => {
       const timestamp = Math.floor(Date.now() / 1000) + 86400
       const provider = new ethers.providers.Web3Provider(window.ethereum)
 
-      await provider.send("eth_requestAccounts", [])
+      try {
+        await provider.send("eth_requestAccounts", [])
+      } catch (error: any) {
+        console.log("connectMetamaskWal ~ error:", error)
+        toast.error(error?.message)
+        throw error
+      }
       const signer = await provider.getSigner()
       const publicAddress = await getPublicAddress(signer)
 
@@ -235,8 +235,10 @@ const useConnectWallet = () => {
 
       await login(input)
       dispatch(updateModalStatus(false))
-    } catch (error) {
+    } catch (error: any) {
       console.error(error, "error")
+      toast.error(error?.message)
+      setLoadingConnectMetamask(false)
     } finally {
       setLoadingConnectMetamask(false)
     }
@@ -284,7 +286,8 @@ const useConnectWallet = () => {
       try {
         await provider.connect()
       } catch (error: any) {
-        toast.error("WalletSignInError: Unexpected error")
+        console.log("connectPhantomWal ~ error:", error)
+        toast.error(error?.message)
         throw error
       }
 
@@ -339,7 +342,8 @@ const useConnectWallet = () => {
       dispatch(updateModalStatus(false))
     } catch (error: any) {
       console.error(error, "error")
-      toast.error(error?.response?.data?.message)
+      toast.error(error?.message)
+      setLoadingConnectPhantom(false)
     } finally {
       setLoadingConnectPhantom(false)
     }
