@@ -7,9 +7,11 @@ import { DECIMAL_SPL } from "../constants"
 import { useGetCurrentRoundData } from "../hooks/useGetRoundData"
 import MaxBettedInfo from "./MaxBettedInfo"
 import { memo } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 
 const NextCardContent = ({ roundItem }: { roundItem: any }) => {
   const { currentRoundData } = useGetCurrentRoundData()
+  const queryClient = useQueryClient()
   //max predict
   const typeMaxBet = roundItem?.predict?.action
 
@@ -55,14 +57,24 @@ const NextCardContent = ({ roundItem }: { roundItem: any }) => {
     .div(10 ** DECIMAL_SPL)
     .toNumber()
 
+  const handleClickBet = (type: BET_TYPE) => {
+    queryClient.setQueryData(["bet-type"], () => type)
+  }
+
   return (
     <div className="rounded-b-[12px] border border-[#1A1C28] bg-[#13141D] p-4">
       {!(userBetDown || userBetUp) ? (
         <div className="mb-4 flex flex-col rounded-lg bg-[#080A14] p-4">
-          <div className="flex w-full cursor-pointer items-center justify-center rounded bg-[#9FF4CF] p-2 text-center text-[14px] font-medium text-[#080A14]">
+          <div
+            onClick={() => handleClickBet(BET_TYPE.UP)}
+            className="flex w-full cursor-pointer items-center justify-center rounded bg-[#9FF4CF] p-2 text-center text-[14px] font-medium text-[#080A14]"
+          >
             ENTER UP
           </div>
-          <div className="mt-2 flex w-full cursor-pointer items-center justify-center rounded bg-[#E75787] p-2 text-center text-[14px] font-medium text-[#080A14]">
+          <div
+            onClick={() => handleClickBet(BET_TYPE.DOWN)}
+            className="mt-2 flex w-full cursor-pointer items-center justify-center rounded bg-[#E75787] p-2 text-center text-[14px] font-medium text-[#080A14]"
+          >
             ENTER DOWN
           </div>
         </div>
