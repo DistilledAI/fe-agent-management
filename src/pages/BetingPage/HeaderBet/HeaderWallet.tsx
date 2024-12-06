@@ -48,26 +48,37 @@ const HeaderWallet = () => {
   return publicKey ? (
     <div>
       <div className="flex items-center gap-2">
-        <p className="w-[62px] font-medium text-[#999]">Wallet:</p>
+        <p className="w-[62px] font-medium text-[#999] max-md:text-[14px]">
+          Wallet:
+        </p>
         <div
           className={twMerge("flex cursor-pointer items-center gap-2")}
           onClick={(e) => copyClipboard(e, address)}
         >
-          <span className={twMerge("text-[16px] text-[#cfcfcf]")}>
+          <span
+            className={twMerge("text-[16px] text-[#cfcfcf] max-md:text-[14px]")}
+          >
             {centerTextEllipsis(address)}
           </span>
           <Image className="h-6 w-6" src={solanaCircleIcon} />
           <CopyIcon color="#cfcfcf" />
         </div>
       </div>
-      <div className="mt-1 flex items-center gap-2">
-        <p className="w-[62px] font-medium text-[#999]">Balance:</p>
-        <p className="text-[#cfcfcf]">{numberWithCommas(tokenBal)}</p>
+      <div className="mt-1 flex items-center gap-2 max-md:mt-0">
+        <p className="w-[62px] font-medium text-[#999] max-md:text-[14px]">
+          Balance:
+        </p>
+        <p className="text-[#cfcfcf] max-md:text-[14px]">
+          {numberWithCommas(tokenBal)}
+        </p>
         <Image className="h-5 w-5 rounded-full" src={maxIcon} />
       </div>
     </div>
   ) : (
-    <Button onClick={connectPhantom} className="rounded bg-white font-medium">
+    <Button
+      onClick={connectPhantom}
+      className="rounded bg-white font-medium max-md:w-full"
+    >
       <div className="-ml-[5px] scale-75">
         <PhantomIcon />
       </div>{" "}
