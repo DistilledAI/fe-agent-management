@@ -8,6 +8,8 @@ import { loadingButtonIcon } from "@assets/svg"
 import { MAX_ADDRESS_SOLANA } from "program/constants"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { PhantomWalletName } from "@solana/wallet-adapter-wallets"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { toast } from "react-toastify"
 
 interface ModalProps {
   isOpen: boolean
@@ -17,11 +19,19 @@ interface ModalProps {
 const web3Solana = new Web3SolanaProgramInteraction()
 
 const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
+  const queryClient = useQueryClient()
+  const { data: type } = useQuery({
+    queryKey: ["bet-type"],
+    initialData: BET_TYPE.UP,
+  })
   const [tokenBal, setTokenBal] = useState<number>(0)
-  const [type, setType] = useState<BET_TYPE>(BET_TYPE.UP)
   const [amountVal, setAmountVal] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(false)
   const wallet = useWallet()
+
+  const handleSetType = (betType: BET_TYPE) => {
+    queryClient.setQueryData(["bet-type"], () => betType)
+  }
 
   const getBalance = async () => {
     if (!wallet.publicKey) {
@@ -73,7 +83,7 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
           <button
             onClick={() => {
               closeModal()
-              setType(BET_TYPE.UP)
+              handleSetType(BET_TYPE.UP)
               setAmountVal("")
             }}
             className="absolute right-6 top-6 text-gray-600"
@@ -97,7 +107,7 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
                 "h-10 flex-1 cursor-pointer rounded bg-[#1A1C28] p-2 text-center text-[14px] uppercase text-[#E8E9EE] hover:brightness-125",
                 type === BET_TYPE.UP && "bg-[#9FF4CF] text-[#080A14]",
               )}
-              onClick={() => setType(BET_TYPE.UP)}
+              onClick={() => handleSetType(BET_TYPE.UP)}
             >
               UP
             </div>
@@ -106,7 +116,7 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
                 "h-10 flex-1 cursor-pointer rounded bg-[#1A1C28] p-2 text-center text-[14px] uppercase text-[#E8E9EE] hover:brightness-125",
                 type === BET_TYPE.DOWN && "bg-[#E75787] text-[#080A14]",
               )}
-              onClick={() => setType(BET_TYPE.DOWN)}
+              onClick={() => handleSetType(BET_TYPE.DOWN)}
             >
               DOWN
             </div>
@@ -181,7 +191,9 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
                 className="mt-4 w-full cursor-pointer rounded border-[2px] border-solid border-[rgba(255,255,255,0.25)] p-1 uppercase transition-all duration-150 ease-in hover:border-[rgba(255,255,255)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-75 disabled:brightness-75"
                 onClick={async () => {
                   wallet.select(PhantomWalletName)
-                  await wallet.connect()
+                  await wallet.connect().catch(() => {
+                    toast.error("Connect Wallet Failed")
+                  })
                 }}
               >
                 <div className="flex items-center justify-center gap-2 rounded bg-white px-6 py-2 uppercase text-[#080A14]">
