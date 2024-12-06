@@ -191,7 +191,6 @@ const useConnectWallet = () => {
 
     try {
       setLoadingConnectMetamask(true)
-
       const timestamp = Math.floor(Date.now() / 1000) + 86400
       const provider = new ethers.providers.Web3Provider(window.ethereum)
 
@@ -282,7 +281,12 @@ const useConnectWallet = () => {
         )
       }
       const timestamp = Math.floor(Date.now() / 1000) + 86400
-      await provider.connect()
+      try {
+        await provider.connect()
+      } catch (error: any) {
+        toast.error("WalletSignInError: Unexpected error")
+        throw error
+      }
 
       //@ts-ignore
       const accounts = await window?.phantom.ethereum.request({
@@ -333,8 +337,9 @@ const useConnectWallet = () => {
 
       await login(input)
       dispatch(updateModalStatus(false))
-    } catch (error) {
+    } catch (error: any) {
       console.error(error, "error")
+      toast.error(error?.response?.data?.message)
     } finally {
       setLoadingConnectPhantom(false)
     }
