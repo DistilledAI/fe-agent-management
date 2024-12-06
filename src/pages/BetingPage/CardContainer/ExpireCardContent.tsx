@@ -1,5 +1,6 @@
 import { loadingButtonIcon } from "@assets/svg"
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
+import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { numberWithCommas, toBN } from "@utils/format"
 import BigNumber from "bignumber.js"
@@ -8,7 +9,6 @@ import { memo, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { BET_TYPE } from "."
 import { DECIMAL_BTC, DECIMAL_SHOW, DECIMAL_SPL } from "../constants"
-import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { CalculatingCardContent } from "./CalculatingCardContent"
 import MaxBettedInfo from "./MaxBettedInfo"
 
@@ -135,7 +135,11 @@ const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
             </span>
           </div>
           <div className="flex items-center gap-1">
-            <MaxBettedInfo betType={typeMaxBet} typeBet={BET_TYPE.UP} />
+            <MaxBettedInfo
+              betType={typeMaxBet}
+              typeBet={BET_TYPE.UP}
+              isExpired
+            />
             <ArrowUpFilledIcon
               bgColor={!isUp ? "#585A6B" : "#9FF4CF"}
               size={18}
@@ -163,7 +167,11 @@ const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
             </span>
           </div>
           <div className="flex items-center gap-1">
-            <MaxBettedInfo betType={typeMaxBet} typeBet={BET_TYPE.DOWN} />
+            <MaxBettedInfo
+              betType={typeMaxBet}
+              typeBet={BET_TYPE.DOWN}
+              isExpired
+            />
             <div className="rotate-180">
               <ArrowUpFilledIcon
                 bgColor={isDown ? "#E75787" : "#585A6B"}

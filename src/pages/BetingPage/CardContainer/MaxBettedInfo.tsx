@@ -6,8 +6,11 @@ import { BET_TYPE } from "."
 const MaxBettedInfo: React.FC<{
   betType: BET_TYPE
   typeBet: any
-}> = ({ betType, typeBet }) => {
+  isExpired?: boolean
+}> = ({ betType, typeBet, isExpired }) => {
   if (betType !== typeBet) return <div />
+
+  const predictionText = isExpired ? "predicted" : "prediction"
 
   return (
     <Tooltip
@@ -27,7 +30,7 @@ const MaxBettedInfo: React.FC<{
             <path d="M1.3125 6.125H3.0625V12.25H1.3125V6.125Z" fill="#E8E9EE" />
           </svg>
           <span className="text-12 font-medium text-[#F7F7F7]">
-            MAX’s bet{" "}
+            MAX’s {predictionText}{" "}
             {betType === BET_TYPE.DOWN ? (
               <span className="text-[#E75787]">DOWN</span>
             ) : (

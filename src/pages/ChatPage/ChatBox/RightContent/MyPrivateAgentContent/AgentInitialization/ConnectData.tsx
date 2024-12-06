@@ -1,3 +1,4 @@
+import AlertBox from "@components/AlertBox"
 import { CheckedIcon } from "@components/Icons/Checked"
 import { DatabaseIcon } from "@components/Icons/DatabaseImportIcon"
 import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
@@ -10,9 +11,8 @@ import { mapMyDataToBot } from "services/user"
 import { TYPE_DATA_KEY } from "../CreatePrivateAgent"
 import UploadCustom from "../UploadCustom"
 import UploadSocialLink from "../UploadSocialLink"
-import AgentSetupStatus from "./AgentSetupStatus"
-import AlertBox from "@components/AlertBox"
 import useActiveAgent from "../useActiveAgent"
+import AgentSetupStatus from "./AgentSetupStatus"
 
 const ConnectData = () => {
   const navigate = useNavigate()
@@ -68,7 +68,7 @@ const ConnectData = () => {
           <AlertBox
             isVisible={!isAgentActive}
             messages={[
-              "We appreciate your patience. Please join the whitelist to activate.",
+              "Please join the whitelist to activate. You will receive an email from contact@distilled.ai once your Personal Agent has been approved.",
             ]}
             links={[
               {
