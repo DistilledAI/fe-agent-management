@@ -1,6 +1,6 @@
 import { CheckFilledIcon } from "@components/Icons/DefiLens"
 import { TIMER } from "@hooks/useCountdown"
-import { Divider } from "@nextui-org/react"
+import { Divider, Skeleton } from "@nextui-org/react"
 import { DECIMAL_BTC, DECIMAL_SPL } from "@pages/BetingPage/constants"
 import { useGetRoundDataById } from "@pages/BetingPage/hooks/useGetRoundData"
 import { numberWithCommas, toBN } from "@utils/format"
@@ -103,7 +103,13 @@ const CardLiveBet = ({ roundItem }: { roundItem: any; currentRound?: any }) => {
         )}
         <div className="flex items-center justify-between text-[12px]">
           <span className="text-[#9192A0]">Locked Price</span>
-          <span className="text-[#E8E9EE]">${numberWithCommas(lockPrice)}</span>
+          {new BigNumber(lockPrice).isEqualTo(0) ? (
+            <Skeleton className="h-4 w-[40px] bg-mercury-800"></Skeleton>
+          ) : (
+            <span className="text-[#E8E9EE]">
+              ${numberWithCommas(lockPrice)}
+            </span>
+          )}
         </div>
         <div className="mt-3 flex items-center justify-between text-[12px]">
           <span className="text-[#9192A0]">Prize pool</span>
