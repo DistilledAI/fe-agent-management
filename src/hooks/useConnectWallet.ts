@@ -192,7 +192,6 @@ const useConnectWallet = () => {
         await provider.send("eth_requestAccounts", [])
       } catch (error: any) {
         console.log("connectMetamaskWal ~ error:", error)
-        toast.error(error?.message)
         throw error
       }
       const signer = await provider.getSigner()
@@ -287,7 +286,6 @@ const useConnectWallet = () => {
         await provider.connect()
       } catch (error: any) {
         console.log("connectPhantomWal ~ error:", error)
-        toast.error(error?.message)
         throw error
       }
 
