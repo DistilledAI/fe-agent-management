@@ -85,7 +85,6 @@ const LeftContent: React.FC<{
               classNames={{
                 video: twMerge(
                   "h-full min-h-[350px] w-full rounded-[32px] object-cover max-h-[350px] md:max-h-[400px] md:h-auto",
-                  isCloseChatLive && "max-md:max-h-full",
                 ),
               }}
               isVolumeIcon
