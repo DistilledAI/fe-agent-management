@@ -33,8 +33,8 @@ export const INIT_BONDING_CURVE = 95
 // const SOLANA_WS =
 //   "wss://convincing-practical-moon.solana-devnet.quiknode.pro/5b018a6d154e06d1c892246cf1b5a251b40bddc1"
 
-const SOLANA_RPC = envConfig.solanaRpc || "https://swr.xnftdata.com/rpc-proxy"
-const SOLANA_WS = envConfig.solanaWs || "wss://swr.xnftdata.com/rpc-proxy"
+const SOLANA_RPC = envConfig.solanaRpc || "https://solana-rpc.publicnode.com"
+const SOLANA_WS = envConfig.solanaWs || "wss://solana-rpc.publicnode.com"
 
 export const endpoint = SOLANA_RPC
 export const pythProgramId = new PublicKey(idl.address)
@@ -58,8 +58,9 @@ export class Web3SolanaProgramInteraction {
 
   getEventConfig = async (wallet: WalletContextState) => {
     // check the connection
-    if (!wallet.publicKey || !this.connection) {
-      console.log("Warning: Wallet not connected")
+    if (!this.connection) {
+      // !wallet.publicKey ||
+      console.log("Warning: Connection Notfound")
       return { eventDataConfig: "", eventConfigPda: "" }
     }
     const provider = new anchor.AnchorProvider(this.connection, wallet as any, {
@@ -75,7 +76,7 @@ export class Web3SolanaProgramInteraction {
       [
         Buffer.from(EVENT_CONFIG),
         new PublicKey(PUBKEYS.MAINNET.EVENT_AUTHORITY).toBytes(),
-        new PublicKey(PUBKEYS.MAINNET.PYTH_FEED).toBytes(),
+        new PublicKey(PUBKEYS.MAINNET.MODERATOR).toBytes(),
         new PublicKey(PUBKEYS.MAINNET.CURRENCY_MINT).toBytes(),
         CHAINLINK_PROGRAM.toBytes(),
         CHAINLINK_FEED.toBytes(),
@@ -95,8 +96,8 @@ export class Web3SolanaProgramInteraction {
     currentRound: number,
   ) => {
     // check the connection
-    if (!wallet.publicKey || !this.connection) {
-      console.log("Warning: Wallet not connected")
+    if (!this.connection) {
+      console.log("Warning: Connection Notfound")
       return { eventData: "", eventPDA: "" }
     }
     const provider = new anchor.AnchorProvider(this.connection, wallet as any, {
@@ -187,7 +188,7 @@ export class Web3SolanaProgramInteraction {
         [
           Buffer.from(EVENT_CONFIG),
           new PublicKey(PUBKEYS.MAINNET.EVENT_AUTHORITY).toBytes(),
-          new PublicKey(PUBKEYS.MAINNET.PYTH_FEED).toBytes(),
+          new PublicKey(PUBKEYS.MAINNET.MODERATOR).toBytes(),
           currencyMint.toBytes(),
           CHAINLINK_PROGRAM.toBytes(),
           CHAINLINK_FEED.toBytes(),
@@ -378,7 +379,7 @@ export class Web3SolanaProgramInteraction {
         [
           Buffer.from(EVENT_CONFIG),
           new PublicKey(PUBKEYS.MAINNET.EVENT_AUTHORITY).toBytes(),
-          new PublicKey(PUBKEYS.MAINNET.PYTH_FEED).toBytes(),
+          new PublicKey(PUBKEYS.MAINNET.MODERATOR).toBytes(),
           currencyMint.toBytes(),
           CHAINLINK_PROGRAM.toBytes(),
           CHAINLINK_FEED.toBytes(),
@@ -551,6 +552,7 @@ export class Web3SolanaProgramInteraction {
   }
 
   getTokenBalance = async (walletAddress: string, tokenMintAddress: string) => {
+    if (!walletAddress) return 0
     const wallet = new PublicKey(walletAddress)
     const tokenMint = new PublicKey(tokenMintAddress)
 

@@ -7,6 +7,7 @@ import { BET_TYPE } from "../CardContainer"
 import { loadingButtonIcon } from "@assets/svg"
 import { MAX_ADDRESS_SOLANA } from "program/constants"
 import { useWallet } from "@solana/wallet-adapter-react"
+import { PhantomWalletName } from "@solana/wallet-adapter-wallets"
 
 interface ModalProps {
   isOpen: boolean
@@ -23,7 +24,7 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
   const wallet = useWallet()
 
   const getBalance = async () => {
-    if (!wallet) {
+    if (!wallet.publicKey) {
       return
     }
 
@@ -44,7 +45,7 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
 
   useEffect(() => {
     getBalance()
-  }, [wallet])
+  }, [wallet.publicKey])
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -54,6 +55,9 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
       setAmountVal("") // Allow empty string to clear the input
     }
   }
+
+  const isInsufficientFund = toBN(amountVal || 0).isGreaterThan(tokenBal)
+
   return (
     <div
       className={twMerge(
@@ -172,34 +176,53 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
               </div>
             </div>
 
-            <button
-              disabled={!wallet || loading}
-              className="mt-4 w-full cursor-pointer rounded border-[2px] border-solid border-[rgba(255,255,255,0.25)] p-1 uppercase transition-all duration-150 ease-in hover:border-[rgba(255,255,255)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-75 disabled:brightness-75"
-              onClick={async () => {
-                setLoading(true)
-                console.log("----CONFIRM----", {
-                  type,
-                  amountVal,
-                })
+            {!wallet.publicKey ? (
+              <button
+                className="mt-4 w-full cursor-pointer rounded border-[2px] border-solid border-[rgba(255,255,255,0.25)] p-1 uppercase transition-all duration-150 ease-in hover:border-[rgba(255,255,255)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-75 disabled:brightness-75"
+                onClick={async () => {
+                  wallet.select(PhantomWalletName)
+                  await wallet.connect()
+                }}
+              >
+                <div className="flex items-center justify-center gap-2 rounded bg-white px-6 py-2 uppercase text-[#080A14]">
+                  {"CONNECT TO PHANTOM"}
+                </div>
+              </button>
+            ) : (
+              <button
+                disabled={
+                  !wallet.publicKey ||
+                  loading ||
+                  isInsufficientFund ||
+                  !amountVal
+                }
+                className="mt-4 w-full cursor-pointer rounded border-[2px] border-solid border-[rgba(255,255,255,0.25)] p-1 uppercase transition-all duration-150 ease-in hover:border-[rgba(255,255,255)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-75 disabled:brightness-75"
+                onClick={async () => {
+                  setLoading(true)
+                  console.log("----CONFIRM----", {
+                    type,
+                    amountVal,
+                  })
 
-                await web3Solana.createOrder(
-                  wallet,
-                  toBN(amountVal)
-                    .multipliedBy(10 ** 6)
-                    .toString(),
-                  type === BET_TYPE.DOWN ? { down: {} } : { up: {} },
-                )
+                  await web3Solana.createOrder(
+                    wallet,
+                    toBN(amountVal)
+                      .multipliedBy(10 ** 6)
+                      .toString(),
+                    type === BET_TYPE.DOWN ? { down: {} } : { up: {} },
+                  )
 
-                setLoading(false)
-              }}
-            >
-              <div className="flex items-center justify-center gap-2 rounded bg-white px-6 py-2 uppercase text-[#080A14]">
-                {loading && (
-                  <img src={loadingButtonIcon} alt="loadingButtonIcon" />
-                )}
-                CONFIRM
-              </div>
-            </button>
+                  setLoading(false)
+                }}
+              >
+                <div className="flex items-center justify-center gap-2 rounded bg-white px-6 py-2 uppercase text-[#080A14]">
+                  {loading && (
+                    <img src={loadingButtonIcon} alt="loadingButtonIcon" />
+                  )}
+                  {!isInsufficientFund ? "CONFIRM" : "INSUFFICIENT FUND"}
+                </div>
+              </button>
+            )}
           </div>
         </div>
       </div>
