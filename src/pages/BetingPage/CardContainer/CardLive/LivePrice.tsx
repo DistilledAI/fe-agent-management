@@ -1,6 +1,10 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { RootState } from "@configs/store"
-import { DECIMAL_SHOW, DECIMAL_SPL } from "@pages/BetingPage/constants"
+import {
+  DECIMAL_BTC,
+  DECIMAL_SHOW,
+  DECIMAL_SPL,
+} from "@pages/BetingPage/constants"
 import { numberWithCommas, toBN } from "@utils/format"
 import BigNumber from "bignumber.js"
 import { useSelector } from "react-redux"
@@ -22,7 +26,7 @@ const LiveCardPrice = ({
   const downAmount = currentRound?.downAmount || 0
   const upAmount = currentRound?.upAmount || 0
   const total = toBN(currentRound.total || 0)
-  const lockPrice = toBN(currentRound.lockPrice)
+  const lockPrice = toBN(currentRound.lockPrice).div(10 ** DECIMAL_BTC)
 
   const upOffset = !toBN(upAmount).isEqualTo(0)
     ? numberWithCommas(total.div(upAmount).toNumber())

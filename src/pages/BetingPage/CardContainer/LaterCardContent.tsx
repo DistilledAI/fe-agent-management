@@ -13,8 +13,8 @@ export const LaterCardContent = ({ roundItem }: { roundItem: any }) => {
   const { timeRemaining } = useCountdown({
     startTime,
     endTime,
-    onStart: () => console.log("started"),
-    onEnd: () => console.log("ended"),
+    onStart: () => {},
+    onEnd: () => {},
   })
 
   const { minutes, seconds } = formatCountdownTime(timeRemaining)

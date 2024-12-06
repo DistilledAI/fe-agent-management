@@ -8,10 +8,9 @@ import { memo, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { BET_TYPE } from "."
 import { DECIMAL_BTC, DECIMAL_SHOW, DECIMAL_SPL } from "../constants"
-// import { CalculatingCardContent } from "./CalculatingCardContent"
-import MaxBettedInfo from "./MaxBettedInfo"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { CalculatingCardContent } from "./CalculatingCardContent"
+import MaxBettedInfo from "./MaxBettedInfo"
 
 const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
   const wallet = useWallet()
@@ -212,7 +211,7 @@ const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
         >
           <div className="flex items-center justify-center gap-2 rounded bg-white px-6 py-2 uppercase text-[#080A14]">
             {loading && <img src={loadingButtonIcon} alt="loadingButtonIcon" />}
-            Collect winnings
+            {!isInvalid ? "Collect winnings" : "WITHDRAW"}
           </div>
         </button>
       )}

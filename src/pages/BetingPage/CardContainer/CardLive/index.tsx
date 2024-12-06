@@ -56,7 +56,11 @@ const CardLiveBet = ({ roundItem }: { roundItem: any; currentRound?: any }) => {
     .toNumber()
 
   if (isEnd) {
-    return <CalculatingCardContent roundItem={roundItem} />
+    const now = Date.now()
+
+    if (now > endTime * TIMER.MILLISECOND) {
+      return <CalculatingCardContent roundItem={roundItem} />
+    }
   }
 
   return (
@@ -76,7 +80,7 @@ const CardLiveBet = ({ roundItem }: { roundItem: any; currentRound?: any }) => {
         endTime={endTime}
         onEnd={() => setIsEnd(true)}
       />
-      <LiveCardPrice currentRound={roundItem} />
+      <LiveCardPrice currentRound={liveRoundData} />
       <div className="mt-6 flex flex-col">
         {(userBetDown || userBetUp) && (
           <>
