@@ -25,8 +25,8 @@ const LiveCardPrice = ({
 
   const downAmount = currentRound?.downAmount || 0
   const upAmount = currentRound?.upAmount || 0
-  const total = toBN(currentRound.total || 0)
-  const lockPrice = toBN(currentRound.lockPrice).div(10 ** DECIMAL_BTC)
+  const total = toBN(currentRound?.total || 0)
+  const lockPrice = toBN(currentRound?.lockPrice).div(10 ** DECIMAL_BTC)
 
   const upOffset = !toBN(upAmount).isEqualTo(0)
     ? numberWithCommas(total.div(upAmount).toNumber())
