@@ -56,22 +56,24 @@ const ClanShortInfo = () => {
           <div className="relative flex w-full items-center justify-between">
             <div className="absolute left-1/2 h-[26px] w-[1px] -translate-x-1/2 bg-mercury-200 max-md:hidden" />
             <div className="flex w-[calc(50%-15px)] items-center justify-between gap-3 max-md:w-auto max-md:flex-row-reverse">
-              <div className="flex items-center gap-2">
-                <p className="text-14 text-mercury-900">Rewards</p>
+              <div className="flex items-center gap-1 md:gap-2">
+                <p className="text-12 text-mercury-900 md:text-14">Rewards</p>
                 <div className="flex items-center gap-1">
-                  <Image
+                  <img
                     src={xDSTL}
                     alt="xdstl"
-                    className="h-[22px] w-[22px]"
+                    className="h-5 w-5 md:h-6 md:w-6"
                   />
-                  <span className="text-14 font-bold text-mercury-950">
+                  <span className="text-12 font-bold text-mercury-950 md:text-14">
                     {formatNumberWithComma(xDSTLTotalPoint) || "-"}
                   </span>
                 </div>
               </div>
               <div className="flex items-center gap-1">
                 <BoltIcon />
-                <span className="text-14">{remainingDays || 0} days left</span>
+                <span className="whitespace-nowrap text-12 text-mercury-950 md:text-14">
+                  {remainingDays || 0} days left
+                </span>
               </div>
             </div>
             <div className="flex w-[calc(50%-15px)] items-center justify-between max-md:w-auto">
@@ -98,14 +100,22 @@ const ClanShortInfo = () => {
                 </button>
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-1 max-md:hidden">
-                    <TrophyIcon />
+                    <div>
+                      <TrophyIcon />
+                    </div>
                     <span className="text-14 font-bold text-mercury-950">
                       {expPointUser?.rank || "-"}
                     </span>
                   </div>
                   <div className="flex items-center gap-1 max-md:mr-1">
-                    <Image src={xpIcon} alt="xp" className="h-6 w-6" />
-                    <span className="text-14 font-bold text-mercury-950">
+                    <div>
+                      <Image
+                        src={xpIcon}
+                        alt="xp"
+                        className="h-5 w-5 md:h-6 md:w-6"
+                      />
+                    </div>
+                    <span className="text-12 font-bold text-mercury-950 md:text-14">
                       {expPointUser?.totalPoint || "-"}
                     </span>
                   </div>

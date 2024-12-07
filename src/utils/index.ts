@@ -233,7 +233,7 @@ export const getRemainingDaysPercentage = (
   )
 
   if (totalDays === 0 || message !== "Active.") {
-    return { percentage: 0, message }
+    return { percentage: 100, message }
   }
 
   const percentage = 100 - Math.round((remainingDays / totalDays) * 100)

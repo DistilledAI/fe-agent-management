@@ -22,10 +22,7 @@ const ProgressDays = () => {
     groupDetail?.data?.group?.event?.createdAt,
   ).getTime()
   const groupEndDate = groupDetail?.data?.group?.event?.endDate * 1000
-  const { totalDays, remainingDays } = getRemainingDays(
-    groupCreateDate,
-    groupEndDate,
-  )
+  const { remainingDays } = getRemainingDays(groupCreateDate, groupEndDate)
   const { percentage } = getRemainingDaysPercentage(
     groupCreateDate,
     groupEndDate,
@@ -56,10 +53,11 @@ const ProgressDays = () => {
         margin: "24px auto",
       }}
     >
-      <div className="absolute -top-8 left-1/2 flex -translate-x-1/2 items-center gap-1">
+      <div className="absolute -top-8 left-1/2 flex w-full -translate-x-1/2 items-center justify-center">
         <BoltIcon />
         <span className="text-14 text-mercury-950">
-          {totalDays - remainingDays}/{totalDays} days
+          {/* {totalDays - remainingDays}/{totalDays} days */}
+          {percentage}% {percentage === 100 ? "- Campaign completed!" : ""}
         </span>
       </div>
       {/* Background Path */}
@@ -99,7 +97,7 @@ const ProgressDays = () => {
             stroke="#6B50B5"
             strokeWidth="4"
             strokeDasharray={totalLength}
-            strokeDashoffset={totalLength - dashOffset}
+            strokeDashoffset={dashOffset}
             strokeLinecap="round"
             style={{
               transition: "stroke-dashoffset 0.5s ease",
