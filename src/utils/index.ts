@@ -204,40 +204,38 @@ export const getRemainingDays = (createdAt: number, endDate: number) => {
   const now = Date.now()
 
   if (endDate <= createdAt) {
-    return { totalDays: 0, remainingDays: 0, message: "Invalid date range." }
+    return { totalDays: 0, remainingDays: 0 }
   }
 
   const totalDays =
     Math.ceil((endDate - createdAt) / (1000 * 60 * 60 * 24)) || 0
 
   if (now < createdAt) {
-    return { totalDays, remainingDays: totalDays, message: "Not started yet." }
+    return { totalDays, remainingDays: totalDays }
   }
 
   const remainingTime = endDate - now || 0
   if (remainingTime <= 0) {
-    return { totalDays, remainingDays: 0, message: "Expired." }
+    return { totalDays, remainingDays: 0 }
   }
 
   const remainingDays = Math.ceil(remainingTime / (1000 * 60 * 60 * 24))
-  return { totalDays, remainingDays, message: "Active." }
+  return { totalDays, remainingDays }
 }
 
 export const getRemainingDaysPercentage = (
   createdAt: number,
   endDate: number,
 ) => {
-  const { totalDays, remainingDays, message } = getRemainingDays(
-    createdAt,
-    endDate,
-  )
+  const { totalDays, remainingDays } = getRemainingDays(createdAt, endDate)
 
-  if (totalDays === 0 || message !== "Active.") {
-    return { percentage: 100, message }
+  if (totalDays === 0) {
+    return { percentage: 100 }
   }
 
   const percentage = 100 - Math.round((remainingDays / totalDays) * 100)
-  return { percentage, message }
+
+  return { percentage }
 }
 
 export const formatNumberWithComma = (num: number) => {
