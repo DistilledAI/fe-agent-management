@@ -196,7 +196,6 @@ const useConnectWallet = () => {
       try {
         await provider.send("eth_requestAccounts", [])
       } catch (error: any) {
-        console.log("connectMetamaskWal ~ error:", error)
         throw error
       }
       const signer = await provider.getSigner()
