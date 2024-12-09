@@ -27,16 +27,16 @@ const RightContent: React.FC<{
   const { isLogin } = useAuthState()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const { chatId } = useGetChatId()
-  const [replyUsername, setReplyUsername] = useState<string | null>(null)
-  const [replyId, setReplyId] = useState<number>()
+  const [replyUsername, setReplyUsername] = useState<string>("")
+  const [replyId, setReplyId] = useState<number>(NaN)
   const [replyTxt, setReplyTxt] = useState<string>("")
   const [hasFocus, setHasFocus] = useState(false)
   const isMaxi =
     groupDetail?.group.label === "@maxisbuyin" ||
     groupDetail?.group.label === "@maxisbuyin_"
   const resetReply = () => {
-    setReplyId(undefined)
-    setReplyUsername(null)
+    setReplyId(NaN)
+    setReplyUsername("")
     setReplyTxt("")
   }
   const { mutation } = useSubmitChat({
@@ -49,7 +49,7 @@ const RightContent: React.FC<{
       ? {
           messageId: replyId,
           message: replyTxt,
-          username: replyUsername ?? "",
+          username: replyUsername || "",
         }
       : undefined,
     isClan,
@@ -84,7 +84,7 @@ const RightContent: React.FC<{
             setReplyId(message.id as number)
             setReplyTxt(message.content)
             setReplyUsername(
-              message.username ? `@${message.username} ` : "@Unnamed ",
+              message.username ? `@[${message.username}] ` : "@[Unnamed] ",
             )
           }}
         />
