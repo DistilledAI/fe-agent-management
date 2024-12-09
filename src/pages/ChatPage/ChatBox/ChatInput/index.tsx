@@ -1,6 +1,5 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
-import { Textarea } from "@nextui-org/react"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
@@ -15,7 +14,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { BOT_STATUS } from "../ChatMessages/ChatActions/DelegatePrivateAgent"
 import { PATH_NAMES } from "@constants/index"
-import MentionChatInput from "./Mention"
+import { MentionsInput, Mention } from "react-mentions"
 
 interface ChatInputProps {
   isDisabledInput: boolean
@@ -23,8 +22,8 @@ interface ChatInputProps {
   isPending: boolean
   wrapperClassName?: string
   isDarkTheme?: boolean
-  hasMention?: boolean
-  replyUsername?: string | null
+  // hasMention?: boolean
+  replyUsername?: string
   resetRely?: () => void
   hasFocus?: boolean
   setHasFocus?: React.Dispatch<React.SetStateAction<boolean>>
@@ -36,7 +35,7 @@ const ChatInput = ({
   wrapperClassName,
   isDarkTheme,
   isPending,
-  hasMention = false,
+  // hasMention = false,
   replyUsername,
   hasFocus,
   setHasFocus,
@@ -45,10 +44,10 @@ const ChatInput = ({
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const [isFocus, setIsFocus] = useState(false)
   const [message, setMessage] = useState("")
-  const [showMention, setShowMention] = useState(false)
-  const [currentMentionIndex, setCurrentMentionIndex] = useState<number | null>(
-    null,
-  )
+  // const [showMention, setShowMention] = useState(false)
+  // const [currentMentionIndex, setCurrentMentionIndex] = useState<number | null>(
+  //   null,
+  // )
   const { pathname } = useLocation()
   const { isMobile } = useWindowSize()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -143,25 +142,32 @@ const ChatInput = ({
 
   const handleOnChange = (e: any) => {
     const value = e.target.value
-    if (replyUsername && !value.includes(replyUsername)) {
-      setMessage(value.replace(replyUsername.trim(), ""))
-      if (resetRely) resetRely()
-    } else setMessage(value)
+    setMessage(value)
+    if (resetRely) resetRely()
+    // if (replyUsername && !value.includes(replyUsername)) {
+    //   console.log({
+    //     replyUsername,
+    //     new: value.replace(replyUsername.trim(), ""),
+    //   })
+    //   setMessage(value.replace(replyUsername.trim(), ""))
+    //   if (resetRely) resetRely()
+    // } else setMessage(value)
 
-    if (!hasMention) return
-    const words = value.split(" ")
-    const lastWordIndex = words.length - 1
-    const lastWord = words[lastWordIndex]
+    // if (!hasMention) return
 
-    const isShow =
-      lastWord.startsWith("@") && lastWord.length > 0 && !lastWord.includes(" ")
-    if (isShow) {
-      setShowMention(true)
-      setCurrentMentionIndex(lastWordIndex)
-    } else {
-      setShowMention(false)
-      setCurrentMentionIndex(null)
-    }
+    // const words = value.split(" ")
+    // const lastWordIndex = words.length - 1
+    // const lastWord = words[lastWordIndex]
+
+    // const isShow =
+    //   lastWord.startsWith("@") && lastWord.length > 0 && !lastWord.includes(" ")
+    // if (isShow) {
+    //   setShowMention(true)
+    //   setCurrentMentionIndex(lastWordIndex)
+    // } else {
+    //   setShowMention(false)
+    //   setCurrentMentionIndex(null)
+    // }
   }
 
   return (
@@ -189,15 +195,16 @@ const ChatInput = ({
           color={isDarkTheme ? "rgba(84, 84, 84, 1)" : "#545454"}
         />
       </button>
-      <MentionChatInput
+      {/* <MentionChatInput
         isOpen={showMention}
         setMessage={setMessage}
         onClose={() => setShowMention(false)}
         currentMentionIndex={currentMentionIndex}
-      />
-      <Textarea
+      /> */}
+      {/* <Textarea
         placeholder="Type your message"
         classNames={{
+          base: "hidden",
           inputWrapper: twMerge(
             "bg-mercury-200 border-none focus-within:!bg-mercury-200 hover:!bg-mercury-200 shadow-none px-0 !ring-offset-0 !ring-transparent",
             isDarkTheme &&
@@ -218,7 +225,39 @@ const ChatInput = ({
         value={message}
         ref={inputRef}
         isDisabled={isDisabledInput}
-      />
+      /> */}
+
+      <MentionsInput
+        inputRef={inputRef}
+        value={message}
+        onChange={handleOnChange}
+        onKeyDown={handleKeyDown}
+        onKeyUp={handleCheckHeight}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        style={{
+          width: "100%",
+          fontSize: 18,
+          fontFamily: "Barlow",
+          input: {
+            border: "none",
+            outline: "none",
+          },
+        }}
+        placeholder="Type your message"
+        rows={4}
+      >
+        <Mention
+          trigger="@"
+          markup="@[__display__]"
+          displayTransform={(username) => `@${username}`}
+          data={null}
+          appendSpaceOnAdd={true}
+          style={{
+            background: "linear-gradient(46deg, #FF075A 0%, #FF9035 100%)",
+          }}
+        />
+      </MentionsInput>
       <VoiceChat
         resetTranscript={resetTranscript}
         isListening={listening}
