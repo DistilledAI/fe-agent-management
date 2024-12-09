@@ -63,11 +63,11 @@ const ChatWindow = ({
   }, [chatId])
 
   const scrollToBottom = useCallback(() => {
-    virtuosoRef.current?.scrollToIndex({
-      index: messages.length - 1,
-      behavior: "auto",
-      align: style?.paddingBottom === "0px" ? "end" : "center",
-    })
+    // virtuosoRef.current?.scrollToIndex({
+    //   index: messages.length - 1,
+    //   behavior: "auto",
+    //   align: style?.paddingBottom === "0px" ? "end" : "center",
+    // })
   }, [messages, style?.paddingBottom])
 
   useEffect(() => {

@@ -9,6 +9,15 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
   const { textColor } = getActiveColorRandomById(chatId)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
+  const checkTextBreak = (text: string) => {
+    const tokenRegex = /[a-zA-Z0-9]{40,43}/
+
+    if (tokenRegex.test(text)) {
+      return "break-all" // Nếu có chuỗi token thì dùng break-all
+    }
+    return "break-words"
+  }
+
   const replaceSrcImage = (src: string) => {
     if (src.includes("https://defi-lens.s3.us-east-2.amazonaws.com/")) {
       const imageSrc = src.replace(
@@ -78,7 +87,10 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
         {children}
       </a>
     ),
-    p: ({ children }: any) => <p className="break-all">{children}</p>,
+    p: ({ children }: any) => {
+      const wordBreakStyle = checkTextBreak(children)
+      return <p className={wordBreakStyle}>{children}</p>
+    },
   }
 
   return (

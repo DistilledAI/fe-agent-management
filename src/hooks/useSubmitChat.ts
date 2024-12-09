@@ -36,10 +36,8 @@ const useSubmitChat = ({
 
   const mutation = useMutation({
     mutationKey: [QueryDataKeys.SEND_MESSAGE],
-    //@ts-ignore
     mutationFn: (message: string) => {
       if (!isClan) {
-        console.log("123", reply?.username)
         return postChatToGroup({
           groupId: Number(groupId),
           messages: reply?.username
@@ -59,6 +57,8 @@ const useSubmitChat = ({
           replyTo: reply?.messageId,
         })
       }
+
+      return Promise.reject("No action taken")
     },
     onMutate: (variables) => {
       const newMessage: IMessageBox = {
