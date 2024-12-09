@@ -249,7 +249,12 @@ const ChatInput = ({
           data={null}
           appendSpaceOnAdd={true}
           style={{
-            background: "#C9CDFB",
+            color: "#A2845E",
+            position: "relative",
+            zIndex: "1",
+            left: "-1px",
+            top: "-1px",
+            fontWeight: "500",
           }}
         />
       </MentionsInput>
