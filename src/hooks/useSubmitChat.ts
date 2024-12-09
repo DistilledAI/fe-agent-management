@@ -39,6 +39,7 @@ const useSubmitChat = ({
     //@ts-ignore
     mutationFn: (message: string) => {
       if (!isClan) {
+        console.log("123", reply?.username)
         return postChatToGroup({
           groupId: Number(groupId),
           messages: reply?.username

@@ -99,7 +99,7 @@ const ChatInput = ({
         ? isBotEnabled
         : true,
     )
-    onSubmit(message)
+    await onSubmit(message)
   }
 
   const handleKeyDown = (e: any) => {
@@ -142,16 +142,10 @@ const ChatInput = ({
 
   const handleOnChange = (e: any) => {
     const value = e.target.value
-    setMessage(value)
-    if (resetRely) resetRely()
-    // if (replyUsername && !value.includes(replyUsername)) {
-    //   console.log({
-    //     replyUsername,
-    //     new: value.replace(replyUsername.trim(), ""),
-    //   })
-    //   setMessage(value.replace(replyUsername.trim(), ""))
-    //   if (resetRely) resetRely()
-    // } else setMessage(value)
+    if (replyUsername && !value.includes(replyUsername)) {
+      setMessage(value.replace(replyUsername.trim(), ""))
+      if (resetRely) resetRely()
+    } else setMessage(value)
 
     // if (!hasMention) return
 
@@ -246,6 +240,7 @@ const ChatInput = ({
         }}
         placeholder="Type your message"
         rows={4}
+        disabled={isDisabledInput}
       >
         <Mention
           trigger="@"
@@ -254,7 +249,7 @@ const ChatInput = ({
           data={null}
           appendSpaceOnAdd={true}
           style={{
-            background: "linear-gradient(46deg, #FF075A 0%, #FF9035 100%)",
+            background: "#C9CDFB",
           }}
         />
       </MentionsInput>

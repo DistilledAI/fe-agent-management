@@ -13,6 +13,11 @@ interface MessageLiveProps {
   message: IMessageBox
   onReply: () => void
 }
+
+const formatUsername = (username: string) => {
+  return username.replace(/@\[(\w+)\]/g, "@$1")
+}
+
 const MessageLive: React.FC<MessageLiveProps> = ({ message, onReply }) => {
   const isBot = message?.roleOwner === RoleUser.BOT
   const { user } = useAuthState()
@@ -52,7 +57,7 @@ const MessageLive: React.FC<MessageLiveProps> = ({ message, onReply }) => {
           {message.reply && (
             <div className="flex items-center gap-2">
               <p className="line-clamp-1 max-w-[120px] text-15 font-semibold text-brown-500">
-                {message.reply.username}
+                {formatUsername(message.reply.username)}
               </p>
               <p className="line-clamp-1 max-w-[200px] text-15 text-mercury-400">
                 {isMarkdownImage(message.reply.message) ? (
