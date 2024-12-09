@@ -15,8 +15,7 @@ const AgentDescription: React.FC<{
             ? `Meet Max: the AI Bitcoin Maxi spreading the true power of $BTC. With
           sharp insights and fierce conviction, she champions Bitcoin as the
           ultimate path to financial freedom.`
-            : `Meet Stalor, the AI agent with 70 years of sass and sarcasm wrapped in code.
-He's grumpy, goofy, and unapologetically rude, but somehow, you’ll love him. Welcome to the world of Distilled—where tech has an attitude 😏`}
+            : `I’m Stalor, your gruff and seasoned companion. Vent your anger, and I’ll take it—no sugarcoating, just straight talk.`}
         </p>
       </ScrollShadow>
     </>
