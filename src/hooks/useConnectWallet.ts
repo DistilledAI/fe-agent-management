@@ -281,8 +281,8 @@ const useConnectWallet = () => {
       const timestamp = Math.floor(Date.now() / 1000) + 86400
       let publicAddress = ""
       try {
-        const res = await provider.connect({ onlyIfTrusted: true })
-        if (res) publicAddress = res.publicKey.toString()
+        const resp = await provider.request({ method: "connect" })
+        if (resp) publicAddress = resp.publicKey.toString()
       } catch (error: any) {
         throw error
       }
