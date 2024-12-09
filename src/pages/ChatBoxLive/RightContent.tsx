@@ -148,7 +148,7 @@ const RightContent: React.FC<{
             hasFocus={hasFocus}
             setHasFocus={setHasFocus}
             resetRely={resetReply}
-            wrapperClassName="w-full static max-w-full max-md:pl-3"
+            wrapperClassName="w-full max-w-full max-md:pl-3 md:bottom-[calc(100%-72px)]"
           />
         </div>
       </div>
