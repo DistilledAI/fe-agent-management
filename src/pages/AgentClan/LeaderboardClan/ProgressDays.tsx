@@ -57,7 +57,8 @@ const ProgressDays = () => {
         <BoltIcon />
         <span className="text-14 text-mercury-950">
           {/* {totalDays - remainingDays}/{totalDays} days */}
-          {percentage}% {percentage === 100 ? "- Campaign completed!" : ""}
+          Round Progress: {percentage}%
+          {percentage === 100 ? " - Campaign completed!" : ""}
         </span>
       </div>
       {/* Background Path */}
