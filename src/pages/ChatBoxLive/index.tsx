@@ -5,13 +5,11 @@ import LeftContent from "./LeftContent"
 import RightContent from "./RightContent"
 import { twMerge } from "tailwind-merge"
 import useFetchDetail from "@pages/ChatPage/Mobile/ChatDetail/useFetch"
-import useBodyOverflow from "@hooks/useBodyOverflow"
 
 const ChatBoxLive = () => {
   const { isInvited } = useJoinGroupLive()
   const { groupDetail, isFetched } = useFetchDetail(isInvited)
   const { isMobile } = useWindowSize()
-  useBodyOverflow()
 
   return (
     <div

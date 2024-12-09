@@ -9,7 +9,6 @@ import ChatInput from "./ChatInput"
 import ChatMessages from "./ChatMessages"
 import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
 import { QueryDataKeys } from "types/queryDataKeys"
-import useBodyOverflow from "@hooks/useBodyOverflow"
 
 const ChatBox = () => {
   const { loading, connectMultipleWallet } = useConnectWallet()
@@ -26,7 +25,6 @@ const ChatBox = () => {
     queryKey: [QueryDataKeys.IS_CHATTING, groupId],
     enabled: !!groupId,
   })
-  useBodyOverflow()
 
   const isEnableTextInput = isLogin && (chatId || privateChatId)
 
