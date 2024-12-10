@@ -1,3 +1,4 @@
+import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { formatCountdownTime, TIMER, useCountdown } from "@hooks/useCountdown"
 import { toBN } from "@utils/format"
 import { twMerge } from "tailwind-merge"
@@ -57,21 +58,7 @@ export const LaterCardContent = ({ roundItem }: { roundItem: any }) => {
               {0}x Payout
             </span>
           </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-          >
-            <path
-              d="M3.5 7.625L8 3.125L12.5 7.625M8 3.75V12.875"
-              stroke={"#585A6B"}
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <ArrowUpFilledIcon bgColor="#585A6B" size={18} />
         </div>
         <div
           className={twMerge(
@@ -86,29 +73,11 @@ export const LaterCardContent = ({ roundItem }: { roundItem: any }) => {
               {0}x Payout
             </span>
           </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-          >
-            <path
-              d="M3.5 8.375L8 12.875L12.5 8.375M8 12.25V3.125"
-              stroke={"#585A6B"}
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <div className="rotate-180">
+            <ArrowUpFilledIcon bgColor="#585A6B" size={18} />
+          </div>
         </div>
       </div>
-      {/* <div className="mt-6 flex flex-col">
-        <div className="flex items-center justify-between text-[12px]">
-          <span className="text-[#9192A0]">Prize pool</span>
-          <span className="text-[#E8E9EE]">648.8047 MAX</span>
-        </div>
-      </div> */}
     </div>
   )
 }
