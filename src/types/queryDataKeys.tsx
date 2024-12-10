@@ -24,4 +24,5 @@ export enum QueryDataKeys {
   EARN_EXP_REMAINING_DAYS = "earn-exp-remaining-days",
   EXP_RANK_LIST_BY_GROUP = "exp-rank-list-by-group",
   TOTAL_MEMBER_GROUP = "total-member-group",
+  MEDIA_PREVIEW = "media-preview",
 }
