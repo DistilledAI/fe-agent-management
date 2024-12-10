@@ -247,7 +247,10 @@ const ChatInput = ({
             outline: "none",
           },
         }}
-        className="text-[14px] md:text-[18px]"
+        className={twMerge(
+          "text-[14px] md:text-[18px]",
+          isDarkTheme && "text-mercury-30",
+        )}
         placeholder="Type your message"
         rows={4}
         disabled={isDisabledInput}
