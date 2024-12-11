@@ -2,6 +2,7 @@ import { brainAIIcon } from "@assets/svg"
 import AlertBox from "@components/AlertBox"
 import ChatWindow from "@components/ChatWindow"
 import ContextCleared from "@components/ContextCleared"
+import ReCaptchaWraper from "@components/ReCaptchaWraper"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
 import {
@@ -13,6 +14,7 @@ import useSubmitChat from "@hooks/useSubmitChat"
 import useFetchMyData from "@pages/MyData/useFetch"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
+import { useRef } from "react"
 import { useParams } from "react-router-dom"
 import SpeechRecognition from "react-speech-recognition"
 import { getMyPrivateAgent } from "services/chat"
@@ -34,6 +36,7 @@ const PrivateAgentChatContent: React.FC<{
     isFetchingPreviousPage,
     hasPreviousMore,
   } = useFetchMessages()
+  const reCaptchaRef = useRef<any>()
   const { spacing } = useStyleSpacing()
   const { privateChatId } = useParams()
   const groupId = privateChatId
@@ -96,6 +99,11 @@ const PrivateAgentChatContent: React.FC<{
 
   const isChatActions = isBotActive && !isShowAddData
 
+  const onChatSubmit = async (value: string) => {
+    const captchaRes = await reCaptchaRef.current.execute()
+    mutation.mutate({ message: value, captchaValue: captchaRes })
+  }
+
   return (
     <>
       <ChatWindow
@@ -151,15 +159,16 @@ const PrivateAgentChatContent: React.FC<{
         ) : null}
       </div>
       {hasInputChat && (
-        <ChatInput
-          onSubmit={(messageValue) =>
-            mutation.mutate({ message: messageValue })
-          }
-          isPending={mutation.isPending}
-          isDisabledInput={isChatting}
-          wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
-          isDarkTheme
-        />
+        <>
+          <ChatInput
+            onSubmit={onChatSubmit}
+            isPending={mutation.isPending}
+            isDisabledInput={isChatting}
+            wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
+            isDarkTheme
+          />
+          <ReCaptchaWraper reCaptchaRef={reCaptchaRef} />
+        </>
       )}
     </>
   )
