@@ -1,27 +1,27 @@
 import { brainAIIcon } from "@assets/svg"
+import AlertBox from "@components/AlertBox"
 import ChatWindow from "@components/ChatWindow"
+import ContextCleared from "@components/ContextCleared"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
-import useSubmitChat from "@hooks/useSubmitChat"
-import { useStyleSpacing } from "providers/StyleSpacingProvider"
-import { useParams } from "react-router-dom"
-import SpeechRecognition from "react-speech-recognition"
-import ChatInput from "../../ChatInput"
-import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
-import useFetchMessages from "../../ChatMessages/useFetchMessages"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { QueryDataKeys } from "types/queryDataKeys"
 import {
   CLEAR_CACHED_MESSAGE,
   PATH_NAMES,
   STATUS_AGENT,
 } from "@constants/index"
+import useSubmitChat from "@hooks/useSubmitChat"
 import useFetchMyData from "@pages/MyData/useFetch"
-import AlertBox from "@components/AlertBox"
-import ChatActions from "../../ChatMessages/ChatActions"
-import ContextCleared from "@components/ContextCleared"
-import { twMerge } from "tailwind-merge"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useStyleSpacing } from "providers/StyleSpacingProvider"
+import { useParams } from "react-router-dom"
+import SpeechRecognition from "react-speech-recognition"
 import { getMyPrivateAgent } from "services/chat"
+import { twMerge } from "tailwind-merge"
+import { QueryDataKeys } from "types/queryDataKeys"
+import ChatInput from "../../ChatInput"
+import ChatActions from "../../ChatMessages/ChatActions"
+import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
+import useFetchMessages from "../../ChatMessages/useFetchMessages"
 
 const PrivateAgentChatContent: React.FC<{
   hasInputChat?: boolean
@@ -152,7 +152,9 @@ const PrivateAgentChatContent: React.FC<{
       </div>
       {hasInputChat && (
         <ChatInput
-          onSubmit={mutation.mutate}
+          onSubmit={(messageValue) =>
+            mutation.mutate({ message: messageValue })
+          }
           isPending={mutation.isPending}
           isDisabledInput={isChatting}
           wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"

@@ -2,16 +2,16 @@ import { useAppSelector } from "@hooks/useAppRedux"
 import useWindowSize from "@hooks/useWindowSize"
 import ClanShortInfo from "@pages/AgentClan/ClanShortInfo"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
+import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useQuery } from "@tanstack/react-query"
 import React, { useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
-import ToggleActionsMobile from "./ToggleActionsMobile"
-import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import InstructionBanner from "./InstructionBanner"
 import ListMessage from "./ListMessage"
 import SendMessage from "./SendMessage"
+import ToggleActionsMobile from "./ToggleActionsMobile"
 
 const RightContent: React.FC<{
   isClan?: boolean
