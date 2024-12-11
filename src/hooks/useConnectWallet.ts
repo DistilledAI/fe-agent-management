@@ -75,10 +75,9 @@ const useConnectWallet = () => {
   }
 
   const connectOwallet = async () => {
-    //@ts-ignore
     const isOwallet = isMobile
       ? //@ts-ignore
-        window.owallet.isOwallet
+        window.ethereum.isOWallet
       : //@ts-ignore
         window.eth_owallet && window.owallet.isOwallet
 
@@ -108,22 +107,17 @@ const useConnectWallet = () => {
 
       const provider = new ethers.providers.Web3Provider(ethereumProvider)
       //@ts-ignore
-      if (isMobile) {
-        await window.ethereum.request!({
-          method: "wallet_switchEthereumChain",
-          chainId: "0x01",
-          params: [{ chainId: "0x01" }],
-        })
-      } else {
+      if (!isMobile) {
         //@ts-ignore
         await window.eth_owallet.request!({
           method: "wallet_switchEthereumChain",
           chainId: "0x01",
           params: [{ chainId: "0x01" }],
         })
+        //@ts-ignore
+        await window?.owallet.enable("0x01")
       }
-      //@ts-ignore
-      await window?.owallet.enable("0x01")
+
       await provider.send("eth_requestAccounts", [])
 
       const signer = await provider.getSigner()
@@ -144,7 +138,7 @@ const useConnectWallet = () => {
       }
 
       let signature = (await signer._signTypedData(domain, types, value)) as any
-      signature = signature?.result
+      signature = isMobile ? signature : signature?.result
       const digest = ethers.utils._TypedDataEncoder.hash(domain, types, value)
       const publicKey = ethers.utils.recoverPublicKey(digest, signature)
 
