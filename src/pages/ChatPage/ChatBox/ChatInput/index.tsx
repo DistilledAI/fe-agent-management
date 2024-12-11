@@ -1,20 +1,20 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
+import { PATH_NAMES } from "@constants/index"
+import useWindowSize from "@hooks/useWindowSize"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { Mention, MentionsInput } from "react-mentions"
 import { useLocation, useParams } from "react-router-dom"
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition"
 import { twMerge } from "tailwind-merge"
-import VoiceChat from "./Voice"
-import useWindowSize from "@hooks/useWindowSize"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { BOT_STATUS } from "../ChatMessages/ChatActions/DelegatePrivateAgent"
-import { PATH_NAMES } from "@constants/index"
-import { MentionsInput, Mention } from "react-mentions"
+import VoiceChat from "./Voice"
 
 interface ChatInputProps {
   isDisabledInput: boolean
@@ -99,6 +99,7 @@ const ChatInput = ({
         ? isBotEnabled
         : true,
     )
+
     await onSubmit(message)
   }
 

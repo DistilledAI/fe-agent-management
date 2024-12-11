@@ -1,15 +1,15 @@
 import useAuthState from "@hooks/useAuthState"
 import useSubmitChat from "@hooks/useSubmitChat"
 import ChatInput from "@pages/ChatPage/ChatBox/ChatInput"
+import ChatMessages from "@pages/ChatPage/ChatBox/ChatMessages"
+import PrivateAgentChatContent from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/PrivateAgentChatContent"
+import { useQuery } from "@tanstack/react-query"
 import { StyleSpacingProvider } from "providers/StyleSpacingProvider"
 import { useParams } from "react-router-dom"
 import SpeechRecognition from "react-speech-recognition"
+import { QueryDataKeys } from "types/queryDataKeys"
 import ChatDetailHeader from "./Header"
 import useGetChatId from "./useGetChatId"
-import PrivateAgentChatContent from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/PrivateAgentChatContent"
-import ChatMessages from "@pages/ChatPage/ChatBox/ChatMessages"
-import { useQuery } from "@tanstack/react-query"
-import { QueryDataKeys } from "types/queryDataKeys"
 
 const ChatDetail = () => {
   const { privateChatId } = useParams()
@@ -41,7 +41,9 @@ const ChatDetail = () => {
         </div>
         <div className="fixed bottom-0 left-0 z-[11] w-full bg-mercury-30 px-3 py-2">
           <ChatInput
-            onSubmit={mutation.mutate}
+            onSubmit={(messageValue) =>
+              mutation.mutate({ message: messageValue })
+            }
             isPending={mutation.isPending}
             isDisabledInput={isChatting || !isEnableTextInput}
           />

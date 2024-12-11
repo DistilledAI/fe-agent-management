@@ -1,11 +1,11 @@
-import React from "react"
-import ChatInput from "../ChatInput"
-import useSubmitChat from "@hooks/useSubmitChat"
-import SpeechRecognition from "react-speech-recognition"
-import { useQuery } from "@tanstack/react-query"
-import { QueryDataKeys } from "types/queryDataKeys"
 import useAuthState from "@hooks/useAuthState"
+import useSubmitChat from "@hooks/useSubmitChat"
+import { useQuery } from "@tanstack/react-query"
+import React from "react"
 import { useParams } from "react-router-dom"
+import SpeechRecognition from "react-speech-recognition"
+import { QueryDataKeys } from "types/queryDataKeys"
+import ChatInput from "../ChatInput"
 
 const SendMessage: React.FC<{
   groupId: string | undefined
@@ -27,7 +27,7 @@ const SendMessage: React.FC<{
 
   return (
     <ChatInput
-      onSubmit={mutation.mutate}
+      onSubmit={(messageValue) => mutation.mutate({ message: messageValue })}
       isPending={mutation.isPending}
       isDisabledInput={isChatting || !isEnableTextInput}
       wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
