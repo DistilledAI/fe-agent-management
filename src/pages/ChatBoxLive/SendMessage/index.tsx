@@ -31,7 +31,6 @@ const SendMessage: React.FC<{
   setHasFocus,
 }) => {
   const reCaptchaRef = useRef<any>()
-
   const { isLogin } = useAuthState()
   const isEnableTextInput = isLogin && chatId
   const { mutation } = useSubmitChat({

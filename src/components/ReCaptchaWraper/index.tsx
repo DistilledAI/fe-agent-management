@@ -37,8 +37,7 @@ const ReCaptchaWraper: React.FC<{
   return (
     <ReCAPTCHA
       style={{
-        display: "inline-block",
-        // visibility: "hidden"
+        visibility: "hidden",
       }}
       theme="dark"
       size="invisible"
