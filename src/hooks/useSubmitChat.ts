@@ -51,6 +51,7 @@ const useSubmitChat = ({
             ? message.replace(reply.username, "")
             : message,
           replyTo: reply?.messageId,
+          captcha: captchaValue,
         })
       }
 
