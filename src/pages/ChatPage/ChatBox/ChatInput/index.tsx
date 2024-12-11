@@ -1,20 +1,20 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
+import { PATH_NAMES } from "@constants/index"
+import useWindowSize from "@hooks/useWindowSize"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { Mention, MentionsInput } from "react-mentions"
 import { useLocation, useParams } from "react-router-dom"
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition"
 import { twMerge } from "tailwind-merge"
-import VoiceChat from "./Voice"
-import useWindowSize from "@hooks/useWindowSize"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { BOT_STATUS } from "../ChatMessages/ChatActions/DelegatePrivateAgent"
-import { PATH_NAMES } from "@constants/index"
-import { MentionsInput, Mention } from "react-mentions"
+import VoiceChat from "./Voice"
 
 interface ChatInputProps {
   isDisabledInput: boolean
@@ -99,6 +99,7 @@ const ChatInput = ({
         ? isBotEnabled
         : true,
     )
+
     await onSubmit(message)
   }
 
@@ -168,7 +169,7 @@ const ChatInput = ({
     <div
       ref={boxRef}
       className={twMerge(
-        "absolute bottom-4 z-[11] flex max-w-[768px] items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 transition-all duration-300 ease-linear max-md:static max-md:gap-2 md:bottom-8 md:p-3 md:py-[7.89px]",
+        "absolute bottom-4 z-[11] flex max-w-[768px] items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 transition-all duration-300 ease-linear max-md:static max-md:gap-2 max-md:pl-3 md:bottom-8 md:min-h-[60px] md:p-3 md:py-[7.89px]",
         isFocus ? "border-mercury-300" : "border-mercury-200",
         spacing && "items-end",
         isDarkTheme && "bg-mercury-950",
@@ -231,13 +232,32 @@ const ChatInput = ({
         onBlur={() => setIsFocus(false)}
         style={{
           width: "100%",
-          fontSize: 18,
+          height: "100%",
+          maxWidth: isMobile
+            ? "calc(100% - 88px)"
+            : listening
+              ? "calc(100% - 184px)"
+              : "calc(100% - 172px)",
           fontFamily: "Barlow",
+          maxHeight: isMobile ? "40px" : "200px",
+          color: isDarkTheme ? "#FAFAFA" : "#11181c",
+          control: {
+            maxHeight: isMobile ? "40px" : "200px",
+          },
+          highlighter: {
+            maxHeight: isMobile ? "40px" : "200px",
+          },
           input: {
+            overflowY: "auto",
+            maxHeight: isMobile ? "40px" : "200px",
             border: "none",
             outline: "none",
           },
         }}
+        className={twMerge(
+          "text-[14px] md:text-[18px]",
+          isDarkTheme && "text-mercury-30",
+        )}
         placeholder="Type your message"
         rows={4}
         disabled={isDisabledInput}
@@ -249,7 +269,12 @@ const ChatInput = ({
           data={null}
           appendSpaceOnAdd={true}
           style={{
-            background: "#C9CDFB",
+            color: "#A2845E",
+            position: "relative",
+            zIndex: "1",
+            left: "-1px",
+            top: "-1px",
+            fontWeight: "500",
           }}
         />
       </MentionsInput>

@@ -4,10 +4,10 @@ import maxImg from "@assets/images/richoldman.png"
 
 const HeaderBet = () => {
   return (
-    <div className="flex items-center justify-between max-md:flex-col max-md:items-start max-md:justify-start">
+    <div className="relative flex items-center justify-between max-md:flex-col max-md:items-start max-md:justify-start">
       <HeaderPrice />
       {/* <div className="rounded-[50px] bg-[#E4775D] p-[2px]"> */}
-      <div className="box-noti-animated rounded-[50px] max-md:mt-3 max-md:w-full max-md:border-2">
+      <div className="box-noti-animated rounded-[50px] max-md:mt-3 max-md:w-full max-md:border-2 md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2">
         <div className="flex rounded-[50px] bg-[#1a131a] p-3 max-md:p-1">
           <div>
             <img

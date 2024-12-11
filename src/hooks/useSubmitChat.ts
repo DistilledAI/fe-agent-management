@@ -36,16 +36,22 @@ const useSubmitChat = ({
 
   const mutation = useMutation({
     mutationKey: [QueryDataKeys.SEND_MESSAGE],
-    //@ts-ignore
-    mutationFn: (message: string) => {
+
+    mutationFn: ({
+      message,
+      captchaValue,
+    }: {
+      message: string
+      captchaValue?: string
+    }) => {
       if (!isClan) {
-        console.log("123", reply?.username)
         return postChatToGroup({
           groupId: Number(groupId),
           messages: reply?.username
             ? message.replace(reply.username, "")
             : message,
           replyTo: reply?.messageId,
+          captcha: captchaValue,
         })
       }
 
@@ -57,14 +63,18 @@ const useSubmitChat = ({
             ? message.replace(reply.username, "")
             : message,
           replyTo: reply?.messageId,
+          captcha: captchaValue,
         })
       }
+
+      return Promise.reject("No action taken")
     },
     onMutate: (variables) => {
+      const messageValue = variables?.message
       const newMessage: IMessageBox = {
         content: reply?.username
-          ? variables.replace(reply.username, "")
-          : variables,
+          ? messageValue.replace(reply.username, "")
+          : messageValue,
         role: RoleChat.OWNER,
         id: makeId(),
         roleOwner: RoleUser.USER,

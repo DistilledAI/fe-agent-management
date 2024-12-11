@@ -3,18 +3,15 @@ import HeaderMobileBack from "@components/HeaderMobileBack"
 import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
 import MyAgents from "@pages/Account/MyAgents"
 import AgentStatus from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization/AgentStatus"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { getMyPrivateAgent } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 
 const MyAgentPage = () => {
-  const queryClient = useQueryClient()
-  const cachedData = queryClient.getQueryData([QueryDataKeys.MY_BOT_LIST])
   const { data } = useQuery<any>({
     queryKey: [QueryDataKeys.MY_BOT_LIST],
     queryFn: getMyPrivateAgent,
     refetchOnWindowFocus: false,
-    enabled: !cachedData,
   })
   const agents = data ? data?.data?.items : []
   const agent = agents[0]

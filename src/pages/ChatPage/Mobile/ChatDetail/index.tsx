@@ -1,17 +1,20 @@
+import ReCaptchaWraper from "@components/ReCaptchaWraper"
 import useAuthState from "@hooks/useAuthState"
 import useSubmitChat from "@hooks/useSubmitChat"
 import ChatInput from "@pages/ChatPage/ChatBox/ChatInput"
+import ChatMessages from "@pages/ChatPage/ChatBox/ChatMessages"
+import PrivateAgentChatContent from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/PrivateAgentChatContent"
+import { useQuery } from "@tanstack/react-query"
 import { StyleSpacingProvider } from "providers/StyleSpacingProvider"
+import { useRef } from "react"
 import { useParams } from "react-router-dom"
 import SpeechRecognition from "react-speech-recognition"
+import { QueryDataKeys } from "types/queryDataKeys"
 import ChatDetailHeader from "./Header"
 import useGetChatId from "./useGetChatId"
-import PrivateAgentChatContent from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/PrivateAgentChatContent"
-import ChatMessages from "@pages/ChatPage/ChatBox/ChatMessages"
-import { useQuery } from "@tanstack/react-query"
-import { QueryDataKeys } from "types/queryDataKeys"
 
 const ChatDetail = () => {
+  const reCaptchaRef = useRef<any>()
   const { privateChatId } = useParams()
   const { chatId } = useGetChatId()
   const { isLogin } = useAuthState()
@@ -28,26 +31,34 @@ const ChatDetail = () => {
 
   const isEnableTextInput = isLogin && (privateChatId || chatId)
 
+  const onChatSubmit = async (value: string) => {
+    const captchaRes = await reCaptchaRef.current.execute()
+    mutation.mutate({ message: value, captchaValue: captchaRes })
+  }
+
   return (
-    <StyleSpacingProvider>
-      <div className="h-[100dvh] pt-[60px]">
-        <ChatDetailHeader />
-        <div className="h-[calc(100dvh-130px)]">
-          {privateChatId ? (
-            <PrivateAgentChatContent hasInputChat={false} />
-          ) : (
-            <ChatMessages />
-          )}
+    <>
+      <StyleSpacingProvider>
+        <div className="h-[100dvh] pt-[60px]">
+          <ChatDetailHeader />
+          <div className="h-[calc(100dvh-130px)]">
+            {privateChatId ? (
+              <PrivateAgentChatContent hasInputChat={false} />
+            ) : (
+              <ChatMessages />
+            )}
+          </div>
+          <div className="fixed bottom-0 left-0 z-[11] w-full bg-mercury-30 px-3 py-2">
+            <ChatInput
+              onSubmit={onChatSubmit}
+              isPending={mutation.isPending}
+              isDisabledInput={isChatting || !isEnableTextInput}
+            />
+          </div>
         </div>
-        <div className="fixed bottom-0 left-0 z-[11] w-full bg-mercury-30 px-3 py-2">
-          <ChatInput
-            onSubmit={mutation.mutate}
-            isPending={mutation.isPending}
-            isDisabledInput={isChatting || !isEnableTextInput}
-          />
-        </div>
-      </div>
-    </StyleSpacingProvider>
+      </StyleSpacingProvider>
+      <ReCaptchaWraper reCaptchaRef={reCaptchaRef} />
+    </>
   )
 }
 

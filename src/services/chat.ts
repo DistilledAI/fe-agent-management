@@ -29,6 +29,7 @@ interface IDataChatToGroup {
   groupId: number
   messages: string
   replyTo?: number
+  captcha?: string
 }
 export const postChatToGroup = async (data: IDataChatToGroup) => {
   return fetchApiAuth({

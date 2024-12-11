@@ -1,13 +1,22 @@
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
-import React from "react"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import ReactDOM from "react-dom"
+import { QueryDataKeys } from "types/queryDataKeys"
 
-const ViewFullMedia: React.FC<{
-  isOpen: boolean
-  onClose: () => void
-  url: string
-}> = ({ isOpen, onClose, url }) => {
-  if (!isOpen) return null
-  return (
+const MediaPreview = () => {
+  const queryClient = useQueryClient()
+  const { data: mediaUrl } = useQuery({
+    initialData: "",
+    queryKey: [QueryDataKeys.MEDIA_PREVIEW],
+  })
+
+  if (!mediaUrl) return null
+
+  const onClose = () => {
+    queryClient.setQueryData([QueryDataKeys.MEDIA_PREVIEW], () => "")
+  }
+
+  return ReactDOM.createPortal(
     <div className="fixed inset-0 z-[100] flex h-full w-full items-center">
       <div
         onClick={onClose}
@@ -16,7 +25,7 @@ const ViewFullMedia: React.FC<{
       <img
         className="relative m-auto max-h-[calc(100dvh-40px)] min-h-[200px] min-w-[200px] max-w-[calc(100dvw-40px)] object-cover"
         alt="view"
-        src={url}
+        src={mediaUrl}
       />
       <button
         type="button"
@@ -25,8 +34,10 @@ const ViewFullMedia: React.FC<{
       >
         <CloseFilledIcon />
       </button>
-    </div>
+    </div>,
+    document.body,
+    QueryDataKeys.MEDIA_PREVIEW,
   )
 }
 
-export default ViewFullMedia
+export default MediaPreview

@@ -52,13 +52,12 @@ const ChatWindow = ({
   increaseViewportBy = 500,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
-  // const [isAtBottom, setIsAtBottom] = useState<boolean>(true)
   const [isScrollBottom, setIsScrollBottom] = useState<boolean>(false)
+  const isFetchingRef = useRef(false)
 
   useLayoutEffect(() => {
     if (chatId) {
       setIsScrollBottom(false)
-      // setIsAtBottom(true)
     }
   }, [chatId])
 
@@ -71,30 +70,31 @@ const ChatWindow = ({
   }, [messages, style?.paddingBottom])
 
   useEffect(() => {
-    if (!isScrollBottom) {
+    if (!isScrollBottom && messages.length > 0) {
       scrollToBottom()
     }
-  }, [scrollToBottom, isScrollBottom, chatId])
+  }, [scrollToBottom, isScrollBottom, chatId, messages])
 
-  const onScroll = useCallback(
-    async (e: React.UIEvent<HTMLDivElement>) => {
-      const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
-      if (scrollTop === 0 && hasPreviousMore) {
-        const messagesIndex = await onLoadPrevMessages()
-        if (messagesIndex) {
-          virtuosoRef.current?.scrollToIndex({
-            index: messagesIndex || 0,
-            behavior: "auto",
-            align: "end",
-          })
-        }
+  const onScroll = async (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
+
+    if (scrollTop === 0 && hasPreviousMore && !isFetchingRef.current) {
+      isFetchingRef.current = true
+      const messagesIndex = await onLoadPrevMessages()
+      isFetchingRef.current = false
+
+      if (messagesIndex) {
+        virtuosoRef.current?.scrollToIndex({
+          index: messagesIndex || 0,
+          behavior: "auto",
+          align: "end",
+        })
       }
+    }
 
-      const scrollPosition = scrollHeight - clientHeight - scrollTop
-      setIsScrollBottom(scrollPosition > AT_BOTTOM_THRESHOLD)
-    },
-    [hasPreviousMore],
-  )
+    const scrollPosition = scrollHeight - clientHeight - scrollTop
+    setIsScrollBottom(scrollPosition > AT_BOTTOM_THRESHOLD)
+  }
 
   const renderHeader = useCallback(() => {
     if (isFetchingPreviousPage && messages.length >= LIMIT) {
@@ -151,13 +151,11 @@ const ChatWindow = ({
           id="chat-window"
           style={{
             height: "100%",
-            willChange: "scroll-position",
-            overflowAnchor: "none",
           }}
           ref={virtuosoRef}
           data={messages}
           initialTopMostItemIndex={{
-            index: "LAST",
+            index: messages.length - 1,
             align: "end",
           }}
           totalCount={messages.length}
@@ -168,7 +166,6 @@ const ChatWindow = ({
             EmptyPlaceholder: () => renderEmptyPlaceholder(),
           }}
           followOutput={!isScrollBottom ? "auto" : false}
-          // atBottomStateChange={setIsAtBottom}
           atBottomThreshold={AT_BOTTOM_THRESHOLD}
           itemContent={renderRow}
         />

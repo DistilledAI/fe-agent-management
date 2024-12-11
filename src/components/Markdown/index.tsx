@@ -1,13 +1,22 @@
-import ViewFullMedia from "@components/ImagePreview"
-import { useDisclosure } from "@nextui-org/react"
+import { useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById, isImageUrl } from "@utils/index"
 import Markdown from "react-markdown"
 import { useParams } from "react-router-dom"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const MarkdownMessage = ({ msg }: { msg: string }) => {
   const { chatId } = useParams()
   const { textColor } = getActiveColorRandomById(chatId)
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const queryClient = useQueryClient()
+
+  const checkTextBreak = (text: string) => {
+    const tokenRegex = /[a-zA-Z0-9]{40,43}/
+
+    if (tokenRegex.test(text)) {
+      return "break-all"
+    }
+    return "break-words"
+  }
 
   const replaceSrcImage = (src: string) => {
     if (src.includes("https://defi-lens.s3.us-east-2.amazonaws.com/")) {
@@ -56,16 +65,17 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
       const imageSrc = replaceSrcImage(src)
 
       return (
-        <>
-          <img
-            src={imageSrc}
-            alt={alt}
-            className="max-h-[300px] min-h-[200px] cursor-pointer rounded-3xl border border-mercury-100 object-cover shadow-1"
-            onClick={onOpen}
-          />
-
-          <ViewFullMedia isOpen={isOpen} url={imageSrc} onClose={onClose} />
-        </>
+        <img
+          src={imageSrc}
+          alt={alt}
+          className="max-h-[300px] min-h-[200px] cursor-pointer rounded-3xl border border-mercury-100 object-cover shadow-1"
+          onClick={() =>
+            queryClient.setQueryData<string>(
+              [QueryDataKeys.MEDIA_PREVIEW],
+              () => imageSrc || "",
+            )
+          }
+        />
       )
     },
     a: ({ href, children }: any) => (
@@ -78,7 +88,10 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
         {children}
       </a>
     ),
-    p: ({ children }: any) => <p className="break-all">{children}</p>,
+    p: ({ children }: any) => {
+      const wordBreakStyle = checkTextBreak(children)
+      return <p className={wordBreakStyle}>{children}</p>
+    },
   }
 
   return (

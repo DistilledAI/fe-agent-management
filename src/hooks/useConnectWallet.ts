@@ -1,5 +1,6 @@
 import { updateModalStatus } from "@reducers/connectWalletSlice"
 import { loginSuccess } from "@reducers/userSlice"
+import bs58 from "bs58"
 import { ethers } from "ethers"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
@@ -195,7 +196,6 @@ const useConnectWallet = () => {
       try {
         await provider.send("eth_requestAccounts", [])
       } catch (error: any) {
-        console.log("connectMetamaskWal ~ error:", error)
         throw error
       }
       const signer = await provider.getSigner()
@@ -278,54 +278,26 @@ const useConnectWallet = () => {
 
     try {
       setLoadingConnectPhantom(true)
-      //@ts-ignore
-      const ethereumProvider = window?.phantom.ethereum
-      if (!ethereumProvider) {
-        return toast.warning(
-          `Please activate the Ethereum Network in your wallet settings!`,
-        )
-      }
       const timestamp = Math.floor(Date.now() / 1000) + 86400
+      let publicAddress = ""
       try {
-        await provider.connect()
+        const resp = await provider.request({ method: "connect" })
+        if (resp) publicAddress = resp.publicKey.toString()
       } catch (error: any) {
-        console.log("connectPhantomWal ~ error:", error)
         throw error
       }
 
-      //@ts-ignore
-      const accounts = await window?.phantom.ethereum.request({
-        method: "eth_requestAccounts",
-        params: [],
-      })
-
-      const publicAddress = accounts[0]
-
-      const domain = {}
-      const types = {
-        Data: [
-          { name: "action", type: "string" },
-          { name: "publicAddress", type: "address" },
-          { name: "timestamp", type: "uint256" },
-        ],
-      }
       const value = {
         action: "Login to Distilled",
         publicAddress,
         timestamp,
       }
 
-      const providerEther = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = providerEther.getSigner()
-
-      const signature = (await signer._signTypedData(
-        domain,
-        types,
-        value,
-      )) as any
-
-      const digest = ethers.utils._TypedDataEncoder.hash(domain, types, value)
-      const publicKey = ethers.utils.recoverPublicKey(digest, signature)
+      // Sign the message
+      const message = JSON.stringify(value)
+      const encodedMessage = new TextEncoder().encode(message)
+      const signedMessage = await provider.signMessage(encodedMessage, "utf8")
+      const signature = bs58.encode(signedMessage.signature)
 
       const input: IDataSignatureAuth = {
         data: {
@@ -335,9 +307,9 @@ const useConnectWallet = () => {
         },
         signData: {
           signature,
-          publicKey,
+          publicKey: provider.publicKey,
         },
-        typeLogin: "evm",
+        typeLogin: "solana",
       }
 
       await login(input)
