@@ -22,6 +22,8 @@ export interface IUser {
   configBot?: string
   xDstlPoint?: number
   code?: string
+  kycTwitter?: string
+  kycEmail?: string
 }
 
 interface LoginSuccessPayload {

@@ -1,6 +1,7 @@
 import { xDSTL } from "@assets/images"
 import AvatarCustom from "@components/AvatarCustom"
 import ChatInfoCurrent from "@components/ChatInfoCurrent"
+import { WarningIcon } from "@components/Icons"
 import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
 import { SearchUserIconOutline } from "@components/Icons/UserIcon"
 import { WalletIcon } from "@components/Icons/Wallet"
@@ -92,9 +93,17 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
               src={user.avatar}
               className="h-8 w-8"
             />
-            <span className="line-clamp-1 block max-w-[150px] text-base max-md:hidden">
-              {user.username}
-            </span>
+            {user.kycTwitter || user.kycEmail ? (
+              <span className="line-clamp-1 block max-w-[150px] text-base max-md:hidden">
+                {user.username}
+              </span>
+            ) : (
+              <div className="hidden items-center gap-1 md:flex">
+                <div className="flex items-center gap-1 text-[#F78500]">
+                  <WarningIcon color="#F78500" /> Unverified
+                </div>
+              </div>
+            )}
           </Button>
         </div>
       ) : (
