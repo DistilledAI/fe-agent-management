@@ -213,7 +213,7 @@ export const AGENT_INFO_CLANS = [
   {
     username: "@stalor",
     xLink: "https://x.com/stalor_ai",
-    teleLink: "",
+    teleLink: "https://t.me/cupiee_official",
     shareLink: "https://mesh.distilled.ai/clan/@stalor",
     contract: "",
   },
