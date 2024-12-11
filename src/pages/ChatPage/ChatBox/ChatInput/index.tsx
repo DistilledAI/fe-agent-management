@@ -168,7 +168,7 @@ const ChatInput = ({
     <div
       ref={boxRef}
       className={twMerge(
-        "absolute bottom-4 z-[11] flex max-w-[768px] items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 transition-all duration-300 ease-linear max-md:static max-md:gap-2 md:bottom-8 md:min-h-[60px] md:p-3 md:py-[7.89px]",
+        "absolute bottom-4 z-[11] flex max-w-[768px] items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 transition-all duration-300 ease-linear max-md:static max-md:gap-2 max-md:pl-3 md:bottom-8 md:min-h-[60px] md:p-3 md:py-[7.89px]",
         isFocus ? "border-mercury-300" : "border-mercury-200",
         spacing && "items-end",
         isDarkTheme && "bg-mercury-950",
@@ -232,17 +232,23 @@ const ChatInput = ({
         style={{
           width: "100%",
           height: "100%",
+          maxWidth: isMobile
+            ? "calc(100% - 88px)"
+            : listening
+              ? "calc(100% - 184px)"
+              : "calc(100% - 172px)",
           fontFamily: "Barlow",
-          maxHeight: "200px",
+          maxHeight: isMobile ? "40px" : "200px",
+          color: isDarkTheme ? "#FAFAFA" : "#11181c",
           control: {
-            maxHeight: "200px",
+            maxHeight: isMobile ? "40px" : "200px",
           },
           highlighter: {
-            maxHeight: "200px",
+            maxHeight: isMobile ? "40px" : "200px",
           },
           input: {
             overflowY: "auto",
-            maxHeight: "200px",
+            maxHeight: isMobile ? "40px" : "200px",
             border: "none",
             outline: "none",
           },

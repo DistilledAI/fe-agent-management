@@ -69,7 +69,7 @@ const SendMessage: React.FC<{
           hasFocus={hasFocus}
           setHasFocus={setHasFocus}
           resetRely={resetReply}
-          wrapperClassName="w-full max-w-full max-md:pl-3 md:bottom-[calc(100%-72px)]"
+          wrapperClassName="w-full max-w-full max-md:pl-3 md:bottom-[calc(100%-72px)] max-md:max-w-[calc(100%-77px)]"
         />
       </div>
     </div>
