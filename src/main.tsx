@@ -10,6 +10,7 @@ import "@rainbow-me/rainbowkit/styles.css"
 import "./index.css"
 import "swiper/css"
 import "swiper/css/pagination"
+import "swiper/css/navigation"
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
