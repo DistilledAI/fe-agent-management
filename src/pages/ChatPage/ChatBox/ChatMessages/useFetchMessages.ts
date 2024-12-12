@@ -52,8 +52,6 @@ export const chatMessagesKey = (chatId: string | undefined) => {
   return [QueryDataKeys.CHAT_MESSAGES, chatId.toString()]
 }
 
-const STALE_TIME = 60 * 60 * 1000
-
 const useFetchMessages = () => {
   const { user, isLogin } = useAuthState()
   const { privateChatId } = useParams()
@@ -92,7 +90,7 @@ const useFetchMessages = () => {
     enabled: isLogin && !!groupId && !!user?.id,
     getNextPageParam: (lastPage) => lastPage?.nextOffset,
     getPreviousPageParam: (firstPage) => firstPage?.nextOffset,
-    staleTime: STALE_TIME,
+    // staleTime: STALE_TIME,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     initialPageParam: 0,
