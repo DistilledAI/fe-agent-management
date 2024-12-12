@@ -77,6 +77,9 @@ const endpoint = {
   GET_EXP_TOTAL_POINT_USER: (groupId: number) =>
     withBaseURL(`/point/exp/total-point/user/${groupId}`),
 
+  // messages
+  POST_REACTION_MESSAGE: withBaseURL("/messages/reaction-msg"),
+
   //game
   // TODO: update later
   // GET_PREDICT_HISTORY: withBaseURL("/game/predict/history"),
