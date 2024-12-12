@@ -47,7 +47,7 @@ export const ShareWithCloudIcon = () => {
   )
 }
 
-export const ShareFilledIcon = ({
+export const ShareOutlineIcon = ({
   size = 24,
   color = "#545454",
 }: IconProps) => {

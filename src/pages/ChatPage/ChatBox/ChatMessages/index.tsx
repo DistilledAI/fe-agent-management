@@ -80,7 +80,7 @@ const ChatMessages = () => {
       return (
         <div
           className={twMerge(
-            "mx-auto w-full max-w-[768px] px-3 pb-4",
+            "relative mx-auto w-full max-w-[768px] rounded-[22px] px-3 pb-4",
             isOwner && paddingBottomStyle,
           )}
           key={index}
@@ -103,6 +103,26 @@ const ChatMessages = () => {
               baseClassName={twMerge(bgColor, borderRadiusStyle)}
             />
           )}
+          {/* <div className="absolute -bottom-4 right-4 flex items-center gap-2">
+            <button
+              type="button"
+              className="h-8 rounded-full border border-mercury-200 bg-white px-3 py-1 transition-all duration-300 ease-in-out hover:scale-105"
+            >
+              <ShareArrowIcon size={20} />
+            </button>
+            <button
+              type="button"
+              className="h-8 rounded-full border border-mercury-200 bg-white px-3 py-1 transition-all duration-300 ease-in-out hover:scale-105"
+            >
+              <LikeOutlineIcon size={20} />
+            </button>
+            <button
+              type="button"
+              className="h-8 rounded-full border border-mercury-200 bg-white px-3 py-1 transition-all duration-300 ease-in-out hover:scale-105"
+            >
+              <DislikeOutlineIcon size={20} />
+            </button>
+          </div> */}
         </div>
       )
     },

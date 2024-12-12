@@ -1,3 +1,5 @@
+import { ReactionTypes } from "types/reactions"
+
 export enum INTERACTION_FREQUENCY_KEY {
   Never = "Never",
   Occasionally = "Occasionally",
@@ -46,5 +48,36 @@ export const RESPONSE_LENGTH = [
     key: RESPONSE_LENGTH_KEY.Detailed,
     title: "Detailed",
     value: RESPONSE_LENGTH_VALUE.Detailed,
+  },
+]
+
+export const EMOJI_REACTIONS = [
+  {
+    reactionType: ReactionTypes.LIKE,
+    emoji: "👍",
+  },
+  {
+    reactionType: ReactionTypes.DISLIKE,
+    emoji: "👎",
+  },
+  {
+    reactionType: ReactionTypes.LOVE,
+    emoji: "❤️",
+  },
+  {
+    reactionType: ReactionTypes.JOY,
+    emoji: "😂",
+  },
+  {
+    reactionType: ReactionTypes.EXPLODING_HEAD,
+    emoji: "🤯",
+  },
+  {
+    reactionType: ReactionTypes.CRY,
+    emoji: "😢",
+  },
+  {
+    reactionType: ReactionTypes.FACE_WITH_SYMBOLS_OVER_MOUTH,
+    emoji: "🤬",
   },
 ]
