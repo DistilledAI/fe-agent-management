@@ -13,3 +13,10 @@ export enum ReactionTypes {
 }
 
 export type ReactionType = keyof typeof ReactionTypes
+
+export interface EmojiReaction {
+  reactionType: ReactionTypes
+  emoji: string
+}
+
+export type EmojiReactionsMap = Record<ReactionTypes, string>

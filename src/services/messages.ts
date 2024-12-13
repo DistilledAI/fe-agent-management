@@ -1,11 +1,11 @@
-import { ReactionType } from "types/reactions"
+import { ReactionTypes } from "types/reactions"
 import endpoint from "./endpoint"
 import { fetchApiAuth } from "./fetchApi"
 
 interface ReactionMsg {
   msgId: number | string
   groupId: number | string
-  reactionType: ReactionType
+  reactionType: ReactionTypes
 }
 
 export const postReactionMsg = async ({

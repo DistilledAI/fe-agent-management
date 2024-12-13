@@ -57,9 +57,7 @@ const ListMessage: React.FC<{
       scrollBottomClassName="max-md:!bottom-[200px] max-md:bg-none"
       increaseViewportBy={5000}
     />
-  ) : (
-    <></>
-  )
+  ) : null
 }
 
 export default ListMessage

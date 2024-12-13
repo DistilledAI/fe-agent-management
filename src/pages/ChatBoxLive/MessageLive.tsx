@@ -1,27 +1,23 @@
 import AvatarCustom from "@components/AvatarCustom"
-import EmojiReactions, { EmojiReactionItem } from "@components/EmojiReactions"
+import EmojiReactions from "@components/EmojiReactions"
 import { ImageIcon } from "@components/Icons"
 import { ArrowsRelyIcon } from "@components/Icons/Arrow"
 import MarkdownMessage from "@components/Markdown"
 import { RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
-import { EMOJI_REACTIONS } from "@pages/AgentDetail/AgentBehaviors/constants"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import { IReactionMsgStats } from "@pages/ChatPage/ChatBox/ChatMessages/useFetchMessages"
 import { isMarkdownImage } from "@utils/index"
 import { useState } from "react"
 import { postReactionMsg } from "services/messages"
 import { twMerge } from "tailwind-merge"
-import { ReactionTypes } from "types/reactions"
+import { emojiReactionsMap } from "./helpers"
+import { EmojiReaction } from "types/reactions"
 
 interface MessageLiveProps {
   message: IMessageBox
   onReply: () => void
   groupId: string
-}
-
-const formatUsername = (username: string) => {
-  return username.replace(/@\[(\w+)\]/g, "@$1")
 }
 
 const MessageLive: React.FC<MessageLiveProps> = ({
@@ -37,22 +33,26 @@ const MessageLive: React.FC<MessageLiveProps> = ({
   )
 
   const handleEmojiReaction = async (
-    item: EmojiReactionItem | IReactionMsgStats,
+    item: EmojiReaction | IReactionMsgStats,
   ) => {
     const existingReaction = emojiReactions.find(
       (val) => val.reactionType === item.reactionType,
     )
 
-    let updatedReactions
+    let updatedReactions: IReactionMsgStats[]
+
+    const emoji = emojiReactionsMap[item.reactionType]
 
     if (existingReaction) {
       // Toggle reaction
       if (existingReaction.isReacted) {
-        updatedReactions = emojiReactions.map((val) =>
-          val.reactionType === item.reactionType
-            ? { ...val, total: val.total - 1, isReacted: false }
-            : val,
-        )
+        updatedReactions = emojiReactions
+          .map((val) =>
+            val.reactionType === item.reactionType
+              ? { ...val, total: val.total - 1, isReacted: false }
+              : val,
+          )
+          .filter((val) => val.total > 0)
       } else {
         updatedReactions = emojiReactions.map((val) =>
           val.reactionType === item.reactionType
@@ -69,13 +69,13 @@ const MessageLive: React.FC<MessageLiveProps> = ({
           reactionType: item.reactionType,
           total: 1,
           isReacted: true,
+          emoji,
         },
       ]
     }
 
     setEmojiReactions(updatedReactions)
 
-    // Call API
     await postReactionMsg({
       msgId: message.id,
       groupId,
@@ -95,7 +95,7 @@ const MessageLive: React.FC<MessageLiveProps> = ({
               className="flex h-8 items-center gap-1 rounded-full border border-mercury-200 bg-white px-3 py-1 !opacity-100 duration-100 hover:scale-105"
             >
               <ArrowsRelyIcon />
-              <span className="">Reply</span>
+              <span>Reply</span>
             </button>
           )}
         </div>
@@ -121,7 +121,7 @@ const MessageLive: React.FC<MessageLiveProps> = ({
           {message.reply && (
             <div className="flex items-center gap-2">
               <p className="line-clamp-1 max-w-[120px] text-15 font-semibold text-brown-500">
-                {formatUsername(message.reply.username)}
+                {message.reply.username}
               </p>
               <p className="line-clamp-1 max-w-[200px] text-15 text-mercury-400">
                 {isMarkdownImage(message.reply.message) ? (
@@ -140,15 +140,12 @@ const MessageLive: React.FC<MessageLiveProps> = ({
           <MarkdownMessage msg={message?.content} />
           <div className="flex items-center gap-2">
             {emojiReactions.map((item, index) => {
-              const emoji = EMOJI_REACTIONS.find(
-                (val) =>
-                  val.reactionType === (item.reactionType as ReactionTypes),
-              )?.emoji
+              const emoji = emojiReactionsMap[item.reactionType]
 
               return (
                 <div
                   className={twMerge(
-                    "flex h-8 min-w-[50px] cursor-pointer items-center gap-1 rounded-full border border-mercury-200 bg-white px-3 py-1 transition-all duration-300 ease-in-out",
+                    "flex h-6 min-w-6 cursor-pointer items-center gap-1 rounded-full border border-mercury-200 bg-white px-3 py-1 transition-all duration-300 ease-in-out",
                     item?.isReacted && "border-brown-500 bg-brown-50",
                   )}
                   key={`${item.msgId}-${index}`}
@@ -156,7 +153,7 @@ const MessageLive: React.FC<MessageLiveProps> = ({
                 >
                   <span
                     className={twMerge(
-                      "text-[16px] font-medium text-mercury-500",
+                      "text-[14px] font-medium text-mercury-500",
                       item?.isReacted && "text-mercury-800",
                     )}
                   >
