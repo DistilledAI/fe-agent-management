@@ -1,6 +1,8 @@
 import { CLEAR_CACHED_MESSAGE, RoleUser } from "@constants/index"
 import { TypeGroup } from "../LeftBar/useFetchGroups"
-import { IMessage } from "./useFetchMessages"
+import { IMessage, IReactionMsg, IReactionMsgStats } from "./useFetchMessages"
+import { EMOJI_REACTIONS } from "@pages/AgentDetail/AgentBehaviors/constants"
+import { ReactionTypes } from "types/reactions"
 
 export enum RoleChat {
   OWNER = "owner",
@@ -28,6 +30,8 @@ export interface IMessageBox {
     message: string
     username: string
   }
+  reactionMsg?: IReactionMsg[]
+  reactionMsgStats?: IReactionMsgStats[]
 }
 
 const isOwner = (currentUserId: number, userId: number) => {
@@ -88,6 +92,22 @@ export const convertDataFetchToMessage = (
               : "@Unnamed",
           }
         : undefined,
+      reactionMsg: mess.reactionMsg,
+      reactionMsgStats: mess?.reactionMsgStats
+        ?.filter(
+          (item) =>
+            item?.total > 0 &&
+            EMOJI_REACTIONS.find(
+              (val) =>
+                val.reactionType === (item.reactionType as ReactionTypes),
+            ),
+        )
+        .map((stat) => {
+          const isReacted = mess?.reactionMsg?.some(
+            (msg) => msg?.reactionType === stat?.reactionType,
+          )
+          return { ...stat, isReacted }
+        }),
     }))
     .reverse()
 }

@@ -26,17 +26,20 @@ const EarnedPointToast = () => {
   }
 
   useEffect(() => {
+    let timeout: any = null
     ;(async () => {
       if (isLogin && !firstLogin && !isAnonymous && socket) {
-        setTimeout(async () => {
+        timeout = setTimeout(async () => {
           const res = await getUserClaimTaskSuccess()
           dispatch(updateFirstLogin(true))
           if (res?.status === 200) {
             fetchData()
           }
-        }, 500)
+        }, 750)
       }
     })()
+
+    return () => clearTimeout(timeout)
   }, [isLogin, firstLogin, isAnonymous, socket])
 
   useEffect(() => {

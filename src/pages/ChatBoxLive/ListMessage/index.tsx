@@ -6,7 +6,7 @@ import MessageLive from "../MessageLive"
 import { twMerge } from "tailwind-merge"
 
 const ListMessage: React.FC<{
-  chatId: string | undefined
+  chatId: string
   onReply: (message: IMessageBox) => void
   isCloseLiveChat: boolean
   isClan: boolean
@@ -32,6 +32,7 @@ const ListMessage: React.FC<{
           key={index}
           message={message}
           onReply={() => onReply(message)}
+          groupId={chatId}
         />
       </div>
     )

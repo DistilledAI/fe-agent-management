@@ -13,6 +13,7 @@ import { getChatHistoryById } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { IGroup } from "../LeftBar/useFetchGroups"
 import { convertDataFetchToMessage, IMessageBox } from "./helpers"
+import { ReactionType } from "types/reactions"
 
 export interface IMentions {
   id: number
@@ -20,6 +21,20 @@ export interface IMentions {
   user: IUser
   userId: number
   createdAt: string
+}
+
+export interface IReactionMsg {
+  id: number
+  msgId: number | string
+  reactionType: string
+  userId: number
+}
+
+export interface IReactionMsgStats {
+  msgId: number | string
+  reactionType: ReactionType
+  total: number
+  isReacted?: boolean
 }
 
 export interface IMessage {
@@ -37,6 +52,8 @@ export interface IMessage {
     user: IUser
   }
   mentions?: IMentions[]
+  reactionMsg?: IReactionMsg[]
+  reactionMsgStats?: IReactionMsgStats[]
 }
 
 export interface ICachedMessageData {
