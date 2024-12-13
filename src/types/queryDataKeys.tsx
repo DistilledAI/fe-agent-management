@@ -25,4 +25,5 @@ export enum QueryDataKeys {
   EXP_RANK_LIST_BY_GROUP = "exp-rank-list-by-group",
   TOTAL_MEMBER_GROUP = "total-member-group",
   MEDIA_PREVIEW = "media-preview",
+  LEAVE_GROUP_STATE = "leave_group_state",
 }

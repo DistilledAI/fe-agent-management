@@ -16,9 +16,12 @@ export const getTotalMemberGroup = async (groupId: number) => {
   return res?.data
 }
 
-export const getListGroupAgentPublic = async () => {
+export const getListGroupAgentPublic = async (filter?: string) => {
   return fetchApiAuth({
     method: "GET",
     url: endpoint.GET_LIST_GROUP_PUBLIC,
+    params: {
+      filter,
+    },
   })
 }

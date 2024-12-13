@@ -123,7 +123,8 @@ export const AvatarClanByList: React.FC<{
   name: string
   publicAddress?: string
   member?: number
-}> = ({ avatarUrl, name, publicAddress, member }) => {
+  isNameDisplay?: boolean
+}> = ({ avatarUrl, name, publicAddress, member, isNameDisplay = true }) => {
   return (
     <div className="flex flex-col items-center">
       <div className="flex flex-col items-center">
@@ -140,7 +141,9 @@ export const AvatarClanByList: React.FC<{
           </span>
         </div>
       </div>
-      <p className="mt-[6px] line-clamp-1 text-14 leading-none">{name}</p>
+      {isNameDisplay && (
+        <p className="mt-[6px] line-clamp-1 text-14 leading-none">{name}</p>
+      )}
       {/* <p className="mt-1 text-14 leading-none">.Clan</p> */}
     </div>
   )
