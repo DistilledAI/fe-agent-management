@@ -153,13 +153,13 @@ const MessageLive: React.FC<MessageLiveProps> = ({
                 >
                   <span
                     className={twMerge(
-                      "text-[14px] font-medium text-mercury-500",
+                      "text-[13px] font-medium text-mercury-500",
                       item?.isReacted && "text-mercury-800",
                     )}
                   >
                     {item.total}
                   </span>
-                  {emoji}
+                  <span className="text-13">{emoji}</span>
                 </div>
               )
             })}
