@@ -2,7 +2,6 @@ import { CLEAR_CACHED_MESSAGE, RoleUser } from "@constants/index"
 import { TypeGroup } from "../LeftBar/useFetchGroups"
 import { IMessage, IReactionMsg, IReactionMsgStats } from "./useFetchMessages"
 import { EMOJI_REACTIONS } from "@pages/AgentDetail/AgentBehaviors/constants"
-import { ReactionTypes } from "types/reactions"
 
 export enum RoleChat {
   OWNER = "owner",
@@ -65,50 +64,52 @@ export const convertDataFetchToMessage = (
   data: IMessage[],
   currentUserId: number,
 ): IMessageBox[] => {
+  const emojiReactionsSet = new Set(
+    EMOJI_REACTIONS.map((val) => val.reactionType),
+  )
+
   return data
-    .map((mess) => ({
-      id: mess.id,
-      role: getRole(isOwner(currentUserId, mess.user?.id)),
-      content:
-        mess.mentions && mess.mentions.length > 0
-          ? replaceMentions(mess as any)
-          : mess.messages,
-      avatar: mess.user?.avatar,
-      roleOwner: mess.user.role,
-      typeGroup: mess.group.typeGroup,
-      createdAt: mess.createdAt,
-      publicAddress: mess.user?.publicAddress,
-      isChatCleared: false,
-      username: mess?.user?.username,
-      userId: mess?.userId,
-      agentId: mess.user.id,
-      ownerId: mess.user.owner,
-      reply: mess.relyTo
-        ? {
-            messageId: mess.relyTo,
-            message: mess.relyToMessage?.messages ?? "",
-            username: mess.relyToMessage?.user?.username
-              ? `@${mess.relyToMessage.user.username}`
-              : "@Unnamed",
-          }
-        : undefined,
-      reactionMsg: mess.reactionMsg,
-      reactionMsgStats: mess?.reactionMsgStats
+    .map((mess) => {
+      const reactionMsgStats = mess?.reactionMsgStats
         ?.filter(
-          (item) =>
-            item?.total > 0 &&
-            EMOJI_REACTIONS.find(
-              (val) =>
-                val.reactionType === (item.reactionType as ReactionTypes),
-            ),
+          (item) => item?.total > 0 && emojiReactionsSet.has(item.reactionType),
         )
         .map((stat) => {
           const isReacted = mess?.reactionMsg?.some(
-            (msg) => msg?.reactionType === stat?.reactionType,
+            (msg) => msg?.reactionType === stat.reactionType,
           )
           return { ...stat, isReacted }
-        }),
-    }))
+        })
+
+      return {
+        id: mess.id,
+        role: getRole(isOwner(currentUserId, mess.user?.id)),
+        content: mess.mentions?.length
+          ? replaceMentions(mess as any)
+          : mess.messages,
+        avatar: mess.user?.avatar,
+        roleOwner: mess.user.role,
+        typeGroup: mess.group.typeGroup,
+        createdAt: mess.createdAt,
+        publicAddress: mess.user?.publicAddress,
+        isChatCleared: false,
+        username: mess?.user?.username,
+        userId: mess?.userId,
+        agentId: mess.user.id,
+        ownerId: mess.user.owner,
+        reply: mess.relyTo
+          ? {
+              messageId: mess.relyTo,
+              message: mess.relyToMessage?.messages ?? "",
+              username: mess.relyToMessage?.user?.username
+                ? `@${mess.relyToMessage.user.username}`
+                : "@Unnamed",
+            }
+          : undefined,
+        reactionMsg: mess.reactionMsg,
+        reactionMsgStats,
+      }
+    })
     .reverse()
 }
 

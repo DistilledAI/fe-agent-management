@@ -1,4 +1,4 @@
-import { ReactionTypes } from "types/reactions"
+import { EmojiReaction, ReactionTypes } from "types/reactions"
 
 export enum INTERACTION_FREQUENCY_KEY {
   Never = "Never",
@@ -51,7 +51,7 @@ export const RESPONSE_LENGTH = [
   },
 ]
 
-export const EMOJI_REACTIONS = [
+export const EMOJI_REACTIONS: EmojiReaction[] = [
   {
     reactionType: ReactionTypes.LIKE,
     emoji: "👍",

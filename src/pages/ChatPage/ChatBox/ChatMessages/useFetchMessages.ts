@@ -13,7 +13,7 @@ import { getChatHistoryById } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { IGroup } from "../LeftBar/useFetchGroups"
 import { convertDataFetchToMessage, IMessageBox } from "./helpers"
-import { ReactionType } from "types/reactions"
+import { EmojiReaction } from "types/reactions"
 
 export interface IMentions {
   id: number
@@ -30,9 +30,8 @@ export interface IReactionMsg {
   userId: number
 }
 
-export interface IReactionMsgStats {
+export interface IReactionMsgStats extends EmojiReaction {
   msgId: number | string
-  reactionType: ReactionType
   total: number
   isReacted?: boolean
 }
