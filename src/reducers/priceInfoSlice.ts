@@ -1,3 +1,4 @@
+import { CoinGeckoId, CoinGeckoPrices } from "@hooks/useCoingecko"
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createSlice } from "@reduxjs/toolkit"
 
@@ -7,6 +8,7 @@ export interface PriceInfoState {
   priceChangePercent: string
   currentRoundData: any
   liveRoundData: any
+  tokenPrices: CoinGeckoPrices<CoinGeckoId> | null
 }
 
 const initialState: PriceInfoState = {
@@ -15,6 +17,7 @@ const initialState: PriceInfoState = {
   priceChangePercent: "0",
   currentRoundData: null,
   liveRoundData: null,
+  tokenPrices: null,
 }
 
 const priceInfo = createSlice({
@@ -43,10 +46,20 @@ const priceInfo = createSlice({
     ) => {
       state.liveRoundData = action.payload.liveRoundData
     },
+    updatePriceTokens: (
+      state,
+      action: PayloadAction<Pick<PriceInfoState, "tokenPrices">>,
+    ) => {
+      state.tokenPrices = action.payload.tokenPrices
+    },
   },
 })
 
-export const { updatePriceInfo, updateCurrentRound, updateLiveRound } =
-  priceInfo.actions
+export const {
+  updatePriceInfo,
+  updateCurrentRound,
+  updateLiveRound,
+  updatePriceTokens,
+} = priceInfo.actions
 
 export default priceInfo.reducer
