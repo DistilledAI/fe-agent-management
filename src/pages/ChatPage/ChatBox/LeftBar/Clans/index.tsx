@@ -47,7 +47,7 @@ const ChatClans: React.FC = () => {
 
   useEffect(() => {
     getList(false)
-  }, [isLeaveGroup])
+  }, [isLeaveGroup, user.id])
 
   const handleSlideChange = (s: any) => {
     setIsFirstSlide(s.isBeginning)
@@ -102,18 +102,16 @@ const ChatClans: React.FC = () => {
                 </SwiperSlide>
               )
             })}
-            {data.length > 4 && (
-              <SwiperSlide key="last-all" className="py-1">
-                <Link
-                  to={PATH_NAMES.MARKETPLACE}
-                  className="flex w-[60px] cursor-pointer items-center justify-center rounded-lg bg-mercury-200 px-1 py-4 duration-400 hover:opacity-80"
-                >
-                  <span className="text-center text-13 font-semibold text-mercury-950">
-                    Show all clans
-                  </span>
-                </Link>
-              </SwiperSlide>
-            )}
+            <SwiperSlide key="last-all" className="py-1">
+              <Link
+                to={PATH_NAMES.MARKETPLACE}
+                className="flex w-[60px] cursor-pointer items-center justify-center rounded-[14px] bg-mercury-200 px-1 py-4 duration-400 hover:opacity-80"
+              >
+                <span className="text-center text-13 font-semibold text-mercury-950">
+                  Show all clans
+                </span>
+              </Link>
+            </SwiperSlide>
           </Swiper>
           <div
             ref={prevRef}

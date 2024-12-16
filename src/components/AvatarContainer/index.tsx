@@ -142,7 +142,9 @@ export const AvatarClanByList: React.FC<{
         </div>
       </div>
       {isNameDisplay && (
-        <p className="mt-[6px] line-clamp-1 text-14 leading-none">{name}</p>
+        <p className="mt-[6px] line-clamp-1 max-w-[60px] text-14 leading-none">
+          {name}
+        </p>
       )}
       {/* <p className="mt-1 text-14 leading-none">.Clan</p> */}
     </div>
