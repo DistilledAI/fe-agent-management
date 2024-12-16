@@ -22,6 +22,7 @@ import { useQuery } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import useAuthState from "@hooks/useAuthState"
 import { useCallback, useMemo } from "react"
+import MessageActions from "./MessageActions"
 
 const ChatMessages = () => {
   const {
@@ -80,22 +81,31 @@ const ChatMessages = () => {
       return (
         <div
           className={twMerge(
-            "relative mx-auto w-full max-w-[768px] rounded-[22px] px-3 pb-4",
-            isOwner && paddingBottomStyle,
+            "relative mx-auto w-full max-w-[768px] rounded-[22px] p-3",
+            isOwner && `${paddingBottomStyle} relative`,
+            isCustomer && "group/item pb-6",
           )}
           key={index}
         >
           {isCustomer && (
-            <ReceiverMessage
-              avatar={{
-                src: message.avatar,
-                badgeIcon: getBadgeIcon(message.roleOwner),
-                badgeClassName: getBadgeColor(message.roleOwner),
-                publicAddress: message.publicAddress,
-              }}
-              content={message.content}
-              isTyping={message.isTyping}
-            />
+            <>
+              <MessageActions
+                groupId={groupId}
+                messageId={message.id}
+                reactionMsgStats={message.reactionMsgStats || []}
+              />
+              <ReceiverMessage
+                avatar={{
+                  src: message.avatar,
+                  badgeIcon: getBadgeIcon(message.roleOwner),
+                  badgeClassName: getBadgeColor(message.roleOwner),
+                  publicAddress: message.publicAddress,
+                }}
+                content={message.content}
+                isTyping={message.isTyping}
+                baseClassName="relative"
+              />
+            </>
           )}
           {isOwner && (
             <SenderMessage
@@ -103,26 +113,6 @@ const ChatMessages = () => {
               baseClassName={twMerge(bgColor, borderRadiusStyle)}
             />
           )}
-          {/* <div className="absolute -bottom-4 right-4 flex items-center gap-2">
-            <button
-              type="button"
-              className="h-8 rounded-full border border-mercury-200 bg-white px-3 py-1 transition-all duration-300 ease-in-out hover:scale-105"
-            >
-              <ShareArrowIcon size={20} />
-            </button>
-            <button
-              type="button"
-              className="h-8 rounded-full border border-mercury-200 bg-white px-3 py-1 transition-all duration-300 ease-in-out hover:scale-105"
-            >
-              <LikeOutlineIcon size={20} />
-            </button>
-            <button
-              type="button"
-              className="h-8 rounded-full border border-mercury-200 bg-white px-3 py-1 transition-all duration-300 ease-in-out hover:scale-105"
-            >
-              <DislikeOutlineIcon size={20} />
-            </button>
-          </div> */}
         </div>
       )
     },
