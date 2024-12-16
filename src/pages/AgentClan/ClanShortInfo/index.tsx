@@ -7,10 +7,13 @@ import LeaderboardClan from "../LeaderboardClan"
 import { useParams } from "react-router-dom"
 import { formatNumberWithComma } from "@utils/index"
 import useTimerProgress from "@hooks/useTimerProgress"
+import { useRef } from "react"
 
 const ClanShortInfo = () => {
   const queryClient = useQueryClient()
   const { chatId } = useParams()
+  const expRef = useRef<any>()
+  const rewardRef = useRef<any>()
   const { data: chatIdParam } = useQuery({
     queryKey: [QueryDataKeys.CHAT_ID_BY_USERNAME, chatId],
     enabled: !!chatId,
@@ -36,6 +39,13 @@ const ClanShortInfo = () => {
   const xDSTLTotalPoint = queries[1]?.data?.data?.group?.event?.totalPoint
   const remainingDays = queries[2]?.data
 
+  const handleOpenLeaderboard = () => {
+    queryClient.setQueryData<boolean>(
+      [QueryDataKeys.TOGGLE_LEADERBOARD_CLAN],
+      () => true,
+    )
+  }
+
   const handleRefetchXpPoint = () => {
     queryClient.invalidateQueries({
       queryKey: [QueryDataKeys.TOTAL_EXP_POINT_USER, groupId],
@@ -58,7 +68,11 @@ const ClanShortInfo = () => {
             <div className="flex w-[calc(50%-15px)] items-center justify-between gap-3 max-md:w-auto max-md:flex-row-reverse">
               <div className="flex items-center gap-1 md:gap-2">
                 <p className="text-12 text-mercury-900 md:text-14">Rewards</p>
-                <div className="flex items-center gap-1">
+                <div
+                  onClick={handleOpenLeaderboard}
+                  className="flex cursor-pointer items-center gap-1"
+                  ref={rewardRef}
+                >
                   <img
                     src={xDSTL}
                     alt="xdstl"
@@ -98,7 +112,11 @@ const ClanShortInfo = () => {
                     strokeWidth={4}
                   />
                 </button>
-                <div className="flex items-center gap-3">
+                <div
+                  ref={expRef}
+                  onClick={handleOpenLeaderboard}
+                  className="flex cursor-pointer items-center gap-3"
+                >
                   <div className="flex items-center gap-1 max-md:hidden">
                     <div>
                       <TrophyIcon />
@@ -125,7 +143,7 @@ const ClanShortInfo = () => {
           </div>
         </div>
       </div>
-      <LeaderboardClan />
+      <LeaderboardClan refIgnoreOutsideArr={[rewardRef, expRef]} />
     </>
   )
 }
