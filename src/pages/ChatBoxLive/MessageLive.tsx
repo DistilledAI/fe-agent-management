@@ -12,7 +12,7 @@ import { useState } from "react"
 import { postReactionMsg } from "services/messages"
 import { twMerge } from "tailwind-merge"
 import { emojiReactionsMap } from "./helpers"
-import { EmojiReaction } from "types/reactions"
+import { EmojiReaction, ReactionTypes } from "types/reactions"
 
 interface MessageLiveProps {
   message: IMessageBox
@@ -39,39 +39,58 @@ const MessageLive: React.FC<MessageLiveProps> = ({
       (val) => val.reactionType === item.reactionType,
     )
 
-    let updatedReactions: IReactionMsgStats[]
-
+    let updatedReactions = [...emojiReactions]
     const emoji = emojiReactionsMap[item.reactionType]
+
+    const updateReaction = (
+      type: ReactionTypes,
+      isReacted: boolean,
+      delta: number,
+    ) => {
+      updatedReactions = updatedReactions
+        .map((val) =>
+          val.reactionType === type
+            ? { ...val, total: val.total + delta, isReacted }
+            : val,
+        )
+        .filter((val) => val.total > 0)
+    }
 
     if (existingReaction) {
       // Toggle reaction
       if (existingReaction.isReacted) {
-        updatedReactions = emojiReactions
-          .map((val) =>
-            val.reactionType === item.reactionType
-              ? { ...val, total: val.total - 1, isReacted: false }
-              : val,
-          )
-          .filter((val) => val.total > 0)
+        updateReaction(item.reactionType, false, -1)
       } else {
-        updatedReactions = emojiReactions.map((val) =>
-          val.reactionType === item.reactionType
-            ? { ...val, total: val.total + 1, isReacted: true }
-            : val,
-        )
+        if (item.reactionType === ReactionTypes.LIKE) {
+          const isDisliked = updatedReactions.some(
+            (val) =>
+              val.reactionType === ReactionTypes.DISLIKE && val.isReacted,
+          )
+          if (isDisliked) {
+            updateReaction(ReactionTypes.DISLIKE, false, -1)
+          }
+          updateReaction(ReactionTypes.LIKE, true, 1)
+        } else if (item.reactionType === ReactionTypes.DISLIKE) {
+          const isLiked = updatedReactions.some(
+            (val) => val.reactionType === ReactionTypes.LIKE && val.isReacted,
+          )
+          if (isLiked) {
+            updateReaction(ReactionTypes.LIKE, false, -1)
+          }
+          updateReaction(ReactionTypes.DISLIKE, true, 1)
+        } else {
+          updateReaction(item.reactionType, true, 1)
+        }
       }
     } else {
       // Add new reaction
-      updatedReactions = [
-        ...emojiReactions,
-        {
-          msgId: message.id,
-          reactionType: item.reactionType,
-          total: 1,
-          isReacted: true,
-          emoji,
-        },
-      ]
+      updatedReactions.push({
+        msgId: message.id,
+        reactionType: item.reactionType,
+        total: 1,
+        isReacted: true,
+        emoji,
+      })
     }
 
     setEmojiReactions(updatedReactions)
@@ -151,6 +170,7 @@ const MessageLive: React.FC<MessageLiveProps> = ({
                   key={`${item.msgId}-${index}`}
                   onClick={() => handleEmojiReaction(item)}
                 >
+                  <span className="text-13">{emoji}</span>
                   <span
                     className={twMerge(
                       "text-[13px] font-medium text-mercury-500",
@@ -159,7 +179,6 @@ const MessageLive: React.FC<MessageLiveProps> = ({
                   >
                     {item.total}
                   </span>
-                  <span className="text-13">{emoji}</span>
                 </div>
               )
             })}
