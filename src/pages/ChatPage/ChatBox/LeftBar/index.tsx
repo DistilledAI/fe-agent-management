@@ -6,9 +6,9 @@ import ButtonMarketplace from "@pages/Marketplace/ButtonMarketplace"
 import { Link } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import AnalyticsInfoWrap from "./AnalyticsInfoWrap"
+import ChatClans from "./Clans"
 import PrivateAI from "./PrivateAI"
 import SidebarCollapsed from "./SidebarCollapsed"
-import ChatClans from "./Clans"
 
 const LeftBar = () => {
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
