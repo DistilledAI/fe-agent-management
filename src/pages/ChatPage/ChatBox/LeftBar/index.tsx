@@ -8,6 +8,7 @@ import { twMerge } from "tailwind-merge"
 import AnalyticsInfoWrap from "./AnalyticsInfoWrap"
 import PrivateAI from "./PrivateAI"
 import SidebarCollapsed from "./SidebarCollapsed"
+import ChatClans from "./Clans"
 
 const LeftBar = () => {
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
@@ -43,6 +44,7 @@ const LeftBar = () => {
           </div>
           <div className={twMerge("h-[calc(100%-44px)] flex-1")}>
             <MyEcho />
+            <ChatClans />
             <PrivateAI />
           </div>
           <div

@@ -1,7 +1,8 @@
 import AvatarCustom from "@components/AvatarCustom"
 import { LiveIcon } from "@components/Icons"
+import { FilledUserIcon } from "@components/Icons/UserIcon"
 import { useAppSelector } from "@hooks/useAppRedux"
-import { centerTextEllipsis } from "@utils/index"
+import { centerTextEllipsis, shortenNumber } from "@utils/index"
 import React, { ReactNode } from "react"
 import { twMerge } from "tailwind-merge"
 import { match } from "ts-pattern"
@@ -113,6 +114,37 @@ export const AvatarClan: React.FC<{
         isLive={true}
       />
       {renderInfoByCategory()}
+    </div>
+  )
+}
+
+export const AvatarClanByList: React.FC<{
+  avatarUrl?: string
+  name: string
+  publicAddress?: string
+  member?: number
+  isNameDisplay?: boolean
+}> = ({ avatarUrl, name, publicAddress, member, isNameDisplay = true }) => {
+  return (
+    <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center">
+        <AvatarCustom
+          src={avatarUrl}
+          publicAddress={publicAddress}
+          badgeClassName="bg-lgd-code-hot-ramp"
+          isLive={true}
+        />
+        <div className="-mt-[10px] flex h-fit w-fit min-w-[18px] items-center rounded-full bg-[#FF3B30] px-[5px] py-[1px]">
+          <FilledUserIcon size={12} color="#FFFFFF" />
+          <span className="text-13 font-medium leading-[140%] text-white">
+            {shortenNumber(member || 0)}
+          </span>
+        </div>
+      </div>
+      {isNameDisplay && (
+        <p className="mt-[6px] line-clamp-1 text-14 leading-none">{name}</p>
+      )}
+      {/* <p className="mt-1 text-14 leading-none">.Clan</p> */}
     </div>
   )
 }
