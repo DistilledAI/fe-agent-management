@@ -30,7 +30,7 @@ const ClanItem: React.FC<{
             [QueryDataKeys.LEAVE_GROUP_STATE],
             (oldData: boolean) => !oldData,
           )
-        }, 300)
+        }, 500)
       }}
       className={twMerge(
         "relative cursor-pointer duration-300 hover:opacity-80",

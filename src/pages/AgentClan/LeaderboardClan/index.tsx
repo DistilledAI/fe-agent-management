@@ -7,17 +7,24 @@ import ToggleLeaderboardClan from "./ToggleLeaderboardClan"
 import useOutsideClick from "@hooks/useOutSideClick"
 import { useRef } from "react"
 
-const LeaderboardClan = () => {
+const LeaderboardClan = ({
+  refIgnoreOutsideArr,
+}: {
+  refIgnoreOutsideArr?: Array<any>
+}) => {
   const queryClient = useQueryClient()
   const { data: isToggleLeaderboard } = useQuery<boolean>({
     queryKey: [QueryDataKeys.TOGGLE_LEADERBOARD_CLAN],
   })
   const leaderboardRef = useRef<any>(null)
-  useOutsideClick(leaderboardRef, () =>
-    queryClient.setQueryData<boolean>(
-      [QueryDataKeys.TOGGLE_LEADERBOARD_CLAN],
-      () => false,
-    ),
+  useOutsideClick(
+    leaderboardRef,
+    () =>
+      queryClient.setQueryData<boolean>(
+        [QueryDataKeys.TOGGLE_LEADERBOARD_CLAN],
+        () => false,
+      ),
+    refIgnoreOutsideArr,
   )
 
   return (
