@@ -1,16 +1,35 @@
 import { CloseFilledIcon } from "@components/Icons/DefiLens/index.tsx"
+import "@rainbow-me/rainbowkit/styles.css"
+import * as Sentry from "@sentry/react"
 import Providers from "Providers.tsx"
+import React from "react"
 import ReactDOM from "react-dom/client"
 import { ToastContainer } from "react-toastify"
-import "regenerator-runtime/runtime"
-import App from "./App.tsx"
-import React from "react"
 import "react-toastify/dist/ReactToastify.css"
-import "@rainbow-me/rainbowkit/styles.css"
-import "./index.css"
+import "regenerator-runtime/runtime"
 import "swiper/css"
-import "swiper/css/pagination"
 import "swiper/css/navigation"
+import "swiper/css/pagination"
+import App from "./App.tsx"
+import "./index.css"
+
+const sentryDSN =
+  "https://5b7d7a06ec6e48a09991a984f4b02e86@o1323226.ingest.us.sentry.io/4508475831418880"
+const envMode = import.meta.env.VITE_APP_ENV_MODE
+
+Sentry.init({
+  dsn: sentryDSN,
+  integrations: [],
+  tracesSampleRate: 1.0,
+  tracePropagationTargets: ["https://mesh.distilled.ai/"],
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1.0,
+  enabled: envMode === "production",
+  ignoreErrors: [
+    "Non-Error exception captured",
+    "Non-Error promise rejection captured",
+  ],
+})
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
