@@ -80,6 +80,7 @@ export const convertDataFetchToMessage = (
           )
           return { ...stat, isReacted }
         })
+        .sort((itemA, itemB) => itemB.total - itemA.total)
 
       return {
         id: mess.id,
