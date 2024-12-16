@@ -5,12 +5,14 @@ import { getAccessToken } from "@utils/storage"
 import mixpanel from "mixpanel-browser"
 import { useEffect } from "react"
 import AppRouter from "./routes/AppRouter"
+import useFetchMyAgent from "@hooks/useFetchMyAgent"
 
 const mixpanelToken = import.meta.env.VITE_APP_MIXPANEL_TOKEN
 const envMode = import.meta.env.VITE_APP_ENV_MODE
 
 function App() {
   const { logout } = useAuthAction()
+  useFetchMyAgent()
 
   const initMixpanel = () => {
     mixpanel.init(mixpanelToken, {
