@@ -6,6 +6,7 @@ import ButtonMarketplace from "@pages/Marketplace/ButtonMarketplace"
 import { Link } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import AnalyticsInfoWrap from "./AnalyticsInfoWrap"
+import ChatClans from "./Clans"
 import PrivateAI from "./PrivateAI"
 import SidebarCollapsed from "./SidebarCollapsed"
 
@@ -41,8 +42,9 @@ const LeftBar = () => {
             </Link>
             <SidebarCollapsed />
           </div>
-          <div className={twMerge("h-[calc(100%-44px)] flex-1")}>
+          <div className={twMerge("h-[calc(100%-152px)] flex-1")}>
             <MyEcho />
+            <ChatClans />
             <PrivateAI />
           </div>
           <div

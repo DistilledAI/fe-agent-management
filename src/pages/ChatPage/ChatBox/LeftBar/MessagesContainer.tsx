@@ -1,9 +1,9 @@
 import AvatarContainer, { AvatarClan } from "@components/AvatarContainer"
 import AvatarGroup from "@components/AvatarGroup"
-import DotLoading from "@components/DotLoading"
+// import DotLoading from "@components/DotLoading"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
-import { FilledUserIcon, FilledUsersPlusIcon } from "@components/Icons/UserIcon"
+import { FilledUserIcon } from "@components/Icons/UserIcon"
 import TotalMemberBadge from "@components/TotalMemberBadge"
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
@@ -32,7 +32,7 @@ import useFetchGroups, { LIMIT, TypeGroup, UserGroup } from "./useFetchGroups"
 const MessagesContainer: React.FC<ContentDisplayMode> = ({
   onChangeDisplayMode,
 }) => {
-  const { groups, isLoading, handleLoadMore } = useFetchGroups()
+  const { groups, handleLoadMore } = useFetchGroups()
   const { user } = useAuthState()
   const navigate = useNavigate()
   const { chatId } = useGetChatId()
@@ -132,9 +132,6 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
           Messages
         </h6>
         <div className="flex items-center gap-4">
-          <div className={twMerge("opacity-30", sidebarCollapsed && "hidden")}>
-            <FilledUsersPlusIcon />
-          </div>
           <div
             onClick={() => {
               onChangeDisplayMode(DISPLAY_MODES.SEARCH)
@@ -146,20 +143,20 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
         </div>
       </div>
 
-      <div className="-mx-4 h-full max-h-[calc(100%-124px)]">
+      <div className="-mx-4 h-full max-h-[calc(100%-250px)]">
         <Virtuoso
           style={{ height: "100%" }}
           data={mapColorsToGroups(groups)}
-          components={{
-            Footer: () =>
-              isLoading && groups.length > 0 ? (
-                <div className="flex items-center justify-center">
-                  <DotLoading />
-                </div>
-              ) : (
-                <></>
-              ),
-          }}
+          // components={{
+          //   Footer: () =>
+          //     isLoading && groups.length > 0 ? (
+          //       <div className="flex items-center justify-center">
+          //         <DotLoading />
+          //       </div>
+          //     ) : (
+          //       <></>
+          //     ),
+          // }}
           increaseViewportBy={500}
           endReached={(index) => {
             if (index + 1 >= LIMIT) {

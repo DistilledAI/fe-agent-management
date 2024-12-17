@@ -24,9 +24,14 @@ const useFetchDetail = (isInvited = false) => {
   })
 
   useEffect(() => {
+    let timeout = undefined
     if (isInvited && isLogin && !!chatId) {
-      refetch()
+      timeout = setTimeout(() => {
+        refetch()
+      }, 500)
     }
+
+    return () => clearTimeout(timeout)
   }, [isInvited, isLogin, chatId])
 
   const result: UserGroup | null = data?.data || null

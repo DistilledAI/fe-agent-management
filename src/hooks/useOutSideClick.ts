@@ -1,8 +1,16 @@
 import { useEffect } from "react"
 
-const useOutsideClick = (ref: any, callback: () => void) => {
+const useOutsideClick = (
+  ref: any,
+  callback: () => void,
+  refArr?: Array<any>,
+) => {
   const handleClick = (e: any) => {
-    if (ref.current && !ref.current.contains(e.target)) {
+    if (
+      ref.current &&
+      !ref.current.contains(e.target) &&
+      refArr?.every((item) => !item.current.contains(e.target))
+    ) {
       callback()
     }
   }

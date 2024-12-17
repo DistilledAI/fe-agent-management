@@ -13,6 +13,7 @@ import { getChatHistoryById } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { IGroup } from "../LeftBar/useFetchGroups"
 import { convertDataFetchToMessage, IMessageBox } from "./helpers"
+import { EmojiReaction } from "types/reactions"
 
 export interface IMentions {
   id: number
@@ -20,6 +21,19 @@ export interface IMentions {
   user: IUser
   userId: number
   createdAt: string
+}
+
+export interface IReactionMsg {
+  id: number
+  msgId: number | string
+  reactionType: string
+  userId: number
+}
+
+export interface IReactionMsgStats extends EmojiReaction {
+  msgId: number | string
+  total: number
+  isReacted?: boolean
 }
 
 export interface IMessage {
@@ -37,6 +51,8 @@ export interface IMessage {
     user: IUser
   }
   mentions?: IMentions[]
+  reactionMsg?: IReactionMsg[]
+  reactionMsgStats?: IReactionMsgStats[]
 }
 
 export interface ICachedMessageData {
@@ -51,8 +67,6 @@ export const chatMessagesKey = (chatId: string | undefined) => {
   if (!chatId) return []
   return [QueryDataKeys.CHAT_MESSAGES, chatId.toString()]
 }
-
-const STALE_TIME = 60 * 60 * 1000
 
 const useFetchMessages = () => {
   const { user, isLogin } = useAuthState()
@@ -92,7 +106,7 @@ const useFetchMessages = () => {
     enabled: isLogin && !!groupId && !!user?.id,
     getNextPageParam: (lastPage) => lastPage?.nextOffset,
     getPreviousPageParam: (firstPage) => firstPage?.nextOffset,
-    staleTime: STALE_TIME,
+    // staleTime: STALE_TIME,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     initialPageParam: 0,

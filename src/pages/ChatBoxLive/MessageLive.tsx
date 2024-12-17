@@ -1,40 +1,55 @@
+import React from "react"
 import AvatarCustom from "@components/AvatarCustom"
+import EmojiReactions from "@components/EmojiReactions"
 import { ImageIcon } from "@components/Icons"
 import { ArrowsRelyIcon } from "@components/Icons/Arrow"
 import MarkdownMessage from "@components/Markdown"
 import { RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
-import { Button } from "@nextui-org/react"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import { isMarkdownImage } from "@utils/index"
 import { twMerge } from "tailwind-merge"
+import { emojiReactionsMap } from "./helpers"
+import useEmojiReactions from "./hooks/useEmojiReactions"
 
 interface MessageLiveProps {
   message: IMessageBox
   onReply: () => void
+  groupId: string
 }
 
-const formatUsername = (username: string) => {
-  return username.replace(/@\[(\w+)\]/g, "@$1")
-}
-
-const MessageLive: React.FC<MessageLiveProps> = ({ message, onReply }) => {
-  const isBot = message?.roleOwner === RoleUser.BOT
+const MessageLive: React.FC<MessageLiveProps> = ({
+  message,
+  onReply,
+  groupId,
+}) => {
   const { user } = useAuthState()
+  const { handleEmojiReaction } = useEmojiReactions(
+    groupId,
+    message.id,
+    message.reactionMsgStats || [],
+  )
+
+  const emojiReactions = message.reactionMsgStats || []
+  const isBot = message?.roleOwner === RoleUser.BOT
   const isOwner = user.id === message?.userId
 
   return (
-    <div className="group relative flex gap-3 md:gap-4">
-      <div className="absolute -bottom-2 -left-4 -top-2 right-0 rounded-[8px] bg-mercury-70 opacity-0 duration-300 group-hover:opacity-100">
-        {!isOwner && (
-          <Button
-            onClick={onReply}
-            className="absolute -top-4 right-10 flex h-8 gap-1 rounded-full border-1 border-mercury-200 bg-white !opacity-100"
-          >
-            <ArrowsRelyIcon />
-            <span>Reply</span>
-          </Button>
-        )}
+    <div className="group/item relative flex gap-3 md:gap-4">
+      <div className="absolute -bottom-2 -left-4 -top-2 right-0 hidden rounded-[8px] bg-mercury-70 transition-all duration-100 ease-linear group-hover/item:block">
+        <div className="absolute -top-4 right-3 flex items-center gap-2">
+          <EmojiReactions onEmojiReaction={handleEmojiReaction} />
+          {!isOwner && (
+            <button
+              type="button"
+              onClick={onReply}
+              className="flex h-8 items-center gap-1 rounded-full border border-mercury-200 bg-white px-3 py-1 !opacity-100 duration-100 hover:scale-105"
+            >
+              <ArrowsRelyIcon />
+              <span>Reply</span>
+            </button>
+          )}
+        </div>
       </div>
       <div className="relative">
         <AvatarCustom
@@ -57,7 +72,7 @@ const MessageLive: React.FC<MessageLiveProps> = ({ message, onReply }) => {
           {message.reply && (
             <div className="flex items-center gap-2">
               <p className="line-clamp-1 max-w-[120px] text-15 font-semibold text-brown-500">
-                {formatUsername(message.reply.username)}
+                {message.reply.username}
               </p>
               <p className="line-clamp-1 max-w-[200px] text-15 text-mercury-400">
                 {isMarkdownImage(message.reply.message) ? (
@@ -74,6 +89,32 @@ const MessageLive: React.FC<MessageLiveProps> = ({ message, onReply }) => {
           aria-selected={isBot}
         >
           <MarkdownMessage msg={message?.content} />
+          <div className="flex items-center gap-2">
+            {emojiReactions.map((item, index) => {
+              const emoji = emojiReactionsMap[item.reactionType]
+
+              return (
+                <div
+                  className={twMerge(
+                    "flex h-6 min-w-6 cursor-pointer items-center gap-1 rounded-full border border-mercury-200 bg-white px-3 py-1 !not-italic transition-all duration-300 ease-in-out",
+                    item?.isReacted && "border-brown-500 bg-brown-50",
+                  )}
+                  key={`${item.msgId}-${index}`}
+                  onClick={() => handleEmojiReaction(item)}
+                >
+                  <span className="text-13">{emoji}</span>
+                  <span
+                    className={twMerge(
+                      "text-[13px] font-medium text-mercury-500",
+                      item?.isReacted && "text-mercury-800",
+                    )}
+                  >
+                    {item.total}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
         </div>
       </div>
     </div>

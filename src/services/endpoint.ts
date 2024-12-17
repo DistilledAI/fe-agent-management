@@ -13,6 +13,7 @@ const endpoint = {
   GET_USER_PUBLIC_DETAIL: withBaseURL("/user/public/detail"),
   GET_REFERRAL_CODE: withBaseURL("/user/referral/total-referral"),
   POST_REFERRAL_CODE: withBaseURL("/user/referral/add-referral"),
+  KYC: withBaseURL("/user/kyc"),
 
   //bot
   CREATE_BOT: withBaseURL("/bot/create-bot"),
@@ -75,6 +76,9 @@ const endpoint = {
     withBaseURL(`/point/exp/total-point/group/${groupId}`),
   GET_EXP_TOTAL_POINT_USER: (groupId: number) =>
     withBaseURL(`/point/exp/total-point/user/${groupId}`),
+
+  // messages
+  POST_REACTION_MESSAGE: withBaseURL("/messages/reaction-msg"),
 
   //game
   // TODO: update later

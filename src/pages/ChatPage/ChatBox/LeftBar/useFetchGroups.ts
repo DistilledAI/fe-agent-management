@@ -1,4 +1,5 @@
 import useAuthState from "@hooks/useAuthState"
+import useWindowSize from "@hooks/useWindowSize"
 import { IUser } from "@reducers/userSlice"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
@@ -25,6 +26,19 @@ export interface IGroup {
   live?: number
   label?: string
   description?: string
+  config?: string
+}
+
+export interface GroupConfig {
+  x: string
+  telegram: string
+  contractAddress: string
+  tradeLink: string
+  description: string
+  imageLive: string
+  videoLive: string
+  audioLive: string
+  isPrediction: boolean
 }
 
 export interface UserGroup {
@@ -45,6 +59,7 @@ interface FetchConfig {
 export const LIMIT = 10
 
 const useFetchGroups = () => {
+  const { isMobile } = useWindowSize()
   const { isLogin } = useAuthState()
   const [hasMore, setHasMore] = useState(true)
   const [offset, setOffset] = useState(LIMIT)
@@ -96,9 +111,15 @@ const useFetchGroups = () => {
     }
   }
 
+  const dataByPrivateMsg = isMobile
+    ? data
+    : data?.filter(
+        (item: any) => item?.group?.typeGroup !== TypeGroup.PUBLIC_GROUP,
+      )
+
   return {
     isLoading: isFetching,
-    groups: data ?? [],
+    groups: dataByPrivateMsg || [],
     fetchGroups: refetch,
     handleLoadMore,
     isFetched,
