@@ -41,6 +41,8 @@ const ProgressDays = () => {
     }
   }, [])
 
+  const dashOffset = totalLength - (percentage / 100) * totalLength
+
   return (
     <div
       className="progress-wrapper"
@@ -75,6 +77,7 @@ const ProgressDays = () => {
         />
       </svg>
 
+      {/* Solid Progress Path */}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="380"
@@ -94,7 +97,8 @@ const ProgressDays = () => {
             d="M0 30.8243C50.865 12.9446 117.85 2 190 2C262.15 2 329.135 12.9446 380 30.8243"
             stroke="#D15656"
             strokeWidth="4"
-            strokeDasharray={8}
+            strokeDasharray={totalLength}
+            strokeDashoffset={dashOffset}
             strokeLinecap="square"
             style={{
               transition: "stroke-dashoffset 0.5s ease",
