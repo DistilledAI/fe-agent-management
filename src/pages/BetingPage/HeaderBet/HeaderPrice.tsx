@@ -4,8 +4,8 @@ import { Image } from "@nextui-org/react"
 import { numberWithCommas } from "@utils/format"
 import BigNumber from "bignumber.js"
 import { useSelector } from "react-redux"
-import { DECIMAL_SHOW } from "../constants"
 import { twMerge } from "tailwind-merge"
+import { DECIMAL_SHOW } from "../constants"
 import useGetPriceRealtime from "../hooks/useGetPriceRealtime"
 
 const HeaderPrice = () => {

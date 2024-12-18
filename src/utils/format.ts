@@ -73,3 +73,24 @@ export function formatLargeNumber(number: number) {
 export const toBN = (number: BigNumber.Value) => {
   return new BigNumber(number)
 }
+
+/**
+ * Returns a shortened string by replacing characters in between with '...'.
+ * @param str The input string.
+ * @param from The position of the character to be kept as-is in the resulting string.
+ * @param end The number of characters to be kept as-is at the end of the resulting string.
+ * @returns The shortened string, or '-' if the input string is null or undefined.
+ */
+export const reduceString = (
+  str: string,
+  from: number = 4,
+  end: number = 4,
+) => {
+  if (!str) {
+    return "-"
+  }
+
+  return str && typeof str.substring === "function"
+    ? str.substring(0, from) + "..." + str.substring(str.length - end)
+    : "-"
+}

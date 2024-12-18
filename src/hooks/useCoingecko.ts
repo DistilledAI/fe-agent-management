@@ -1,5 +1,5 @@
 import { RootState } from "@configs/store"
-import { updatePriceTokens } from "@reducers/priceInfoSlice"
+import { updatePriceTokens } from "@reducers/cachePrice"
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query"
 import { useQuery } from "@tanstack/react-query"
 import { useDispatch, useSelector } from "react-redux"
@@ -37,7 +37,7 @@ export const useCoinGeckoPrices = <T extends CoinGeckoId>(
   > = {},
 ): UseQueryResult<CoinGeckoPrices<T>, unknown> => {
   const dispatch = useDispatch()
-  const { tokenPrices } = useSelector((state: RootState) => state.priceInfo)
+  const { tokenPrices } = useSelector((state: RootState) => state.cachePrice)
   const tokens = [...new Set([...CONFIG_TOKEN_PRICE_CGK])]
   tokens.sort()
 
