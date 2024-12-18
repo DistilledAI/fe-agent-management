@@ -6,14 +6,23 @@ import { Button } from "@nextui-org/react"
 import { useNavigate } from "react-router-dom"
 import { IGroupDetail } from "types/group"
 import useFetchClan from "./useFetchClan"
+import { useQueryClient } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const ClanAgents = () => {
   const navigate = useNavigate()
   const { data } = useFetchClan()
+  const queryClient = useQueryClient()
 
   const handleChatWithClan = async (clan: IGroupDetail) => {
     const inviteUrl = `${PATH_NAMES.CLAN}/${clan.label}`
-    return navigate(inviteUrl)
+    navigate(inviteUrl)
+    setTimeout(() => {
+      queryClient.setQueryData(
+        [QueryDataKeys.IS_REFRESH_CLANS],
+        (oldData: boolean) => !oldData,
+      )
+    }, 500)
   }
 
   return data.map((clan: IGroupDetail, index: number) => (

@@ -22,8 +22,8 @@ const ChatClans: React.FC = () => {
   const { chatId } = useParams()
   const [isFirstSlide, setIsFirstSlide] = useState(true)
   const [isLastSlide, setIsLastSlide] = useState(false)
-  const { data: isLeaveGroup } = useQuery({
-    queryKey: [QueryDataKeys.LEAVE_GROUP_STATE],
+  const { data: isRefresh } = useQuery({
+    queryKey: [QueryDataKeys.IS_REFRESH_CLANS],
   })
   const { data, loading, getList } = useFetchClan(
     false,
@@ -47,7 +47,7 @@ const ChatClans: React.FC = () => {
 
   useEffect(() => {
     getList(false)
-  }, [isLeaveGroup, user.id])
+  }, [user.id, isRefresh])
 
   const handleSlideChange = (s: any) => {
     setIsFirstSlide(s.isBeginning)

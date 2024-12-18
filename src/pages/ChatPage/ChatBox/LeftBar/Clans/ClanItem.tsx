@@ -27,7 +27,7 @@ const ClanItem: React.FC<{
         navigate(`${PATH_NAMES.CLAN}/${group.label}`)
         setTimeout(() => {
           queryClient.setQueryData(
-            [QueryDataKeys.LEAVE_GROUP_STATE],
+            [QueryDataKeys.IS_REFRESH_CLANS],
             (oldData: boolean) => !oldData,
           )
         }, 500)
