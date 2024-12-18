@@ -10,11 +10,11 @@ import {
   PATH_NAMES,
   STATUS_AGENT,
 } from "@constants/index"
+import { useAppSelector } from "@hooks/useAppRedux"
 import { Button } from "@nextui-org/react"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { useNavigate } from "react-router-dom"
 import ShareAgent from "./ShareAgent"
-import { useAppSelector } from "@hooks/useAppRedux"
 
 const PrivateAgent: React.FC<{
   onClose: () => void

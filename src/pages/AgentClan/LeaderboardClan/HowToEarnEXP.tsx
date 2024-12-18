@@ -1,11 +1,11 @@
-import { distilledAIPurpleBg } from "@assets/images"
+import { xMasBgLeaderBoard } from "@assets/images"
 import CloseButton from "@components/CloseButton"
 import { ArrowsTargetIcon } from "@components/Icons/Arrow"
 import { RefreshIcon } from "@components/Icons/RefreshIcon"
 import XPBadge from "@components/XPBadge"
-import ProgressDays from "./ProgressDays"
 import { useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
+import ProgressDays from "./ProgressDays"
 
 const HowToEarnEXP = () => {
   const queryClient = useQueryClient()
@@ -20,11 +20,12 @@ const HowToEarnEXP = () => {
   return (
     <div
       className="h-[356px] border-b border-b-mercury-200 bg-cover bg-center bg-no-repeat"
-      style={{
-        backgroundImage: `url(${distilledAIPurpleBg})`,
-      }}
+      // style={{
+      //   backgroundImage: `url(${xMasBgLeaderBoard})`,
+      // }}
     >
-      <div className="space-y-4 p-6">
+      <img src={xMasBgLeaderBoard} className="absolute -top-[2px] opacity-60" />
+      <div className="relative space-y-4 p-6">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <ArrowsTargetIcon />
@@ -62,8 +63,7 @@ const HowToEarnEXP = () => {
           </div>
         </div>
         <p className="text-14 text-mercury-600">
-          Note: To accomplish the missions, you must use a Web3 wallet that has
-          completed at least one blockchain transaction.
+          Note: To complete the missions, your account needs to be activated.
         </p>
       </div>
       <ProgressDays />
