@@ -1,7 +1,7 @@
 import { BoltIcon } from "@components/Icons"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { getRemainingDays, getRemainingDaysPercentage } from "@utils/index"
-import { useRef, useState, useEffect } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import { QueryDataKeys } from "types/queryDataKeys"
 
@@ -95,11 +95,11 @@ const ProgressDays = () => {
           <path
             ref={pathRef}
             d="M0 30.8243C50.865 12.9446 117.85 2 190 2C262.15 2 329.135 12.9446 380 30.8243"
-            stroke="#6B50B5"
+            stroke="#D15656"
             strokeWidth="4"
             strokeDasharray={totalLength}
             strokeDashoffset={dashOffset}
-            strokeLinecap="round"
+            strokeLinecap="square"
             style={{
               transition: "stroke-dashoffset 0.5s ease",
             }}
@@ -119,7 +119,7 @@ const ProgressDays = () => {
               dx="0"
               dy="0"
               stdDeviation="2"
-              floodColor="#6B50B5"
+              floodColor="#D15656"
               floodOpacity="0.5"
             />
           </filter>

@@ -1,15 +1,10 @@
 import { STATUS_AGENT } from "@constants/index"
-import useAuthState from "@hooks/useAuthState"
+import { useAppSelector } from "@hooks/useAppRedux"
 import { useQueries } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import { getMyBotData } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
-
-interface IAgentData {
-  id: number
-  name: string
-  status: number
-}
+import { IAgentData } from "types/user"
 
 interface UseActiveAgentReturn {
   isAgentActive: boolean
@@ -21,13 +16,10 @@ interface UseActiveAgentReturn {
 
 const useActiveAgent = (): UseActiveAgentReturn => {
   const { botId } = useParams<{ botId: string }>()
-  const { isLogin, isAnonymous } = useAuthState()
+  const agentList = useAppSelector((state) => state.agents.myAgents)
 
-  const [agentDataQuery, agentListQuery] = useQueries<
-    [
-      { data: { data: { items: IAgentData[] } } },
-      { data: { data: { items: IAgentData[] } } },
-    ]
+  const [agentDataQuery] = useQueries<
+    [{ data: { data: { items: IAgentData[] } } }]
   >({
     queries: [
       {
@@ -35,20 +27,15 @@ const useActiveAgent = (): UseActiveAgentReturn => {
         queryFn: () => getMyBotData(Number(botId), { limit: 1, offset: 0 }),
         enabled: !!botId,
       },
-      {
-        queryKey: [QueryDataKeys.MY_BOT_LIST],
-        enabled: isLogin && !isAnonymous,
-      },
     ],
   })
 
   const { data: agentData, isFetched: isAgentDataFetched } = agentDataQuery
 
   const agentDataList = agentData?.data?.items || []
-  const agentList = agentListQuery?.data?.data?.items || []
 
   const currentAgent =
-    agentList.find((agent: IAgentData) => agent?.id?.toString() === botId) ||
+    agentList.find((agent) => agent?.id?.toString() === botId) ||
     agentList[0] ||
     null
   const isAgentActive = currentAgent?.status === STATUS_AGENT.ACTIVE

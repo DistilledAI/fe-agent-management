@@ -1,13 +1,14 @@
+import { NoelHat } from "@assets/images"
+import AvatarCustom from "@components/AvatarCustom"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
+import { Skeleton } from "@nextui-org/react"
 import { AGENT_TYPE, updateAgentType } from "@reducers/agentSlice"
 import { useDispatch } from "react-redux"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import ActiveEffect from "./ActiveEffect"
-import AvatarCustom from "@components/AvatarCustom"
-import { Skeleton } from "@nextui-org/react"
 
 const MyEcho: React.FC = () => {
   const dispatch = useDispatch()
@@ -61,10 +62,18 @@ const MyEcho: React.FC = () => {
               <span className="absolute left-1/2 top-1/2 h-[2px] w-[16px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-mercury-900"></span>
             </div>
           ) : (
-            <AvatarCustom
-              src={myAgent?.avatar || undefined}
-              publicAddress={myAgent?.publicAddress || myAgent?.username}
-            />
+            <div className="relative">
+              <AvatarCustom
+                src={myAgent?.avatar || undefined}
+                publicAddress={myAgent?.publicAddress || myAgent?.username}
+              />
+              <img
+                src={NoelHat}
+                width={28}
+                height={25}
+                className="absolute -top-[10px] left-1/2 -translate-x-1/2"
+              />
+            </div>
           )}
           <div className="absolute bottom-[-3px] right-[-3px] flex h-5 w-5 items-center justify-center rounded-full bg-mercury-950">
             <FilledBrainAIIcon size={15} color="white" />

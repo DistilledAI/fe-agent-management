@@ -15,6 +15,7 @@ import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { BOT_STATUS } from "../ChatMessages/ChatActions/DelegatePrivateAgent"
 import VoiceChat from "./Voice"
+import { cloud1Img, cloud2Img, cloud3Img } from "@assets/images"
 
 interface ChatInputProps {
   isDisabledInput: boolean
@@ -221,6 +222,18 @@ const ChatInput = ({
         ref={inputRef}
         isDisabled={isDisabledInput}
       /> */}
+      <img
+        src={cloud1Img}
+        className="absolute -top-[1px] left-[84px] h-8 object-cover md:-left-3 md:-top-3 md:w-[259px]"
+      />
+      <img
+        src={cloud2Img}
+        className="absolute right-9 top-[9px] h-2 object-cover md:-top-1 md:right-20 md:h-[17px] md:w-[180px]"
+      />
+      <img
+        src={cloud3Img}
+        className="absolute bottom-4 left-1/2 h-2 -translate-x-1/2 object-cover md:-bottom-[1px] md:h-4 md:w-[320px]"
+      />
 
       <MentionsInput
         inputRef={inputRef}
@@ -246,6 +259,7 @@ const ChatInput = ({
           },
           highlighter: {
             maxHeight: isMobile ? "40px" : "200px",
+            border: "0px",
           },
           input: {
             overflowY: "auto",
@@ -258,7 +272,7 @@ const ChatInput = ({
           "text-[14px] md:text-[18px]",
           isDarkTheme && "text-mercury-30",
         )}
-        placeholder="Type your message"
+        placeholder="Enter chat.."
         rows={4}
         disabled={isDisabledInput}
       >
@@ -272,9 +286,8 @@ const ChatInput = ({
             color: "#A2845E",
             position: "relative",
             zIndex: "1",
-            left: "-1px",
-            top: "-1px",
-            fontWeight: "500",
+            left: "0px",
+            top: "0px",
           }}
         />
       </MentionsInput>

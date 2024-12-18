@@ -10,7 +10,7 @@ const AnalyticsInfoWrap: React.FC = () => {
   return (
     <div
       className={twMerge(
-        "flex items-center justify-between gap-4 transition-all duration-300 ease-in-out",
+        "flex items-center justify-between gap-4 py-2 transition-all duration-300 ease-in-out",
         sidebarCollapsed && "flex-col",
       )}
     >

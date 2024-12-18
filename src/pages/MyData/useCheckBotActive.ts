@@ -1,14 +1,10 @@
 import { STATUS_AGENT } from "@constants/index"
-import { useQuery } from "@tanstack/react-query"
-import { QueryDataKeys } from "types/queryDataKeys"
+import { useAppSelector } from "@hooks/useAppRedux"
 
 const useCheckBotActive = () => {
-  const { data: dtAgent }: { data: any } = useQuery({
-    queryKey: [QueryDataKeys.MY_BOT_LIST],
-    refetchOnWindowFocus: false,
-  })
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
 
-  const isBotActive = dtAgent?.data?.items?.[0]?.status === STATUS_AGENT.ACTIVE
+  const isBotActive = myAgent?.status === STATUS_AGENT.ACTIVE
 
   return { isBotActive }
 }
