@@ -16,23 +16,18 @@ import {
   PERSONALITY_LIST,
 } from "@constants/index"
 import { updateAvatarUser } from "services/user"
-import { useQuery } from "@tanstack/react-query"
-import { QueryDataKeys } from "types/queryDataKeys"
 import { isPassRuleAgentInfo } from "@pages/AgentDetail/helpers"
 import { useDispatch } from "react-redux"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
+import { useAppSelector } from "@hooks/useAppRedux"
 
 const AgentInitialization = () => {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const myAgents = useAppSelector((state) => state.agents.myAgents)
 
-  const { data } = useQuery<any>({
-    queryKey: [QueryDataKeys.MY_BOT_LIST],
-    refetchOnWindowFocus: false,
-  })
-
-  const isBotCreated = data ? data.data.items.length > 0 : false
+  const isBotCreated = myAgents.length > 0
 
   const methods = useForm<any>({
     defaultValues: {

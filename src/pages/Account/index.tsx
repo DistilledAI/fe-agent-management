@@ -3,22 +3,18 @@ import { LogoutIcon } from "@components/Icons/OutputIcon"
 import { PATH_NAMES } from "@constants/index"
 import useAuthAction from "@hooks/useAuthAction"
 import useAuthState from "@hooks/useAuthState"
-import { useQuery } from "@tanstack/react-query"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { useNavigate } from "react-router-dom"
-import { QueryDataKeys } from "types/queryDataKeys"
 import AgentInfo from "./AgentInfo"
 import MyPoints from "./MyPoints"
 import AuthorProfile from "./Profile"
+import { useAppSelector } from "@hooks/useAppRedux"
 
 const Account = () => {
   const { user } = useAuthState()
   const navigate = useNavigate()
   const { logout } = useAuthAction()
-  const { data }: { data: any } = useQuery({
-    queryKey: [QueryDataKeys.MY_BOT_LIST],
-  })
-  const agents = data ? data?.data?.items : []
+  const agent = useAppSelector((state) => state.agents.myAgent)
 
   const renderLogoutBtn = () => {
     return (
@@ -66,7 +62,7 @@ const Account = () => {
           </div>
         </div>
         <div>
-          <AgentInfo agent={agents[0]} />
+          <AgentInfo agent={agent} />
         </div>
       </div>
     </div>
