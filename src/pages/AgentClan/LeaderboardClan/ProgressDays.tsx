@@ -1,14 +1,14 @@
 import { BoltIcon } from "@components/Icons"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { getRemainingDays, getRemainingDaysPercentage } from "@utils/index"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import { QueryDataKeys } from "types/queryDataKeys"
 
 const ProgressDays = () => {
   const queryClient = useQueryClient()
   const pathRef = useRef<any>(null)
-  // const [totalLength, setTotalLength] = useState(0)
+  const [totalLength, setTotalLength] = useState(0)
   const { chatId } = useParams()
   const groupId =
     queryClient
@@ -35,11 +35,11 @@ const ProgressDays = () => {
     )
   }, [remainingDays])
 
-  // useEffect(() => {
-  //   if (pathRef.current) {
-  //     setTotalLength(pathRef.current.getTotalLength())
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (pathRef.current) {
+      setTotalLength(pathRef.current.getTotalLength())
+    }
+  }, [])
 
   const dashOffset = totalLength - (percentage / 100) * totalLength
 
