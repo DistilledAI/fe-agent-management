@@ -1,25 +1,26 @@
 import { loadingButtonIcon } from "@assets/svg"
+import { OpenBlankTabIcon } from "@components/Icons/DefiLens"
+import { CoinGeckoId, useCoinGeckoPrices } from "@hooks/useCoingecko"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { numberWithCommas } from "@utils/format"
+import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
 import { FC, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { BET_TYPE } from "../CardContainer"
-import { CoinGeckoId, useCoinGeckoPrices } from "@hooks/useCoingecko"
-import { numberWithCommas, reduceString } from "@utils/format"
-import { OpenBlankTabIcon } from "@components/Icons/DefiLens"
-import { useWallet } from "@solana/wallet-adapter-react"
-import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
 
 const HistoryItem: FC<{ item: any; setIsClaimed: any }> = ({
   item,
   setIsClaimed,
 }) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [isClaimed, setClaimed] = useState(false)
   const wallet = useWallet()
   const isDraw = item.result === BET_TYPE.DRAW
   const isCalculating = item.isCalculating
   const isWon = item.result === item.userPrediction
   const isLose =
     !isDraw && item.result !== item.userPrediction && !isCalculating
-  const isShowClaim = isWon || isDraw
+  const isShowClaim = (isWon || isDraw) && !isClaimed
   const { data: prices } = useCoinGeckoPrices()
   const MAXPrice = Number(prices?.[CoinGeckoId["max-2"]] || 0)
 
@@ -86,6 +87,7 @@ const HistoryItem: FC<{ item: any; setIsClaimed: any }> = ({
 
                   if (res) {
                     setIsClaimed()
+                    setClaimed(true)
                   }
                 } catch (error) {
                   console.log("claim error", error)
