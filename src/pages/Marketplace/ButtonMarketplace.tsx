@@ -1,4 +1,4 @@
-import { FilledSquareCircleIcon } from "@components/Icons/FilledSquareCircleIcon"
+import { xmasCircle3D } from "@assets/images"
 import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import { Button } from "@nextui-org/react"
@@ -12,14 +12,12 @@ const ButtonMarketplace = () => {
   return (
     <Button
       className={twMerge(
-        "btn-primary min-h-[60px] w-full",
+        "btn-primary z-10 min-h-[60px] w-full",
         sidebarCollapsed && "min-h-14 min-w-14",
       )}
       onClick={() => navigate(PATH_NAMES.MARKETPLACE)}
     >
-      <div>
-        <FilledSquareCircleIcon />
-      </div>
+      <img src={xmasCircle3D} width={20} height={20} />
       <span
         className={twMerge(
           "text-[16px] text-mercury-900",

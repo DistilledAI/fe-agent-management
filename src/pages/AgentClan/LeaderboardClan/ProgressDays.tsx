@@ -1,7 +1,7 @@
-import { BoltIcon } from "@components/Icons"
+import { roundProgressXmas } from "@assets/images"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { getRemainingDays, getRemainingDaysPercentage } from "@utils/index"
-import { useRef, useState, useEffect } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import { QueryDataKeys } from "types/queryDataKeys"
 
@@ -54,7 +54,8 @@ const ProgressDays = () => {
       }}
     >
       <div className="absolute -top-8 left-1/2 flex w-full -translate-x-1/2 items-center justify-center">
-        <BoltIcon />
+        {/* <BoltIcon /> */}
+        <img src={roundProgressXmas} width={26} height={26} />
         <span className="text-14 text-mercury-950">
           {/* {totalDays - remainingDays}/{totalDays} days */}
           Round Progress: {percentage}%
