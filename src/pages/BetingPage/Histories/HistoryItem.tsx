@@ -102,14 +102,14 @@ const HistoryItem: FC<{ item: any; setIsClaimed: any }> = ({
           ))}
       </div>
       <div className="mt-4 flex items-center justify-between gap-2 text-[14px] font-medium">
-        <span className="text-[#9192A0]">EventId</span>
-        <a
-          href={`https://solscan.io/account/${item.eventAddr}`}
-          target="_blank"
-          className="text-[#E8E9EE] hover:underline"
+        <span className="text-[#9192A0]">Round</span>
+        <span
+          //   href={`https://solscan.io/account/${item.eventAddr}`}
+          //   target="_blank"
+          className="text-[#E8E9EE]"
         >
-          {reduceString(item.eventAddr)}
-        </a>
+          {/* {reduceString(item.eventAddr)} */}#{item.id}
+        </span>
       </div>
       <div className="mt-4 w-full border border-[#1A1C28]"></div>
       <div className="mt-4 flex items-center justify-between gap-2 text-[14px] font-medium">
