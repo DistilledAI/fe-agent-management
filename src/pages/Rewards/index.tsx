@@ -128,7 +128,7 @@ const Rewards: React.FC = () => {
                 <InfoCircleIcon color="#A2845E" />
                 <p className="font-medium text-[#A2845E]">
                   To complete the missions,{" "}
-                  <span style={{ textDecoration: "underline dotted" }}>
+                  <span style={{ textDecoration: "underline" }}>
                     your account needs to be activated.
                   </span>
                 </p>
@@ -148,11 +148,8 @@ const Rewards: React.FC = () => {
             </span>
           </div>
           <span className="text-base font-medium text-mercury-800 max-sm:text-14">
-            Earn 100 xDSTL per friend who joins and completes the
-            <span className="font-bold text-brown-500"> Welcome Gift</span>{" "}
-            objective.
-            <br />
-            Plus, your referred friend also earns 10 xDSTL!
+            Get 100 xDSTL for every friend who joins, plus they get 10 xDSTL
+            just for signing up!
           </span>
         </div>
         <div
@@ -222,7 +219,7 @@ const Rewards: React.FC = () => {
               <InfoCircleIcon color="#BCAA88" />
               <p className="font-medium text-[#BCAA88]">
                 To complete the missions,{" "}
-                <span style={{ textDecoration: "underline dotted" }}>
+                <span style={{ textDecoration: "underline" }}>
                   your friends’ accounts need to be activated.
                 </span>
               </p>
