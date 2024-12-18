@@ -11,14 +11,14 @@ const useCheckWalletActive = () => {
 
   const checkBlockchain = (
     accountAddress: string,
-  ): "EVM" | "SOLONA" | "Invalid" => {
+  ): "EVM" | "SOLANA" | "Invalid" => {
     const evmRegex = /^0x[a-fA-F0-9]{40}$/
     const solanaRegex = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/
 
     if (evmRegex.test(accountAddress)) {
       return "EVM"
     } else if (solanaRegex.test(accountAddress)) {
-      return "SOLONA"
+      return "SOLANA"
     } else {
       return "Invalid"
     }
@@ -56,7 +56,7 @@ const useCheckWalletActive = () => {
     if (isLogin && !isAnonymous) {
       const network = checkBlockchain(user.publicAddress)
       if (network === "EVM") getTransactionCountEvm(user.publicAddress)
-      if (network === "SOLONA") {
+      if (network === "SOLANA") {
         const accountAddress = new PublicKey(user.publicAddress)
         getTransactionCountSol(accountAddress)
       }
