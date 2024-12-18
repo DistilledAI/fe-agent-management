@@ -43,7 +43,7 @@ const MoreAction: React.FC<{
             oldData.filter((item) => item.groupId !== groupId),
         )
         queryClient.setQueryData(
-          [QueryDataKeys.LEAVE_GROUP_STATE],
+          [QueryDataKeys.IS_REFRESH_CLANS],
           (oldData: boolean) => !oldData,
         )
         onOpenChange()
