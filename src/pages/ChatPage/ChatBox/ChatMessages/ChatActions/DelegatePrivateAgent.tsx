@@ -1,6 +1,7 @@
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
+import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
@@ -18,11 +19,8 @@ const DelegatePrivateAgent = () => {
   const { chatId: groupId } = useParams()
   const queryClient = useQueryClient()
   const { isAnonymous, isLogin } = useAuthState()
-  const { data: myAgentList } = useQuery<any>({
-    queryKey: [QueryDataKeys.MY_BOT_LIST],
-    enabled: !isAnonymous && isLogin,
-  })
-  const isMyAgents = !!myAgentList?.data?.items?.length
+  const myAgentList = useAppSelector((state) => state.agents.myAgents)
+  const isMyAgents = !!myAgentList?.length
 
   const callCheckStatusBotInGroup = async () => {
     if (!!groupId && !isAnonymous && isMyAgents) {

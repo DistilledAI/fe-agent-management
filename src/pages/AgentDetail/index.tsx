@@ -4,14 +4,12 @@ import {
   PERSONALITY_LIST,
   STATUS_AGENT,
 } from "@constants/index"
-import { useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { updateAgent, updateAgentConfig } from "services/agent"
 import { updateAvatarUser } from "services/user"
-import { QueryDataKeys } from "types/queryDataKeys"
 import AgentBehaviors, { SelectedBehaviors } from "./AgentBehaviors"
 import {
   INTERACTION_FREQUENCY_KEY,
@@ -31,10 +29,12 @@ import {
 } from "./helpers"
 import useFetchAgentConfig from "./useFetchAgentConfig"
 import useFetchDetail from "./useFetchDetail"
+import { useDispatch } from "react-redux"
+import { refreshFetchMyAgent } from "@reducers/agentSlice"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
-  const queryClient = useQueryClient()
+  const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
   const [valueCustomDefault, setValueCustomDefault] = useState<any>()
 
@@ -146,7 +146,7 @@ const AgentDetail: React.FC = () => {
       }
       if (res.data) {
         refetch()
-        queryClient.invalidateQueries({ queryKey: [QueryDataKeys.MY_BOT_LIST] })
+        dispatch(refreshFetchMyAgent())
         toast.success("Updated successfully!")
       }
     } catch (error: any) {
