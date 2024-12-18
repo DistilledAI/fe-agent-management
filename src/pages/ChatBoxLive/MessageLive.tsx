@@ -9,7 +9,7 @@ import useAuthState from "@hooks/useAuthState"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import { isMarkdownImage } from "@utils/index"
 import { twMerge } from "tailwind-merge"
-import { emojiReactionsMap } from "./helpers"
+import { emojiReactionsMap, replaceAtBrackets } from "./helpers"
 import useEmojiReactions from "./hooks/useEmojiReactions"
 
 interface MessageLiveProps {
@@ -72,7 +72,7 @@ const MessageLive: React.FC<MessageLiveProps> = ({
           {message.reply && (
             <div className="flex items-center gap-2">
               <p className="line-clamp-1 max-w-[120px] text-15 font-semibold text-brown-500">
-                {message.reply.username}
+                {replaceAtBrackets(message.reply.username)}
               </p>
               <p className="line-clamp-1 max-w-[200px] text-15 text-mercury-400">
                 {isMarkdownImage(message.reply.message) ? (

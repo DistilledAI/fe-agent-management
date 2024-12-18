@@ -246,6 +246,7 @@ const ChatInput = ({
           },
           highlighter: {
             maxHeight: isMobile ? "40px" : "200px",
+            border: "0px",
           },
           input: {
             overflowY: "auto",
@@ -258,7 +259,7 @@ const ChatInput = ({
           "text-[14px] md:text-[18px]",
           isDarkTheme && "text-mercury-30",
         )}
-        placeholder="Type your message"
+        placeholder="Enter chat.."
         rows={4}
         disabled={isDisabledInput}
       >
@@ -272,9 +273,8 @@ const ChatInput = ({
             color: "#A2845E",
             position: "relative",
             zIndex: "1",
-            left: "-1px",
-            top: "-1px",
-            fontWeight: "500",
+            left: "0px",
+            top: "0px",
           }}
         />
       </MentionsInput>
