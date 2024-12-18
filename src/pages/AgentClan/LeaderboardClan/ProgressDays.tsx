@@ -41,8 +41,6 @@ const ProgressDays = () => {
     }
   }, [])
 
-  const dashOffset = totalLength - (percentage / 100) * totalLength
-
   return (
     <div
       className="progress-wrapper"
