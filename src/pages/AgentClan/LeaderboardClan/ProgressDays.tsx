@@ -1,4 +1,4 @@
-import { BoltIcon } from "@components/Icons"
+import { roundProgressXmas } from "@assets/images"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { getRemainingDays, getRemainingDaysPercentage } from "@utils/index"
 import { useEffect, useRef, useState } from "react"
@@ -12,7 +12,7 @@ const ProgressDays = () => {
   const { chatId } = useParams()
   const groupId =
     queryClient
-      .getQueryData([QueryDataKeys.CHAT_ID_BY_USERNAME, chatId])
+      .getQueryData([`${QueryDataKeys.CHAT_ID_BY_USERNAME}-${chatId}`])
       ?.toString() || ""
   const { data: groupDetail } = useQuery<any>({
     queryKey: [QueryDataKeys.GROUP_DETAIL, groupId],
@@ -53,8 +53,9 @@ const ProgressDays = () => {
         margin: "24px auto",
       }}
     >
-      <div className="absolute -top-8 left-1/2 flex w-full -translate-x-1/2 items-center justify-center">
-        <BoltIcon />
+      <div className="absolute -top-8 left-1/2 flex w-full -translate-x-1/2 items-center justify-center gap-1">
+        {/* <BoltIcon /> */}
+        <img src={roundProgressXmas} className="h-5 w-5" />
         <span className="text-14 text-mercury-950">
           {/* {totalDays - remainingDays}/{totalDays} days */}
           Round Progress: {percentage}%

@@ -14,7 +14,7 @@ interface LeaderboardEntry {
 
 const useRankExpList = ({
   groupId,
-  isToggleLeaderboard = false,
+  // isToggleLeaderboard = false,
 }: {
   groupId: string
   isToggleLeaderboard?: boolean
@@ -54,7 +54,7 @@ const useRankExpList = ({
   } = useInfiniteQuery({
     queryKey: [QueryDataKeys.EXP_RANK_LIST_BY_GROUP, groupId],
     queryFn: fetchRankList,
-    enabled: isLogin && !!groupId && isToggleLeaderboard,
+    enabled: isLogin && !!groupId,
     getNextPageParam: (lastPage) => lastPage?.nextOffset,
     getPreviousPageParam: (firstPage) => firstPage?.nextOffset,
     initialPageParam: 0,
