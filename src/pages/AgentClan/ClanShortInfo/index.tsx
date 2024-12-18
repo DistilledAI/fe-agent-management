@@ -7,10 +7,12 @@ import LeaderboardClan from "../LeaderboardClan"
 import { useParams } from "react-router-dom"
 import { formatNumberWithComma } from "@utils/index"
 import useTimerProgress from "@hooks/useTimerProgress"
+import { useRef } from "react"
 
 const ClanShortInfo = () => {
   const queryClient = useQueryClient()
   const { chatId } = useParams()
+  const rewardRef = useRef<any>()
   const { data: chatIdParam } = useQuery({
     queryKey: [QueryDataKeys.CHAT_ID_BY_USERNAME, chatId],
     enabled: !!chatId,
@@ -36,7 +38,16 @@ const ClanShortInfo = () => {
   const xDSTLTotalPoint = queries[1]?.data?.data?.group?.event?.totalPoint
   const remainingDays = queries[2]?.data
 
-  const handleRefetchXpPoint = () => {
+  const handleOpenLeaderboard = () => {
+    queryClient.setQueryData<boolean>(
+      [QueryDataKeys.TOGGLE_LEADERBOARD_CLAN],
+      () => true,
+    )
+  }
+
+  const handleRefetchXpPoint = (e?: any) => {
+    e?.preventDefault()
+    e?.stopPropagation()
     queryClient.invalidateQueries({
       queryKey: [QueryDataKeys.TOTAL_EXP_POINT_USER, groupId],
     })
@@ -52,13 +63,17 @@ const ClanShortInfo = () => {
   return (
     <>
       <div className="w-full pb-1 max-md:my-1 max-md:px-4">
-        <div className="flex w-full items-center rounded-full bg-mercury-30 px-4 py-2 max-md:bg-white max-md:px-2">
+        <div
+          ref={rewardRef}
+          onClick={handleOpenLeaderboard}
+          className="flex w-full items-center rounded-full bg-mercury-30 px-4 py-2 max-md:bg-white max-md:px-2"
+        >
           <div className="relative flex w-full items-center justify-between">
             <div className="absolute left-1/2 h-[26px] w-[1px] -translate-x-1/2 bg-mercury-200 max-md:hidden" />
             <div className="flex w-[calc(50%-15px)] items-center justify-between gap-3 max-md:w-auto max-md:flex-row-reverse">
               <div className="flex items-center gap-1 md:gap-2">
                 <p className="text-12 text-mercury-900 md:text-14">Rewards</p>
-                <div className="flex items-center gap-1">
+                <div className="flex cursor-pointer items-center gap-1">
                   <img
                     src={xDSTL}
                     alt="xdstl"
@@ -98,7 +113,7 @@ const ClanShortInfo = () => {
                     strokeWidth={4}
                   />
                 </button>
-                <div className="flex items-center gap-3">
+                <div className="flex cursor-pointer items-center gap-3">
                   <div className="flex items-center gap-1 max-md:hidden">
                     <div>
                       <TrophyIcon />
@@ -125,7 +140,7 @@ const ClanShortInfo = () => {
           </div>
         </div>
       </div>
-      <LeaderboardClan />
+      <LeaderboardClan refIgnoreOutsideArr={[rewardRef]} />
     </>
   )
 }

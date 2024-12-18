@@ -1,41 +1,30 @@
 import { xDSTL } from "@assets/images"
 import AvatarCustom from "@components/AvatarCustom"
 import ChatInfoCurrent from "@components/ChatInfoCurrent"
+import { WarningIcon } from "@components/Icons"
 import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
 import { SearchUserIconOutline } from "@components/Icons/UserIcon"
 import { WalletIcon } from "@components/Icons/Wallet"
 import { PATH_NAMES, RoleUser } from "@constants/index"
+import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
 import useFetchDetail from "@pages/ChatPage/Mobile/ChatDetail/useFetch"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById } from "@utils/index"
 import { useNavigate } from "react-router-dom"
-import { getMyPrivateAgent } from "services/chat"
 import { twMerge } from "tailwind-merge"
-import { QueryDataKeys } from "types/queryDataKeys"
 
 interface UserAuthProps {
   connectWallet: any
   loading?: boolean
 }
 const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
-  const { isAnonymous, user, isLogin } = useAuthState()
+  const isWalletActive = useAppSelector((state) => state.user.isWalletActive)
+  const { user } = useAuthState()
   const navigate = useNavigate()
   const { groupDetail, chatId } = useFetchDetail()
-  const queryClient = useQueryClient()
-  const cachedData = queryClient.getQueryData([QueryDataKeys.MY_BOT_LIST])
-  const { data } = useQuery<any>({
-    queryKey: [QueryDataKeys.MY_BOT_LIST],
-    queryFn: async () => {
-      if (!cachedData) {
-        return await getMyPrivateAgent()
-      }
-      return cachedData
-    },
-    enabled: !isAnonymous && isLogin,
-  })
-  const hasBot = data ? data?.data?.items?.length > 0 : false
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
+  const hasBot = !!myAgent
 
   const { textColor } = getActiveColorRandomById(chatId)
   const isHiddenMyData = !hasBot
@@ -92,9 +81,17 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
               src={user.avatar}
               className="h-8 w-8"
             />
-            <span className="line-clamp-1 block max-w-[150px] text-base max-md:hidden">
-              {user.username}
-            </span>
+            {isWalletActive ? (
+              <span className="line-clamp-1 block max-w-[150px] text-base max-md:hidden">
+                {user.username}
+              </span>
+            ) : (
+              <div className="hidden items-center gap-1 md:flex">
+                <div className="flex items-center gap-1 text-[#F78500]">
+                  <WarningIcon color="#F78500" /> Inactive
+                </div>
+              </div>
+            )}
           </Button>
         </div>
       ) : (

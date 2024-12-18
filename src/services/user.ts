@@ -103,3 +103,16 @@ export const postReferralCode = async (refByUserCode: string) => {
     data: { refByUserCode },
   })
 }
+
+export const postCodeKYC = async (data: {
+  code: string
+  redirectUri: string
+  kycPlatform: "gmail" | "x"
+  targetId: string
+}) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.KYC,
+    data,
+  })
+}

@@ -42,6 +42,10 @@ const MoreAction: React.FC<{
           (oldData: UserGroup[]) =>
             oldData.filter((item) => item.groupId !== groupId),
         )
+        queryClient.setQueryData(
+          [QueryDataKeys.LEAVE_GROUP_STATE],
+          (oldData: boolean) => !oldData,
+        )
         onOpenChange()
         navigate("/")
       }
