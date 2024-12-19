@@ -106,7 +106,6 @@ const useFetchMessages = () => {
     enabled: isLogin && !!groupId && !!user?.id,
     getNextPageParam: (lastPage) => lastPage?.nextOffset,
     getPreviousPageParam: (firstPage) => firstPage?.nextOffset,
-    // staleTime: STALE_TIME,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     initialPageParam: 0,
