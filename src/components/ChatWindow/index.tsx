@@ -49,7 +49,7 @@ const ChatWindow = ({
   style,
   Header,
   scrollBottomClassName,
-  increaseViewportBy = 500,
+  increaseViewportBy = 0,
 }: ChatWindowProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [isScrollBottom, setIsScrollBottom] = useState<boolean>(false)
