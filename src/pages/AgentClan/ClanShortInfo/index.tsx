@@ -14,7 +14,7 @@ const ClanShortInfo = () => {
   const { chatId } = useParams()
   const rewardRef = useRef<any>()
   const { data: chatIdParam } = useQuery({
-    queryKey: [QueryDataKeys.CHAT_ID_BY_USERNAME, chatId],
+    queryKey: [`${QueryDataKeys.CHAT_ID_BY_USERNAME}-${chatId}`],
     enabled: !!chatId,
   })
   const groupId = chatIdParam ? chatIdParam?.toString() : ""
