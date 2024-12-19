@@ -1,12 +1,13 @@
 import EarnedPointToast from "@components/EearnedPointToast"
 import MediaPreview from "@components/MediaPreview"
 import useAuthAction from "@hooks/useAuthAction"
+import useCheckWalletActive from "@hooks/useCheckWalletActive"
+import useFetchMyAgent from "@hooks/useFetchMyAgent"
 import { getAccessToken } from "@utils/storage"
+import Owallet from "lib/owallet"
 import mixpanel from "mixpanel-browser"
 import { useEffect } from "react"
 import AppRouter from "./routes/AppRouter"
-import useFetchMyAgent from "@hooks/useFetchMyAgent"
-import useCheckWalletActive from "@hooks/useCheckWalletActive"
 
 const mixpanelToken = import.meta.env.VITE_APP_MIXPANEL_TOKEN
 const envMode = import.meta.env.VITE_APP_ENV_MODE
@@ -37,6 +38,11 @@ function App() {
     }, 1000)
 
     return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    //@ts-ignore
+    window.Owallet = new Owallet("owallet")
   }, [])
 
   return (
