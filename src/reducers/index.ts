@@ -4,6 +4,7 @@ import connectWalletReducer from "./connectWalletSlice"
 import firstLoginReducer from "./firstLoginSlice"
 import instructBannerReducer from "./instructBannerSlice"
 import priceInfoReducer, { PriceInfoState } from "./priceInfoSlice"
+import cachePrice, { CachePriceState } from "./cachePrice"
 import sidebarCollapsedReducer from "./sidebarCollapsedSlice"
 import userReducer, { IUserState } from "./userSlice"
 
@@ -15,6 +16,7 @@ type TReducer = {
   instructBanner: boolean
   firstLogin: boolean
   priceInfo: PriceInfoState
+  cachePrice: CachePriceState
 }
 
 const rootReducer: Reducer<TReducer> = combineReducers({
@@ -25,6 +27,7 @@ const rootReducer: Reducer<TReducer> = combineReducers({
   instructBanner: instructBannerReducer,
   firstLogin: firstLoginReducer,
   priceInfo: priceInfoReducer,
+  cachePrice: cachePrice,
 })
 
 export default rootReducer

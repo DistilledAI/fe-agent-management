@@ -22,6 +22,40 @@ export const CheckFilledIcon: FunctionComponent<{
   )
 }
 
+export const OpenBlankTabIcon: FunctionComponent<{
+  color?: string
+  size?: number
+}> = ({ color = "#505665", size = 32 }) => {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 32 33"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="Frame">
+        <path
+          id="Vector"
+          d="M9.33594 10.2412H22.6693V23.5745"
+          stroke={color}
+          strokeWidth="2.66667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          id="Vector_2"
+          d="M9.33594 23.5745L22.6693 10.2412"
+          stroke={color}
+          strokeWidth="2.66667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+    </svg>
+  )
+}
+
 export const CloseFilledIcon: FunctionComponent<{
   color?: string
   size?: number

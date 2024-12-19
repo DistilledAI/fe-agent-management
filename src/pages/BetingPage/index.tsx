@@ -5,9 +5,11 @@ import SwiperList from "./SwiperList"
 import { useEffect } from "react"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { PhantomWalletName } from "@solana/wallet-adapter-wallets"
+import { useCoinGeckoPrices } from "@hooks/useCoingecko"
 
 const Betting = () => {
   const wallet = useWallet()
+  useCoinGeckoPrices()
 
   useEffect(() => {
     const provider = window?.solana

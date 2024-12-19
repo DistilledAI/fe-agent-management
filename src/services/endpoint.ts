@@ -87,6 +87,10 @@ const endpoint = {
     "https://api-dev.distilled.ai/distill/game/predict/history", // only on product
   GET_CURRENT_PREDICT_ROUND:
     "https://api-dev.distilled.ai/distill/game/predict/history-event", // only on product
+  GET_HISTORY_AGENT_LAND_URL:
+    "https://backend-prediction-staging.agents.land/order/user",
+  GET_EVENT_INFO_AGENT_LAND_URL:
+    "https://backend-prediction-staging.agents.land/events",
 }
 
 export default endpoint

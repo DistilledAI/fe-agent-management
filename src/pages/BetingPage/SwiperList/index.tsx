@@ -80,12 +80,9 @@ const SwiperList = () => {
         if (currentEventData && currentRoundStored === currentRound) {
           return
         }
-        console.log("wallet", wallet)
         if (wallet) {
           const { eventDataConfig, eventConfigPda } =
             await web3Solana.getEventConfig(wallet)
-
-          console.log("first", eventDataConfig)
 
           if (eventDataConfig && eventConfigPda) {
             setEventConfig(eventDataConfig as any)
@@ -156,8 +153,6 @@ const SwiperList = () => {
               }),
               // { ...(eventWin || {}), userOrder: order },
             ])
-
-            console.log("eventList", eventList)
           }
         }
       } catch (error) {

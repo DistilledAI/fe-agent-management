@@ -195,7 +195,7 @@ const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
       </div>
       {isClaimable && !isClaimed && wallet.publicKey && (
         <button
-          disabled={!wallet || loading}
+          disabled={!wallet.publicKey || loading}
           onClick={async () => {
             try {
               setLoading(true)

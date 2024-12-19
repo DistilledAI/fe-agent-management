@@ -112,9 +112,10 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
   const renderAmountOptions = () => {
     return (
       <div className="flex w-full flex-row gap-3 py-2">
-        {AMOUNT_LIST.map((amount: any) => {
+        {AMOUNT_LIST.map((amount: any, idx: number) => {
           return (
             <div
+              key={`amount-list-percent-${idx}---`}
               className="flex-1 cursor-pointer rounded border-[1px] border-[#30344A] bg-[#080A14] px-2 py-1 text-center text-[12px] font-medium text-[#9192A0] hover:brightness-125"
               onClick={() => setAmountVal(amount.value.toString())}
             >
