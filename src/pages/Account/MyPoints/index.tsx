@@ -4,11 +4,9 @@ import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
 import { useNavigate } from "react-router-dom"
-import { useAppSelector } from "@hooks/useAppRedux"
 
 const MyPoints = () => {
   const { user } = useAuthState()
-  const isWalletActive = useAppSelector((state) => state.user.isWalletActive)
   const navigate = useNavigate()
   const totalxDstlPoint = user?.xDstlPoint || 0
 
@@ -28,7 +26,7 @@ const MyPoints = () => {
           </span>
         </div>
       </div>
-      {isWalletActive ? (
+      {user.walletActive ? (
         <>
           <div className="mb-6 flex items-center justify-between leading-none">
             <span className="font-medium text-mercury-600">Balance:</span>
