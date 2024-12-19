@@ -22,7 +22,7 @@ const ScrollBottomChat = ({
     if (virtuosoRef.current) {
       virtuosoRef.current.scrollToIndex({
         index: "LAST",
-        behavior: "smooth",
+        behavior: "auto",
         align: "end",
       })
     }
