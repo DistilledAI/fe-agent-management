@@ -68,50 +68,54 @@ export const convertDataFetchToMessage = (
     EMOJI_REACTIONS.map((val) => val.reactionType),
   )
 
-  return data
-    .map((mess) => {
-      const reactionMsgStats = mess?.reactionMsgStats
-        ?.filter(
-          (item) => item?.total > 0 && emojiReactionsSet.has(item.reactionType),
-        )
-        .map((stat) => {
-          const isReacted = mess?.reactionMsg?.some(
-            (msg) => msg?.reactionType === stat.reactionType,
-          )
-          return { ...stat, isReacted }
-        })
-        .sort((itemA, itemB) => itemB.total - itemA.total)
+  const sortedData = data.sort((a: IMessage, b: IMessage) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  })
 
-      return {
-        id: mess.id,
-        role: getRole(isOwner(currentUserId, mess.user?.id)),
-        content: mess.mentions?.length
-          ? replaceMentions(mess as any)
-          : mess.messages,
-        avatar: mess.user?.avatar,
-        roleOwner: mess.user.role,
-        typeGroup: mess.group.typeGroup,
-        createdAt: mess.createdAt,
-        publicAddress: mess.user?.publicAddress,
-        isChatCleared: false,
-        username: mess?.user?.username,
-        userId: mess?.userId,
-        agentId: mess.user.id,
-        ownerId: mess.user.owner,
-        reply: mess.relyTo
-          ? {
-              messageId: mess.relyTo,
-              message: mess.relyToMessage?.messages ?? "",
-              username: mess.relyToMessage?.user?.username
-                ? `@${mess.relyToMessage.user.username}`
-                : "@Unnamed",
-            }
-          : undefined,
-        reactionMsg: mess.reactionMsg,
-        reactionMsgStats,
-      }
-    })
-    .reverse()
+  return sortedData.map((mess) => {
+    const reactionMsgSet = new Set(
+      mess.reactionMsg?.map((msg) => msg?.reactionType),
+    )
+
+    const reactionMsgStats = mess?.reactionMsgStats
+      ?.filter(
+        (item) => item?.total > 0 && emojiReactionsSet.has(item.reactionType),
+      )
+      .map((stat) => ({
+        ...stat,
+        isReacted: reactionMsgSet.has(stat.reactionType),
+      }))
+      .sort((itemA, itemB) => itemB.total - itemA.total)
+
+    return {
+      id: mess.id,
+      role: getRole(isOwner(currentUserId, mess.user?.id)),
+      content: mess.mentions?.length
+        ? replaceMentions(mess as any)
+        : mess.messages,
+      avatar: mess.user?.avatar,
+      roleOwner: mess.user.role,
+      typeGroup: mess.group.typeGroup,
+      createdAt: mess.createdAt,
+      publicAddress: mess.user?.publicAddress,
+      isChatCleared: false,
+      username: mess?.user?.username,
+      userId: mess?.userId,
+      agentId: mess.user.id,
+      ownerId: mess.user.owner,
+      reply: mess.relyTo
+        ? {
+            messageId: mess.relyTo,
+            message: mess.relyToMessage?.messages ?? "",
+            username: mess.relyToMessage?.user?.username
+              ? `@${mess.relyToMessage.user.username}`
+              : "@Unnamed",
+          }
+        : undefined,
+      reactionMsg: mess.reactionMsg,
+      reactionMsgStats,
+    }
+  })
 }
 
 export const getBadgeColor = (role: RoleUser) =>

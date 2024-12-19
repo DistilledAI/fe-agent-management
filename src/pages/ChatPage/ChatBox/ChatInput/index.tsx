@@ -15,7 +15,7 @@ import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { BOT_STATUS } from "../ChatMessages/ChatActions/DelegatePrivateAgent"
 import VoiceChat from "./Voice"
-import { cloud1Img, cloud2Img, cloud3Img } from "@assets/images"
+import CloudImages from "./CloudImages"
 
 interface ChatInputProps {
   isDisabledInput: boolean
@@ -23,7 +23,6 @@ interface ChatInputProps {
   isPending: boolean
   wrapperClassName?: string
   isDarkTheme?: boolean
-  // hasMention?: boolean
   replyUsername?: string
   resetRely?: () => void
   hasFocus?: boolean
@@ -36,7 +35,6 @@ const ChatInput = ({
   wrapperClassName,
   isDarkTheme,
   isPending,
-  // hasMention = false,
   replyUsername,
   hasFocus,
   setHasFocus,
@@ -45,10 +43,6 @@ const ChatInput = ({
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const [isFocus, setIsFocus] = useState(false)
   const [message, setMessage] = useState("")
-  // const [showMention, setShowMention] = useState(false)
-  // const [currentMentionIndex, setCurrentMentionIndex] = useState<number | null>(
-  //   null,
-  // )
   const { pathname } = useLocation()
   const { isMobile } = useWindowSize()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -148,22 +142,6 @@ const ChatInput = ({
       setMessage(value.replace(replyUsername.trim(), ""))
       if (resetRely) resetRely()
     } else setMessage(value)
-
-    // if (!hasMention) return
-
-    // const words = value.split(" ")
-    // const lastWordIndex = words.length - 1
-    // const lastWord = words[lastWordIndex]
-
-    // const isShow =
-    //   lastWord.startsWith("@") && lastWord.length > 0 && !lastWord.includes(" ")
-    // if (isShow) {
-    //   setShowMention(true)
-    //   setCurrentMentionIndex(lastWordIndex)
-    // } else {
-    //   setShowMention(false)
-    //   setCurrentMentionIndex(null)
-    // }
   }
 
   return (
@@ -191,49 +169,8 @@ const ChatInput = ({
           color={isDarkTheme ? "rgba(84, 84, 84, 1)" : "#545454"}
         />
       </button>
-      {/* <MentionChatInput
-        isOpen={showMention}
-        setMessage={setMessage}
-        onClose={() => setShowMention(false)}
-        currentMentionIndex={currentMentionIndex}
-      /> */}
-      {/* <Textarea
-        placeholder="Type your message"
-        classNames={{
-          base: "hidden",
-          inputWrapper: twMerge(
-            "bg-mercury-200 border-none focus-within:!bg-mercury-200 hover:!bg-mercury-200 shadow-none px-0 !ring-offset-0 !ring-transparent",
-            isDarkTheme &&
-              "bg-mercury-950 focus-within:!bg-mercury-950 hover:!bg-mercury-950",
-          ),
-          input: twMerge(
-            "text-[18px] text-mercury-900 placeholder:text-mercury-700 font-barlow",
-            isDarkTheme && "!text-mercury-30 placeholder:text-mercury-400",
-          ),
-        }}
-        onKeyDown={handleKeyDown}
-        minRows={1}
-        maxRows={4}
-        onKeyUp={handleCheckHeight}
-        onFocus={() => setIsFocus(true)}
-        onBlur={() => setIsFocus(false)}
-        onChange={handleOnChange}
-        value={message}
-        ref={inputRef}
-        isDisabled={isDisabledInput}
-      /> */}
-      <img
-        src={cloud1Img}
-        className="absolute -top-[1px] left-[84px] h-8 object-cover md:-left-3 md:-top-3 md:w-[259px]"
-      />
-      <img
-        src={cloud2Img}
-        className="absolute right-9 top-[9px] h-2 object-cover md:-top-1 md:right-20 md:h-[17px] md:w-[180px]"
-      />
-      <img
-        src={cloud3Img}
-        className="absolute bottom-4 left-1/2 h-2 -translate-x-1/2 object-cover md:-bottom-[1px] md:h-4 md:w-[320px]"
-      />
+
+      <CloudImages />
 
       <MentionsInput
         inputRef={inputRef}

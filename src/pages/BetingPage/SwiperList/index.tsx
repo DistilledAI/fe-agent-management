@@ -70,22 +70,15 @@ const SwiperList = () => {
   }, [currentRoundStored])
 
   useEffect(() => {
-    console.log(
-      "======= REFRESH LIST ======= with currentRound is: ",
-      currentRoundStored,
-    )
     ;(async () => {
       try {
         setLoading(true)
         if (currentEventData && currentRoundStored === currentRound) {
           return
         }
-        console.log("wallet", wallet)
         if (wallet) {
           const { eventDataConfig, eventConfigPda } =
             await web3Solana.getEventConfig(wallet)
-
-          console.log("first", eventDataConfig)
 
           if (eventDataConfig && eventConfigPda) {
             setEventConfig(eventDataConfig as any)
@@ -95,12 +88,6 @@ const SwiperList = () => {
               .minus(1)
               .toNumber()
 
-            console.log(
-              "currentRound",
-              currentRound,
-              (eventDataConfig as any).intervalSeconds,
-              eventDataConfig,
-            )
             setCurrentRound(currentRound)
             setRangeTime((eventDataConfig as any).intervalSeconds || 300)
 
@@ -156,8 +143,6 @@ const SwiperList = () => {
               }),
               // { ...(eventWin || {}), userOrder: order },
             ])
-
-            console.log("eventList", eventList)
           }
         }
       } catch (error) {

@@ -110,8 +110,6 @@ export const useGetRoundDataById = (id: number) => {
               (currentEvent as any)?.lockPrice || 0,
             ).toNumber()
 
-            console.log("lockPrice", lockPrice)
-
             if (lockPrice) {
               clearInterval(intervalId)
               intervalId = null as any

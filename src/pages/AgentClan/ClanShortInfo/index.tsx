@@ -7,7 +7,7 @@ import LeaderboardClan from "../LeaderboardClan"
 import { useParams } from "react-router-dom"
 import { formatNumberWithComma } from "@utils/index"
 import useTimerProgress from "@hooks/useTimerProgress"
-import { useRef } from "react"
+import { useCallback, useRef } from "react"
 
 const ClanShortInfo = () => {
   const queryClient = useQueryClient()
@@ -45,14 +45,17 @@ const ClanShortInfo = () => {
     )
   }
 
-  const handleRefetchXpPoint = (e?: any) => {
-    e?.preventDefault()
-    e?.stopPropagation()
-    queryClient.invalidateQueries({
-      queryKey: [QueryDataKeys.TOTAL_EXP_POINT_USER, groupId],
-    })
-    setTimerProgress(0)
-  }
+  const handleRefetchXpPoint = useCallback(
+    (e?: any) => {
+      e?.preventDefault()
+      e?.stopPropagation()
+      queryClient.invalidateQueries({
+        queryKey: [QueryDataKeys.TOTAL_EXP_POINT_USER, groupId],
+      })
+      setTimerProgress(0)
+    },
+    [groupId],
+  )
 
   const { timerProgress, setTimerProgress } = useTimerProgress(
     60000,

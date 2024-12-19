@@ -12,6 +12,7 @@ import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { twMerge } from "tailwind-merge"
+import Histories from "../Histories"
 
 const web3Solana = new Web3SolanaProgramInteraction()
 
@@ -30,7 +31,6 @@ const HeaderWallet = () => {
         MAX_ADDRESS_SOLANA,
       )
 
-      console.log("tokenBal", address, tokenBal)
       setTokenBal(tokenBal ? tokenBal : 0)
     } catch (error) {
       console.log("error", error)
@@ -75,6 +75,9 @@ const HeaderWallet = () => {
           {numberWithCommas(tokenBal)}
         </p>
         <Image className="h-5 w-5 rounded-full" src={maxIcon} />
+      </div>
+      <div className="mt-1">
+        <Histories />
       </div>
     </div>
   ) : (

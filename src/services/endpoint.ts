@@ -1,6 +1,8 @@
 import { envConfig } from "@configs/env"
 
 const withBaseURL = (path: string) => `${envConfig.baseApiUrl}${path}`
+const PREDICTION_API_URL =
+  envConfig.predictionApiUrl || "https://backend-prediction.agents.land"
 
 const endpoint = {
   //user
@@ -87,6 +89,9 @@ const endpoint = {
     "https://api-dev.distilled.ai/distill/game/predict/history", // only on product
   GET_CURRENT_PREDICT_ROUND:
     "https://api-dev.distilled.ai/distill/game/predict/history-event", // only on product
+  GET_HISTORY_AGENT_LAND_URL: (userId: string) =>
+    `${PREDICTION_API_URL}/users/${userId}/orders`,
+  GET_EVENT_INFO_AGENT_LAND_URL: `${PREDICTION_API_URL}/events`,
 }
 
 export default endpoint

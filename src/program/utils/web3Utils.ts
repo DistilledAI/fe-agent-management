@@ -177,7 +177,6 @@ export class Web3SolanaProgramInteraction {
       return fetchedOrder
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
-      console.log("No Order")
       return null
     }
   }
@@ -377,7 +376,11 @@ export class Web3SolanaProgramInteraction {
     }
   }
 
-  claimOrder = async (wallet: WalletContextState, eventID: number) => {
+  claimOrder = async (
+    wallet: WalletContextState,
+    eventID?: number,
+    eventAddr?: string,
+  ) => {
     try {
       const currencyMint = new PublicKey(PUBKEYS.MAINNET.CURRENCY_MINT)
       // check the connection
@@ -414,15 +417,17 @@ export class Web3SolanaProgramInteraction {
       const eventConfig =
         await program.account.eventConfig.fetch(eventConfigPda)
 
-      const [event] = PublicKey.findProgramAddressSync(
-        [
-          Buffer.from("event"),
-          eventConfigPda.toBytes(),
-          // new BN(eventConfig.nextRoundId.toNumber() - 1).toBuffer("le", 8),
-          Buffer.from(new BN(eventID).toArray("le", 8)),
-        ],
-        program.programId,
-      )
+      const [event] = eventAddr
+        ? [new PublicKey(eventAddr)]
+        : PublicKey.findProgramAddressSync(
+            [
+              Buffer.from("event"),
+              eventConfigPda.toBytes(),
+              // new BN(eventConfig.nextRoundId.toNumber() - 1).toBuffer("le", 8),
+              Buffer.from(new BN(eventID).toArray("le", 8)),
+            ],
+            program.programId,
+          )
       const currentRound = await program.account.event.fetch(event)
       console.log(currentRound.id.toNumber())
 

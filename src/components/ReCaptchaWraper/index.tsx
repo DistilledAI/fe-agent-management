@@ -16,10 +16,14 @@ const ReCaptchaWraper: React.FC<{
   })
 
   useEffect(() => {
-    setTimeout(() => {
-      setCaptchaInfo({ ...captchaInfo, load: true })
+    const timer = setTimeout(() => {
+      setCaptchaInfo((prev: any) => ({ ...prev, load: true }))
     }, DELAY)
-  }, [])
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [DELAY])
 
   const handleChange = (value: any) => {
     setCaptchaInfo({ ...captchaInfo, value })
