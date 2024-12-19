@@ -28,9 +28,7 @@ const ScrollBottomChat = ({
     }
   }, [virtuosoRef.current])
 
-  if (!isScrollBottom) {
-    return null
-  }
+  if (!isScrollBottom) return null
 
   return (
     <div

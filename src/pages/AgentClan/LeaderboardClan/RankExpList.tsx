@@ -15,10 +15,12 @@ const RankExpList = () => {
   const { chatId } = useParams()
   const { data: isToggleLeaderboard } = useQuery<boolean>({
     queryKey: [QueryDataKeys.TOGGLE_LEADERBOARD_CLAN],
+    staleTime: 0,
   })
   const { data: chatIdParam } = useQuery({
     queryKey: [`${QueryDataKeys.CHAT_ID_BY_USERNAME}-${chatId}`],
     enabled: !!chatId,
+    staleTime: 0,
   })
   const groupId = chatIdParam?.toString() || ""
   const { rankList, isLoading } = useRankExpList({
@@ -31,15 +33,18 @@ const RankExpList = () => {
         queryKey: [QueryDataKeys.TOTAL_EXP_POINT_GROUP, groupId],
         queryFn: async () => await getTotalExpPointGroup(Number(groupId)),
         enabled: !!groupId,
+        staleTime: 0,
       },
       {
         queryKey: [QueryDataKeys.TOTAL_EXP_POINT_USER, groupId],
         queryFn: async () => await getTotalExpPointUser(Number(groupId)),
         enabled: !!groupId,
+        staleTime: 0,
       },
       {
         queryKey: [QueryDataKeys.GROUP_DETAIL, groupId],
         enabled: !!groupId,
+        staleTime: 0,
       },
     ],
   })

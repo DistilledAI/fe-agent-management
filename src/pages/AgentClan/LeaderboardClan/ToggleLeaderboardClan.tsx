@@ -8,6 +8,7 @@ const ToggleLeaderboardClan = () => {
   const queryClient = useQueryClient()
   const { data: isToggleLeaderboard } = useQuery<boolean>({
     queryKey: [QueryDataKeys.TOGGLE_LEADERBOARD_CLAN],
+    staleTime: 0,
   })
 
   const toggleLeaderboardClan = () => {

@@ -39,6 +39,7 @@ const RightContent: React.FC<{
 
   const { data: isCloseLiveChat = false } = useQuery<boolean>({
     queryKey: [QueryDataKeys.CLOSE_LIVE_CHAT],
+    staleTime: 0,
   })
 
   return (

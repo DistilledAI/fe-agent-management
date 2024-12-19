@@ -109,6 +109,7 @@ const useFetchMessages = () => {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     initialPageParam: 0,
+    staleTime: 0,
   })
 
   const resetInfiniteQueryPagination = () => {
