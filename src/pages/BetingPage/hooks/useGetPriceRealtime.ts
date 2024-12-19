@@ -73,7 +73,7 @@ const useGetPriceRealtime = () => {
     pythConnection.start()
 
     return () => {
-      console.log("clean ==> . . . ")
+      console.log("clean ==> Pyth price feed . . . ")
       // Cleanup WebSocket connections when component unmounts
       pythConnection.stop()
     }

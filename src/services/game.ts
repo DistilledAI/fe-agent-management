@@ -18,7 +18,7 @@ export const getCurrentPredictRound = async () => {
 export const getHistoryByUser = async (userId: string) => {
   return fetchApiAuth({
     method: "get",
-    url: `${endpoint.GET_HISTORY_AGENT_LAND_URL}?user=${userId}`,
+    url: `${endpoint.GET_HISTORY_AGENT_LAND_URL(userId)}`,
   })
 }
 

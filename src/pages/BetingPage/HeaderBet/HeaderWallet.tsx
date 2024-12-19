@@ -31,7 +31,6 @@ const HeaderWallet = () => {
         MAX_ADDRESS_SOLANA,
       )
 
-      console.log("tokenBal", address, tokenBal)
       setTokenBal(tokenBal ? tokenBal : 0)
     } catch (error) {
       console.log("error", error)
