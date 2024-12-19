@@ -70,10 +70,6 @@ const SwiperList = () => {
   }, [currentRoundStored])
 
   useEffect(() => {
-    console.log(
-      "======= REFRESH LIST ======= with currentRound is: ",
-      currentRoundStored,
-    )
     ;(async () => {
       try {
         setLoading(true)
@@ -92,12 +88,6 @@ const SwiperList = () => {
               .minus(1)
               .toNumber()
 
-            console.log(
-              "currentRound",
-              currentRound,
-              (eventDataConfig as any).intervalSeconds,
-              eventDataConfig,
-            )
             setCurrentRound(currentRound)
             setRangeTime((eventDataConfig as any).intervalSeconds || 300)
 

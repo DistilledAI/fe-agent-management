@@ -177,7 +177,6 @@ export class Web3SolanaProgramInteraction {
       return fetchedOrder
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
-      console.log("No Order")
       return null
     }
   }
