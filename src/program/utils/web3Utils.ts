@@ -378,7 +378,7 @@ export class Web3SolanaProgramInteraction {
 
   claimOrder = async (
     wallet: WalletContextState,
-    eventID?: number,
+    eventID?: any,
     eventAddr?: string,
   ) => {
     try {
@@ -424,6 +424,7 @@ export class Web3SolanaProgramInteraction {
               Buffer.from("event"),
               eventConfigPda.toBytes(),
               // new BN(eventConfig.nextRoundId.toNumber() - 1).toBuffer("le", 8),
+
               Buffer.from(new BN(eventID).toArray("le", 8)),
             ],
             program.programId,
