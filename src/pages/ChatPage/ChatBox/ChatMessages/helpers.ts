@@ -69,7 +69,7 @@ export const convertDataFetchToMessage = (
   )
 
   const sortedData = data.sort((a: IMessage, b: IMessage) => {
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
   })
 
   return sortedData.map((mess) => {
