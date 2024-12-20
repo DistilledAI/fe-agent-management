@@ -57,8 +57,8 @@ const MyPoints = () => {
 
           <p className="mb-3 mt-1 text-[#F78500]">
             Complete at least one blockchain transaction with your web3 wallet
-            on Ethereum, Binance Smart Chain, or Solana networks to earn xDSTL
-            and farm EXP on Clan.
+            on Ethereum, Binance Smart Chain, Oraichain, or Solana networks to
+            earn xDSTL and farm EXP on Clan.
           </p>
         </>
       )}
