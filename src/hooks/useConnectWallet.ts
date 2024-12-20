@@ -98,53 +98,32 @@ const useConnectWallet = () => {
     try {
       setLoadingConnectOwallet(true)
       const timestamp = Math.floor(Date.now() / 1000) + 86400
+      const chainId = "Oraichain"
+
       //@ts-ignore
-
-      const ethereumProvider = isMobile ? window?.ethereum : window?.eth_owallet
-      if (!ethereumProvider) {
-        return toast.warning(`Please install Owallet to continue!`)
-      }
-
-      const provider = new ethers.providers.Web3Provider(ethereumProvider)
+      const owallet = await window.Owallet.getOwallet()
       //@ts-ignore
-      if (!isMobile) {
-        //@ts-ignore
-        await window.eth_owallet.request!({
-          method: "wallet_switchEthereumChain",
-          chainId: "0x01",
-          params: [{ chainId: "0x01" }],
-        })
-        //@ts-ignore
-        await window?.owallet.enable("0x01")
-      }
-
-      await provider.send("eth_requestAccounts", [])
-
-      const signer = await provider.getSigner()
-      const publicAddress = await getPublicAddress(signer)
-
-      const domain = {}
-      const types = {
-        Data: [
-          { name: "action", type: "string" },
-          { name: "publicAddress", type: "address" },
-          { name: "timestamp", type: "uint256" },
-        ],
-      }
+      const key = await window.Owallet.getOwalletKey()
+      const publicAddress = key.bech32Address
       const value = {
-        action: "Login to Distilled",
+        action: "login",
         publicAddress,
         timestamp,
       }
 
-      let signature = (await signer._signTypedData(domain, types, value)) as any
-      signature = isMobile ? signature : signature?.result
-      const digest = ethers.utils._TypedDataEncoder.hash(domain, types, value)
-      const publicKey = ethers.utils.recoverPublicKey(digest, signature)
+      //@ts-ignore
+      const signer = await window.owallet.signArbitrary(
+        chainId,
+        publicAddress,
+        JSON.stringify(value),
+      )
+
+      const signature = signer.signature
+      const publicKey = signer.pub_key.value
 
       const input: IDataSignatureAuth = {
         data: {
-          action: "Login to Distilled",
+          action: "login",
           publicAddress,
           timestamp,
         },
@@ -152,7 +131,7 @@ const useConnectWallet = () => {
           signature,
           publicKey,
         },
-        typeLogin: "evm",
+        typeLogin: "oraichain",
       }
 
       await login(input)
