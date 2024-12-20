@@ -109,7 +109,8 @@ const Rewards: React.FC = () => {
                     To complete the missions, you and your referred friends (for
                     referral missions) must log in to Mesh using a Web3 wallet
                     that has conducted at least one blockchain transaction on
-                    Ethereum, Binance Smart Chain, or Solana networks.
+                    Ethereum, Binance Smart Chain, Oraichain, or Solana
+                    networks.
                   </p>
                   <Link
                     to={PATH_NAMES.ACCOUNT}
@@ -201,7 +202,7 @@ const Rewards: React.FC = () => {
                   To complete the missions, you and your referred friends (for
                   referral missions) must log in to Mesh using a Web3 wallet
                   that has conducted at least one blockchain transaction on
-                  Ethereum, Binance Smart Chain, or Solana networks.
+                  Ethereum, Binance Smart Chain, Oraichain, or Solana networks.
                 </p>
                 <Link
                   to={PATH_NAMES.ACCOUNT}
