@@ -58,6 +58,7 @@ const useRankExpList = ({
     getNextPageParam: (lastPage) => lastPage?.nextOffset,
     getPreviousPageParam: (firstPage) => firstPage?.nextOffset,
     initialPageParam: 0,
+    staleTime: 0,
   })
 
   const rankList =

@@ -15,6 +15,7 @@ const LeaderboardClan = ({
   const queryClient = useQueryClient()
   const { data: isToggleLeaderboard } = useQuery<boolean>({
     queryKey: [QueryDataKeys.TOGGLE_LEADERBOARD_CLAN],
+    staleTime: 0,
   })
   const leaderboardRef = useRef<any>(null)
   useOutsideClick(

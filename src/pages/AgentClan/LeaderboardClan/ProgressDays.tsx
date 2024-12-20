@@ -17,6 +17,7 @@ const ProgressDays = () => {
   const { data: groupDetail } = useQuery<any>({
     queryKey: [QueryDataKeys.GROUP_DETAIL, groupId],
     enabled: !!groupId,
+    staleTime: 0,
   })
   const groupCreateDate = new Date(
     groupDetail?.data?.group?.event?.createdAt,
