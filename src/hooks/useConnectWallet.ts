@@ -25,7 +25,9 @@ const useConnectWallet = () => {
     useState<boolean>(false)
   const [loadingConnectPhantom, setLoadingConnectPhantom] =
     useState<boolean>(false)
-  const [loadingConnectOwallet, setLoadingConnectOwallet] =
+  const [loadingConnectOwalletOrai, setLoadingConnectOwalletOrai] =
+    useState<boolean>(false)
+  const [loadingConnectOwalletEVM, setLoadingConnectOwalletEVM] =
     useState<boolean>(false)
   const dispatch = useDispatch()
   const { address } = useAccount()
@@ -74,7 +76,7 @@ const useConnectWallet = () => {
     }
   }
 
-  const connectOwallet = async () => {
+  const connectOwalletOraichain = async () => {
     const isOwallet = isMobile
       ? //@ts-ignore
         window.ethereum.isOWallet
@@ -96,7 +98,7 @@ const useConnectWallet = () => {
     }
 
     try {
-      setLoadingConnectOwallet(true)
+      setLoadingConnectOwalletOrai(true)
       const timestamp = Math.floor(Date.now() / 1000) + 86400
       const chainId = "Oraichain"
 
@@ -139,9 +141,101 @@ const useConnectWallet = () => {
     } catch (error: any) {
       console.error(error, "error")
       toast.error(error?.message)
-      setLoadingConnectOwallet(false)
+      setLoadingConnectOwalletOrai(false)
     } finally {
-      setLoadingConnectOwallet(false)
+      setLoadingConnectOwalletOrai(false)
+    }
+  }
+
+  const connectOwalletEVM = async () => {
+    const isOwallet = isMobile
+      ? //@ts-ignore
+        window.ethereum.isOWallet
+      : //@ts-ignore
+        window.eth_owallet && window.owallet.isOwallet
+
+    if (!isOwallet) {
+      if (isMobile) {
+        const deepLinkApp = "https://owallet.io/"
+        toast.info(`Please open the application in owallet's browser`)
+        setTimeout(() => {
+          window.open(deepLinkApp, "_blank")
+        }, 1000)
+        return
+      }
+
+      toast.warning(`Please install Owallet to continue!`)
+      return
+    }
+
+    try {
+      setLoadingConnectOwalletEVM(true)
+      const timestamp = Math.floor(Date.now() / 1000) + 86400
+      //@ts-ignore
+
+      const ethereumProvider = isMobile ? window?.ethereum : window?.eth_owallet
+      if (!ethereumProvider) {
+        return toast.warning(`Please install Owallet to continue!`)
+      }
+
+      const provider = new ethers.providers.Web3Provider(ethereumProvider)
+      //@ts-ignore
+      if (!isMobile) {
+        //@ts-ignore
+        await window.eth_owallet.request!({
+          method: "wallet_switchEthereumChain",
+          chainId: "0x01",
+          params: [{ chainId: "0x01" }],
+        })
+        //@ts-ignore
+        await window?.owallet.enable("0x01")
+      }
+
+      await provider.send("eth_requestAccounts", [])
+
+      const signer = await provider.getSigner()
+      const publicAddress = await getPublicAddress(signer)
+
+      const domain = {}
+      const types = {
+        Data: [
+          { name: "action", type: "string" },
+          { name: "publicAddress", type: "address" },
+          { name: "timestamp", type: "uint256" },
+        ],
+      }
+      const value = {
+        action: "Login to Distilled",
+        publicAddress,
+        timestamp,
+      }
+
+      let signature = (await signer._signTypedData(domain, types, value)) as any
+      signature = isMobile ? signature : signature?.result
+      const digest = ethers.utils._TypedDataEncoder.hash(domain, types, value)
+      const publicKey = ethers.utils.recoverPublicKey(digest, signature)
+
+      const input: IDataSignatureAuth = {
+        data: {
+          action: "Login to Distilled",
+          publicAddress,
+          timestamp,
+        },
+        signData: {
+          signature,
+          publicKey,
+        },
+        typeLogin: "evm",
+      }
+
+      await login(input)
+      dispatch(updateModalStatus(false))
+    } catch (error: any) {
+      console.error(error, "error")
+      toast.error(error?.message)
+      setLoadingConnectOwalletEVM(false)
+    } finally {
+      setLoadingConnectOwalletEVM(false)
     }
   }
 
@@ -298,14 +392,19 @@ const useConnectWallet = () => {
 
   return {
     loading:
-      loadingConnectMetamask || loadingConnectOwallet || loadingConnectPhantom,
+      loadingConnectMetamask ||
+      loadingConnectOwalletOrai ||
+      loadingConnectOwalletEVM ||
+      loadingConnectPhantom,
     loadingConnectMetamask,
-    loadingConnectOwallet,
+    loadingConnectOwalletOrai,
+    loadingConnectOwalletEVM,
     loadingConnectPhantom,
     connectMetamaskWallet,
     connectMultipleWallet,
     connectPhantomWallet,
-    connectOwallet,
+    connectOwalletOraichain,
+    connectOwalletEVM,
   }
 }
 
