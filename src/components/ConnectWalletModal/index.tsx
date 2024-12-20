@@ -1,3 +1,4 @@
+import { EVMImage, oraichainLogo, solanaLogo } from "@assets/images"
 import CloseButton from "@components/CloseButton"
 import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
 import {
@@ -19,11 +20,13 @@ import { updateModalStatus } from "@reducers/connectWalletSlice"
 const ConnectWalletModal = () => {
   const {
     loadingConnectMetamask,
-    loadingConnectOwallet,
+    loadingConnectOwalletOrai,
     loadingConnectPhantom,
+    loadingConnectOwalletEVM,
     connectMetamaskWallet,
-    connectOwallet,
+    connectOwalletOraichain,
     connectPhantomWallet,
+    connectOwalletEVM,
   } = useConnectWallet()
   const dispatch = useAppDispatch()
   const isOpen = useAppSelector((state) => state.connectWalletReducer.isOpen)
@@ -33,8 +36,27 @@ const ConnectWalletModal = () => {
       id: "owallet",
       name: "OWallet",
       icon: <OwalletIcon width={32} height={38} />,
-      loading: loadingConnectOwallet,
-      connect: connectOwallet,
+      loading: loadingConnectOwalletOrai,
+      connect: connectOwalletOraichain,
+      network: (
+        <div className="flex items-center gap-1">
+          <img src={oraichainLogo} width={24} height={24} />
+          <span className="text-14 text-mercury-900">Oraichain</span>
+        </div>
+      ),
+    },
+    {
+      id: "owallet",
+      name: "OWallet",
+      icon: <OwalletIcon width={32} height={38} />,
+      loading: loadingConnectOwalletEVM,
+      connect: connectOwalletEVM,
+      network: (
+        <div className="flex items-center gap-1">
+          <img src={EVMImage} width={42} height={24} />
+          <span className="text-14 text-mercury-900">EVM</span>
+        </div>
+      ),
     },
     {
       id: "phantom",
@@ -42,6 +64,12 @@ const ConnectWalletModal = () => {
       icon: <PhantomIcon />,
       loading: loadingConnectPhantom,
       connect: connectPhantomWallet,
+      network: (
+        <div className="flex items-center gap-1">
+          <img src={solanaLogo} width={24} height={24} />
+          <span className="text-14 text-mercury-900">Solana</span>
+        </div>
+      ),
     },
     {
       id: "metamask",
@@ -49,6 +77,12 @@ const ConnectWalletModal = () => {
       icon: <MetamaskIconSmall width={32} height={38} />,
       loading: loadingConnectMetamask,
       connect: connectMetamaskWallet,
+      network: (
+        <div className="flex items-center gap-1">
+          <img src={EVMImage} width={42} height={24} />
+          <span className="text-14 text-mercury-900">EVM</span>
+        </div>
+      ),
     },
   ]
 
@@ -99,7 +133,10 @@ const ConnectWalletModal = () => {
               >
                 <div className="flex items-center gap-4">
                   {connector.icon}
-                  <span className="text-base-md">{connector.name}</span>
+                  <div>
+                    <span className="text-base-md">{connector.name}</span>
+                    {connector.network}
+                  </div>
                 </div>
                 <Button
                   className="group flex h-[40px] cursor-pointer items-center justify-center gap-4 rounded-full bg-mercury-950 p-2 px-6"
