@@ -5,6 +5,7 @@ import axios from "axios"
 import bs58 from "bs58"
 import { ethers } from "ethers"
 import { useEffect, useState } from "react"
+import ReactJson from "react-json-view"
 import { toast } from "react-toastify"
 
 // const API_URL = "http://15.235.226.9:7000"
@@ -161,6 +162,10 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
 
   const handleSubmit = () => {
     if (!isConnectWallet) return
+    if (!addressAgent) {
+      toast.warning("Please enter address")
+      return
+    }
     if (checkNetworkByAddress(user.publicAddress) === "EVM") {
       handleAddWhitelistByEvm()
     } else handleAddWhitelistBySol()
@@ -198,9 +203,11 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
       </div>
       <div className="mt-10">
         <p className="mb-1 font-semibold">LIST AGENT IN WHITELIST:</p>
-        <div style={{ wordBreak: "break-all" }}>
-          {whitelistAgent ? JSON.stringify(whitelistAgent) : "No Items"}
-        </div>
+        {whitelistAgent ? (
+          <ReactJson collapsed={true} src={whitelistAgent} />
+        ) : (
+          "No Items"
+        )}
       </div>
     </div>
   )

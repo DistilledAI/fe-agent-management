@@ -9,16 +9,35 @@ import LockToken from "./LockToken"
 import AddToken from "./AddToken"
 import Withdraw from "./Withdraw"
 import WithdrawOtherToken from "./Withdraw/OtherToken"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { cachedLocalStorage } from "@utils/storage"
+import ReactJson from "react-json-view"
+import axios from "axios"
 
 const HomeContent = () => {
   const { user, isAnonymous, isLogin } = useAuthState()
   const [endpointAgent, setEndpointAgent] = useState(
     cachedLocalStorage.getItem("endpointAgent") ?? "",
   )
+  const [infoAgent, setInfoAgent] = useState()
   const isConnectWallet = isLogin && !isAnonymous
   const { logout } = useAuthAction()
+
+  const getAgentInfo = async () => {
+    const res = await axios.request({
+      method: "get",
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      url: `${endpointAgent}/private_agent/info`,
+    })
+    if (res.data) setInfoAgent(res.data)
+  }
+
+  useEffect(() => {
+    getAgentInfo()
+  }, [endpointAgent])
 
   return (
     <div className="mx-auto max-w-[1232px] px-4 py-10">
@@ -56,6 +75,12 @@ const HomeContent = () => {
           placeholder="Enter endpoint url"
         />
       </div>
+      {infoAgent && (
+        <div className="mt-3">
+          <p className="mb-1 text-15 font-medium">Info agent:</p>
+          <ReactJson collapsed={true} src={infoAgent} />
+        </div>
+      )}
       <div className="mt-5">
         <Tabs
           classNames={{ tabContent: "font-medium text-15" }}

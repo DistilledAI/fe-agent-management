@@ -90,6 +90,14 @@ const LockToken = ({ endpointAgent }: { endpointAgent: string }) => {
   }
 
   const handleLockTokenBySol = async (endpointAgent: string) => {
+    if (!endpoint) {
+      toast.warning("Please enter endpoint!")
+      return
+    }
+    if (!stakeAmount) {
+      toast.warning("Please enter amount!")
+      return
+    }
     const botInfo = await getInfoBot(endpointAgent)
     const provider = getProvider()
     if (!provider) return

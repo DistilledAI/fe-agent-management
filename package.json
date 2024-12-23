@@ -59,6 +59,7 @@
     "react-google-recaptcha": "^3.1.0",
     "react-helmet-async": "^2.0.3",
     "react-hook-form": "^7.53.0",
+    "react-json-view": "^1.21.3",
     "react-markdown": "^9.0.1",
     "react-mentions": "^4.4.10",
     "react-player": "^2.16.0",
