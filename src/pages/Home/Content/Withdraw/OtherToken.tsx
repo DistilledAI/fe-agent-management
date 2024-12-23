@@ -10,7 +10,12 @@ import { endpoint } from "program/web3Locking"
 // import { ALL_CONFIGS } from "program/config"
 import axios from "axios"
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes"
-import { Connection, PublicKey, Transaction } from "@solana/web3.js"
+import {
+  ComputeBudgetProgram,
+  Connection,
+  PublicKey,
+  Transaction,
+} from "@solana/web3.js"
 import {
   createTransferCheckedInstruction,
   getAssociatedTokenAddress,
@@ -23,6 +28,15 @@ import { toast } from "react-toastify"
 // const web3Locking = new Web3SolanaLockingToken()
 
 // const endpointAgent = "http://15.235.226.9:7000"
+
+const SOL_COMPUTE_UNIT_LIMIT = 100000
+const SOL_MICRO_LAMPORTS = 100000
+const setComputeUnitLimit = ComputeBudgetProgram.setComputeUnitLimit({
+  units: SOL_COMPUTE_UNIT_LIMIT,
+})
+const setComputePriceLimit = ComputeBudgetProgram.setComputeUnitPrice({
+  microLamports: SOL_MICRO_LAMPORTS,
+})
 
 const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
   const { loading, connectMultipleWallet } = useConnectWallet()
@@ -98,16 +112,19 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
           .multipliedBy(10 ** 6)
           .toFixed(0, 1),
       ).toNumber()
-      const transaction = new Transaction().add(
-        createTransferCheckedInstruction(
-          senderTokenAccount, // Source token account
-          token, // Mint address of the token
-          receiverTokenAccount, // Destination token account
-          new PublicKey(botInfo.sol_address),
-          amount, // Amount of USDC to transfer (1 USDC = 1e6 for 6 decimals)
-          6, // Decimals (USDC has 6 decimals on Solana)
-        ),
-      )
+      const transaction = new Transaction()
+        .add(setComputePriceLimit)
+        .add(setComputeUnitLimit)
+        .add(
+          createTransferCheckedInstruction(
+            senderTokenAccount, // Source token account
+            token, // Mint address of the token
+            receiverTokenAccount, // Destination token account
+            new PublicKey(botInfo.sol_address),
+            amount, // Amount of USDC to transfer (1 USDC = 1e6 for 6 decimals)
+            6, // Decimals (USDC has 6 decimals on Solana)
+          ),
+        )
 
       const connection = new Connection(endpoint, {
         commitment: "confirmed",
