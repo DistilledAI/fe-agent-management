@@ -7,9 +7,9 @@ import { ethers } from "ethers"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
-const API_URL = "http://15.235.226.9:7000"
+// const API_URL = "http://15.235.226.9:7000"
 
-const AddToken = () => {
+const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
   const { loading, connectMultipleWallet } = useConnectWallet()
   const { isLogin, isAnonymous, user } = useAuthState()
   const isConnectWallet = isLogin && !isAnonymous
@@ -24,14 +24,14 @@ const AddToken = () => {
         accept: "application/json",
         "Content-Type": "application/json",
       },
-      url: `${API_URL}/wallet/signer/list`,
+      url: `${endpointAgent}/wallet/signer/list`,
     })
     if (res.data) setWhiteListAgent(res.data)
   }
 
   useEffect(() => {
     getListAgents()
-  }, [])
+  }, [endpointAgent])
 
   const checkNetworkByAddress = (address: string) => {
     const isHex = /^(0x)?[0-9a-fA-F]+$/.test(address)
@@ -80,7 +80,7 @@ const AddToken = () => {
     const resAddrSol = await axios.request({
       method: "post",
       maxBodyLength: Infinity,
-      url: `${API_URL}/wallet/owner/whitelist-signer`,
+      url: `${endpointAgent}/wallet/owner/whitelist-signer`,
       headers: {
         accept: "application/json",
         "Content-Type": "application/json",
@@ -98,7 +98,7 @@ const AddToken = () => {
     })
 
     if (resAddrSol.data) {
-      toast.success("Add whitelist successfully!")
+      toast.success("Updated whitelist successfully!")
       getListAgents()
     }
   }
@@ -137,7 +137,7 @@ const AddToken = () => {
     const resAddEvm = await axios.request({
       method: "post",
       maxBodyLength: Infinity,
-      url: `${API_URL}/wallet/owner/whitelist-signer`,
+      url: `${endpointAgent}/wallet/owner/whitelist-signer`,
       headers: {
         accept: "application/json",
         "Content-Type": "application/json",
@@ -154,7 +154,7 @@ const AddToken = () => {
       }),
     })
     if (resAddEvm.data) {
-      toast.success("Add whitelist successfully!")
+      toast.success("Updated whitelist successfully!")
       getListAgents()
     }
   }
@@ -173,7 +173,7 @@ const AddToken = () => {
         <Input
           classNames={{ inputWrapper: "border-1 rounded-md" }}
           onValueChange={setAddressAgent}
-          placeholder="Enter public address agent"
+          placeholder="Enter public address"
         />
         <div className="mt-2 flex items-center gap-2">
           <p className="font-semibold">Is Whitelist:</p>
@@ -184,7 +184,7 @@ const AddToken = () => {
             onClick={handleSubmit}
             className="mt-5 w-full rounded-md bg-mercury-200 font-medium"
           >
-            ADD
+            SUBMIT
           </Button>
         ) : (
           <Button

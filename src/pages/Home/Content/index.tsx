@@ -3,13 +3,20 @@ import { CopyIcon } from "@components/Icons/Copy"
 import { LogoutIcon } from "@components/Icons/OutputIcon"
 import useAuthAction from "@hooks/useAuthAction"
 import useAuthState from "@hooks/useAuthState"
-import { Tabs, Tab } from "@nextui-org/react"
+import { Tabs, Tab, Input } from "@nextui-org/react"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import LockToken from "./LockToken"
 import AddToken from "./AddToken"
+import Withdraw from "./Withdraw"
+import WithdrawOtherToken from "./Withdraw/OtherToken"
+import { useState } from "react"
+import { cachedLocalStorage } from "@utils/storage"
 
 const HomeContent = () => {
   const { user, isAnonymous, isLogin } = useAuthState()
+  const [endpointAgent, setEndpointAgent] = useState(
+    cachedLocalStorage.getItem("endpointAgent") ?? "",
+  )
   const isConnectWallet = isLogin && !isAnonymous
   const { logout } = useAuthAction()
 
@@ -36,16 +43,33 @@ const HomeContent = () => {
           </div>
         </div>
       )}
-      <div className="mt-10">
+      <div className="mt-10 w-[400px] max-w-full">
+        <p className="mb-1 text-15 font-medium">
+          Enter Endpoint <span className="text-red-500">(*)</span>
+        </p>
+        <Input
+          defaultValue={endpointAgent}
+          onValueChange={(val) => {
+            setEndpointAgent(val)
+            cachedLocalStorage.setItem("endpointAgent", val)
+          }}
+          placeholder="Enter endpoint url"
+        />
+      </div>
+      <div className="mt-5">
         <Tabs
           classNames={{ tabContent: "font-medium text-15" }}
           aria-label="Options"
         >
           <Tab key="add-whitelist" title="Add Whitelist">
-            <AddToken />
+            <AddToken endpointAgent={endpointAgent} />
           </Tab>
           <Tab key="lock-token" title="Lock Token">
-            <LockToken />
+            <LockToken endpointAgent={endpointAgent} />
+          </Tab>
+          <Tab key="withdraw-token" title="Withdraw Token">
+            <Withdraw endpointAgent={endpointAgent} />
+            <WithdrawOtherToken endpointAgent={endpointAgent} />
           </Tab>
         </Tabs>
       </div>
