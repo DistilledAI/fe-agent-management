@@ -1,11 +1,7 @@
-import { EVMImage, oraichainLogo, solanaLogo } from "@assets/images"
+import { EVMImage, solanaLogo } from "@assets/images"
 import CloseButton from "@components/CloseButton"
 import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
-import {
-  MetamaskIconSmall,
-  OwalletIcon,
-  PhantomIcon,
-} from "@components/Icons/MetamaskIcon"
+import { MetamaskIconSmall, PhantomIcon } from "@components/Icons/MetamaskIcon"
 import { useAppDispatch, useAppSelector } from "@hooks/useAppRedux"
 import useConnectWallet from "@hooks/useConnectWallet"
 import {
@@ -20,44 +16,14 @@ import { updateModalStatus } from "@reducers/connectWalletSlice"
 const ConnectWalletModal = () => {
   const {
     loadingConnectMetamask,
-    loadingConnectOwalletOrai,
     loadingConnectPhantom,
-    loadingConnectOwalletEVM,
     connectMetamaskWallet,
-    connectOwalletOraichain,
     connectPhantomWallet,
-    connectOwalletEVM,
   } = useConnectWallet()
   const dispatch = useAppDispatch()
   const isOpen = useAppSelector((state) => state.connectWalletReducer.isOpen)
 
   const CONNECTORS = [
-    {
-      id: "owallet",
-      name: "OWallet",
-      icon: <OwalletIcon width={32} height={38} />,
-      loading: loadingConnectOwalletOrai,
-      connect: connectOwalletOraichain,
-      network: (
-        <div className="flex items-center gap-1">
-          <img src={oraichainLogo} width={24} height={24} />
-          <span className="text-14 text-mercury-900">Oraichain</span>
-        </div>
-      ),
-    },
-    {
-      id: "owallet",
-      name: "OWallet",
-      icon: <OwalletIcon width={32} height={38} />,
-      loading: loadingConnectOwalletEVM,
-      connect: connectOwalletEVM,
-      network: (
-        <div className="flex items-center gap-1">
-          <img src={EVMImage} width={42} height={24} />
-          <span className="text-14 text-mercury-900">EVM</span>
-        </div>
-      ),
-    },
     {
       id: "phantom",
       name: "Phantom",
