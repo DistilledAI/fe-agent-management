@@ -16,6 +16,7 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
   const isConnectWallet = isLogin && !isAnonymous
   const [addressAgent, setAddressAgent] = useState("")
   const [whitelistAgent, setWhiteListAgent] = useState()
+  const [submitLoading, setSubmitLoading] = useState(false)
   const [isWhitelist, setIsWhiteList] = useState(true)
 
   const getListAgents = async () => {
@@ -60,6 +61,10 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
   }
 
   const handleAddWhitelistBySol = async () => {
+    if (!endpointAgent) {
+      toast.warning("Please enter endpoint!")
+      return
+    }
     const provider = getProvider()
     if (!provider || !addressAgent) return
     const timestamp = Math.floor(Date.now())
@@ -104,6 +109,10 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
     }
   }
   const handleAddWhitelistByEvm = async () => {
+    if (!endpointAgent) {
+      toast.warning("Please enter endpoint!")
+      return
+    }
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     if (!provider || !addressAgent) return
     const timestamp = Math.floor(Date.now())
@@ -161,14 +170,21 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
   }
 
   const handleSubmit = () => {
-    if (!isConnectWallet) return
-    if (!addressAgent) {
-      toast.warning("Please enter address")
-      return
+    try {
+      if (!isConnectWallet) return
+      if (!addressAgent) {
+        toast.warning("Please enter address")
+        return
+      }
+      setSubmitLoading(true)
+      if (checkNetworkByAddress(user.publicAddress) === "EVM") {
+        handleAddWhitelistByEvm()
+      } else handleAddWhitelistBySol()
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setSubmitLoading(false)
     }
-    if (checkNetworkByAddress(user.publicAddress) === "EVM") {
-      handleAddWhitelistByEvm()
-    } else handleAddWhitelistBySol()
   }
 
   return (
@@ -186,6 +202,7 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
         </div>
         {isConnectWallet ? (
           <Button
+            isLoading={submitLoading}
             onClick={handleSubmit}
             className="mt-5 w-full rounded-md bg-mercury-200 font-medium"
           >

@@ -30,6 +30,7 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
   const [amountInput, setAmountInput] = useState("0")
   const [toAccount, setToAccount] = useState("")
   const [assetAddress, setAssetAddress] = useState("")
+  const [submitLoading, setSubmitLoading] = useState(false)
   const isConnectWallet = isLogin && !isAnonymous
 
   const getProvider = () => {
@@ -54,102 +55,119 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
   }
 
   const handleWithdraw = async (endpointAgent: string) => {
-    if (!amountInput || !toAccount || !assetAddress) {
-      toast.warning("Please enter all info")
-      return
-    }
-    const botInfo = await getInfoBot(endpointAgent)
-    const provider = getProvider()
-    if (!provider) return
-    const timestamp = Math.floor(Date.now())
-    await provider.request({ method: "connect" })
+    try {
+      if (!endpointAgent) {
+        toast.warning("Please enter endpoint!")
+        return
+      }
+      if (!amountInput || !toAccount || !assetAddress) {
+        toast.warning("Please enter all info")
+        return
+      }
+      setSubmitLoading(true)
+      const botInfo = await getInfoBot(endpointAgent)
+      const provider = getProvider()
+      if (!provider) return
+      const timestamp = Math.floor(Date.now())
+      await provider.request({ method: "connect" })
 
-    const token = new PublicKey(assetAddress)
+      const token = new PublicKey(assetAddress)
 
-    const senderTokenAccount = await getAssociatedTokenAddress(
-      token,
-      new PublicKey(botInfo.sol_address),
-    )
-
-    const receiverTokenAccount = await getAssociatedTokenAddress(
-      token,
-      new PublicKey(toAccount),
-    )
-
-    const msgSign = {
-      action: "sign_solana",
-      timestamp: timestamp,
-    }
-
-    const message = JSON.stringify(msgSign)
-    const encodedMessage = new TextEncoder().encode(message)
-    const signedMessage = await provider.signMessage(encodedMessage, "utf8")
-    const signature = bs58.encode(signedMessage.signature)
-
-    const amount = toBN(
-      toBN(amountInput || 0)
-        .multipliedBy(10 ** 6)
-        .toFixed(0, 1),
-    ).toNumber()
-    const transaction = new Transaction().add(
-      createTransferCheckedInstruction(
-        senderTokenAccount, // Source token account
-        token, // Mint address of the token
-        receiverTokenAccount, // Destination token account
+      const senderTokenAccount = await getAssociatedTokenAddress(
+        token,
         new PublicKey(botInfo.sol_address),
-        amount, // Amount of USDC to transfer (1 USDC = 1e6 for 6 decimals)
-        6, // Decimals (USDC has 6 decimals on Solana)
-      ),
-    )
+      )
 
-    const connection = new Connection(endpoint, {
-      commitment: "confirmed",
-      wsEndpoint: "wss://solana-rpc.publicnode.com",
-    })
+      const receiverTokenAccount = await getAssociatedTokenAddress(
+        token,
+        new PublicKey(toAccount),
+      )
 
-    const { blockhash } = await connection.getLatestBlockhash()
+      const msgSign = {
+        action: "sign_solana",
+        timestamp: timestamp,
+      }
 
-    transaction.recentBlockhash = blockhash
-    transaction.feePayer = new PublicKey(botInfo.sol_address)
-    const TxSendToDistill = transaction?.serializeMessage()
+      const message = JSON.stringify(msgSign)
+      const encodedMessage = new TextEncoder().encode(message)
+      const signedMessage = await provider.signMessage(encodedMessage, "utf8")
+      const signature = bs58.encode(signedMessage.signature)
 
-    const msgDataTx = TxSendToDistill.toString("hex")
+      const amount = toBN(
+        toBN(amountInput || 0)
+          .multipliedBy(10 ** 6)
+          .toFixed(0, 1),
+      ).toNumber()
+      const transaction = new Transaction().add(
+        createTransferCheckedInstruction(
+          senderTokenAccount, // Source token account
+          token, // Mint address of the token
+          receiverTokenAccount, // Destination token account
+          new PublicKey(botInfo.sol_address),
+          amount, // Amount of USDC to transfer (1 USDC = 1e6 for 6 decimals)
+          6, // Decimals (USDC has 6 decimals on Solana)
+        ),
+      )
 
-    const resp = await axios.request({
-      method: "post",
-      maxBodyLength: Infinity,
-      url: `${endpointAgent}/wallet/sign-solana`,
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify({
-        data: {
-          metadata: {
-            message: msgDataTx,
-          },
-          signer_addr: user.publicAddress,
-          timestamp,
-          network: "solana",
+      const connection = new Connection(endpoint, {
+        commitment: "confirmed",
+        wsEndpoint: "wss://solana-rpc.publicnode.com",
+      })
+
+      const { blockhash } = await connection.getLatestBlockhash()
+
+      transaction.recentBlockhash = blockhash
+      transaction.feePayer = new PublicKey(botInfo.sol_address)
+      const TxSendToDistill = transaction?.serializeMessage()
+
+      const msgDataTx = TxSendToDistill.toString("hex")
+
+      const resp = await axios.request({
+        method: "post",
+        maxBodyLength: Infinity,
+        url: `${endpointAgent}/wallet/sign-solana`,
+        headers: {
+          accept: "application/json",
+          "Content-Type": "application/json",
         },
-        signature,
-      }),
-    })
+        data: JSON.stringify({
+          data: {
+            metadata: {
+              message: msgDataTx,
+            },
+            signer_addr: user.publicAddress,
+            timestamp,
+            network: "solana",
+          },
+          signature,
+        }),
+      })
 
-    console.log("resp", resp)
+      console.log("resp", resp)
 
-    transaction.addSignature(
-      new PublicKey(botInfo.sol_address),
-      Buffer.from(resp.data.signature),
-    )
-    const txid = await connection.sendRawTransaction(transaction.serialize(), {
-      skipPreflight: true,
-      maxRetries: 5,
-    })
+      transaction.addSignature(
+        new PublicKey(botInfo.sol_address),
+        Buffer.from(resp.data.signature),
+      )
+      const txid = await connection.sendRawTransaction(
+        transaction.serialize(),
+        {
+          skipPreflight: true,
+          maxRetries: 5,
+        },
+      )
 
-    await connection.confirmTransaction(txid, "confirmed")
+      await connection.confirmTransaction(txid, "confirmed")
+      setSubmitLoading(false)
+      if (txid) {
+        toast.success("Withdraw successfully!")
+      }
 
-    console.log(`txid--> ${txid}`)
+      console.log(`txid--> ${txid}`)
+    } catch (error) {
+      console.log(error)
+      setSubmitLoading(false)
+    }
   }
 
   return (
@@ -193,6 +211,7 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
           </div>
           {isConnectWallet ? (
             <Button
+              isLoading={submitLoading}
               onClick={() => handleWithdraw(endpointAgent)}
               className="text-semibold mt-10 h-11 w-full rounded-md bg-mercury-200"
             >

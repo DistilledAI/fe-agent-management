@@ -30,6 +30,7 @@ const WithdrawToken = ({ endpointAgent }: { endpointAgent: string }) => {
   const { isLogin, isAnonymous, user } = useAuthState()
   const [amountInput, setAmountInput] = useState("0")
   const [toAccount, setToAccount] = useState("")
+  const [submitLoading, setSubmitLoading] = useState(false)
   const isConnectWallet = isLogin && !isAnonymous
 
   const getProvider = () => {
@@ -54,92 +55,106 @@ const WithdrawToken = ({ endpointAgent }: { endpointAgent: string }) => {
   }
 
   const handleWithdraw = async (endpointAgent: string) => {
-    if (!amountInput || !toAccount) {
-      toast.warning("Please enter all info")
-      return
-    }
-    const botInfo = await getInfoBot(endpointAgent)
-    const provider = getProvider()
-    if (!provider) return
-    const timestamp = Math.floor(Date.now())
-    await provider.request({ method: "connect" })
+    try {
+      if (!endpointAgent) {
+        toast.warning("Please enter endpoint!")
+        return
+      }
+      if (!amountInput || !toAccount) {
+        toast.warning("Please enter all info")
+        return
+      }
+      setSubmitLoading(true)
+      const botInfo = await getInfoBot(endpointAgent)
+      const provider = getProvider()
+      if (!provider) return
+      const timestamp = Math.floor(Date.now())
+      await provider.request({ method: "connect" })
 
-    const msgSign = {
-      action: "sign_solana",
-      timestamp: timestamp,
-    }
+      const msgSign = {
+        action: "sign_solana",
+        timestamp: timestamp,
+      }
 
-    const message = JSON.stringify(msgSign)
-    const encodedMessage = new TextEncoder().encode(message)
-    const signedMessage = await provider.signMessage(encodedMessage, "utf8")
-    const signature = bs58.encode(signedMessage.signature)
+      const message = JSON.stringify(msgSign)
+      const encodedMessage = new TextEncoder().encode(message)
+      const signedMessage = await provider.signMessage(encodedMessage, "utf8")
+      const signature = bs58.encode(signedMessage.signature)
 
-    const amount = toBN(
-      toBN(amountInput || 0)
-        .multipliedBy(10 ** 9)
-        .toFixed(0, 1),
-    ).toNumber()
+      const amount = toBN(
+        toBN(amountInput || 0)
+          .multipliedBy(10 ** 9)
+          .toFixed(0, 1),
+      ).toNumber()
 
-    const transaction = new Transaction().add(
-      SystemProgram.transfer({
-        fromPubkey: new PublicKey(botInfo.sol_address),
-        toPubkey: new PublicKey(toAccount),
-        lamports: amount,
-      }),
-    )
+      const transaction = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: new PublicKey(botInfo.sol_address),
+          toPubkey: new PublicKey(toAccount),
+          lamports: amount,
+        }),
+      )
 
-    const connection = new Connection(endpoint, {
-      commitment: "confirmed",
-      wsEndpoint: "wss://solana-rpc.publicnode.com",
-    })
+      const connection = new Connection(endpoint, {
+        commitment: "confirmed",
+        wsEndpoint: "wss://solana-rpc.publicnode.com",
+      })
 
-    const { blockhash } = await connection.getLatestBlockhash()
+      const { blockhash } = await connection.getLatestBlockhash()
 
-    transaction.recentBlockhash = blockhash
-    transaction.feePayer = new PublicKey(botInfo.sol_address)
-    const TxSendToDistill = transaction?.serializeMessage()
+      transaction.recentBlockhash = blockhash
+      transaction.feePayer = new PublicKey(botInfo.sol_address)
+      const TxSendToDistill = transaction?.serializeMessage()
 
-    const msgDataTx = TxSendToDistill.toString("hex")
+      const msgDataTx = TxSendToDistill.toString("hex")
 
-    const resp = await axios.request({
-      method: "post",
-      maxBodyLength: Infinity,
-      url: `${endpointAgent}/wallet/sign-solana`,
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify({
-        data: {
-          metadata: {
-            message: msgDataTx,
-          },
-          signer_addr: user.publicAddress,
-          timestamp,
-          network: "solana",
+      const resp = await axios.request({
+        method: "post",
+        maxBodyLength: Infinity,
+        url: `${endpointAgent}/wallet/sign-solana`,
+        headers: {
+          accept: "application/json",
+          "Content-Type": "application/json",
         },
-        signature,
-      }),
-    })
+        data: JSON.stringify({
+          data: {
+            metadata: {
+              message: msgDataTx,
+            },
+            signer_addr: user.publicAddress,
+            timestamp,
+            network: "solana",
+          },
+          signature,
+        }),
+      })
 
-    console.log("resp", resp)
+      console.log("resp", resp)
 
-    transaction.addSignature(
-      new PublicKey(botInfo.sol_address),
-      Buffer.from(resp.data.signature),
-    )
-    const txid = await connection.sendRawTransaction(transaction.serialize(), {
-      skipPreflight: true,
-      maxRetries: 5,
-    })
+      transaction.addSignature(
+        new PublicKey(botInfo.sol_address),
+        Buffer.from(resp.data.signature),
+      )
+      const txid = await connection.sendRawTransaction(
+        transaction.serialize(),
+        {
+          skipPreflight: true,
+          maxRetries: 5,
+        },
+      )
 
-    await connection.confirmTransaction(txid, "confirmed")
+      await connection.confirmTransaction(txid, "confirmed")
 
-    if (txid) {
-      toast.success("Withdraw successfully!")
+      setSubmitLoading(false)
+      if (txid) {
+        toast.success("Withdraw successfully!")
+      }
+
+      console.log(`txid--> ${txid}`)
+    } catch (error) {
+      console.error(error)
+      setSubmitLoading(false)
     }
-
-    console.log(`txid--> ${txid}`)
   }
 
   return (
@@ -172,6 +187,7 @@ const WithdrawToken = ({ endpointAgent }: { endpointAgent: string }) => {
           </div>
           {isConnectWallet ? (
             <Button
+              isLoading={submitLoading}
               onClick={() => handleWithdraw(endpointAgent)}
               className="text-semibold mt-10 h-11 w-full rounded-md bg-mercury-200"
             >

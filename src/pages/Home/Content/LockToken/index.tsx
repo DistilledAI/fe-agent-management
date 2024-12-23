@@ -23,6 +23,7 @@ const LockToken = ({ endpointAgent }: { endpointAgent: string }) => {
   const isConnectWallet = isLogin && !isAnonymous
   const [selectedLockTime, setSelectedLockTime] = useState(LOCK_TIME_OPTIONS[0])
   const [stakeAmount, setStakeAmount] = useState<string>("")
+  const [submitLoading, setSubmitLoading] = useState(false)
 
   const getProvider = () => {
     if ("solana" in window) {
@@ -90,85 +91,100 @@ const LockToken = ({ endpointAgent }: { endpointAgent: string }) => {
   }
 
   const handleLockTokenBySol = async (endpointAgent: string) => {
-    if (!endpoint) {
-      toast.warning("Please enter endpoint!")
-      return
-    }
-    if (!stakeAmount) {
-      toast.warning("Please enter amount!")
-      return
-    }
-    const botInfo = await getInfoBot(endpointAgent)
-    const provider = getProvider()
-    if (!provider) return
-    const timestamp = Math.floor(Date.now())
-    await provider.request({ method: "connect" })
+    try {
+      if (!endpointAgent) {
+        toast.warning("Please enter endpoint!")
+        return
+      }
+      if (!stakeAmount) {
+        toast.warning("Please enter amount!")
+        return
+      }
+      setSubmitLoading(true)
+      const botInfo = await getInfoBot(endpointAgent)
+      const provider = getProvider()
+      if (!provider) return
+      const timestamp = Math.floor(Date.now())
+      await provider.request({ method: "connect" })
 
-    const msgSign = {
-      action: "sign_solana",
-      timestamp: timestamp,
-    }
+      const msgSign = {
+        action: "sign_solana",
+        timestamp: timestamp,
+      }
 
-    const message = JSON.stringify(msgSign)
-    const encodedMessage = new TextEncoder().encode(message)
-    const signedMessage = await provider.signMessage(encodedMessage, "utf8")
-    const signature = bs58.encode(signedMessage.signature)
+      const message = JSON.stringify(msgSign)
+      const encodedMessage = new TextEncoder().encode(message)
+      const signedMessage = await provider.signMessage(encodedMessage, "utf8")
+      const signature = bs58.encode(signedMessage.signature)
 
-    const duration = selectedLockTime.value * ALL_CONFIGS.TIMER.MONTH_TO_SECONDS
-    const amount = toBN(
-      toBN(stakeAmount || 0)
-        .multipliedBy(10 ** SPL_DECIMAL)
-        .toFixed(0, 1),
-    ).toNumber()
+      const duration =
+        selectedLockTime.value * ALL_CONFIGS.TIMER.MONTH_TO_SECONDS
+      const amount = toBN(
+        toBN(stakeAmount || 0)
+          .multipliedBy(10 ** SPL_DECIMAL)
+          .toFixed(0, 1),
+      ).toNumber()
 
-    const transaction: any = await web3Locking.stake(duration, amount, botInfo)
-    const TxSendToDistill = transaction?.serializeMessage()
+      const transaction: any = await web3Locking.stake(
+        duration,
+        amount,
+        botInfo,
+      )
+      const TxSendToDistill = transaction?.serializeMessage()
 
-    const msgDataTx = TxSendToDistill.toString("hex")
+      const msgDataTx = TxSendToDistill.toString("hex")
 
-    const resp = await axios.request({
-      method: "post",
-      maxBodyLength: Infinity,
-      url: `${endpointAgent}/wallet/sign-solana`,
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify({
-        data: {
-          metadata: {
-            message: msgDataTx,
-          },
-          signer_addr: user.publicAddress,
-          timestamp,
-          network: "solana",
+      const resp = await axios.request({
+        method: "post",
+        maxBodyLength: Infinity,
+        url: `${endpointAgent}/wallet/sign-solana`,
+        headers: {
+          accept: "application/json",
+          "Content-Type": "application/json",
         },
-        signature,
-      }),
-    })
+        data: JSON.stringify({
+          data: {
+            metadata: {
+              message: msgDataTx,
+            },
+            signer_addr: user.publicAddress,
+            timestamp,
+            network: "solana",
+          },
+          signature,
+        }),
+      })
 
-    transaction.addSignature(
-      new PublicKey(botInfo.sol_address),
-      Buffer.from(resp.data.signature),
-    )
+      transaction.addSignature(
+        new PublicKey(botInfo.sol_address),
+        Buffer.from(resp.data.signature),
+      )
 
-    const connection = new Connection(endpoint, {
-      commitment: "confirmed",
-      wsEndpoint: "wss://solana-rpc.publicnode.com",
-    })
+      const connection = new Connection(endpoint, {
+        commitment: "confirmed",
+        wsEndpoint: "wss://solana-rpc.publicnode.com",
+      })
 
-    const txid = await connection.sendRawTransaction(transaction.serialize(), {
-      skipPreflight: true,
-      maxRetries: 5,
-    })
+      const txid = await connection.sendRawTransaction(
+        transaction.serialize(),
+        {
+          skipPreflight: true,
+          maxRetries: 5,
+        },
+      )
 
-    await connection.confirmTransaction(txid, "confirmed")
+      await connection.confirmTransaction(txid, "confirmed")
+      setSubmitLoading(false)
+      if (txid) {
+        toast.success("Locked successfully!")
+      }
 
-    if (txid) {
-      toast.success("Locked successfully!")
+      console.log(`txid--> ${txid}`)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setSubmitLoading(false)
     }
-
-    console.log(`txid--> ${txid}`)
   }
 
   return (
@@ -249,6 +265,7 @@ const LockToken = ({ endpointAgent }: { endpointAgent: string }) => {
           </div>
           {isConnectWallet ? (
             <Button
+              isLoading={submitLoading}
               onClick={() => handleLockTokenBySol(endpointAgent)}
               className="text-semibold mt-10 h-11 w-full rounded-md bg-mercury-200"
             >
