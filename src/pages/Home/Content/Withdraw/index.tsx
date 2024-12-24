@@ -6,7 +6,7 @@ import { Button, Input } from "@nextui-org/react"
 // import { twMerge } from "tailwind-merge"
 // import { useWallet } from "@solana/wallet-adapter-react"
 // import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
-import { endpoint } from "program/web3Locking"
+import { endpoint, wsEndpoint } from "program/web3Locking"
 // import { ALL_CONFIGS } from "program/config"
 import axios from "axios"
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes"
@@ -97,8 +97,7 @@ const WithdrawToken = ({ endpointAgent }: { endpointAgent: string }) => {
 
       const connection = new Connection(endpoint, {
         commitment: "confirmed",
-        wsEndpoint:
-          "wss://mainnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6",
+        wsEndpoint: wsEndpoint,
       })
 
       const { blockhash } = await connection.getLatestBlockhash()

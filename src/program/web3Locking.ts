@@ -24,17 +24,27 @@ export const LAMPORT_RESERVES = 1_000_000_000
 
 export const endpoint =
   "https://mainnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6"
+export const wsEndpoint =
+  "wss://mainnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6"
 export const vaultProgramId = new PublicKey(idl.address)
 export const vaultInterface = JSON.parse(JSON.stringify(idl))
 
 const stakeCurrencyMint = ALL_CONFIGS.STAKE_CURRENCY_MINT
 
+const SOL_COMPUTE_UNIT_LIMIT = 100000
+const SOL_MICRO_LAMPORTS = 100000
+const setComputeUnitLimit = ComputeBudgetProgram.setComputeUnitLimit({
+  units: SOL_COMPUTE_UNIT_LIMIT,
+})
+const setComputePriceLimit = ComputeBudgetProgram.setComputeUnitPrice({
+  microLamports: SOL_MICRO_LAMPORTS,
+})
+
 export class Web3SolanaLockingToken {
   constructor(
     private readonly connection = new Connection(endpoint, {
       commitment: commitmentLevel,
-      wsEndpoint:
-        "wss://mainnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6",
+      wsEndpoint,
     }),
   ) {}
 
@@ -90,7 +100,6 @@ export class Web3SolanaLockingToken {
         program.programId,
       )
 
-      const transaction = new Transaction()
       const cpIx = ComputeBudgetProgram.setComputeUnitPrice({
         microLamports: 1_000_000,
       })
@@ -98,16 +107,20 @@ export class Web3SolanaLockingToken {
         units: 1_000_000,
       })
 
-      const stakeIx = await program.methods
-        .stake(new BN(lockPeriod), new BN(amount))
-        .accounts({
-          signer: new PublicKey(botInfo.sol_address),
-          stakeCurrencyMint: stakeCurrencyMint,
-          stakeDetailPda: userStakeDetailPda,
-        })
-        .instruction()
+      const transaction = new Transaction()
+        .add(setComputePriceLimit)
+        .add(setComputeUnitLimit)
+        .add(
+          await program.methods
+            .stake(new BN(lockPeriod), new BN(amount))
+            .accounts({
+              signer: new PublicKey(botInfo.sol_address),
+              stakeCurrencyMint: stakeCurrencyMint,
+              stakeDetailPda: userStakeDetailPda,
+            })
+            .instruction(),
+        )
 
-      transaction.add(stakeIx)
       transaction.add(cpIx, cuIx)
       transaction.feePayer = new PublicKey(botInfo.sol_address)
       transaction.recentBlockhash = (
