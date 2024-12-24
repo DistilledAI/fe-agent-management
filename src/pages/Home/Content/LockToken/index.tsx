@@ -1,7 +1,7 @@
 import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
 import { Button, Input } from "@nextui-org/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { LOCK_TIME_OPTIONS } from "../constants"
 import { twMerge } from "tailwind-merge"
 import {
@@ -16,19 +16,26 @@ import { Connection, PublicKey } from "@solana/web3.js"
 import { toBN } from "@utils/format"
 import { toast } from "react-toastify"
 import { useWallet } from "@solana/wallet-adapter-react"
+import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
+import { MAX_ADDRESS_SOLANA } from "program/constants"
 
-// const web3Solana = new Web3SolanaProgramInteraction()
+const web3Solana = new Web3SolanaProgramInteraction()
 const web3Locking = new Web3SolanaLockingToken()
 
-// const endpointAgent1 = "http://15.235.226.9:7000"
-
-const LockToken = ({ endpointAgent }: { endpointAgent: string }) => {
+const LockToken = ({
+  endpointAgent,
+  agentAddress,
+}: {
+  endpointAgent: string
+  agentAddress: string
+}) => {
   const { loading, connectMultipleWallet } = useConnectWallet()
   const { isLogin, isAnonymous, user } = useAuthState()
   const isConnectWallet = isLogin && !isAnonymous
   const [selectedLockTime, setSelectedLockTime] = useState(LOCK_TIME_OPTIONS[0])
   const [stakeAmount, setStakeAmount] = useState<string>("")
   const [submitLoading, setSubmitLoading] = useState(false)
+  const [tokenBal, setTokenBal] = useState(0)
   const wallet = useWallet()
 
   const getProvider = () => {
@@ -41,6 +48,23 @@ const LockToken = ({ endpointAgent }: { endpointAgent: string }) => {
 
     return null
   }
+
+  const getBalance = async (address: string) => {
+    try {
+      const tokenBal = await web3Solana.getTokenBalance(
+        address,
+        MAX_ADDRESS_SOLANA,
+      )
+
+      setTokenBal(tokenBal ? tokenBal : 0)
+    } catch (error) {
+      console.log("error", error)
+    }
+  }
+
+  useEffect(() => {
+    if (agentAddress) getBalance(agentAddress)
+  }, [agentAddress])
 
   // const wallet = useWallet()
   // const getBalance = async () => {
@@ -232,26 +256,14 @@ const LockToken = ({ endpointAgent }: { endpointAgent: string }) => {
                 </div>
               }
             />
-            {/* <div className="mt-2 flex items-center justify-between">
-              <div className="flex items-center gap-2 text-14">
-                {AMOUNT_LIST.map((amount: any, idx: number) => {
-                  return (
-                    <div
-                      key={`amount-list-percent-${idx}---`}
-                      className={twMerge(
-                        "cursor-pointer rounded-md bg-mercury-100 px-2 py-1 hover:opacity-80",
-                      )}
-                      onClick={() => setStakeAmount(amount.value.toString())}
-                    >
-                      {amount.label}
-                    </div>
-                  )
-                })}
+            {agentAddress && (
+              <div className="mt-2 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-14"></div>
+                <div>
+                  <p className="text-14 font-medium">Balance: {tokenBal} MAX</p>
+                </div>
               </div>
-              <div>
-                <p className="text-15">Balance: 0 MAX</p>
-              </div>
-            </div> */}
+            )}
           </div>
           <div className="mt-5">
             <p className="mb-3 text-14 font-medium">LOCKING DURATION</p>

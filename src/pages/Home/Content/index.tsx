@@ -19,24 +19,30 @@ const HomeContent = () => {
   const [endpointAgent, setEndpointAgent] = useState(
     cachedLocalStorage.getItem("endpointAgent") ?? "",
   )
-  const [infoAgent, setInfoAgent] = useState()
+  const [infoAgent, setInfoAgent] = useState<any>()
   const isConnectWallet = isLogin && !isAnonymous
   const { logout } = useAuthAction()
 
   const getAgentInfo = async () => {
-    const res = await axios.request({
-      method: "get",
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      url: `${endpointAgent}/private_agent/info`,
-    })
-    if (res.data) setInfoAgent(res.data)
+    try {
+      const res = await axios.request({
+        method: "get",
+        headers: {
+          accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        url: `${endpointAgent}/private_agent/info`,
+      })
+      if (res.data) setInfoAgent(res.data)
+    } catch (error) {
+      console.error(error)
+      setInfoAgent(undefined)
+    }
   }
 
   useEffect(() => {
-    getAgentInfo()
+    if (endpointAgent) getAgentInfo()
+    else setInfoAgent(undefined)
   }, [endpointAgent])
 
   return (
@@ -90,7 +96,10 @@ const HomeContent = () => {
             <AddToken endpointAgent={endpointAgent} />
           </Tab>
           <Tab key="lock-token" title="Lock Token">
-            <LockToken endpointAgent={endpointAgent} />
+            <LockToken
+              agentAddress={infoAgent?.sol_address}
+              endpointAgent={endpointAgent}
+            />
           </Tab>
           <Tab key="withdraw-token" title="Withdraw Token">
             <Withdraw endpointAgent={endpointAgent} />

@@ -32,7 +32,8 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
   }
 
   useEffect(() => {
-    getListAgents()
+    if (endpointAgent) getListAgents()
+    else setWhiteListAgent(undefined)
   }, [endpointAgent])
 
   const checkNetworkByAddress = (address: string) => {
@@ -219,7 +220,7 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
         )}
       </div>
       <div className="mt-10">
-        <p className="mb-1 font-semibold">LIST AGENT IN WHITELIST:</p>
+        <p className="mb-1 font-semibold">LIST WHITELIST:</p>
         {whitelistAgent ? (
           <ReactJson collapsed={true} src={whitelistAgent} />
         ) : (
