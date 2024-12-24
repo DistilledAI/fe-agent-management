@@ -4,19 +4,18 @@ import { Button, Input } from "@nextui-org/react"
 import { useEffect, useState } from "react"
 import { LOCK_TIME_OPTIONS } from "../constants"
 import { twMerge } from "tailwind-merge"
-import {
-  endpoint,
-  Web3SolanaLockingToken,
-  wsEndpoint,
-} from "program/web3Locking"
+import { Web3SolanaLockingToken } from "program/web3Locking"
 import { ALL_CONFIGS, SPL_DECIMAL } from "program/config"
 import axios from "axios"
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes"
 import { Connection, PublicKey } from "@solana/web3.js"
 import { toBN } from "@utils/format"
 import { toast } from "react-toastify"
-import { useWallet } from "@solana/wallet-adapter-react"
-import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
+import {
+  SOLANA_RPC,
+  SOLANA_WS,
+  Web3SolanaProgramInteraction,
+} from "program/utils/web3Utils"
 import { MAX_ADDRESS_SOLANA } from "program/constants"
 
 const web3Solana = new Web3SolanaProgramInteraction()
@@ -36,7 +35,6 @@ const LockToken = ({
   const [stakeAmount, setStakeAmount] = useState<string>("")
   const [submitLoading, setSubmitLoading] = useState(false)
   const [tokenBal, setTokenBal] = useState(0)
-  const wallet = useWallet()
 
   const getProvider = () => {
     if ("solana" in window) {
@@ -155,11 +153,10 @@ const LockToken = ({
           .toFixed(0, 1),
       ).toNumber()
 
-      const transaction: any = await web3Locking.stake(
+      const transaction: any = await web3Locking.stakeV2(
         duration,
         amount,
         botInfo,
-        wallet,
       )
       const TxSendToDistill = transaction?.serializeMessage()
 
@@ -191,9 +188,9 @@ const LockToken = ({
         Buffer.from(resp.data.signature),
       )
 
-      const connection = new Connection(endpoint, {
+      const connection = new Connection(SOLANA_RPC, {
         commitment: "confirmed",
-        wsEndpoint: wsEndpoint,
+        wsEndpoint: SOLANA_WS,
       })
 
       const txid = await connection.sendRawTransaction(
@@ -205,12 +202,10 @@ const LockToken = ({
       )
 
       await connection.confirmTransaction(txid, "confirmed")
-      setSubmitLoading(false)
-      if (txid) {
-        toast.success("Locked successfully!")
-      }
-
       console.log(`txid--> ${txid}`)
+      setSubmitLoading(false)
+      toast.success(`Locked successfully! tx: ${txid}`)
+      if (agentAddress) getBalance(agentAddress)
     } catch (error) {
       console.error(error)
       toast.error(error?.toString())

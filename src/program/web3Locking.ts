@@ -17,15 +17,11 @@ import {
 import { Vault } from "./locking/locking"
 import idl from "./locking/locking.json"
 import { handleTransaction } from "./utils"
+import { SOLANA_RPC, SOLANA_WS } from "./utils/web3Utils"
 
 export const commitmentLevel = "confirmed"
 export const TOKEN_RESERVES = 1_000_000_000_000_000
 export const LAMPORT_RESERVES = 1_000_000_000
-
-export const endpoint =
-  "https://mainnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6"
-export const wsEndpoint =
-  "wss://mainnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6"
 export const vaultProgramId = new PublicKey(idl.address)
 export const vaultInterface = JSON.parse(JSON.stringify(idl))
 
@@ -42,9 +38,9 @@ const setComputePriceLimit = ComputeBudgetProgram.setComputeUnitPrice({
 
 export class Web3SolanaLockingToken {
   constructor(
-    private readonly connection = new Connection(endpoint, {
+    private readonly connection = new Connection(SOLANA_RPC, {
       commitment: commitmentLevel,
-      wsEndpoint,
+      wsEndpoint: SOLANA_WS,
     }),
   ) {}
 
@@ -54,11 +50,11 @@ export class Web3SolanaLockingToken {
         preflightCommitment: "confirmed",
       })
       anchor.setProvider(provider)
-      const program = new Program(vaultInterface, provider) as Program<Vault>
-      // const program = new Program(
-      //   vaultInterface,
-      //   this.connection as any,
-      // ) as Program<Vault>
+      // const program = new Program(vaultInterface, provider) as Program<Vault>
+      const program = new Program(
+        vaultInterface,
+        this.connection as any,
+      ) as Program<Vault>
 
       const [configPda] = PublicKey.findProgramAddressSync(
         [
@@ -101,10 +97,10 @@ export class Web3SolanaLockingToken {
       )
 
       const cpIx = ComputeBudgetProgram.setComputeUnitPrice({
-        microLamports: 1_000_000,
+        microLamports: 100000,
       })
       const cuIx = ComputeBudgetProgram.setComputeUnitLimit({
-        units: 1_000_000,
+        units: 100000,
       })
 
       const transaction = new Transaction()
@@ -314,5 +310,90 @@ export class Web3SolanaLockingToken {
         return { transaction, result }
       }
     }
+  }
+
+  stakeV2 = async (
+    lockPeriod: number,
+    lockAmount: number,
+    agentWallet: any,
+  ) => {
+    console.log(`agentWallet`, agentWallet)
+    const programInterface = JSON.parse(JSON.stringify(idl)) as Vault
+
+    const connection = new Connection(SOLANA_RPC, {
+      commitment: "confirmed",
+      wsEndpoint: SOLANA_WS,
+    })
+
+    const program = new Program(programInterface, {
+      connection,
+    }) as Program<Vault>
+
+    const VAULT_SEED = "staking_vault"
+    const STAKE_CONFIG_SEED = "staking_config"
+    const STAKER_INFO_SEED = "staker_info"
+    const STAKE_DETAIL_SEED = "stake_detail"
+
+    const stakeCurrencyMint = new PublicKey(
+      "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h",
+    ) // max
+
+    const agentAddress = new PublicKey(agentWallet.sol_address)
+
+    const [configPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from(STAKE_CONFIG_SEED), stakeCurrencyMint.toBytes()],
+      program.programId,
+    )
+    const [vaultPda] = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from(VAULT_SEED),
+        configPda.toBytes(),
+        new BN(lockPeriod).toBuffer("le", 8),
+      ],
+      program.programId,
+    )
+    const [stakerInfoPda] = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from(STAKER_INFO_SEED),
+        vaultPda.toBytes(),
+        agentAddress.toBytes(),
+      ],
+      program.programId,
+    )
+    let currentId = 0
+    try {
+      const stakerInfo = await program.account.stakerInfo.fetch(stakerInfoPda)
+      currentId = stakerInfo.currentId.toNumber()
+    } catch (e) {
+      console.log(`error when get current id ${e}`)
+    }
+
+    const [userStakeDetailPda] = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from(STAKE_DETAIL_SEED),
+        stakerInfoPda.toBytes(),
+        new BN(currentId + 1).toBuffer("le", 8),
+      ],
+      program.programId,
+    )
+
+    const tx = new Transaction()
+      .add(setComputePriceLimit)
+      .add(setComputeUnitLimit)
+      .add(
+        await program.methods
+          .stake(new BN(lockPeriod), new BN(lockAmount))
+          .accounts({
+            signer: agentAddress,
+            stakeCurrencyMint: stakeCurrencyMint,
+            stakeDetailPda: userStakeDetailPda,
+          })
+          .transaction(),
+      )
+
+    tx.feePayer = agentAddress
+    tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
+
+    return tx
   }
 }

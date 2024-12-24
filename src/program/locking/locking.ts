@@ -367,7 +367,7 @@ export type Vault = {
           }
         },
         {
-          name: "stakerInfo"
+          name: "stakerInfoPda"
           writable: true
           pda: {
             seeds: [
@@ -387,7 +387,7 @@ export type Vault = {
           }
         },
         {
-          name: "stakeDetail"
+          name: "stakeDetailPda"
           writable: true
           pda: {
             seeds: [
@@ -397,7 +397,7 @@ export type Vault = {
               },
               {
                 kind: "account"
-                path: "stakerInfo"
+                path: "stakerInfoPda"
               },
               {
                 kind: "arg"
@@ -773,7 +773,7 @@ export type Vault = {
           writable: true
         },
         {
-          name: "userTokenAccount"
+          name: "stakerTokenAccount"
           writable: true
           pda: {
             seeds: [
@@ -908,6 +908,20 @@ export type Vault = {
       discriminator: [211, 8, 232, 43, 2, 152, 117, 119]
     },
   ]
+  events: [
+    {
+      name: "eventNewVault"
+      discriminator: [62, 85, 178, 155, 210, 80, 16, 125]
+    },
+    {
+      name: "eventStake"
+      discriminator: [193, 220, 225, 33, 201, 27, 61, 43]
+    },
+    {
+      name: "eventUnstake"
+      discriminator: [7, 14, 248, 129, 43, 55, 41, 104]
+    },
+  ]
   errors: [
     {
       code: 6000
@@ -972,6 +986,174 @@ export type Vault = {
   ]
   types: [
     {
+      name: "eventNewVault"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "vault"
+            type: "pubkey"
+          },
+          {
+            name: "stakeConfig"
+            type: "pubkey"
+          },
+          {
+            name: "stakeCurrencyMint"
+            type: "pubkey"
+          },
+          {
+            name: "lockPeriod"
+            type: "u64"
+          },
+        ]
+      }
+    },
+    {
+      name: "eventStake"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "stakeConfigPub"
+            type: "pubkey"
+          },
+          {
+            name: "stakeConfig"
+            type: {
+              defined: {
+                name: "stakeConfig"
+              }
+            }
+          },
+          {
+            name: "stakerInfoPub"
+            type: "pubkey"
+          },
+          {
+            name: "stakerInfo"
+            type: {
+              defined: {
+                name: "stakerInfo"
+              }
+            }
+          },
+          {
+            name: "stakeDetailPub"
+            type: "pubkey"
+          },
+          {
+            name: "stakeDetail"
+            type: {
+              defined: {
+                name: "stakeDetail"
+              }
+            }
+          },
+          {
+            name: "vaultPub"
+            type: "pubkey"
+          },
+          {
+            name: "vault"
+            type: {
+              defined: {
+                name: "vault"
+              }
+            }
+          },
+          {
+            name: "stakeCurrencyMint"
+            type: "pubkey"
+          },
+          {
+            name: "vaultStakingTokenAccount"
+            type: "pubkey"
+          },
+          {
+            name: "stakerTokenAccount"
+            type: "pubkey"
+          },
+          {
+            name: "amount"
+            type: "u64"
+          },
+        ]
+      }
+    },
+    {
+      name: "eventUnstake"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "stakeConfigPub"
+            type: "pubkey"
+          },
+          {
+            name: "stakeConfig"
+            type: {
+              defined: {
+                name: "stakeConfig"
+              }
+            }
+          },
+          {
+            name: "stakerInfoPub"
+            type: "pubkey"
+          },
+          {
+            name: "stakerInfo"
+            type: {
+              defined: {
+                name: "stakerInfo"
+              }
+            }
+          },
+          {
+            name: "stakeDetailPub"
+            type: "pubkey"
+          },
+          {
+            name: "stakeDetail"
+            type: {
+              defined: {
+                name: "stakeDetail"
+              }
+            }
+          },
+          {
+            name: "vaultPub"
+            type: "pubkey"
+          },
+          {
+            name: "vault"
+            type: {
+              defined: {
+                name: "vault"
+              }
+            }
+          },
+          {
+            name: "stakeCurrencyMint"
+            type: "pubkey"
+          },
+          {
+            name: "vaultStakingTokenAccount"
+            type: "pubkey"
+          },
+          {
+            name: "stakerTokenAccount"
+            type: "pubkey"
+          },
+          {
+            name: "amount"
+            type: "u64"
+          },
+        ]
+      }
+    },
+    {
       name: "stakeConfig"
       type: {
         kind: "struct"
@@ -1023,6 +1205,10 @@ export type Vault = {
           {
             name: "unstakedAtTime"
             type: "i64"
+          },
+          {
+            name: "staker"
+            type: "pubkey"
           },
         ]
       }

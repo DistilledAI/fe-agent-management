@@ -6,7 +6,6 @@ import { Button, Input } from "@nextui-org/react"
 // import { twMerge } from "tailwind-merge"
 // import { useWallet } from "@solana/wallet-adapter-react"
 // import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
-import { endpoint, wsEndpoint } from "program/web3Locking"
 // import { ALL_CONFIGS } from "program/config"
 import axios from "axios"
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes"
@@ -23,6 +22,7 @@ import {
 import { useState } from "react"
 import { toBN } from "@utils/format"
 import { toast } from "react-toastify"
+import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils"
 
 // const web3Solana = new Web3SolanaProgramInteraction()
 // const web3Locking = new Web3SolanaLockingToken()
@@ -126,9 +126,9 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
           ),
         )
 
-      const connection = new Connection(endpoint, {
+      const connection = new Connection(SOLANA_RPC, {
         commitment: "confirmed",
-        wsEndpoint: wsEndpoint,
+        wsEndpoint: SOLANA_WS,
       })
 
       const { blockhash } = await connection.getLatestBlockhash()

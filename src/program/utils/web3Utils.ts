@@ -1,4 +1,3 @@
-import { envConfig } from "@configs/env.ts"
 import * as anchor from "@coral-xyz/anchor"
 import { BN } from "@coral-xyz/anchor"
 import {
@@ -29,12 +28,10 @@ export const TOKEN_RESERVES = 1_000_000_000_000_000
 export const LAMPORT_RESERVES = 1_000_000_000
 export const INIT_BONDING_CURVE = 95
 
-const SOLANA_RPC =
-  envConfig.solanaRpc ||
-  "https://mainnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6"
-const SOLANA_WS =
-  envConfig.solanaWs ||
-  "wss://mainnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6"
+export const SOLANA_RPC =
+  "https://mainnet.helius-rpc.com/?api-key=5660b1f6-78f6-4316-b541-7fc5137b2026"
+export const SOLANA_WS =
+  "wss://mainnet.helius-rpc.com/?api-key=5660b1f6-78f6-4316-b541-7fc5137b2026"
 
 export const endpoint = SOLANA_RPC
 export const pythProgramId = new PublicKey(idl.address)
