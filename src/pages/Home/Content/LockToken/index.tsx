@@ -11,6 +11,7 @@ import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes"
 import { Connection, PublicKey } from "@solana/web3.js"
 import { toBN } from "@utils/format"
 import { toast } from "react-toastify"
+import { useWallet } from "@solana/wallet-adapter-react"
 
 // const web3Solana = new Web3SolanaProgramInteraction()
 const web3Locking = new Web3SolanaLockingToken()
@@ -24,6 +25,7 @@ const LockToken = ({ endpointAgent }: { endpointAgent: string }) => {
   const [selectedLockTime, setSelectedLockTime] = useState(LOCK_TIME_OPTIONS[0])
   const [stakeAmount, setStakeAmount] = useState<string>("")
   const [submitLoading, setSubmitLoading] = useState(false)
+  const wallet = useWallet()
 
   const getProvider = () => {
     if ("solana" in window) {
@@ -129,6 +131,7 @@ const LockToken = ({ endpointAgent }: { endpointAgent: string }) => {
         duration,
         amount,
         botInfo,
+        wallet,
       )
       const TxSendToDistill = transaction?.serializeMessage()
 
@@ -162,7 +165,8 @@ const LockToken = ({ endpointAgent }: { endpointAgent: string }) => {
 
       const connection = new Connection(endpoint, {
         commitment: "confirmed",
-        wsEndpoint: "wss://solana-rpc.publicnode.com",
+        wsEndpoint:
+          "wss://mainnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6",
       })
 
       const txid = await connection.sendRawTransaction(
@@ -182,13 +186,14 @@ const LockToken = ({ endpointAgent }: { endpointAgent: string }) => {
       console.log(`txid--> ${txid}`)
     } catch (error) {
       console.error(error)
+      toast.error(error?.toString())
     } finally {
       setSubmitLoading(false)
     }
   }
 
   return (
-    <div className="mt-6 grid grid-cols-2 gap-4">
+    <div className="mt-6 grid grid-cols-2 gap-4 max-md:grid-cols-1">
       {/* <div className="">
         <p className="text-18 font-semibold">Your locked</p>
         <div className="mt-5">

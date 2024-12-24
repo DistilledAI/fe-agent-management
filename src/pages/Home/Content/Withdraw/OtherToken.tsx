@@ -128,7 +128,8 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
 
       const connection = new Connection(endpoint, {
         commitment: "confirmed",
-        wsEndpoint: "wss://solana-rpc.publicnode.com",
+        wsEndpoint:
+          "wss://mainnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6",
       })
 
       const { blockhash } = await connection.getLatestBlockhash()
@@ -188,7 +189,7 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
   }
 
   return (
-    <div className="mt-6 grid grid-cols-2 gap-4">
+    <div className="mt-6 grid grid-cols-2 gap-4 max-md:grid-cols-1">
       <div>
         <p className="text-18 font-semibold">Withdraw Other Token</p>
         <div className="mt-5 rounded-md bg-mercury-70 p-6">

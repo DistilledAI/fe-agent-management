@@ -33,16 +33,22 @@ export class Web3SolanaLockingToken {
   constructor(
     private readonly connection = new Connection(endpoint, {
       commitment: commitmentLevel,
-      wsEndpoint: "wss://solana-rpc.publicnode.com",
+      wsEndpoint:
+        "wss://mainnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6",
     }),
   ) {}
 
-  async stake(lockPeriod: number, amount: number, botInfo: any) {
+  async stake(lockPeriod: number, amount: number, botInfo: any, wallet: any) {
     try {
-      const program = new Program(
-        vaultInterface,
-        this.connection as any,
-      ) as Program<Vault>
+      const provider = new anchor.AnchorProvider(this.connection, wallet, {
+        preflightCommitment: "confirmed",
+      })
+      anchor.setProvider(provider)
+      const program = new Program(vaultInterface, provider) as Program<Vault>
+      // const program = new Program(
+      //   vaultInterface,
+      //   this.connection as any,
+      // ) as Program<Vault>
 
       const [configPda] = PublicKey.findProgramAddressSync(
         [
@@ -72,7 +78,7 @@ export class Web3SolanaLockingToken {
         const stakerInfo = await program.account.stakerInfo.fetch(stakerInfoPda)
         currentId = stakerInfo.currentId.toNumber()
       } catch (error) {
-        console.log("get number of locked items error", error)
+        console.error("get number of locked items error", error)
       }
 
       const [userStakeDetailPda] = PublicKey.findProgramAddressSync(
@@ -88,7 +94,9 @@ export class Web3SolanaLockingToken {
       const cpIx = ComputeBudgetProgram.setComputeUnitPrice({
         microLamports: 1_000_000,
       })
-      const cuIx = ComputeBudgetProgram.setComputeUnitLimit({ units: 200_000 })
+      const cuIx = ComputeBudgetProgram.setComputeUnitLimit({
+        units: 1_000_000,
+      })
 
       const stakeIx = await program.methods
         .stake(new BN(lockPeriod), new BN(amount))
@@ -240,7 +248,9 @@ export class Web3SolanaLockingToken {
       const cpIx = ComputeBudgetProgram.setComputeUnitPrice({
         microLamports: 1_000_000,
       })
-      const cuIx = ComputeBudgetProgram.setComputeUnitLimit({ units: 200_000 })
+      const cuIx = ComputeBudgetProgram.setComputeUnitLimit({
+        units: 200_000,
+      })
 
       const unStakeIx = await program.methods
         .destake(new BN(id), new BN(lockPeriod), new BN(amount))
