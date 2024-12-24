@@ -22,7 +22,8 @@ export const commitmentLevel = "confirmed"
 export const TOKEN_RESERVES = 1_000_000_000_000_000
 export const LAMPORT_RESERVES = 1_000_000_000
 
-export const endpoint = "https://solana-rpc.publicnode.com"
+export const endpoint =
+  "https://mainnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6"
 export const vaultProgramId = new PublicKey(idl.address)
 export const vaultInterface = JSON.parse(JSON.stringify(idl))
 
