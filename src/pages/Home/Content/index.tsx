@@ -13,6 +13,7 @@ import { useEffect, useState } from "react"
 import { cachedLocalStorage } from "@utils/storage"
 import ReactJson from "react-json-view"
 import axios from "axios"
+import SwapOtherToken from "./SwapToken/OtherToken"
 
 const HomeContent = () => {
   const { user, isAnonymous, isLogin } = useAuthState()
@@ -104,6 +105,9 @@ const HomeContent = () => {
           <Tab key="withdraw-token" title="Withdraw Token">
             <Withdraw endpointAgent={endpointAgent} />
             <WithdrawOtherToken endpointAgent={endpointAgent} />
+          </Tab>
+          <Tab key="swap-token" title="Swap Token">
+            <SwapOtherToken endpointAgent={endpointAgent} botInfo={infoAgent} />
           </Tab>
         </Tabs>
       </div>

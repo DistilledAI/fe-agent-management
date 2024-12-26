@@ -1,7 +1,7 @@
 import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
 import { Button, Input } from "@nextui-org/react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { LOCK_TIME_OPTIONS } from "../constants"
 import { twMerge } from "tailwind-merge"
 import { Web3SolanaLockingToken } from "program/web3Locking"
@@ -11,14 +11,9 @@ import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes"
 import { Connection, PublicKey } from "@solana/web3.js"
 import { toBN } from "@utils/format"
 import { toast } from "react-toastify"
-import {
-  SOLANA_RPC,
-  SOLANA_WS,
-  Web3SolanaProgramInteraction,
-} from "program/utils/web3Utils"
-import { MAX_ADDRESS_SOLANA } from "program/constants"
+import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils"
+import useGetBalance from "../useGetBalance"
 
-const web3Solana = new Web3SolanaProgramInteraction()
 const web3Locking = new Web3SolanaLockingToken()
 
 const LockToken = ({
@@ -34,7 +29,7 @@ const LockToken = ({
   const [selectedLockTime, setSelectedLockTime] = useState(LOCK_TIME_OPTIONS[0])
   const [stakeAmount, setStakeAmount] = useState<string>("")
   const [submitLoading, setSubmitLoading] = useState(false)
-  const [tokenBal, setTokenBal] = useState(0)
+  const { maxBalance: tokenBal, getBalance } = useGetBalance(agentAddress)
 
   const getProvider = () => {
     if ("solana" in window) {
@@ -46,23 +41,6 @@ const LockToken = ({
 
     return null
   }
-
-  const getBalance = async (address: string) => {
-    try {
-      const tokenBal = await web3Solana.getTokenBalance(
-        address,
-        MAX_ADDRESS_SOLANA,
-      )
-
-      setTokenBal(tokenBal ? tokenBal : 0)
-    } catch (error) {
-      console.log("error", error)
-    }
-  }
-
-  useEffect(() => {
-    if (agentAddress) getBalance(agentAddress)
-  }, [agentAddress])
 
   // const wallet = useWallet()
   // const getBalance = async () => {
