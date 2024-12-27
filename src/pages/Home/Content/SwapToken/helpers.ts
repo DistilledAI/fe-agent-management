@@ -70,7 +70,7 @@ export const swapToken = async ({
 
   const quoteRes = await axios.request({
     method: "get",
-    url: `https://quote-api.jup.ag/v6/quote?inputMint=${assetIn}&outputMint=${assetOut}&amount=${totalAmount}&slippageBps=200`,
+    url: `https://quote-api.jup.ag/v6/quote?inputMint=${assetIn}&outputMint=${assetOut}&amount=${totalAmount}&slippageBps=${slippageBps}`,
   })
   const quoteResponse = quoteRes.data
   const { swapTransaction } = await (
@@ -89,7 +89,6 @@ export const swapToken = async ({
         // prioritizationFeeLamports: 100000,
         computeUnitPriceMicroLamports: 100000,
         dynamicComputeUnitLimit: true,
-        slippageBps,
         // feeAccount is optional. Use if you want to charge a fee.  feeBps must have been passed in /quote API.
         // feeAccount: "fee_account_public_key"
       }),
