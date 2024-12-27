@@ -52,12 +52,14 @@ export const swapToken = async ({
   assetIn,
   assetOut,
   decimal,
+  slippageBps,
 }: {
   botInfo: any
   amount: string
   assetIn: string
   assetOut: string
   decimal: number
+  slippageBps: number
 }) => {
   const agentAddress = new PublicKey(botInfo.sol_address)
 
@@ -87,6 +89,7 @@ export const swapToken = async ({
         // prioritizationFeeLamports: 100000,
         computeUnitPriceMicroLamports: 100000,
         dynamicComputeUnitLimit: true,
+        slippageBps,
         // feeAccount is optional. Use if you want to charge a fee.  feeBps must have been passed in /quote API.
         // feeAccount: "fee_account_public_key"
       }),

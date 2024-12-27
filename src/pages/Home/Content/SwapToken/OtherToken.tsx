@@ -24,6 +24,7 @@ const SwapOtherToken = ({
   const [amountInput, setAmountInput] = useState("0")
   const [assetIn, setAssetIn] = useState("")
   const [assetOut, setAssetOut] = useState("")
+  const [slippageBps, setSlippageBps] = useState("1.5")
   const [submitLoading, setSubmitLoading] = useState(false)
 
   const getProvider = () => {
@@ -74,6 +75,7 @@ const SwapOtherToken = ({
         assetOut,
         decimal: Number(decimal),
         amount: amountInput,
+        slippageBps: Number(slippageBps) * 100,
       })
       if (transaction) {
         const TxSendToDistill = transaction.message.serialize()
@@ -196,6 +198,22 @@ const SwapOtherToken = ({
                 inputWrapper: "border-1 rounded-md pr-1",
                 input: "text-[16px]",
               }}
+            />
+          </div>
+          <div className="mt-4">
+            <p className="mb-1 text-14 font-medium">SLIPPAGE (%)</p>
+            <Input
+              onValueChange={(value) => {
+                if (Number(value) > 10 || value.length > 4) return
+                setSlippageBps(value)
+              }}
+              value={slippageBps}
+              defaultValue="1.5"
+              classNames={{
+                inputWrapper: "border-1 rounded-md pr-1",
+                input: "text-[16px] font-medium",
+              }}
+              type="number"
             />
           </div>
           {isConnectWallet ? (
