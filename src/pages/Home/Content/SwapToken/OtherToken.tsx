@@ -19,6 +19,7 @@ const SwapOtherToken = ({
   const { loading, connectMultipleWallet } = useConnectWallet()
   const { isLogin, isAnonymous, user } = useAuthState()
   const [decimal, setDecimal] = useState("6")
+  const [txh, setTxh] = useState("")
   const isConnectWallet = isLogin && !isAnonymous
   const [amountInput, setAmountInput] = useState("0")
   const [assetIn, setAssetIn] = useState("")
@@ -50,6 +51,7 @@ const SwapOtherToken = ({
         toast.warning("Please enter full info!")
         return
       }
+      setTxh("")
       setSubmitLoading(true)
       const provider = getProvider()
       if (!provider) return
@@ -123,6 +125,7 @@ const SwapOtherToken = ({
         })
 
         console.log(`txid--> ${txid}`)
+        setTxh(txid)
         setSubmitLoading(false)
         toast.success(`Locked successfully! tx: ${txid}`)
       }
@@ -137,6 +140,14 @@ const SwapOtherToken = ({
   return (
     <div className="mt-6 grid grid-cols-2 gap-4 max-md:grid-cols-1">
       <div>
+        {txh && (
+          <div className="mb-2 flex flex-col">
+            <p className="text-14 font-semibold text-green-10">
+              Swap successfully - Tx:
+            </p>{" "}
+            <p className="break-all text-15">{txh}</p>
+          </div>
+        )}
         <div className="mt-5 rounded-md bg-mercury-70 p-6">
           <div>
             <div className="flex items-center justify-between">

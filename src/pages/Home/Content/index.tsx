@@ -14,6 +14,7 @@ import { cachedLocalStorage } from "@utils/storage"
 import ReactJson from "react-json-view"
 import axios from "axios"
 import SwapOtherToken from "./SwapToken/OtherToken"
+import MigrateWalletByOwnerSol from "./Migrate"
 
 const HomeContent = () => {
   const { user, isAnonymous, isLogin } = useAuthState()
@@ -108,6 +109,9 @@ const HomeContent = () => {
           </Tab>
           <Tab key="swap-token" title="Swap Token">
             <SwapOtherToken endpointAgent={endpointAgent} botInfo={infoAgent} />
+          </Tab>
+          <Tab key="migrate" title="Migrate">
+            <MigrateWalletByOwnerSol endpointAgent={endpointAgent} />
           </Tab>
         </Tabs>
       </div>

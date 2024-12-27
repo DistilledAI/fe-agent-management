@@ -42,6 +42,7 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
   const { loading, connectMultipleWallet } = useConnectWallet()
   const { isLogin, isAnonymous, user } = useAuthState()
   const [amountInput, setAmountInput] = useState("0")
+  const [txh, setTxh] = useState("")
   const [toAccount, setToAccount] = useState("")
   const [assetAddress, setAssetAddress] = useState("")
   const [submitLoading, setSubmitLoading] = useState(false)
@@ -78,6 +79,7 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
         toast.warning("Please enter all info")
         return
       }
+      setTxh("")
       setSubmitLoading(true)
       const botInfo = await getInfoBot(endpointAgent)
       const provider = getProvider()
@@ -179,7 +181,7 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
       if (txid) {
         toast.success("Withdraw successfully!")
       }
-
+      setTxh(txid)
       console.log(`txid--> ${txid}`)
     } catch (error) {
       console.log(error)
@@ -191,6 +193,14 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
     <div className="mt-6 grid grid-cols-2 gap-4 max-md:grid-cols-1">
       <div>
         <p className="text-18 font-semibold">Withdraw Other Token</p>
+        {txh && (
+          <div className="mb-2 flex flex-col">
+            <p className="text-14 font-semibold text-green-10">
+              Withdraw successfully - Tx:
+            </p>{" "}
+            <p className="break-all text-15">{txh}</p>
+          </div>
+        )}
         <div className="mt-5 rounded-md bg-mercury-70 p-6">
           <div>
             <p className="mb-1 text-14 font-medium">AMOUNT</p>

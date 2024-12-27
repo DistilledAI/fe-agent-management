@@ -28,6 +28,7 @@ import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils"
 const WithdrawToken = ({ endpointAgent }: { endpointAgent: string }) => {
   const { loading, connectMultipleWallet } = useConnectWallet()
   const { isLogin, isAnonymous, user } = useAuthState()
+  const [txh, setTxh] = useState("")
   const [amountInput, setAmountInput] = useState("0")
   const [toAccount, setToAccount] = useState("")
   const [submitLoading, setSubmitLoading] = useState(false)
@@ -64,6 +65,7 @@ const WithdrawToken = ({ endpointAgent }: { endpointAgent: string }) => {
         toast.warning("Please enter all info")
         return
       }
+      setTxh("")
       setSubmitLoading(true)
       const botInfo = await getInfoBot(endpointAgent)
       const provider = getProvider()
@@ -149,7 +151,7 @@ const WithdrawToken = ({ endpointAgent }: { endpointAgent: string }) => {
       if (txid) {
         toast.success("Withdraw successfully!")
       }
-
+      setTxh(txid)
       console.log(`txid--> ${txid}`)
     } catch (error) {
       console.error(error)
@@ -161,6 +163,14 @@ const WithdrawToken = ({ endpointAgent }: { endpointAgent: string }) => {
     <div className="mt-6 grid grid-cols-2 gap-4 max-md:grid-cols-1">
       <div>
         <p className="text-18 font-semibold">Withdraw SOL</p>
+        {txh && (
+          <div className="mb-2 flex flex-col">
+            <p className="text-14 font-semibold text-green-10">
+              Withdraw successfully - Tx:
+            </p>{" "}
+            <p className="break-all text-15">{txh}</p>
+          </div>
+        )}
         <div className="mt-5 rounded-md bg-mercury-70 p-6">
           <div>
             <p className="mb-1 text-14 font-medium">AMOUNT</p>

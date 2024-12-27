@@ -28,6 +28,7 @@ const LockToken = ({
   const isConnectWallet = isLogin && !isAnonymous
   const [selectedLockTime, setSelectedLockTime] = useState(LOCK_TIME_OPTIONS[0])
   const [stakeAmount, setStakeAmount] = useState<string>("")
+  const [txh, setTxh] = useState("")
   const [submitLoading, setSubmitLoading] = useState(false)
   const { maxBalance: tokenBal, getBalance } = useGetBalance(agentAddress)
 
@@ -106,6 +107,7 @@ const LockToken = ({
         toast.warning("Please enter amount!")
         return
       }
+      setTxh("")
       setSubmitLoading(true)
       const botInfo = await getInfoBot(endpointAgent)
       const provider = getProvider()
@@ -182,6 +184,7 @@ const LockToken = ({
       await connection.confirmTransaction(txid, "confirmed")
       console.log(`txid--> ${txid}`)
       setSubmitLoading(false)
+      setTxh(txid)
       toast.success(`Locked successfully! tx: ${txid}`)
       if (agentAddress) getBalance(agentAddress)
     } catch (error) {
@@ -206,6 +209,14 @@ const LockToken = ({
         </div>
       </div> */}
       <div>
+        {txh && (
+          <div className="mb-2 flex flex-col">
+            <p className="text-14 font-semibold text-green-10">
+              Locked successfully - Tx:
+            </p>{" "}
+            <p className="break-all text-15">{txh}</p>
+          </div>
+        )}
         <p className="text-18 font-semibold">Let's lock now</p>
         <div className="mt-5 rounded-md bg-mercury-70 p-6">
           <div>
