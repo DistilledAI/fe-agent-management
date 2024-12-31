@@ -1,51 +1,28 @@
+import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes"
 import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
 import { Button, Input } from "@nextui-org/react"
-// import { useEffect, useState } from "react"
-// import { LOCK_TIME_OPTIONS } from "../constants"
-// import { twMerge } from "tailwind-merge"
-// import { useWallet } from "@solana/wallet-adapter-react"
-// import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
-// import { ALL_CONFIGS } from "program/config"
-import axios from "axios"
-import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes"
-import {
-  ComputeBudgetProgram,
-  Connection,
-  PublicKey,
-  Transaction,
-} from "@solana/web3.js"
-import {
-  createTransferCheckedInstruction,
-  getAssociatedTokenAddress,
-} from "@solana/spl-token"
-import { useState } from "react"
 import { toBN } from "@utils/format"
+import { useState } from "react"
 import { toast } from "react-toastify"
-import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils"
+import { connection, withdrawToken } from "./helpers"
+import axios from "axios"
+import { PublicKey } from "@solana/web3.js"
 
-// const web3Solana = new Web3SolanaProgramInteraction()
-// const web3Locking = new Web3SolanaLockingToken()
-
-// const endpointAgent = "http://15.235.226.9:7000"
-
-const SOL_COMPUTE_UNIT_LIMIT = 100000
-const SOL_MICRO_LAMPORTS = 100000
-const setComputeUnitLimit = ComputeBudgetProgram.setComputeUnitLimit({
-  units: SOL_COMPUTE_UNIT_LIMIT,
-})
-const setComputePriceLimit = ComputeBudgetProgram.setComputeUnitPrice({
-  microLamports: SOL_MICRO_LAMPORTS,
-})
-
-const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
+const WithdrawToken = ({
+  endpointAgent,
+  botInfo,
+}: {
+  endpointAgent: string
+  botInfo: any
+}) => {
   const { loading, connectMultipleWallet } = useConnectWallet()
   const { isLogin, isAnonymous, user } = useAuthState()
-  const [amountInput, setAmountInput] = useState("0")
   const [txh, setTxh] = useState("")
+  const [amountInput, setAmountInput] = useState("0")
   const [decimal, setDecimal] = useState("6")
-  const [toAccount, setToAccount] = useState("")
   const [assetAddress, setAssetAddress] = useState("")
+  const [toAccount, setToAccount] = useState("")
   const [submitLoading, setSubmitLoading] = useState(false)
   const isConnectWallet = isLogin && !isAnonymous
 
@@ -60,49 +37,26 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
     return null
   }
 
-  const getInfoBot = async (endPointBot: string) => {
-    const res = await axios.request({
-      method: "get",
-      maxBodyLength: Infinity,
-      url: `${endPointBot}/private_agent/info`,
-      headers: {},
-    })
-    return res.data
-  }
-
-  const handleWithdraw = async (endpointAgent: string) => {
+  const handleWithdraw = async () => {
     try {
       if (!endpointAgent) {
         toast.warning("Please enter endpoint!")
         return
       }
-      if (!amountInput || !toAccount || !assetAddress) {
+      if (!amountInput || !toAccount) {
         toast.warning("Please enter all info")
         return
       }
       setTxh("")
       setSubmitLoading(true)
-      const botInfo = await getInfoBot(endpointAgent)
       const provider = getProvider()
       if (!provider) return
       const timestamp = Math.floor(Date.now())
       await provider.request({ method: "connect" })
 
-      const token = new PublicKey(assetAddress)
-
-      const senderTokenAccount = await getAssociatedTokenAddress(
-        token,
-        new PublicKey(botInfo.sol_address),
-      )
-
-      const receiverTokenAccount = await getAssociatedTokenAddress(
-        token,
-        new PublicKey(toAccount),
-      )
-
       const msgSign = {
         action: "sign_solana",
-        timestamp: timestamp,
+        timestamp,
       }
 
       const message = JSON.stringify(msgSign)
@@ -115,29 +69,14 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
           .multipliedBy(10 ** Number(decimal))
           .toFixed(0, 1),
       ).toNumber()
-      const transaction = new Transaction()
-        .add(setComputePriceLimit)
-        .add(setComputeUnitLimit)
-        .add(
-          createTransferCheckedInstruction(
-            senderTokenAccount, // Source token account
-            token, // Mint address of the token
-            receiverTokenAccount, // Destination token account
-            new PublicKey(botInfo.sol_address),
-            amount, // Amount of USDC to transfer (1 USDC = 1e6 for 6 decimals)
-            6, // Decimals (USDC has 6 decimals on Solana)
-          ),
-        )
 
-      const connection = new Connection(SOLANA_RPC, {
-        commitment: "confirmed",
-        wsEndpoint: SOLANA_WS,
-      })
+      const transaction = await withdrawToken(
+        botInfo.sol_address,
+        assetAddress,
+        amount,
+        toAccount,
+      )
 
-      const { blockhash } = await connection.getLatestBlockhash()
-
-      transaction.recentBlockhash = blockhash
-      transaction.feePayer = new PublicKey(botInfo.sol_address)
       const TxSendToDistill = transaction?.serializeMessage()
 
       const msgDataTx = TxSendToDistill.toString("hex")
@@ -178,6 +117,7 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
       )
 
       await connection.confirmTransaction(txid, "confirmed")
+
       setSubmitLoading(false)
       if (txid) {
         toast.success("Withdraw successfully!")
@@ -185,7 +125,7 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
       setTxh(txid)
       console.log(`txid--> ${txid}`)
     } catch (error) {
-      console.log(error)
+      console.error(error)
       setSubmitLoading(false)
     }
   }
@@ -206,8 +146,8 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
           <div>
             <p className="mb-1 text-14 font-medium">AMOUNT</p>
             <Input
-              defaultValue="0"
               onValueChange={setAmountInput}
+              defaultValue="0"
               classNames={{
                 inputWrapper: "border-1 rounded-md pr-1",
                 input: "text-[16px] font-medium",
@@ -218,8 +158,8 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
           <div className="mt-4">
             <p className="mb-1 text-14 font-medium">ASSET</p>
             <Input
-              placeholder="Enter address"
               onValueChange={setAssetAddress}
+              placeholder="Enter address"
               classNames={{
                 inputWrapper: "border-1 rounded-md pr-1",
                 input: "text-[16px] font-medium",
@@ -242,8 +182,8 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
           <div className="mt-4">
             <p className="mb-1 text-14 font-medium">TO</p>
             <Input
-              placeholder="Enter address"
               onValueChange={setToAccount}
+              placeholder="Enter address"
               classNames={{
                 inputWrapper: "border-1 rounded-md pr-1",
                 input: "text-[16px] font-medium",
@@ -252,8 +192,8 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
           </div>
           {isConnectWallet ? (
             <Button
+              onClick={handleWithdraw}
               isLoading={submitLoading}
-              onClick={() => handleWithdraw(endpointAgent)}
               className="text-semibold mt-10 h-11 w-full rounded-md bg-mercury-200"
             >
               <span className="font-bold">WITHDRAW</span>
@@ -273,4 +213,4 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
   )
 }
 
-export default WithdrawOtherToken
+export default WithdrawToken
