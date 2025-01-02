@@ -24,6 +24,8 @@ const Treasury = ({
 
   return (
     <>
+      <p className="font-semibold">Treasury Address:</p>
+      <p>{treasuryAddress}</p>
       <WithdrawSol botInfo={botInfo} endpointAgent={endpointAgent} />
       <WithdrawToken botInfo={botInfo} endpointAgent={endpointAgent} />
     </>
