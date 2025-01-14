@@ -173,6 +173,14 @@ const LockToken = ({
         wsEndpoint: SOLANA_WS,
       })
 
+      const simulation = await connection.simulateTransaction(transaction)
+      console.log(`simulation-->`, simulation)
+      if (simulation.value.err) {
+        console.error("Simulation failed:", simulation.value.err)
+        toast.error(JSON.stringify(simulation.value.err))
+        return setSubmitLoading(false)
+      }
+
       const txid = await connection.sendRawTransaction(
         transaction.serialize(),
         {
