@@ -6,17 +6,14 @@ import { toBN } from "@utils/format"
 import { useState } from "react"
 import { toast } from "react-toastify"
 import { connection, withdrawToken } from "./helpers"
-import axios from "axios"
 import { PublicKey } from "@solana/web3.js"
+import { fetchApiAuth } from "services/fetchApi"
+import endpoint from "services/endpoint"
+import { useAppSelector } from "@hooks/useAppRedux"
 
-const WithdrawToken = ({
-  endpointAgent,
-  botInfo,
-}: {
-  endpointAgent: string
-  botInfo: any
-}) => {
+const WithdrawToken = ({ botInfo }: { botInfo: any }) => {
   const { loading, connectMultipleWallet } = useConnectWallet()
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
   const { isLogin, isAnonymous, user } = useAuthState()
   const [txh, setTxh] = useState("")
   const [amountInput, setAmountInput] = useState("0")
@@ -39,10 +36,6 @@ const WithdrawToken = ({
 
   const handleWithdraw = async () => {
     try {
-      if (!endpointAgent) {
-        toast.warning("Please enter endpoint!")
-        return
-      }
       if (!amountInput || !toAccount) {
         toast.warning("Please enter all info")
         return
@@ -81,25 +74,24 @@ const WithdrawToken = ({
 
       const msgDataTx = TxSendToDistill.toString("hex")
 
-      const resp = await axios.request({
+      const resp = await fetchApiAuth({
         method: "post",
-        maxBodyLength: Infinity,
-        url: `${endpointAgent}/wallet/sign-solana`,
-        headers: {
-          accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify({
-          data: {
-            metadata: {
-              message: msgDataTx,
+        url: endpoint.CALL_AGENT,
+        data: {
+          botId: myAgent?.id,
+          path: "/wallet/sign-solana",
+          body: {
+            data: {
+              metadata: {
+                message: msgDataTx,
+              },
+              signer_addr: user.publicAddress,
+              timestamp,
+              network: "solana",
             },
-            signer_addr: user.publicAddress,
-            timestamp,
-            network: "solana",
+            signature,
           },
-          signature,
-        }),
+        },
       })
 
       console.log("resp", resp)

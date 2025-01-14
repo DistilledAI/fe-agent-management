@@ -7,7 +7,6 @@ import { Button, Input } from "@nextui-org/react"
 // import { useWallet } from "@solana/wallet-adapter-react"
 // import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
 // import { ALL_CONFIGS } from "program/config"
-import axios from "axios"
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes"
 import {
   ComputeBudgetProgram,
@@ -23,6 +22,9 @@ import { useState } from "react"
 import { toBN } from "@utils/format"
 import { toast } from "react-toastify"
 import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils"
+import { fetchApiAuth } from "services/fetchApi"
+import endpoint from "services/endpoint"
+import { useAppSelector } from "@hooks/useAppRedux"
 
 // const web3Solana = new Web3SolanaProgramInteraction()
 // const web3Locking = new Web3SolanaLockingToken()
@@ -38,8 +40,9 @@ const setComputePriceLimit = ComputeBudgetProgram.setComputeUnitPrice({
   microLamports: SOL_MICRO_LAMPORTS,
 })
 
-const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
+const WithdrawOtherToken = () => {
   const { loading, connectMultipleWallet } = useConnectWallet()
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
   const { isLogin, isAnonymous, user } = useAuthState()
   const [amountInput, setAmountInput] = useState("0")
   const [txh, setTxh] = useState("")
@@ -60,29 +63,27 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
     return null
   }
 
-  const getInfoBot = async (endPointBot: string) => {
-    const res = await axios.request({
-      method: "get",
-      maxBodyLength: Infinity,
-      url: `${endPointBot}/private_agent/info`,
-      headers: {},
+  const getInfoBot = async () => {
+    const res = await fetchApiAuth({
+      method: "post",
+      url: endpoint.CALL_AGENT,
+      data: {
+        botId: myAgent?.id,
+        path: "/private_agent/info",
+      },
     })
     return res.data
   }
 
-  const handleWithdraw = async (endpointAgent: string) => {
+  const handleWithdraw = async () => {
     try {
-      if (!endpointAgent) {
-        toast.warning("Please enter endpoint!")
-        return
-      }
       if (!amountInput || !toAccount || !assetAddress) {
         toast.warning("Please enter all info")
         return
       }
       setTxh("")
       setSubmitLoading(true)
-      const botInfo = await getInfoBot(endpointAgent)
+      const botInfo = await getInfoBot()
       const provider = getProvider()
       if (!provider) return
       const timestamp = Math.floor(Date.now())
@@ -142,25 +143,24 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
 
       const msgDataTx = TxSendToDistill.toString("hex")
 
-      const resp = await axios.request({
+      const resp = await fetchApiAuth({
         method: "post",
-        maxBodyLength: Infinity,
-        url: `${endpointAgent}/wallet/sign-solana`,
-        headers: {
-          accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify({
-          data: {
-            metadata: {
-              message: msgDataTx,
+        url: endpoint.CALL_AGENT,
+        data: {
+          botId: myAgent?.id,
+          path: "/wallet/sign-solana",
+          body: {
+            data: {
+              metadata: {
+                message: msgDataTx,
+              },
+              signer_addr: user.publicAddress,
+              timestamp,
+              network: "solana",
             },
-            signer_addr: user.publicAddress,
-            timestamp,
-            network: "solana",
+            signature,
           },
-          signature,
-        }),
+        },
       })
 
       console.log("resp", resp)
@@ -253,7 +253,7 @@ const WithdrawOtherToken = ({ endpointAgent }: { endpointAgent: string }) => {
           {isConnectWallet ? (
             <Button
               isLoading={submitLoading}
-              onClick={() => handleWithdraw(endpointAgent)}
+              onClick={handleWithdraw}
               className="text-semibold mt-10 h-11 w-full rounded-md bg-mercury-200"
             >
               <span className="font-bold">WITHDRAW</span>

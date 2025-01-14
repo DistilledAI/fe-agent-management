@@ -6,25 +6,22 @@ import { LOCK_TIME_OPTIONS } from "../constants"
 import { twMerge } from "tailwind-merge"
 import { Web3SolanaLockingToken } from "program/web3Locking"
 import { ALL_CONFIGS, SPL_DECIMAL } from "program/config"
-import axios from "axios"
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes"
 import { Connection, PublicKey } from "@solana/web3.js"
 import { toBN } from "@utils/format"
 import { toast } from "react-toastify"
 import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils"
 import useGetBalance from "../useGetBalance"
+import { fetchApiAuth } from "services/fetchApi"
+import endpoint from "services/endpoint"
+import { useAppSelector } from "@hooks/useAppRedux"
 
 const web3Locking = new Web3SolanaLockingToken()
 
-const LockToken = ({
-  endpointAgent,
-  agentAddress,
-}: {
-  endpointAgent: string
-  agentAddress: string
-}) => {
+const LockToken = ({ agentAddress }: { agentAddress: string }) => {
   const { loading, connectMultipleWallet } = useConnectWallet()
   const { isLogin, isAnonymous, user } = useAuthState()
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
   const isConnectWallet = isLogin && !isAnonymous
   const [selectedLockTime, setSelectedLockTime] = useState(LOCK_TIME_OPTIONS[0])
   const [stakeAmount, setStakeAmount] = useState<string>("")
@@ -87,29 +84,27 @@ const LockToken = ({
   //   },
   // ]
 
-  const getInfoBot = async (endPointBot: string) => {
-    const res = await axios.request({
-      method: "get",
-      maxBodyLength: Infinity,
-      url: `${endPointBot}/private_agent/info`,
-      headers: {},
+  const getInfoBot = async () => {
+    const res = await fetchApiAuth({
+      method: "post",
+      url: endpoint.CALL_AGENT,
+      data: {
+        botId: myAgent?.id,
+        path: "/private_agent/info",
+      },
     })
     return res.data
   }
 
-  const handleLockTokenBySol = async (endpointAgent: string) => {
+  const handleLockTokenBySol = async () => {
     try {
-      if (!endpointAgent) {
-        toast.warning("Please enter endpoint!")
-        return
-      }
       if (!stakeAmount) {
         toast.warning("Please enter amount!")
         return
       }
       setTxh("")
       setSubmitLoading(true)
-      const botInfo = await getInfoBot(endpointAgent)
+      const botInfo = await getInfoBot()
       const provider = getProvider()
       if (!provider) return
       const timestamp = Math.floor(Date.now())
@@ -142,25 +137,24 @@ const LockToken = ({
 
       const msgDataTx = TxSendToDistill.toString("hex")
 
-      const resp = await axios.request({
+      const resp = await fetchApiAuth({
         method: "post",
-        maxBodyLength: Infinity,
-        url: `${endpointAgent}/wallet/sign-solana`,
-        headers: {
-          accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify({
-          data: {
-            metadata: {
-              message: msgDataTx,
+        url: endpoint.CALL_AGENT,
+        data: {
+          botId: myAgent?.id,
+          path: "/wallet/sign-solana",
+          body: {
+            data: {
+              metadata: {
+                message: msgDataTx,
+              },
+              signer_addr: user.publicAddress,
+              timestamp,
+              network: "solana",
             },
-            signer_addr: user.publicAddress,
-            timestamp,
-            network: "solana",
+            signature,
           },
-          signature,
-        }),
+        },
       })
 
       transaction.addSignature(
@@ -270,7 +264,7 @@ const LockToken = ({
           {isConnectWallet ? (
             <Button
               isLoading={submitLoading}
-              onClick={() => handleLockTokenBySol(endpointAgent)}
+              onClick={handleLockTokenBySol}
               className="text-semibold mt-10 h-11 w-full rounded-md bg-mercury-200"
             >
               <span className="font-bold">LOCK</span>

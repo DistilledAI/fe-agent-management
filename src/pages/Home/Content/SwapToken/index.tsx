@@ -6,11 +6,13 @@ import useGetPrice from "./useGetPrice"
 import useGetBalance from "../useGetBalance"
 import { toBN } from "@utils/format"
 import { swapTokenMaxToSol } from "./helpers"
-import axios from "axios"
 import { toast } from "react-toastify"
 import { Connection, PublicKey } from "@solana/web3.js"
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes"
 import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils"
+import { fetchApiAuth } from "services/fetchApi"
+import endpoint from "services/endpoint"
+import { useAppSelector } from "@hooks/useAppRedux"
 
 const SwapToken = ({
   endpointAgent,
@@ -21,6 +23,7 @@ const SwapToken = ({
 }) => {
   const agentAddress = botInfo?.sol_address
   const { loading, connectMultipleWallet } = useConnectWallet()
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
   const { isLogin, isAnonymous, user } = useAuthState()
   const [amountInput, setAmountInput] = useState("0")
   const [swapToValue, setSwapToValue] = useState("0")
@@ -78,25 +81,25 @@ const SwapToken = ({
       if (transaction) {
         const TxSendToDistill = transaction.message.serialize()
         const msgDataTx = Buffer.from(TxSendToDistill).toString("hex")
-        const resp = await axios.request({
+
+        const resp = await fetchApiAuth({
           method: "post",
-          maxBodyLength: Infinity,
-          url: `${endpointAgent}/wallet/sign-solana`,
-          headers: {
-            accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          data: JSON.stringify({
-            data: {
-              metadata: {
-                message: msgDataTx,
+          url: endpoint.CALL_AGENT,
+          data: {
+            botId: myAgent?.id,
+            path: "/wallet/sign-solana",
+            body: {
+              data: {
+                metadata: {
+                  message: msgDataTx,
+                },
+                signer_addr: user.publicAddress,
+                timestamp,
+                network: "solana",
               },
-              signer_addr: user.publicAddress,
-              timestamp,
-              network: "solana",
+              signature,
             },
-            signature,
-          }),
+          },
         })
 
         transaction.addSignature(

@@ -3,38 +3,37 @@ import { CopyIcon } from "@components/Icons/Copy"
 import { LogoutIcon } from "@components/Icons/OutputIcon"
 import useAuthAction from "@hooks/useAuthAction"
 import useAuthState from "@hooks/useAuthState"
-import { Tabs, Tab, Input } from "@nextui-org/react"
+import { Tabs, Tab } from "@nextui-org/react"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import LockToken from "./LockToken"
 import AddToken from "./AddToken"
 import Withdraw from "./Withdraw"
 import WithdrawOtherToken from "./Withdraw/OtherToken"
 import { useEffect, useState } from "react"
-import { cachedLocalStorage } from "@utils/storage"
 import ReactJson from "react-json-view"
-import axios from "axios"
 import SwapOtherToken from "./SwapToken/OtherToken"
 import MigrateWalletByOwnerSol from "./Migrate"
 import Treasury from "./Treasury"
+import { fetchApiAuth } from "services/fetchApi"
+import endpoint from "services/endpoint"
+import { useAppSelector } from "@hooks/useAppRedux"
 
 const HomeContent = () => {
   const { user, isAnonymous, isLogin } = useAuthState()
-  const [endpointAgent, setEndpointAgent] = useState(
-    cachedLocalStorage.getItem("endpointAgent") ?? "",
-  )
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
   const [infoAgent, setInfoAgent] = useState<any>()
   const isConnectWallet = isLogin && !isAnonymous
   const { logout } = useAuthAction()
 
   const getAgentInfo = async () => {
     try {
-      const res = await axios.request({
-        method: "get",
-        headers: {
-          accept: "application/json",
-          "Content-Type": "application/json",
+      const res = await fetchApiAuth({
+        method: "post",
+        url: endpoint.CALL_AGENT,
+        data: {
+          botId: myAgent?.id,
+          path: "/private_agent/info",
         },
-        url: `${endpointAgent}/private_agent/info`,
       })
       if (res.data) setInfoAgent(res.data)
     } catch (error) {
@@ -44,9 +43,9 @@ const HomeContent = () => {
   }
 
   useEffect(() => {
-    if (endpointAgent) getAgentInfo()
+    if (isConnectWallet) getAgentInfo()
     else setInfoAgent(undefined)
-  }, [endpointAgent])
+  }, [isConnectWallet])
 
   return (
     <div className="mx-auto max-w-[1232px] px-4 py-10">
@@ -71,19 +70,11 @@ const HomeContent = () => {
           </div>
         </div>
       )}
-      <div className="mt-10 w-[400px] max-w-full">
+      {/* <div className="mt-10 w-[400px] max-w-full">
         <p className="mb-1 text-15 font-medium">
           Enter Endpoint <span className="text-red-500">(*)</span>
         </p>
-        <Input
-          defaultValue={endpointAgent}
-          onValueChange={(val) => {
-            setEndpointAgent(val)
-            cachedLocalStorage.setItem("endpointAgent", val)
-          }}
-          placeholder="Enter endpoint url"
-        />
-      </div>
+      </div> */}
       {infoAgent && (
         <div className="mt-3">
           <p className="mb-1 text-15 font-medium">Info agent:</p>
@@ -96,26 +87,23 @@ const HomeContent = () => {
           aria-label="Options"
         >
           <Tab key="add-whitelist" title="Add Whitelist">
-            <AddToken endpointAgent={endpointAgent} />
+            <AddToken />
           </Tab>
           <Tab key="lock-token" title="Lock Token">
-            <LockToken
-              agentAddress={infoAgent?.sol_address}
-              endpointAgent={endpointAgent}
-            />
+            <LockToken agentAddress={infoAgent?.sol_address} />
           </Tab>
           <Tab key="withdraw-token" title="Withdraw Token">
-            <Withdraw endpointAgent={endpointAgent} />
-            <WithdrawOtherToken endpointAgent={endpointAgent} />
+            <Withdraw />
+            <WithdrawOtherToken />
           </Tab>
           <Tab key="swap-token" title="Swap Token">
-            <SwapOtherToken endpointAgent={endpointAgent} botInfo={infoAgent} />
+            <SwapOtherToken botInfo={infoAgent} />
           </Tab>
           <Tab key="treasury" title="Treasury">
-            <Treasury endpointAgent={endpointAgent} botInfo={infoAgent} />
+            <Treasury botInfo={infoAgent} />
           </Tab>
           <Tab key="migrate" title="Migrate">
-            <MigrateWalletByOwnerSol endpointAgent={endpointAgent} />
+            <MigrateWalletByOwnerSol />
           </Tab>
         </Tabs>
       </div>

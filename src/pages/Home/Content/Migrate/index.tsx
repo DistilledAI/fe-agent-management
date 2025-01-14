@@ -1,26 +1,20 @@
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes"
+import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
 import { Button, Input } from "@nextui-org/react"
-import axios from "axios"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { toast } from "react-toastify"
+import endpoint from "services/endpoint"
+import { fetchApiAuth } from "services/fetchApi"
 
-const MigrateWalletByOwnerSol = ({
-  endpointAgent,
-}: {
-  endpointAgent: string
-}) => {
+const MigrateWalletByOwnerSol = () => {
   const { loading, connectMultipleWallet } = useConnectWallet()
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
   const { isLogin, isAnonymous } = useAuthState()
-  const [fromEndpoint, setFromEndpoint] = useState(endpointAgent)
   const [toEndpoint, setToEndpoint] = useState("")
   const [submitLoading, setSubmitLoading] = useState(false)
   const isConnectWallet = isLogin && !isAnonymous
-
-  useEffect(() => {
-    setFromEndpoint(endpointAgent)
-  }, [endpointAgent])
 
   const getProvider = () => {
     if ("solana" in window) {
@@ -35,7 +29,7 @@ const MigrateWalletByOwnerSol = ({
 
   const handleSubmit = async () => {
     try {
-      if (!fromEndpoint || !toEndpoint) {
+      if (!toEndpoint) {
         toast.warning("Please enter full info!")
         return
       }
@@ -54,22 +48,21 @@ const MigrateWalletByOwnerSol = ({
       const signedMessage = await provider.signMessage(encodedMessage, "utf8")
       const signature = bs58.encode(signedMessage.signature)
 
-      const res = await axios.request({
+      const res = await fetchApiAuth({
         method: "post",
-        maxBodyLength: Infinity,
-        url: `${toEndpoint}/wallet/migrate`,
-        headers: {
-          accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify({
-          data: {
-            fromCcHost: `${fromEndpoint}/wallet/snapshot-data`,
-            timestamp,
-            network: "solana",
+        url: endpoint.CALL_AGENT,
+        data: {
+          botId: myAgent?.id,
+          path: "/wallet/sign-solana",
+          body: {
+            data: {
+              fromCcHost: `/wallet/snapshot-data`,
+              timestamp,
+              network: "solana",
+            },
+            signature,
           },
-          signature,
-        }),
+        },
       })
 
       if (res.data) {
@@ -91,8 +84,6 @@ const MigrateWalletByOwnerSol = ({
               <p className="mb-1 text-14 font-medium">FROM ENDPOINT</p>
             </div>
             <Input
-              value={fromEndpoint}
-              onValueChange={setFromEndpoint}
               placeholder="endpoint"
               classNames={{
                 inputWrapper: "border-1 rounded-md pr-1",

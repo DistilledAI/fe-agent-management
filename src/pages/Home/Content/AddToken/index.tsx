@@ -1,18 +1,21 @@
+import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
 import { Button, Input, Switch } from "@nextui-org/react"
-import axios from "axios"
 import bs58 from "bs58"
 import { ethers } from "ethers"
 import { useEffect, useState } from "react"
 import ReactJson from "react-json-view"
 import { toast } from "react-toastify"
+import endpoint from "services/endpoint"
+import { fetchApiAuth } from "services/fetchApi"
 
 // const API_URL = "http://15.235.226.9:7000"
 
-const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
+const AddToken = () => {
   const { loading, connectMultipleWallet } = useConnectWallet()
   const { isLogin, isAnonymous, user } = useAuthState()
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
   const isConnectWallet = isLogin && !isAnonymous
   const [addressAgent, setAddressAgent] = useState("")
   const [whitelistAgent, setWhiteListAgent] = useState()
@@ -20,21 +23,21 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
   const [isWhitelist, setIsWhiteList] = useState(true)
 
   const getListAgents = async () => {
-    const res = await axios.request({
-      method: "get",
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
+    const res = await fetchApiAuth({
+      method: "post",
+      url: endpoint.CALL_AGENT,
+      data: {
+        botId: myAgent?.id,
+        path: "/wallet/signer/list",
       },
-      url: `${endpointAgent}/wallet/signer/list`,
     })
     if (res.data) setWhiteListAgent(res.data)
   }
 
   useEffect(() => {
-    if (endpointAgent) getListAgents()
+    if (isConnectWallet) getListAgents()
     else setWhiteListAgent(undefined)
-  }, [endpointAgent])
+  }, [isConnectWallet])
 
   const checkNetworkByAddress = (address: string) => {
     const isHex = /^(0x)?[0-9a-fA-F]+$/.test(address)
@@ -62,10 +65,6 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
   }
 
   const handleAddWhitelistBySol = async () => {
-    if (!endpointAgent) {
-      toast.warning("Please enter endpoint!")
-      return
-    }
     const provider = getProvider()
     if (!provider || !addressAgent) return
     const timestamp = Math.floor(Date.now())
@@ -84,24 +83,23 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
     const signedMessage = await provider.signMessage(encodedMessage, "utf8")
     const signature = bs58.encode(signedMessage.signature)
 
-    const resAddrSol = await axios.request({
+    const resAddrSol = await fetchApiAuth({
       method: "post",
-      maxBodyLength: Infinity,
-      url: `${endpointAgent}/wallet/owner/whitelist-signer`,
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify({
-        data: {
-          account: msgSignAddSol.account,
-          is_whitelist: msgSignAddSol.is_whitelist,
-          timestamp: msgSignAddSol.timestamp,
-          network: "solana",
-          role: msgSignAddSol.role,
+      url: endpoint.CALL_AGENT,
+      data: {
+        botId: myAgent?.id,
+        path: "/wallet/owner/whitelist-signer",
+        body: {
+          data: {
+            account: msgSignAddSol.account,
+            is_whitelist: msgSignAddSol.is_whitelist,
+            timestamp: msgSignAddSol.timestamp,
+            network: "solana",
+            role: msgSignAddSol.role,
+          },
+          signature: signature,
         },
-        signature: signature,
-      }),
+      },
     })
 
     if (resAddrSol.data) {
@@ -110,10 +108,6 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
     }
   }
   const handleAddWhitelistByEvm = async () => {
-    if (!endpointAgent) {
-      toast.warning("Please enter endpoint!")
-      return
-    }
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     if (!provider || !addressAgent) return
     const timestamp = Math.floor(Date.now())
@@ -145,24 +139,23 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
     }
     const signature = (await signer._signTypedData(domain, types, value)) as any
 
-    const resAddEvm = await axios.request({
+    const resAddEvm = await fetchApiAuth({
       method: "post",
-      maxBodyLength: Infinity,
-      url: `${endpointAgent}/wallet/owner/whitelist-signer`,
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify({
-        data: {
-          account: msgSignAddEvm.account,
-          is_whitelist: msgSignAddEvm.is_whitelist,
-          timestamp: msgSignAddEvm.timestamp,
-          network: "evm",
-          role: msgSignAddEvm.role,
+      url: endpoint.CALL_AGENT,
+      data: {
+        botId: myAgent?.id,
+        path: "/wallet/owner/whitelist-signer",
+        body: {
+          data: {
+            account: msgSignAddEvm.account,
+            is_whitelist: msgSignAddEvm.is_whitelist,
+            timestamp: msgSignAddEvm.timestamp,
+            network: "evm",
+            role: msgSignAddEvm.role,
+          },
+          signature: signature,
         },
-        signature: signature,
-      }),
+      },
     })
     if (resAddEvm.data) {
       toast.success("Updated whitelist successfully!")

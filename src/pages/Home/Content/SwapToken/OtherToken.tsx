@@ -3,21 +3,18 @@ import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
 import { Button, Input } from "@nextui-org/react"
 import { Connection, PublicKey } from "@solana/web3.js"
-import axios from "axios"
 import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils"
 import { useState } from "react"
 import { toast } from "react-toastify"
 import { swapToken } from "./helpers"
+import { fetchApiAuth } from "services/fetchApi"
+import endpoint from "services/endpoint"
+import { useAppSelector } from "@hooks/useAppRedux"
 
-const SwapOtherToken = ({
-  endpointAgent,
-  botInfo,
-}: {
-  endpointAgent: string
-  botInfo: any
-}) => {
+const SwapOtherToken = ({ botInfo }: { botInfo: any }) => {
   const { loading, connectMultipleWallet } = useConnectWallet()
   const { isLogin, isAnonymous, user } = useAuthState()
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
   const [decimal, setDecimal] = useState("6")
   const [txh, setTxh] = useState("")
   const isConnectWallet = isLogin && !isAnonymous
@@ -40,10 +37,6 @@ const SwapOtherToken = ({
 
   const handleSwap = async () => {
     try {
-      if (!endpointAgent) {
-        toast.warning("Please enter endpoint!")
-        return
-      }
       if (amountInput === "0") {
         toast.warning("Please enter amount!")
         return
@@ -80,25 +73,25 @@ const SwapOtherToken = ({
       if (transaction) {
         const TxSendToDistill = transaction.message.serialize()
         const msgDataTx = Buffer.from(TxSendToDistill).toString("hex")
-        const resp = await axios.request({
+
+        const resp = await fetchApiAuth({
           method: "post",
-          maxBodyLength: Infinity,
-          url: `${endpointAgent}/wallet/sign-solana`,
-          headers: {
-            accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          data: JSON.stringify({
-            data: {
-              metadata: {
-                message: msgDataTx,
+          url: endpoint.CALL_AGENT,
+          data: {
+            botId: myAgent?.id,
+            path: "/wallet/sign-solana",
+            body: {
+              data: {
+                metadata: {
+                  message: msgDataTx,
+                },
+                signer_addr: user.publicAddress,
+                timestamp,
+                network: "solana",
               },
-              signer_addr: user.publicAddress,
-              timestamp,
-              network: "solana",
+              signature,
             },
-            signature,
-          }),
+          },
         })
 
         transaction.addSignature(
