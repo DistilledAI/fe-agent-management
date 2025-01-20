@@ -59,10 +59,10 @@ export const withdrawSol = async (
   const agentAddress = new PublicKey(walletAddress)
 
   const setComputePriceLimit = web3.ComputeBudgetProgram.setComputeUnitPrice({
-    microLamports: 100_000,
+    microLamports: 10_000_000,
   })
   const setComputeUnitLimit = web3.ComputeBudgetProgram.setComputeUnitLimit({
-    units: 10_000_000,
+    units: 300_000,
   })
 
   const txInstructions = await program.methods
@@ -95,10 +95,10 @@ export const withdrawToken = async (
   const receiver = new PublicKey(receiverStr)
   console.log(`amount`, amount)
   const setComputePriceLimit = web3.ComputeBudgetProgram.setComputeUnitPrice({
-    microLamports: 100_000,
+    microLamports: 10_000_000,
   })
   const setComputeUnitLimit = web3.ComputeBudgetProgram.setComputeUnitLimit({
-    units: 10_000_000,
+    units: 300_000,
   })
 
   const txInstructions = await program.methods

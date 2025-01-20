@@ -27,8 +27,8 @@ export const vaultInterface = JSON.parse(JSON.stringify(idl))
 
 const stakeCurrencyMint = ALL_CONFIGS.STAKE_CURRENCY_MINT
 
-const SOL_COMPUTE_UNIT_LIMIT = 10000000
-const SOL_MICRO_LAMPORTS = 100000
+const SOL_COMPUTE_UNIT_LIMIT = 100000
+const SOL_MICRO_LAMPORTS = 10000000
 const setComputeUnitLimit = ComputeBudgetProgram.setComputeUnitLimit({
   units: SOL_COMPUTE_UNIT_LIMIT,
 })
