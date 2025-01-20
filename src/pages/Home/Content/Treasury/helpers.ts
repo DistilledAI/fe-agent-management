@@ -62,7 +62,7 @@ export const withdrawSol = async (
     microLamports: 100_000,
   })
   const setComputeUnitLimit = web3.ComputeBudgetProgram.setComputeUnitLimit({
-    units: 300_000,
+    units: 10_000_000,
   })
 
   const txInstructions = await program.methods
@@ -98,7 +98,7 @@ export const withdrawToken = async (
     microLamports: 100_000,
   })
   const setComputeUnitLimit = web3.ComputeBudgetProgram.setComputeUnitLimit({
-    units: 300_000,
+    units: 10_000_000,
   })
 
   const txInstructions = await program.methods

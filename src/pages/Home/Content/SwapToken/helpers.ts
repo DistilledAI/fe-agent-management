@@ -87,7 +87,7 @@ export const swapToken = async ({
         // auto wrap and unwrap SOL. default is true
         wrapAndUnwrapSol: true,
         // prioritizationFeeLamports: 100000,
-        computeUnitPriceMicroLamports: 100000,
+        computeUnitPriceMicroLamports: 10000000,
         dynamicComputeUnitLimit: true,
         // feeAccount is optional. Use if you want to charge a fee.  feeBps must have been passed in /quote API.
         // feeAccount: "fee_account_public_key"

@@ -10,6 +10,7 @@ import { Button, Input } from "@nextui-org/react"
 import axios from "axios"
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes"
 import {
+  ComputeBudgetProgram,
   Connection,
   PublicKey,
   SystemProgram,
@@ -24,6 +25,15 @@ import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils"
 // const web3Locking = new Web3SolanaLockingToken()
 
 // const endpointAgent = "http://15.235.226.9:7000"
+
+const SOL_COMPUTE_UNIT_LIMIT = 10000000
+const SOL_MICRO_LAMPORTS = 100000
+const setComputeUnitLimit = ComputeBudgetProgram.setComputeUnitLimit({
+  units: SOL_COMPUTE_UNIT_LIMIT,
+})
+const setComputePriceLimit = ComputeBudgetProgram.setComputeUnitPrice({
+  microLamports: SOL_MICRO_LAMPORTS,
+})
 
 const WithdrawToken = ({ endpointAgent }: { endpointAgent: string }) => {
   const { loading, connectMultipleWallet } = useConnectWallet()
@@ -89,13 +99,16 @@ const WithdrawToken = ({ endpointAgent }: { endpointAgent: string }) => {
           .toFixed(0, 1),
       ).toNumber()
 
-      const transaction = new Transaction().add(
-        SystemProgram.transfer({
-          fromPubkey: new PublicKey(botInfo.sol_address),
-          toPubkey: new PublicKey(toAccount),
-          lamports: amount,
-        }),
-      )
+      const transaction = new Transaction()
+        .add(setComputePriceLimit)
+        .add(setComputeUnitLimit)
+        .add(
+          SystemProgram.transfer({
+            fromPubkey: new PublicKey(botInfo.sol_address),
+            toPubkey: new PublicKey(toAccount),
+            lamports: amount,
+          }),
+        )
 
       const connection = new Connection(SOLANA_RPC, {
         commitment: "confirmed",

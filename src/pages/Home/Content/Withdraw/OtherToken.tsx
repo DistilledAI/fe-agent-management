@@ -29,7 +29,7 @@ import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils"
 
 // const endpointAgent = "http://15.235.226.9:7000"
 
-const SOL_COMPUTE_UNIT_LIMIT = 100000
+const SOL_COMPUTE_UNIT_LIMIT = 10000000
 const SOL_MICRO_LAMPORTS = 100000
 const setComputeUnitLimit = ComputeBudgetProgram.setComputeUnitLimit({
   units: SOL_COMPUTE_UNIT_LIMIT,
