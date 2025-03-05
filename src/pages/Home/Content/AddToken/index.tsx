@@ -14,6 +14,7 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
   const { loading, connectMultipleWallet } = useConnectWallet()
   const { isLogin, isAnonymous, user } = useAuthState()
   const isConnectWallet = isLogin && !isAnonymous
+  const [role, setRole] = useState("sign_solana")
   const [addressAgent, setAddressAgent] = useState("")
   const [whitelistAgent, setWhiteListAgent] = useState()
   const [submitLoading, setSubmitLoading] = useState(false)
@@ -74,7 +75,7 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
     const msgSignAddSol = {
       action: "set_whitelist",
       account: addressAgent,
-      role: "sign_solana",
+      role,
       timestamp,
       is_whitelist: isWhitelist,
     }
@@ -122,7 +123,7 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
     const msgSignAddEvm = {
       action: "set_whitelist",
       account: addressAgent,
-      role: "sign_evm",
+      role,
       timestamp,
       is_whitelist: true,
     }
@@ -200,6 +201,16 @@ const AddToken = ({ endpointAgent }: { endpointAgent: string }) => {
         <div className="mt-2 flex items-center gap-2">
           <p className="font-semibold">Is Whitelist:</p>
           <Switch isSelected={isWhitelist} onValueChange={setIsWhiteList} />
+        </div>
+        <div className="mt-2 flex items-center gap-2">
+          <p className="font-semibold">Role:</p>
+          <div className="flex items-center">
+            <select onChange={(e) => setRole(e.target.value)} value={role}>
+              <option key="sign_solana">sign_solana</option>
+              <option key="sign_evm">sign_evm</option>
+              <option key="poly_market_call">poly_market_call</option>
+            </select>
+          </div>
         </div>
         {isConnectWallet ? (
           <Button
